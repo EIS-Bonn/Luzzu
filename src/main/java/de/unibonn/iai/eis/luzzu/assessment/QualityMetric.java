@@ -1,4 +1,4 @@
-package de.unibonn.iai.eis.luzzu.qualitymetrics;
+package de.unibonn.iai.eis.luzzu.assessment;
 
 import java.util.List;
 
