@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:ns0="http://purl.org/eis/vocab/qr#">
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#QualityReport">
+    <rdfs:comment>Represents a report on the problems detected during the assessment of quality on a dataset.</rdfs:comment>
+    <rdfs:label>Quality Report</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#QualityProblem">
+    <rdfs:comment>Represents a quality problem detected during the assessment of quality metrics on triples.</rdfs:comment>
+    <rdfs:label>Quality Problem</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#CleaningRecommendation">
+    <rdfs:comment>Represents recommendation for how to solve the corresponding quality problem.</rdfs:comment>
+    <rdfs:label>Cleaning Suggestion</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#MalformedDatatypeLiteralsProblem">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <rdfs:comment>Represents a kind of quality problems in which literal value is not consistent with defined data type</rdfs:comment>
+    <ns0:problemDescription>Literal value is not consistent with the defined data type.</ns0:problemDescription>
+    <rdfs:label>Malformed Datatype literals Problem</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#MalformedDatatypeLiteralsRecommendation">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#CleaningRecommendation"/>
+    <rdfs:comment>Represents recommendation of how to solve the corresponding quality problem</rdfs:comment>
+    <ns0:recommedation>Parse or convert literal into the value space of the data type.</ns0:recommedation>
+    <rdfs:label>Malformed Datatype literals Recommendation</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#IncompatibleDatatypeRangeProblem">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <rdfs:comment>Represents a kind of quality problems in which literal value is not consistent with data type defined by property range</rdfs:comment>
+    <ns0:problemDescription>Literal value is not consistent with data type defined by property range</ns0:problemDescription>
+    <rdfs:label>Incompatible Datatype Range Problem </rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#IncompatibleDatatypeRangeRecommendation">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#CleaningRecommendation"/>
+    <rdfs:comment>Represents recommendation of how to solve the corresponding quality problem</rdfs:comment>
+    <ns0:recommedation>Parse or convert the literal value into the value space of the range datatype</ns0:recommedation>
+    <rdfs:label>Incompatible Datatype Range Recommendation </rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#HomogeneousDatatypesProblem">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <ns0:problemDescription>Data type of literals corresponding to the same property is not homogeneous</ns0:problemDescription>
+    <rdfs:comment>Represents a kind of quality problems in which data type are not homogeneous</rdfs:comment>
+    <rdfs:label>Homogeneous Datatype Problem </rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#HomogeneousDatatypesRecommendation">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#CleaningRecommendation"/>
+    <rdfs:comment>Represents recommendation of how to solve the corresponding quality problem</rdfs:comment>
+    <ns0:recommedation>Parse or convert literal values to unique data type</ns0:recommedation>
+    <rdfs:label>Homogeneous Datatype Recommendation </rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#MisplacedClassesOrPropertiesProblem">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <rdfs:comment>Represents a kind of quality problems in which classes or properties are not places properly.</rdfs:comment>
+    <rdfs:label>Misplaced classes or properties Problem </rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#MisuseOwlDatatypeOrObjectPropertiesProblem">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <rdfs:comment>Represents a kind of quality problems in which owl classes or owl properties are not used properly.</rdfs:comment>
+    <rdfs:label>Misuse Owl Datatype Or Object Properties Problem</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#UndefinedClassesProblem">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <ns0:problemDescription>Class is not defined.</ns0:problemDescription>
+    <rdfs:comment>Represents a kind of quality problems in which classes are not defined</rdfs:comment>
+    <rdfs:label>Undefined Classes Problem</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#UndefinedClassesRecommendation">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#CleaningRecommendation"/>
+    <rdfs:comment>Represents recommendation of how to solve the corresponding quality problem</rdfs:comment>
+    <ns0:recommedation>Please define the class</ns0:recommedation>
+    <rdfs:label>Undefined Classes Recommendation</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#UndefinedPropertiesProblem">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <ns0:problemDescription>Property is not defined.</ns0:problemDescription>
+    <rdfs:comment>Represents a kind of quality problems in which classes or properties are not defined</rdfs:comment>
+    <rdfs:label>Undefined Properties Problem</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#UndefinedPropertiesRecommendation">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#CleaningRecommendation"/>
+    <rdfs:comment>Represents recommendation of how to solve the corresponding quality problem</rdfs:comment>
+    <ns0:recommedation>Please define the property.</ns0:recommedation>
+    <rdfs:label>Undefined Properties Recommendation</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#WhitespaceInAnnotationProblem">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <ns0:problemDescription>Literal value contains white spaces</ns0:problemDescription>
+    <rdfs:comment>Represents a kind of quality problems in which object in annotation property contains white spaces.</rdfs:comment>
+    <rdfs:label>Whitespace in Annotation Problem</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#WhitespaceInAnnotationRecommendation">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#CleaningRecommendation"/>
+    <rdfs:comment>Represents recommendation of how to solve the corresponding quality problem</rdfs:comment>
+    <ns0:recommedation>Remove white spaces from the literal value</ns0:recommedation>
+    <rdfs:label>Whitespace in Annotation Recommendation</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#EmptyAnnotationValueProblem">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <rdfs:comment>Represents a kind of quality problems in which literal value in annotation property is empty.</rdfs:comment>
+    <rdfs:label>Empty Annotation Value Problem</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#EmptyAnnotationValueRecommendation">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#CleaningRecommendation"/>
+    <rdfs:comment>Represents recommendation of how to solve the corresponding quality problem</rdfs:comment>
+    <ns0:recommedation>Remove the triple or add literal value</ns0:recommedation>
+    <rdfs:label>Empty Annotation Value Recommendation</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#LabelsUsingCapitalsProblem">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <rdfs:comment>Represents a kind of quality problems in which object value in label property uses a bad style of capitalization.</rdfs:comment>
+    <rdfs:label>Labels Using Capitals Problem</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#LabelsUsingCapitalsRecommendation">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#CleaningRecommendation"/>
+    <rdfs:comment>Represents recommendation of how to solve the corresponding quality problem</rdfs:comment>
+    <ns0:recommedation>Change the capitalization of the literal</ns0:recommedation>
+    <rdfs:label>Labels Using Capitals Recommendation</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#BlankNodeUsageProblem">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <rdfs:comment>Represents a kind of quality problems in which blank nodes are used in subject or object position.</rdfs:comment>
+    <rdfs:label>Blank Node Usage Problem</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#BlankNodeUsageRecommendation">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#CleaningRecommendation"/>
+    <rdfs:comment>Represents recommendation of how to solve the corresponding quality problem</rdfs:comment>
+    <ns0:recommedation>Assign an URI to the node</ns0:recommedation>
+    <rdfs:label>Blank Node Usage Recommendation</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#RDFAccessibilityProblem">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <rdfs:comment>Represents a kind of quality problems when RDF can not be accessed.</rdfs:comment>
+    <rdfs:label>RDF Accessibility Problem</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#RDFAccessibilityRecommendation">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#CleaningRecommendation"/>
+    <rdfs:comment>Represents recommendation of how to solve the corresponding quality problem</rdfs:comment>
+    <ns0:recommedation>Check the path to RDF dump or remove the triple</ns0:recommedation>
+    <rdfs:label>RDF Accessibility Recommendation</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#SPARQLAccessibilityProblem">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <rdfs:comment>Represents a kind of quality problems when SPARQL Endpoint can not be accessed.</rdfs:comment>
+    <rdfs:label>SPARQL Accessibility Problem</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#SPARQLAccessibilityRecommendation">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#CleaningRecommendation"/>
+    <rdfs:comment>Represents recommendation of how to solve the corresponding quality problem</rdfs:comment>
+    <ns0:recommedation>Check the SPARQL Endpoint  URI or remove the triple</ns0:recommedation>
+    <rdfs:label>SPARQL Accessibility Recommendation</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#DefinedOntologyAuthorProblem">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <rdfs:comment>Identifies when an ontology author is not defined.</rdfs:comment>
+    <rdfs:label>Defined Ontology Author Problem</rdfs:label>
+  </rdfs:Class>
+
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/qr#DefinedOntologyAuthorRecommendation">
+    <rdfs:subClassOf rdf:resource="http://purl.org/eis/vocab/qr#CleaningRecommendation"/>
+    <rdfs:comment>Represents recommendation of how to solve the corresponding quality problem</rdfs:comment>
+    <ns0:recommedation>Define the ontology author</ns0:recommedation>
+    <rdfs:label>Defined Ontology Author Recommendation</rdfs:label>
+  </rdfs:Class>
+
+  <rdf:Property rdf:about="http://purl.org/eis/vocab/qr#computedOn">
+    <rdfs:comment>Represents the dataset URI on which quality metrics where computed</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/qr#QualityReport"/>
+    <rdfs:label>computedOn</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+  </rdf:Property>
+
+  <rdf:Property rdf:about="http://purl.org/eis/vocab/qr#hasProblem">
+    <rdfs:comment>Identifies problem instances in the report</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/qr#QualityReport"/>
+    <rdfs:label>has Problem</rdfs:label>
+    <rdfs:range rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+  </rdf:Property>
+
+  <rdf:Property rdf:about="http://purl.org/eis/vocab/qr#isDescribedBy">
+    <rdfs:comment>Represent the URI of the metric which instantiated this problem</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <rdfs:label>isDescribedBy</rdfs:label>
+    <rdfs:range rdf:resource="http://purl.org/eis/vocab/daq#Metric"/>
+  </rdf:Property>
+
+  <rdf:Property rdf:about="http://purl.org/eis/vocab/qr#problematicThing">
+    <rdfs:comment>Represent the actual problematic instance from the dataset. This could be a list of resources (rdf:Seq) or a list of reified statements.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <rdfs:label>affects</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+  </rdf:Property>
+
+  <rdf:Property rdf:about="http://purl.org/eis/vocab/qr#aplicableTo">
+    <rdfs:comment>Represents the relation between cleaning recommendation and quality problem.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/qr#CleaningRecommendation"/>
+    <rdfs:label>aplicableTo</rdfs:label>
+    <rdfs:range rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+  </rdf:Property>
+
+  <rdf:Property rdf:about="http://purl.org/eis/vocab/qr#problemDescription">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>problemDescription</rdfs:label>
+    <rdfs:comment>Contains brief summary of the quality problem that is presented to the user.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/qr#QualityProblem"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Property>
+
+  <rdf:Property rdf:about="http://purl.org/eis/vocab/qr#recommedation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label>recommendation</rdfs:label>
+    <rdfs:comment>Contains recommendation of how to solve the corresponding quality problem.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/qr#CleaningRecommendation"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdf:Property>
+
+</rdf:RDF>
