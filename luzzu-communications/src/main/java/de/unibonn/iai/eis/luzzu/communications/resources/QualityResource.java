@@ -40,13 +40,11 @@ public class QualityResource {
 	@Path("compute_quality")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String computeQuality(MultivaluedMap<String, String> formParams) {
-		
-		// Extract raw parameters from POST request
+		//TODO: Logging (https://github.com/EIS-Bonn/Luzzu/issues/2)
 		List<String> lstDatasetURI = formParams.get("Dataset");
 		List<String> lstQualityReportReq = formParams.get("QualityReportRequired");
 		List<String> lstMetricsConfig = formParams.get("MetricsConfiguration");
-		
-		// Validate parameters and extract values						
+								
 		if(lstDatasetURI == null || lstDatasetURI.size() <= 0) {
 			throw new IllegalArgumentException("Dataset URI was not provided");
 		}
@@ -66,14 +64,11 @@ public class QualityResource {
 		System.out.println("Configuration parameters: " + jsonStrMetricsConfig);
 
 		try {
-			// Extract configuration from serialized JSON representation
 			Object jsonObj = JsonUtils.fromString(jsonStrMetricsConfig);
 			
-			// Convert the configuration JSON object to RDF, so that triples can be extracted
 			RDFDataset rdf = (RDFDataset)JsonLdProcessor.toRDF(jsonObj, new JsonLdOptions());			
 			List<Quad> lst = rdf.getQuads("@default");
 			
-			// Create a model containing the process configuration 
 			Model modelConfig = ModelFactory.createDefaultModel();
 			Resource rSubj = Commons.generateURI();
 			
@@ -82,9 +77,7 @@ public class QualityResource {
 				Literal litVal = modelConfig.createLiteral(qd.getObject().getValue());
 				modelConfig.add(rSubj, prop, litVal);
 			}
-			
-			modelConfig.write(System.out, "TURTLE");
-			
+						
 			StreamProcessor strmProc = new StreamProcessor(datasetURI, genQualityReport, modelConfig);
 
 		} catch (JsonParseException e) {
