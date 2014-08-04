@@ -51,6 +51,11 @@ public class StreamProcessor implements IOProcessor {
 	public StreamProcessor(String datasetURI){
 		this.datasetURI = datasetURI;
 	}
+	
+	public StreamProcessor(String datasetURI, boolean genQualityReport, Model configuration){
+		this.datasetURI = datasetURI;
+		// TODO: Complete setup
+	}
 
 	@SuppressWarnings("unchecked")
 	public void setUpProcess() {
