@@ -6,4 +6,13 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>luzzu-assessment</artifactId>
+  
+     <dependencies>
+        <dependency>
+            <groupId>de.unibonn.iai.eis</groupId>
+            <artifactId>luzzu-semantics</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+    
 </project>
