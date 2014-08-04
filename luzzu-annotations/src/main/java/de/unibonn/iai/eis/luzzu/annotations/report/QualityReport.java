@@ -1,12 +1,11 @@
 package de.unibonn.iai.eis.luzzu.annotations.report;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Seq;
-import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.impl.StatementImpl;
 import com.hp.hpl.jena.sparql.core.Quad;
 import com.hp.hpl.jena.vocabulary.RDF;
@@ -35,73 +34,81 @@ public class QualityReport {
 	 * @param metricURI - The metric's instance URI
 	 * @param problemList - The list of problematic triples found during the assessment of the metric
 	 * 
-	 * @return A list of statements corresponding to a quality problem
+	 * @return A Quality Problem RDF Model
 	 */
-	public List<Statement> createQualityProblem(Resource metricURI, ProblemList<?> problemList){
-		List<Statement> sList = new ArrayList<Statement>();
-		
-		Resource problemURI = Commons.generateURI();
-		
-		sList.add(new StatementImpl(problemURI, RDF.type, QR.QualityProblem));
-		sList.add(new StatementImpl(problemURI, QR.isDescribedBy, metricURI));
-
+	public Model createQualityProblem(Resource metricURI, ProblemList<?> problemList){
+		Model m = ModelFactory.createDefaultModel();
+	
 		if (problemList.getProblemList().get(0) instanceof Quad){
 			for(Object obj : problemList.getProblemList()){
+				Resource problemURI = Commons.generateURI();
+				
+				m.add(new StatementImpl(problemURI, RDF.type, QR.QualityProblem));
+				m.add(new StatementImpl(problemURI, QR.isDescribedBy, metricURI));
+				
 				Resource bNode = Commons.generateRDFBlankNode().asResource();
-				sList.add(new StatementImpl(problemURI, QR.problematicThing, bNode));
+				m.add(new StatementImpl(problemURI, QR.problematicThing, bNode));
 				
 				Quad q = (Quad) obj;
-				sList.add(new StatementImpl(bNode, RDF.type, RDF.Statement));
-				sList.add(new StatementImpl(bNode, RDF.subject, Commons.asRDFNode(q.getSubject())));
-				sList.add(new StatementImpl(bNode, RDF.predicate, Commons.asRDFNode(q.getPredicate())));
-				sList.add(new StatementImpl(bNode, RDF.object, Commons.asRDFNode(q.getObject())));
+				m.add(new StatementImpl(bNode, RDF.type, RDF.Statement));
+				m.add(new StatementImpl(bNode, RDF.subject, Commons.asRDFNode(q.getSubject())));
+				m.add(new StatementImpl(bNode, RDF.predicate, Commons.asRDFNode(q.getPredicate())));
+				m.add(new StatementImpl(bNode, RDF.object, Commons.asRDFNode(q.getObject())));
 				
 				if (q.getGraph() != null){
-					sList.add(new StatementImpl(bNode, QR.inGraph, Commons.asRDFNode(q.getGraph())));
+					m.add(new StatementImpl(bNode, QR.inGraph, Commons.asRDFNode(q.getGraph())));
 				}
 				
 			}
 		} else {
-			Seq problemSeq = ModelFactory.createDefaultModel().createSeq();
+			Seq problemSeq = m.createSeq();
 			int i = 1;
 			for(Object obj : problemList.getProblemList()){
 				Resource r = (Resource) obj;
 				problemSeq.add(i , r);
 				i++;
 			}
-			sList.add(new StatementImpl(problemURI, QR.problematicThing, problemSeq));
+			Resource problemURI = Commons.generateURI();
+			
+			m.add(new StatementImpl(problemURI, RDF.type, QR.QualityProblem));
+			m.add(new StatementImpl(problemURI, QR.isDescribedBy, metricURI));
+			
+			m.add(new StatementImpl(problemURI, QR.problematicThing, problemSeq));
 		}
-		return sList;
+		return m;
 	}
 
 	/**
 	 * Create instance triples corresponding towards a Quality Report
 	 * 
 	 * @param computedOn - The resource URI of the dataset computed on
-	 * @param problemReportURIs - A list of quality problem URI instances
+	 * @param problemReport - A list of quality problem as RDF Jena models
 	 * 
-	 * @return A list of statements corresponding to a quality report
+	 * @return A Jena Model which can be queried or stored
 	 */
-	public List<Statement> createQualityReport(Resource computedOn, List<Resource> problemReportURIs){
-		List<Statement> sList = new ArrayList<Statement>();
+	public Model createQualityReport(Resource computedOn, List<Model> problemReportModels){
+		Model m = ModelFactory.createDefaultModel();
 		
 		Resource reportURI = Commons.generateURI();
-		sList.add(new StatementImpl(reportURI, RDF.type, QR.QualityReport));
-		sList.add(new StatementImpl(reportURI, QR.computedOn, computedOn));
-		for(Resource r : problemReportURIs){
-			sList.add(new StatementImpl(reportURI, QR.hasProblem, r));
+		m.add(new StatementImpl(reportURI, RDF.type, QR.QualityReport));
+		m.add(new StatementImpl(reportURI, QR.computedOn, computedOn));
+		for(Model prModel : problemReportModels){
+			for(Resource r : getProblemURI(prModel)){
+				m.add(new StatementImpl(reportURI, QR.hasProblem, r));
+				m.add(prModel);
+			}
 		}
-		return sList;
+		return m;
 	}
 	
 	/**
 	 * Returns the URI for a quality problem instance
 	 * 
-	 * @param problemReport - List of statements corresponding to a problem report
+	 * @param problemReport - A Problem Report Model
 	 * 
 	 * @return The resource URI
 	 */
-	public Resource getProblemURI(List<Statement> problemReport){
-		return problemReport.get(0).getSubject();
+	public List<Resource> getProblemURI(Model problemReport){
+		return problemReport.listSubjectsWithProperty(RDF.type, QR.QualityProblem).toList();
 	}
 }
