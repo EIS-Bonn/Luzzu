@@ -5,4 +5,4 @@ Luzzu (pronounced like lwtsw) - A Quality Assessment Framework for Linked Open D
 
 
 Executing application
-mvn exec:java -X
+mvn exec:java -pl luzzu-communications
