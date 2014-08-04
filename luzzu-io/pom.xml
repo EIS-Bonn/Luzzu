@@ -6,7 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>luzzu-io</artifactId>
-  <name>Luzzu IO</name>
+  <name>Luzzu IO Module</name>
   <description>This module describes the IO operations for the Quality Assessment Framework</description>
 
        <dependencies>

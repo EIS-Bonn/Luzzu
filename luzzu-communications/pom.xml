@@ -1,23 +1,40 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>de.unibonn.iai.eis</groupId>
-    <artifactId>luzzu</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>luzzu-communications</artifactId>
-  <name>Luzzu Communications Module</name>
-  <description>This module deals with the RESTful APIs</description>
-  <dependencies>
-  	<dependency>
-  		<groupId>de.unibonn.iai.eis</groupId>
-  		<artifactId>luzzu-semantics</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>de.unibonn.iai.eis</groupId>
-  		<artifactId>luzzu-io</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  	</dependency>
-  </dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>de.unibonn.iai.eis</groupId>
+		<artifactId>luzzu</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>luzzu-communications</artifactId>
+	<name>Luzzu Communications Module</name>
+	<description>This module deals with the RESTful APIs</description>
+	<dependencies>
+		<dependency>
+			<groupId>de.unibonn.iai.eis</groupId>
+			<artifactId>luzzu-semantics</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>de.unibonn.iai.eis</groupId>
+			<artifactId>luzzu-io</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<!-- REST services (Jersey) -->
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-grizzly2-http</artifactId>
+			<version>${grizzly.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-processing</artifactId>
+			<version>${jerseymedia.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.jsonld-java</groupId>
+			<artifactId>jsonld-java</artifactId>
+			<version>${jsonld.version}</version>
+		</dependency>
+	</dependencies>
 </project>

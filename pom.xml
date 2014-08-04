@@ -21,6 +21,17 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>luzzu-assessment</module>
+		<module>luzzu-semantics</module>
+		<module>luzzu-annotations</module>
+		<module>luzzu-communications</module>
+		<module>luzzu-io</module>
+	</modules>
+
+
 	<repositories>
 		<repository>
 			<id>semweb4j-repo</id>
@@ -54,13 +65,13 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>${mockito.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
@@ -74,7 +85,6 @@
 			<type>pom</type>
 			<version>${jena.version}</version>
 		</dependency>
-
 
 		<!-- Logging -->
 		<dependency>
@@ -102,22 +112,6 @@
 			<artifactId>slf4j-jdk14</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
-		<!-- REST services (Jersey) -->
-		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-grizzly2-http</artifactId>
-			<version>${grizzly.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-json-processing</artifactId>
-			<version>${jerseymedia.version}</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.github.jsonld-java</groupId>
-		    <artifactId>jsonld-java</artifactId>
-		    <version>${jsonld.version}</version>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -139,14 +133,6 @@
 			</plugin>
 		</plugins>
 	</build>
-	
-	<packaging>pom</packaging>
-	
-	<modules>
-		<module>luzzu-assessment</module>
-		<module>luzzu-semantics</module>
-		<module>luzzu-annotations</module>
-		<module>luzzu-communications</module>
-		<module>luzzu-io</module>
-	</modules>
+
+
 </project>
