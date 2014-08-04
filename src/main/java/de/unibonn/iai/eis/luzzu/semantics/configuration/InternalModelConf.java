@@ -6,7 +6,6 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.DAQ;
-import de.unibonn.iai.eis.luzzu.semantics.vocabularies.DQM;
 
 
 public class InternalModelConf {
@@ -22,9 +21,9 @@ public class InternalModelConf {
 		semanticModel.addNamedModel(DAQ.NS, temp);
 		
 		temp.removeAll();
-		// Loading DQM ontology into memory
-		temp.read(InternalModelConf.class.getClassLoader().getResourceAsStream("vocabularies/dqm/dqm.rdf"), "RDF/XML");
-		semanticModel.addNamedModel(DQM.NS, temp);
+		//TODO: load any other ontology specified by a user
+		//temp.read(InternalModelConf.class.getClassLoader().getResourceAsStream("vocabularies/dqm/dqm.rdf"), "RDF/XML");
+		//semanticModel.addNamedModel(DQM.NS, temp);
 	}
 	
 	
@@ -32,14 +31,14 @@ public class InternalModelConf {
 		return semanticModel.getNamedModel(DAQ.NS);
 	}
 
-	public static Model getDQMModel(){
-		return semanticModel.getNamedModel(DQM.NS);
-	}
+//	public static Model getDQMModel(){
+//		return semanticModel.getNamedModel(DQM.NS); // return user specific vocabs
+//	}
 	
 	public static Model getFlatModel(){
 		Model m = ModelFactory.createDefaultModel();
 		m.add(getDAQModel());
-		m.add(getDQMModel());
+		//m.add(getDQMModel()); // return user specific vocabs
 		return m;
 	}
 }

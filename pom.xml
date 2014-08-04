@@ -120,4 +120,8 @@
 			</plugin>
 		</plugins>
 	</build>
+	<packaging>pom</packaging>
+	<modules>
+		<module>luzzu-assessment</module>
+	</modules>
 </project>

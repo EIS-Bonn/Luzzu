@@ -84,15 +84,17 @@ daq:hasObservation
 		rdfs:comment	"Computed metrics can have 1 or more quality observations, where each computed resource has one observation." ;
 		rdfs:domain	daq:Metric ;
 		rdfs:range	 qb:Observation ;
-		owl:minCardinality "1"^^xsd:nonNegativeInteger .
+		owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+		owl:inverseOf daq:metric .
 
 daq:metric
-		a	rdf:Property, owl:DatatypeProperty ;
+		a	rdf:Property, owl:DatatypeProperty, qb:DimensionProperty ;
 		rdfs:label	"metric" ;
 		rdfs:comment	"Represents the metric being observed." ;
 		rdfs:domain	qb:Observation ;
 		rdfs:range	 daq:Metric ;
-		owl:minCardinality "1"^^xsd:nonNegativeInteger .
+		owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+		owl:inverseOf daq:hasObservation .
 		
 daq:value
 		a	rdf:Property, owl:DatatypeProperty, qb:MeasureProperty ;

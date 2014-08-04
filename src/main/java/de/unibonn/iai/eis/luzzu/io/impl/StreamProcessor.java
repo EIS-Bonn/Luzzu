@@ -29,10 +29,10 @@ import com.hp.hpl.jena.rdf.model.impl.StatementImpl;
 import com.hp.hpl.jena.sparql.core.Quad;
 import com.hp.hpl.jena.vocabulary.RDF;
 
+import de.unibonn.iai.eis.luzzu.assessment.QualityMetric;
 import de.unibonn.iai.eis.luzzu.datatypes.Object2Quad;
 import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
 import de.unibonn.iai.eis.luzzu.io.IOProcessor;
-import de.unibonn.iai.eis.luzzu.qualitymetrics.QualityMetric;
 import de.unibonn.iai.eis.luzzu.semantics.utilities.Commons;
 import de.unibonn.iai.eis.luzzu.semantics.utilities.DAQHelper;
 
