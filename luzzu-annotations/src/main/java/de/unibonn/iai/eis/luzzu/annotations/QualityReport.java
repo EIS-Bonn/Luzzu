@@ -1,4 +1,4 @@
-package de.unibonn.iai.eis.luzzu.annotations.report;
+package de.unibonn.iai.eis.luzzu.annotations;
 
 import java.util.List;
 
