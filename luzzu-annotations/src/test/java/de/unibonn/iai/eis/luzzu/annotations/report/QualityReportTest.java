@@ -110,7 +110,7 @@ public class QualityReportTest extends Assert {
 		assertTrue(qualityReport.listStatements(null, RDF.type, QR.QualityReport).hasNext());
 		assertTrue(qualityReport.listStatements(null, QR.computedOn, computedOn).hasNext());
 	
-		assertEquals(4, qualityReport.listObjectsOfProperty(QR.hasProblem).toList().size()); 
+		assertEquals(3, qualityReport.listObjectsOfProperty(QR.hasProblem).toList().size()); 
 	}
 	
 	private void populateProblemLists() throws ProblemListInitialisationException{
