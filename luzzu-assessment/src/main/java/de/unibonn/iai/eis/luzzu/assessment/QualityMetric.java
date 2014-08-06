@@ -32,6 +32,7 @@ public interface QualityMetric {
 	 * 
 	 * @return a list of daQ triples
 	 */
+	@Deprecated
 	List<Statement> toDAQTriples();
 
 	/**
