@@ -1,0 +1,18 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>de.unibonn.iai.eis</groupId>
+    <artifactId>luzzu</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>luzzu-operations</artifactId>
+  <name>Luzzu Operations Module</name>
+  <description>The operations module consists of classes that (1) support the execution and maintanace of Luzzu (such as caching); and (2) support data operations (such as validations, graph signatures and ranking) on quality metadata.</description>
+  <dependencies>
+  	<dependency>
+  		<groupId>de.unibonn.iai.eis</groupId>
+  		<artifactId>luzzu-semantics</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
+</project>
