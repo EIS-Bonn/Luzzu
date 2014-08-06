@@ -20,6 +20,11 @@
             <artifactId>luzzu-assessment</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-    </dependencies>
+        <dependency>
+        	<groupId>de.unibonn.iai.eis</groupId>
+        	<artifactId>luzzu-operations</artifactId>
+        	<version>0.0.1-SNAPSHOT</version>
+        </dependency>
+       </dependencies>
     
 </project>
