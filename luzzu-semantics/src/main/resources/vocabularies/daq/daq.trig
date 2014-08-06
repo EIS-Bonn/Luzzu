@@ -10,6 +10,7 @@
 @prefix qb:		 		<http://purl.org/linked-data/cube#>.
 @prefix sdmx-measure:   <http://purl.org/linked-data/sdmx/2009/measure#> .
 @prefix sdmx-attribute:  <http://purl.org/linked-data/sdmx/2009/attribute#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
 
 # VOCABULARY
 daq:
@@ -64,23 +65,19 @@ daq:Metric
 
 # Generic Properties
 daq:computedOn
-	a	rdf:Property, owl:ObjectProperty ;
-	rdfs:label	"computedOn" ;
+	a	rdf:Property, owl:ObjectProperty, qb:DimensionProperty ;
+	rdfs:label	"computed on" ;
 	rdfs:comment	"Quality metrics can be (in principle) calculated on various forms of data (such as datasets, graphs, set of triples etc...). This vocabulary allow the owner/user of such RDF data to calculate metrics on multiple (and different) resources." ;
 	rdfs:domain	qb:Observation ;
 	rdfs:range	rdfs:Resource .	
 
-daq:dateComputed
-	a	rdf:Property, owl:DatatypeProperty, qb:DimensionProperty ;
-	rdfs:label	"dateComputed" ;
-	rdfs:comment	"A timestamp which shows when the metric was computed last" ;
+dc:date
 	rdfs:domain	qb:Observation ;
-	rdfs:range	 xsd:dateTime ;
 	owl:cardinality "1"^^xsd:nonNegativeInteger .
 	
 daq:hasObservation
 		a	rdf:Property, owl:DatatypeProperty ;
-		rdfs:label	"hasObservation" ;
+		rdfs:label	"has observation" ;
 		rdfs:comment	"Computed metrics can have 1 or more quality observations, where each computed resource has one observation." ;
 		rdfs:domain	daq:Metric ;
 		rdfs:range	 qb:Observation ;
@@ -104,8 +101,8 @@ daq:value
 		owl:cardinality "1"^^xsd:nonNegativeInteger .
 		
 daq:expectedDataType
-		a	rdf:Property, owl:DatatypeProperty, qb:DimensionProperty ;
-		rdfs:label	"expectedDataType" ;
+		a	rdf:Property, owl:DatatypeProperty ;
+		rdfs:label	"expected data type" ;
 		rdfs:comment	"Each metric should have an expect data type for it's observed value (e.g. xsd:boolean, xsd:double etc...)" ;
 		rdfs:domain	daq:Metric ;
 		rdfs:range	 xsd:anySimpleType ;

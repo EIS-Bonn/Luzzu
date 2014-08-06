@@ -6,6 +6,8 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
@@ -26,7 +28,6 @@ public class DAQHelper {
 		return label;
 	}
 	
-	
 	public static String getDimensionLabel(Resource metricURI){
 		return getClassLabel(getDomainResource(metricURI));
 	}
@@ -41,11 +42,10 @@ public class DAQHelper {
 	public static Resource getDimensionResource(Resource metricURI){
 		return getDomainResource(metricURI);
 	}
-	
+		
 	public static Resource getCategoryResource(Resource metricURI){
 		return getDomainResource(getDomainResource(metricURI));
 	}
-	
 	
 	private static Resource getDomainResource(Resource uri){
 		String whereClause = "?prop " + " " + SPARQLHelper.toSPARQL(RDFS.range) + SPARQLHelper.toSPARQL(uri) + " . ";
@@ -81,7 +81,6 @@ public class DAQHelper {
 	    
 	    return r;
 	}
-	
 	
 	public static String getClassDescription(Resource uri){
 		StmtIterator iter = InternalModelConf.getDAQModel().listStatements(uri, RDFS.comment, (RDFNode) null);
