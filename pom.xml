@@ -29,6 +29,7 @@
 		<module>luzzu-annotations</module>
 		<module>luzzu-communications</module>
 		<module>luzzu-io</module>
+		<module>luzzu-operations</module>
 	</modules>
 
 
@@ -112,6 +113,13 @@
 			<artifactId>slf4j-jdk14</artifactId>
 			<version>${slf4j.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
