@@ -27,7 +27,7 @@ public class PropertyManager {
 
 		try{
 			URL propertiesFolder = getClass().getClassLoader().getResource("properties");
-			File folder = new File(propertiesFolder.toString());
+			File folder = new File(propertiesFolder.getPath());
 			File[] listOfFiles = folder.listFiles();
 			
 			for(File propertyFile : listOfFiles){
