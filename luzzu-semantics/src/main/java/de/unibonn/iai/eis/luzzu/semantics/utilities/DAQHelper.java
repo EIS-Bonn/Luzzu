@@ -44,7 +44,8 @@ public class DAQHelper {
 	}
 		
 	public static Resource getCategoryResource(Resource metricURI){
-		return getDomainResource(getDomainResource(metricURI));
+		Resource intermediate = getDomainResource(metricURI);
+		return getDomainResource(intermediate);
 	}
 	
 	private static Resource getDomainResource(Resource uri){
