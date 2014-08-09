@@ -37,6 +37,7 @@ public class QualityMetadata {
 	private Resource qualityGraph;
 	boolean metadataPresent = false;
 	private TemporaryGraphMetadataCacheObject _temp = null;
+	private Resource computedOn;
 	
 	/**
 	 * Since each assessed dataset should have only one quality 
@@ -47,6 +48,7 @@ public class QualityMetadata {
 	 * @param sparqlEndpoint - True if the datasetURI is a sparql endpoint.
 	 */
 	public QualityMetadata(Resource datasetURI, boolean sparqlEndpoint){
+		this.computedOn = datasetURI;
 		if (sparqlEndpoint){
 			//TODO:sparqlendpoint
 			//query, do not check in cache as it would not be feasible to store sparql endpoint results in cache
@@ -65,14 +67,17 @@ public class QualityMetadata {
 	
 	/**
 	 * Used when the assessed dataset is stored in memory 
-	 * (Jena Model),
+	 * (Jena Dataset),
 	 * 
-	 * @param dataset - Assessed Jena Model Dataset
+	 * @param dataset - Assessed Jena Dataset
+	 * @param computedOn - The resource indicating the metrics computed on
 	 */
-	public QualityMetadata(Model dataset){
-		ResIterator qualityGraphRes = dataset.listSubjectsWithProperty(RDF.type, DAQ.QualityGraph);
+	public QualityMetadata(Dataset dataset, Resource computedOn){
+		this.computedOn = computedOn;
+		ResIterator qualityGraphRes = dataset.getDefaultModel().listSubjectsWithProperty(RDF.type, DAQ.QualityGraph);
 		if (qualityGraphRes.hasNext()){
 			this.qualityGraph = qualityGraphRes.next();
+			this.metadata.add(dataset.getNamedModel(this.qualityGraph.getURI()));
 			this.metadataPresent = true;
 		} else {
 			this.qualityGraph = Commons.generateURI();
@@ -85,26 +90,25 @@ public class QualityMetadata {
 	 * @param metric - Metric Class
 	 */
 	public void addMetricData(QualityMetric metric){
-		Resource categoryURI = null;
 		Resource categoryType = DAQHelper.getCategoryResource(metric.getMetricURI());
-		
-		if (!(this.categoryExists(categoryType, categoryURI))){
+		Resource categoryURI = this.categoryExists(categoryType);		
+		if (categoryURI == null){
 			categoryURI = Commons.generateURI();
 			this.metadata.add(categoryURI, RDF.type, categoryType);
 		}
 		
-		Resource dimensionURI = null;
 		Resource dimensionType = DAQHelper.getDimensionResource(metric.getMetricURI());
-		if (!(this.dimensionExists(dimensionType, dimensionURI))){
+		Resource dimensionURI = this.dimensionExists(dimensionType);
+		if (dimensionURI == null){
 			dimensionURI = Commons.generateURI();
 			Property dimensionProperty = this.metadata.createProperty(DAQHelper.getPropertyResource(dimensionType).getURI());
 			this.metadata.add(categoryURI, dimensionProperty, dimensionURI);
 			this.metadata.add(dimensionURI, RDF.type, dimensionType);
 		}
 		
-		Resource metricURI = null;
 		Resource metricType = metric.getMetricURI();
-		if (!(this.metricExists(metricType, metricURI))){
+		Resource metricURI = this.metricExists(metricType);
+		if (metricURI == null){
 			metricURI = Commons.generateURI();
 			Property metricProperty = this.metadata.createProperty(DAQHelper.getPropertyResource(metricType).getURI());
 			this.metadata.add(dimensionURI, metricProperty, metricURI);
@@ -117,7 +121,7 @@ public class QualityMetadata {
 		this.metadata.add(observationURI, RDF.type, CUBE.Observation);
 		this.metadata.add(observationURI, DC.date, Commons.generateCurrentTime());
 		this.metadata.add(observationURI, DAQ.metric, metricURI);
-		
+		this.metadata.add(observationURI, DAQ.computedOn, this.computedOn);
 		this.metadata.add(observationURI, DAQ.value, Commons.generateDoubleTypeLiteral(metric.metricValue()));
 		
 		this.metadata.add(observationURI, CUBE.dataSet, qualityGraph);
@@ -135,13 +139,11 @@ public class QualityMetadata {
 		
 		if (this.metadata.size() == 0) throw new MetadataException("No Metric Observations Recorded");
 		
-		if (!metadataPresent){
-			defaultModel.add(qualityGraph, RDF.type, DAQ.QualityGraph);
-			defaultModel.add(qualityGraph, CUBE.structure, DAQ.dsd);
-			dataset = new DatasetImpl(defaultModel);
-		}
+		defaultModel.add(qualityGraph, RDF.type, DAQ.QualityGraph);
+		defaultModel.add(qualityGraph, CUBE.structure, DAQ.dsd);
+		dataset = new DatasetImpl(defaultModel);
 		dataset.addNamedModel(this.qualityGraph.getURI(), this.metadata);
-		
+
 		return dataset;
 	}
 	
@@ -149,47 +151,41 @@ public class QualityMetadata {
 	 * Checks if a category uri exists in the metadata
 	 * 
 	 * @param categoryType - The URI of the Category Type
-	 * @param categoryURI - An instance which will be overridden by this method
-	 * @return True if exists
+	 * @return The URI if exists or null
 	 */
-	private boolean categoryExists(Resource categoryType, Resource categoryURI){
+	private Resource categoryExists(Resource categoryType){
 		ResIterator resIte = this.metadata.listSubjectsWithProperty(RDF.type, categoryType);
 		if (resIte.hasNext()){
-			categoryURI = resIte.next();
-			return true;
+			return resIte.next();
 		}
-		return false;
+		return null;
 	}
 	
 	/**
 	 * Checks if a dimension uri exists in the metadata
 	 * 
 	 * @param dimensionType - The URI of the Dimension Type
-	 * @param dimensionURI - An instance which will be overridden by this method
-	 * @return True if exists
+	 * @return The URI if exists or null
 	 */
-	private boolean dimensionExists(Resource dimensionType, Resource dimensionURI){
+	private Resource dimensionExists(Resource dimensionType){
 		ResIterator resIte = this.metadata.listSubjectsWithProperty(RDF.type, dimensionType);
 		if (resIte.hasNext()){
-			dimensionURI = resIte.next();
-			return true;
+			return resIte.next();
 		}
-		return false;
+		return null;
 	}
 	
 	/**
 	 * Checks if a metric uri exists in the metadata
 	 * 
 	 * @param metricType - The URI of the Metric Type
-	 * @param metricURI - An instance which will be overridden by this method
-	 * @return True if exists
+	 * @return The URI if exists or null
 	 */
-	private boolean metricExists(Resource metricType, Resource metricURI){
+	private Resource metricExists(Resource metricType){
 		ResIterator resIte = this.metadata.listSubjectsWithProperty(RDF.type, metricType);
 		if (resIte.hasNext()){
-			metricURI = resIte.next();
-			return true;
+			return resIte.next();
 		}
-		return false;
+		return null;
 	}
 }
