@@ -1,9 +1,6 @@
 package de.unibonn.iai.eis.luzzu.assessment;
 
-import java.util.List;
-
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.sparql.core.Quad;
 
 import de.unibonn.iai.eis.luzzu.datatypes.ProblemList;
