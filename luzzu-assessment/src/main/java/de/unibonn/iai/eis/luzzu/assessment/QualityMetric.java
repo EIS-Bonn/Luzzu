@@ -27,15 +27,6 @@ public interface QualityMetric {
 	double metricValue();
 
 	/**
-	 * This method will return daQ triples which will be stored in the dataset
-	 * QualityGraph.
-	 * 
-	 * @return a list of daQ triples
-	 */
-	@Deprecated
-	List<Statement> toDAQTriples();
-
-	/**
 	 * @return returns the daQ URI of the Quality Metric
 	 */
 	Resource getMetricURI();
