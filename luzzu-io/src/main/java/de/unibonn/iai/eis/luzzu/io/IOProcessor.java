@@ -1,5 +1,7 @@
 package de.unibonn.iai.eis.luzzu.io;
 
+import com.hp.hpl.jena.rdf.model.Model;
+
 import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
 
 public interface IOProcessor {
@@ -22,4 +24,6 @@ public interface IOProcessor {
 	 * @throws ProcessorNotInitialised
 	 */
 	void cleanUp() throws ProcessorNotInitialised;
+	
+	Model retreiveQualityReport();
 }

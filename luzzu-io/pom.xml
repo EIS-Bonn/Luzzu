@@ -25,6 +25,40 @@
         	<artifactId>luzzu-operations</artifactId>
         	<version>0.0.1-SNAPSHOT</version>
         </dependency>
-       </dependencies>
-    
+        <dependency>
+        	<groupId>de.unibonn.iai.eis</groupId>
+        	<artifactId>luzzu-annotations</artifactId>
+        	<version>0.0.1-SNAPSHOT</version>
+        </dependency>
+       </dependencies> 
+       
+       
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.9</version>
+					<executions>
+						<execution>
+							<id>add-resource</id>
+							<phase>generate-resources</phase>
+							<goals>
+								<goal>add-resource</goal>
+							</goals>
+							<configuration>
+								<resources>
+									<resource>
+										<directory>externals</directory>
+										<targetPath>externals</targetPath>
+									</resource>
+								</resources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>

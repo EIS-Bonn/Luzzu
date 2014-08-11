@@ -1,9 +1,22 @@
 package de.unibonn.iai.eis.luzzu.io.impl;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.jar.JarInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
@@ -14,20 +27,28 @@ import org.apache.jena.riot.lang.PipedRDFStream;
 import org.apache.jena.riot.lang.PipedTriplesStream;
 
 import com.hp.hpl.jena.graph.Triple;
+import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.sparql.core.Quad;
 
+import de.unibonn.iai.eis.luzzu.annotations.QualityMetadata;
+import de.unibonn.iai.eis.luzzu.annotations.QualityReport;
 import de.unibonn.iai.eis.luzzu.assessment.QualityMetric;
 import de.unibonn.iai.eis.luzzu.cache.CacheManager;
 import de.unibonn.iai.eis.luzzu.datatypes.Object2Quad;
+import de.unibonn.iai.eis.luzzu.exceptions.MetadataException;
 import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
 import de.unibonn.iai.eis.luzzu.io.IOProcessor;
+import de.unibonn.iai.eis.luzzu.io.configuration.ExternalMetricLoader;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
+import de.unibonn.iai.eis.luzzu.semantics.vocabularies.LMI;
 
 /**
  * @author Jeremy Debattista
@@ -39,9 +60,13 @@ public class StreamProcessor implements IOProcessor {
 	private final CacheManager cacheMgr = CacheManager.getInstance();
 	private final String graphCacheName = PropertyManager.getInstance().getProperties("cache.properties").getProperty("GRAPH_METADATA_CACHE");
 	private Map<String, QualityMetric> metricInstances = new ConcurrentHashMap<String, QualityMetric>();
+	private ExternalMetricLoader loader = ExternalMetricLoader.getInstance();
 
-
-	protected String datasetURI;
+	private String datasetURI;
+	private boolean genQualityReport;
+	private Model metricConfiguration;
+	private Model qualityReport;
+	
 	private PipedRDFIterator<?> iterator;
 	protected PipedRDFStream<?> rdfStream;
 	
@@ -51,10 +76,27 @@ public class StreamProcessor implements IOProcessor {
 	
 	
 	public StreamProcessor(String datasetURI, boolean genQualityReport, Model configuration){
+    	
+
 		this.datasetURI = datasetURI;
-		// TODO: Complete setup
+		this.genQualityReport = genQualityReport;
+		this.metricConfiguration = configuration;
+		
 		cacheMgr.createNewCache(graphCacheName, 50);
+		
+		// start workflow
+		this.setUpProcess();
+		try {
+			this.startProcessing();
+		} catch (ProcessorNotInitialised e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		this.generateQualityMetadata();
+		if (this.genQualityReport) this.generateQualityReport();
 	}
+
 
 	@SuppressWarnings("unchecked")
 	public void setUpProcess() {
@@ -74,7 +116,22 @@ public class StreamProcessor implements IOProcessor {
 		this.isInitalised = true;
 		
 		
-		// load Usecase specific metrics 
+		// load metrics 
+		try {
+			this.loadMetrics();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void startProcessing() throws ProcessorNotInitialised{
@@ -90,7 +147,6 @@ public class StreamProcessor implements IOProcessor {
 		
 		executor.submit(parser); 
 
-		
 		while (this.iterator.hasNext()){
 			Object2Quad stmt = new Object2Quad(this.iterator.next());
 			sniffer.sniff(stmt.getStatement());
@@ -114,31 +170,54 @@ public class StreamProcessor implements IOProcessor {
 			this.executor.shutdown();
 		}
 	}
+	
+	private void loadMetrics() throws InstantiationException, IllegalAccessException, MalformedURLException, ClassNotFoundException{
+		NodeIterator iter = metricConfiguration.listObjectsOfProperty(LMI.metric);
+		Map<String, Class<? extends QualityMetric>> map = loader.getQualityMetricClasses();
 		
-	///// TESTING /////
-	@SuppressWarnings("unchecked")
-	private void loadUsecaseSpecificMetrics(String pilot) throws ClassNotFoundException, InstantiationException, IllegalAccessException{	
-		String filename = this.getClass().getClassLoader().getResource("metrics_initalisations/metrics.trig").toExternalForm();
-
-		Model m = ModelFactory.createDefaultModel();
-		m.read(filename, null);
-		
-		String classPrefix = "de.unibonn.iai.eis.luzzu.qualitymetrics.";
-		Resource pilotResourceURI = m.createResource("http://www.diachron-fp7.eu/diachron#"+pilot);
-		Property metricClass = m.createProperty("http://www.diachron-fp7.eu/diachron#metric");
-				
-		StmtIterator si = m.listStatements(pilotResourceURI, metricClass, (RDFNode) null);
-		
-		while(si.hasNext()){
-			String className = si.next().getObject().toString();
-			className = classPrefix.concat(className);
-			
-			Class<? extends QualityMetric> clazz = (Class<? extends QualityMetric>) Class.forName(className);
+		while(iter.hasNext()){
+			String className = iter.next().toString();
+			Class<? extends QualityMetric> clazz = map.get(className);
 			QualityMetric metric = clazz.newInstance();
 			metricInstances.put(className, metric);
-		}	
+		}
+		
+	}
+
+	private void generateQualityReport() {
+		QualityReport r = new QualityReport();
+		List<Model> qualityProblems = new ArrayList<Model>();
+		
+		for(String className : this.metricInstances.keySet()){
+			QualityMetric m = this.metricInstances.get(className);
+			qualityProblems.add(r.createQualityProblem(m.getMetricURI(), m.getQualityProblems()));
+		}
+		
+		Resource res = ModelFactory.createDefaultModel().createResource(this.datasetURI);
+		this.qualityReport = r.createQualityReport(res, qualityProblems);
 	}
 	
+	private void generateQualityMetadata(){
+		Resource res = ModelFactory.createDefaultModel().createResource(this.datasetURI);
+		
+		QualityMetadata md = new QualityMetadata(res, false);
+		
+		for(String className : this.metricInstances.keySet()){
+			QualityMetric m = this.metricInstances.get(className);
+			md.addMetricData(m);
+		}
+		
+		try {
+			Dataset ds = md.createQualityMetadata();
+		} catch (MetadataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
-	
+	public Model retreiveQualityReport(){
+		return this.qualityReport;
+	}
+
+
 }
