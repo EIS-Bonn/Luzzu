@@ -1,6 +1,5 @@
 package de.unibonn.iai.eis.luzzu.communications.resources;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.ws.rs.POST;
@@ -12,8 +11,6 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.github.jsonldjava.core.JsonLdError;
 import com.github.jsonldjava.core.JsonLdOptions;
 import com.github.jsonldjava.core.JsonLdProcessor;
 import com.github.jsonldjava.core.RDFDataset;

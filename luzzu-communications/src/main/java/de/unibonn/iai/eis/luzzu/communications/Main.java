@@ -10,6 +10,8 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import de.unibonn.iai.eis.luzzu.io.configuration.ExternalMetricLoader;
+
 public class Main {
 	
 	// Base URI the Grizzly HTTP server will listen on
