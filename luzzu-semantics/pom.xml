@@ -43,6 +43,10 @@
 									<arg
 										line="-i src/main/resources/vocabularies/cube/sdmx-attribute.ttl -e N3 --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n SDMXATTRIBUTE	" />
 								</java>
+								<java classname="jena.schemagen" classpath="${runtime_classpath}">
+									<arg
+										line="-i src/main/resources/vocabularies/lmi/lmi.trig -e N3 --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n LMI" />
+								</java>
 							</tasks>
 						</configuration>
 						<goals>
