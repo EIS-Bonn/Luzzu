@@ -6,6 +6,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.slf4j.Logger;
@@ -96,6 +97,7 @@ public class QualityResource {
 			}
 
 			StreamProcessor strmProc = new StreamProcessor(datasetURI, genQualityReport, modelConfig);
+			strmProc.cleanUp();
 			// strmProc.startProcessing();
 			
 			// Append dataset URI to the output
@@ -115,6 +117,16 @@ public class QualityResource {
 		}
 		
 		return sbJsonOutput.toString();
+	}
+	
+	public static void main (String [] args){
+		MultivaluedMap<String, String> m = new MultivaluedHashMap<String, String>();
+		m.add("Dataset", "http://oeg-dev.dia.fi.upm.es/licensius/rdflicense/rdflicense.ttl");
+		m.add("QualityReportRequired", "false");
+		m.add("MetricsConfiguration", "{\"@id\": \"_:f4231157584b1\",\"@type\": [\"http://github.com/EIS-Bonn/Luzzu#LuzzuMetricJavaImplementation\"],\"http://github.com/EIS-Bonn/Luzzu#metric\": [{\"@value\": \"diachron.metrics.contextual.amountofdata.AmountOfTriples\"}]}");
+		
+		QualityResource q = new QualityResource();
+		q.computeQuality(m);
 	}
 
 }
