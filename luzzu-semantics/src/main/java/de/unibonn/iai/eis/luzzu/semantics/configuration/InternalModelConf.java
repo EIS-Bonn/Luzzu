@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.jena.riot.Lang;
+import org.apache.jena.riot.RDFDataMgr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,27 +38,23 @@ public class InternalModelConf {
 	static {
 		// Loading DAQ ontology into memory
 		Model temp = ModelFactory.createDefaultModel();
-		temp.read(
-				InternalModelConf.class.getClassLoader().getResourceAsStream(
-						"vocabularies/daq/daq.rdf"), "RDF/XML");
+		String daqPath = InternalModelConf.class.getClassLoader().getResource("vocabularies/daq/daq.trig").toExternalForm();
+		temp.read(daqPath, "N3");
 
 		semanticModel.addNamedModel(DAQ.NS, temp);
-
-		temp.removeAll();
 
 		File externalsFolder = new File("externalvocab/");
 		File[] listOfOntologies = externalsFolder.listFiles();
 		for (File ontology : listOfOntologies) {
+			temp = ModelFactory.createDefaultModel();
 			logger.debug("Loading ontology : {} ", ontology.getName());
-			temp.read(ontology.getPath());
+			temp.read(ontology.getPath(), "N3");
 			semanticModel.addNamedModel(guessNamespace(temp), temp);
-			temp.removeAll();
-		}
+		}		
 	}
 
 	private static String guessNamespace(Model temp) {
-		List<Resource> res = temp.listSubjectsWithProperty(RDFS.subClassOf,
-				DAQ.Category).toList();
+		List<Resource> res = temp.listSubjectsWithProperty(RDFS.subClassOf, DAQ.Category).toList();
 		Map<String, Integer> tempMap = new HashMap<String, Integer>();
 		for (Resource r : res) {
 			String ns = r.getNameSpace();
