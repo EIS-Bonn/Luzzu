@@ -56,7 +56,7 @@ class Cache {
 	 * @return Returns true if the object exists in the cache.
 	 */
 	protected boolean existsInCache(Object key){
-		return ((LRUMap<Object, Object>) this.cache).containsKey(key);
+		return this.cache.containsKey(key);
 	}
 	
 	/**
