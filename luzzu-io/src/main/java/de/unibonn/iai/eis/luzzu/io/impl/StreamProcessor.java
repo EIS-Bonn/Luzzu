@@ -77,7 +77,7 @@ public class StreamProcessor implements IOProcessor {
 		this.processorWorkFlow();
 	}
 	
-	private void processorWorkFlow(){
+	public void processorWorkFlow(){
 		this.setUpProcess();
 		try {
 			this.startProcessing();
