@@ -1,10 +1,6 @@
 package de.unibonn.iai.eis.luzzu.properties;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -22,27 +18,13 @@ public class PropertyManager {
 	private ConcurrentMap<String,Properties> propMap = new ConcurrentHashMap<String,Properties>();
 	
 	protected PropertyManager(){
-		Properties prop = new Properties();
-		InputStream input = null;
-
 		try{
-			URL propertiesFolder = getClass().getClassLoader().getResource("properties");
-			File folder = new File(propertiesFolder.getPath());
-			File[] listOfFiles = folder.listFiles();
-			
-			for(File propertyFile : listOfFiles){
-				input = new FileInputStream(propertyFile);
-				prop.load(input);
-				propMap.put(propertyFile.getName(), prop);
-			}
+			Properties prop = new Properties();
+			prop.load(getClass().getResourceAsStream("/properties/cache.properties"));
+			propMap.put("cache.properties", prop);	
 		} catch (IOException ex)  {
 			//TODO: good exception handling
-		} finally {
-			try {
-				input.close();
-			} catch (IOException e) {
-				// TODO good exception handling
-			}
+			ex.printStackTrace();
 		}
 	}
 	
