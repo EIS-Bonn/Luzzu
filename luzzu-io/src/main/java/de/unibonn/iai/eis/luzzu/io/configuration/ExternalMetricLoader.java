@@ -79,23 +79,34 @@ public class ExternalMetricLoader {
 	}
 	
 	@SuppressWarnings({ "resource", "unchecked" })
-	public Map<String, Class<? extends QualityMetric>> getQualityMetricClasses() throws InstantiationException, IllegalAccessException, MalformedURLException, ClassNotFoundException{
+	public Map<String, Class<? extends QualityMetric>> getQualityMetricClasses() {
 		if (instance == null) getInstance();
 		Map<String, Class<? extends QualityMetric>> clazzes = new HashMap<String,Class<? extends QualityMetric>>();
 		
 		for(File jar : metricsInFile.keySet()){
 			List<String> metrics = metricsInFile.get(jar);
 			
-			URL jarUrl = new URL("file:" + jar.getAbsolutePath());
+			URL jarUrl = null;
+			try {
+				jarUrl = new URL("file:" + jar.getAbsolutePath());
+			} catch (MalformedURLException e) {
+				logger.error("Jar URL is malformed : {}. Skipped loading the file.\nFull Exception Trace: {}", jarUrl, e.getMessage());
+				continue;
+			}
 			URLClassLoader cl = new URLClassLoader(new URL[] {jarUrl}, ExternalMetricLoader.class.getClassLoader());
 			
 			for(String m : metrics){
 				logger.info("Creating class for metric : {} ", m);
-				Class<? extends QualityMetric> clazz = (Class<? extends QualityMetric>) cl.loadClass(m);
+				Class<? extends QualityMetric> clazz;
+				try {
+					clazz = (Class<? extends QualityMetric>) cl.loadClass(m);
+				} catch (ClassNotFoundException e) {
+					logger.error("Class {} is not found for External JAR package {}. Skipped loading the class.", m, jar.getName());
+					continue;
+				}
 				clazzes.put(m, clazz);
 			}
 		}
-		
 		return clazzes;
 	}
 	
