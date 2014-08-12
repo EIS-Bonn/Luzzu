@@ -38,8 +38,7 @@ public class InternalModelConf {
 	static {
 		// Loading DAQ ontology into memory
 		Model temp = ModelFactory.createDefaultModel();
-		String daqPath = InternalModelConf.class.getClassLoader().getResource("vocabularies/daq/daq.trig").toExternalForm();
-		temp.read(daqPath, "N3");
+		temp.read(InternalModelConf.class.getResourceAsStream("/vocabularies/daq/daq.trig"), null, "N3");
 
 		semanticModel.addNamedModel(DAQ.NS, temp);
 
