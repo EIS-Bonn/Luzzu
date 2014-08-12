@@ -73,6 +73,7 @@ public class StreamProcessor implements IOProcessor {
 		
 		cacheMgr.createNewCache(graphCacheName, 50);
 		
+		logger.info("Starting the Processor Workflow");
 		this.processorWorkFlow();
 	}
 	
@@ -129,6 +130,8 @@ public class StreamProcessor implements IOProcessor {
 			
 			for(String className : this.metricInstances.keySet()){
 				logger.debug("Statement with triple <{}> passed to metric {}", stmt.getStatement().asTriple().toString(), className);
+				//QualityMetric m = this.metricInstances.get(className);
+				//m.compute(stmt.getStatement());
 				this.metricThreadPool.submit(new MetricThread(this.metricInstances.get(className), stmt));
 			}
 		}
@@ -144,6 +147,7 @@ public class StreamProcessor implements IOProcessor {
 		
 		if (!this.executor.isShutdown()){
 			this.executor.shutdown();
+			this.metricThreadPool.shutdown();
 		}
 	}
 	
@@ -193,7 +197,7 @@ public class StreamProcessor implements IOProcessor {
 		}
 		
 		try {
-			md.createQualityMetadata();
+			RDFDataMgr.write(System.out, md.createQualityMetadata(), Lang.TRIG);
 		} catch (MetadataException e) {
 			logger.error(e.getMessage());
 		}
