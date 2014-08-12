@@ -15,6 +15,9 @@ import org.apache.jena.riot.lang.PipedQuadsStream;
 import org.apache.jena.riot.lang.PipedRDFIterator;
 import org.apache.jena.riot.lang.PipedRDFStream;
 import org.apache.jena.riot.lang.PipedTriplesStream;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,9 +75,6 @@ public class StreamProcessor implements IOProcessor {
 		this.metricConfiguration = configuration;
 		
 		cacheMgr.createNewCache(graphCacheName, 50);
-		
-		logger.info("Starting the Processor Workflow");
-		this.processorWorkFlow();
 	}
 	
 	public void processorWorkFlow(){
@@ -82,7 +82,6 @@ public class StreamProcessor implements IOProcessor {
 		try {
 			this.startProcessing();
 		} catch (ProcessorNotInitialised e) {
-			logger.debug(e.getMessage());
 			this.processorWorkFlow();
 		}
 		
@@ -108,7 +107,7 @@ public class StreamProcessor implements IOProcessor {
 		try {
 			this.loadMetrics();
 		} catch (ExternalMetricLoaderException e) {
-			logger.error(e.getMessage());
+			logger.error(e.getLocalizedMessage());
 		}
 	}
 

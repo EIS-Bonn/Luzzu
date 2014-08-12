@@ -97,6 +97,7 @@ public class QualityResource {
 			}
 
 			StreamProcessor strmProc = new StreamProcessor(datasetURI, genQualityReport, modelConfig);
+			strmProc.processorWorkFlow();
 			strmProc.cleanUp();
 			// strmProc.startProcessing();
 			

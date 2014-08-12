@@ -1,16 +1,14 @@
 package de.unibonn.iai.eis.luzzu.communications;
 
+
 import java.io.IOException;
 import java.net.URI;
 
 import javax.json.stream.JsonGenerator;
 
-import org.apache.log4j.BasicConfigurator;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-
-import de.unibonn.iai.eis.luzzu.io.configuration.ExternalMetricLoader;
 
 public class Main {
 	
@@ -36,10 +34,7 @@ public class Main {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-    	
-    	// TODO: Remove temporary basic configuration of logging, discuss and decide where to put the log4j.xml config file
-    	BasicConfigurator.configure();
-    	
+    	    	
     	// Start server and wait for user input to stop
         final HttpServer server = startServer();
         System.out.println(String.format("Jersey app started with WADL available at " + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
