@@ -1,0 +1,9 @@
+body{
+background-color: white;
+}
+
+figcaption{
+	font-size: 10pt;
+	margin-top:-15px;
+	text-align: center;
+}

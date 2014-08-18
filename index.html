@@ -1,79 +1,68 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Luzzu : Luzzu - A Quality Assessment Framework for Linked Open Datasets">
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Luzzu</title>
+    <meta charset="utf-8">
+    <title>Luzzu - A Quality Assessment Framework for Linked Open Datasets</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link href="css/pygment_trac.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/stylesheet.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/luzzu.css" rel="stylesheet">
   </head>
+  
+  <body prefix="
+	rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+	schema: http://www.schema.org/
+	dc: http://purl.org/dc/elements/1.1/
+	rdfs: http://www.w3.org/2000/01/rdf-schema#
+	owl: http://www.w3.org/2002/07/owl#">
+	
+      <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand nav-link" href="#top">Luzzu - A Quality Assessment Framework for LOD</a>
+          </div> <!-- /.navbar-header -->
 
-  <body>
+          <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#about" class="nav-link">About</a></li>
+              <li><a href="#howto" class="nav-link">How-To</a></li>
+              <li><a href="#about" class="nav-link">Downloads</a></li>
+              <li><a href="#contact">Contact Us</a></li>
+            </ul>
+          </div> <!-- /.navbar-collapse -->
+        </div> <!-- /.container -->
+      </nav> <!-- /.navbar -->
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/EIS-Bonn/Luzzu">View on GitHub</a>
-
-          <h1 id="project_title">Luzzu</h1>
-          <h2 id="project_tagline">Luzzu - A Quality Assessment Framework for Linked Open Datasets</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/EIS-Bonn/Luzzu/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/EIS-Bonn/Luzzu/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Luzzu maintained by <a href="https://github.com/EIS-Bonn">EIS-Bonn</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
+    <div id="top" class="jumbotron">
+      <div class="container"> <!-- Luzzu About Container-->
+	      <div class="col-lg-6" resource="/pages/about/Luzzu_Boat" typeof="rdfs:Resource"> <!-- /pages/about/Luzzu_Boat image-->
+			  	<figure property="schema:image" resource="/pages/about/img/Luzzu_Boat" typeof="schema:ImageObject">
+				 	<a target="_blank"  property="schema:url" title="By Daniel Stout [CC-BY-SA-2.0 (http://creativecommons.org/licenses/by-sa/2.0)], via Wikimedia Commons" href="http://commons.wikimedia.org/wiki/File%3ATraditional_Maltese_fishing_boat.png"><img width="512" alt="Traditional Maltese fishing boat" src="//upload.wikimedia.org/wikipedia/commons/2/20/Traditional_Maltese_fishing_boat.png"/></a>
+				  	<figcaption property="schema:caption">Luzzu: Traditional Maltese Fishing Boat - Daniel Stout <a target="_blank"  property="http://creativecommons.org/ns#license" href="http://creativecommons.org/licenses/by-sa/2.0">(CC-BY-SA-2.0)</a></figcaption>
+				</figure>
+	      </div>
+		  
+		<div class="col-lg-6">
+			<span resource="/pages/about/Luzzu_Boat"> <!-- /pages/about/Luzzu_Boat description-->
+			 	<p property="dc:description" style="padding-top:10px">One of the most common sights around the coast of the <a target="_blank"  property="rdfs:seeAlso" href="http://dbpedia.org/page/Malta">Maltese Islands</a> is the traditional boat called <a target="_blank"  property="owl:sameAs" href="http://live.dbpedia.org/page/Luzzu">"Il-Luzzu"</a> (pronounced <a target="_blank"  href="http://www.forvo.com/word/luzzu/">loot-su</a>). "Il-Luzzu" is an eye-catching boat that is brightly painted in shades of brownish-red, yellow and blue. A pair of <a target="_blank"  property="rdfs:seeAlso" href="http://dbpedia.org/page/Osiris">Osiris</a> eyes are usually painted at the bow. This was done in order to protect the fishermen from any bad luck.</p>
+			</span>
+			<span resource="/pages/about/Luzzu_QF" typeof="schema:SoftwareApplication"> <!-- /pages/about/Luzzu_QF description-->
+				<p property="dc:description"><a target="_blank" property="owl:sameAs" href="https://github.com/EIS-Bonn/Luzzu">Luzzu</a> is also a Quality Assessment Framework for Linked Open Datasets. It is a generic framework based on the <a target="_blank" property="rdfs:seeAlso" href="http://purl.org/eis/vocab/daq">Dataset Quality Ontology (daQ)</a>, allowing users to define their own quality metrics. The current version of the framework is <span property="schema:softwareVersion">0.0.1-SNAPSHOT</span> and can be downloaded from here: (<a target="_blank" property="schema:downloadUrl" href="https://github.com/EIS-Bonn/Luzzu/tarball/master">TAR</a>/<a target="_blank" property="schema:downloadUrl" href="https://github.com/EIS-Bonn/Luzzu/zipball/master">ZIP</a>).</p>
+			</span>
+	    </div>
+	  </div> <!-- /.container -->
+    </div> <!-- /.jumbotron -->
+	
+	<div class="container"> <!-- About Container -->
+		<h3 id="about" class="subhead">About Luzzu</h3>
+	</div>
+	
   </body>
 </html>
