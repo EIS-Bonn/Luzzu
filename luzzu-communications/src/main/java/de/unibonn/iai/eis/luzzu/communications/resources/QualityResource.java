@@ -1,5 +1,8 @@
 package de.unibonn.iai.eis.luzzu.communications.resources;
 
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.POST;
@@ -9,22 +12,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.apache.jena.riot.Lang;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.jsonldjava.core.JsonLdOptions;
-import com.github.jsonldjava.core.JsonLdProcessor;
-import com.github.jsonldjava.core.RDFDataset;
-import com.github.jsonldjava.core.RDFDataset.Quad;
-import com.github.jsonldjava.utils.JsonUtils;
-import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.Resource;
-
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessor;
-import de.unibonn.iai.eis.luzzu.semantics.utilities.Commons;
 
 /**
  * REST resource, providing the functionalities to assess the quality of datasets, 
@@ -50,7 +48,10 @@ public class QualityResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String computeQuality(MultivaluedMap<String, String> formParams) {
 		
-		StringBuilder sbJsonOutput = new StringBuilder();
+		String jsonResponse = null;
+		String datasetURI = null;
+		String jsonStrMetricsConfig = null;
+		boolean genQualityReport = false;
 		
 		try {
 			logger.info("Quality computation request received for dataset: {}", formParams.get("Dataset"));
@@ -74,53 +75,101 @@ public class QualityResource {
 			}
 			
 			// Assign parameter values to variables and set defaults
-			String datasetURI = lstDatasetURI.get(0);
-			String jsonStrMetricsConfig = lstMetricsConfig.get(0);
-			boolean genQualityReport = Boolean.parseBoolean(lstQualityReportReq.get(0));
+			datasetURI = lstDatasetURI.get(0);
+			jsonStrMetricsConfig = lstMetricsConfig.get(0);
+			genQualityReport = Boolean.parseBoolean(lstQualityReportReq.get(0));
 
-			// Parse the metrics configuration as JSON-LD and convert it to RDF to extract its triples
-			Object jsonObj = JsonUtils.fromString(jsonStrMetricsConfig);
-			logger.debug("Parsing metrics config as JSON-LD string. Resulting object: ", (jsonObj != null)?(jsonObj.getClass().getName()):("null"));
-			
-			RDFDataset rdf = (RDFDataset)JsonLdProcessor.toRDF(jsonObj, new JsonLdOptions());	
-			List<Quad> lst = rdf.getQuads("@default");
-			
+			// Parse the metrics configuration as JSON-LD and convert it to RDF to extract its triples, note that no base URI is expected
 			Model modelConfig = ModelFactory.createDefaultModel();
-			Resource rSubj = Commons.generateURI();
-			
-			// Build a Jena model representing the metrics configuration, as expected by the StreamProcessor
-			for(Quad qd : lst) {
-				Property prop = modelConfig.createProperty(qd.getPredicate().getValue());
-				Literal litVal = modelConfig.createLiteral(qd.getObject().getValue());
-				modelConfig.add(rSubj, prop, litVal);
-				logger.trace("Added statement to metrics config model: {}, {}, {}", rSubj, prop, litVal);
-			}
+			RDFDataMgr.read(modelConfig, new StringReader(jsonStrMetricsConfig), null, Lang.JSONLD);
 
 			StreamProcessor strmProc = new StreamProcessor(datasetURI, genQualityReport, modelConfig);
 			strmProc.processorWorkFlow();
 			strmProc.cleanUp();
-			// strmProc.startProcessing();
 			
-			// Append dataset URI to the output
-			sbJsonOutput.append("{ \"Dataset\": \"" + datasetURI + "\", ");
+			Model modelQualityRep = null;
 			
+			// Retrieve quality report, if requested to do so
 			if(genQualityReport) {
-				// TODO: Build quality graph and serialize as JSON-LD
-				sbJsonOutput.append("\"QualityReport\": {}");
+				modelQualityRep = strmProc.retreiveQualityReport();
 			}
-
-			sbJsonOutput.append(" }");
-			logger.debug("Quality computation request completed. Output: {}", sbJsonOutput.toString());
+			
+			jsonResponse = buildJsonResponse(datasetURI, modelQualityRep);
+			logger.debug("Quality computation request completed. Output: {}", jsonResponse);
 			
 		} catch(Exception ex) {
-			// TODO: Build appropriate output on error
-			logger.error("Error processing quality computation request", ex);
+			String errorTimeStamp = Long.toString((new Date()).getTime());
+			logger.error("Error processing quality computation request [" + errorTimeStamp + "]", ex);
+			
+			// Build JSON response, indicating that an error occurred
+			jsonResponse = buildJsonErrorResponse(datasetURI, errorTimeStamp, "The request caused an exception");
 		}
 		
-		return sbJsonOutput.toString();
+		return jsonResponse;
 	}
 	
-	public static void main (String [] args){
+	/**
+	 * Returns the JSON message to be sent as response after successfully processing a quality computation request
+	 * @param datasetURI URI of the dataset upon which the quality computation was performed
+	 * @param qualityReport JENA model containing the quality report, computed. Null otherwise
+	 * @return JSON representation of the response containing details about the quality computation
+	 */
+	private String buildJsonResponse(String datasetURI, Model qualityReport) {
+		StringBuilder sbJsonResponse = new StringBuilder();
+		sbJsonResponse.append("{ \"Dataset\": \"" + datasetURI + "\", ");
+		sbJsonResponse.append("\"Outcome\": SUCCESS");
+
+		// If the quality report was generated, add its JSON representation to the response
+		if(qualityReport != null && !qualityReport.isEmpty()) {
+			// Serialize the quality report in JSON-LD format...
+			StringWriter strWriter = new StringWriter();
+			RDFDataMgr.write(strWriter, qualityReport, RDFFormat.JSONLD);
+			
+			// ... and append its JSON representation in the QualityReport field
+			sbJsonResponse.append(", \"QualityReport\": ");
+			sbJsonResponse.append(strWriter.toString());
+		}
+		sbJsonResponse.append(" }");
+		return sbJsonResponse.toString();
+	}
+	
+	/**
+	 * Returns the JSON message to be sent as response, when an exception or an error has occurred during the
+	 * processing of the request
+	 * @param datasetURI URI of the dataset upon which the request causing the error, was performed
+	 * @param errorCode Code of the error identifying the exception occurrence
+	 * @param errorMessage A user-friendly error message
+	 * @return JSON representation of the response containing the error
+	 */
+	private String buildJsonErrorResponse(String datasetURI, String errorCode, String errorMessage) {
+		StringBuilder sbJsonResponse = new StringBuilder();
+		sbJsonResponse.append("{ \"Dataset\": \"" + datasetURI + "\", ");
+		sbJsonResponse.append("\"Outcome\": ERROR, ");
+		sbJsonResponse.append("\"ErrorMessage\": \"" + errorMessage + "\", ");
+		sbJsonResponse.append("\"ErrorCode\": \"" + errorCode + "\" }");
+		return sbJsonResponse.toString();
+	}
+	
+	//  TODO: Remove experiments
+	public static void main(String[] args) {
+		
+		// Read string as JSON-LD
+		String strJsonLd = "{\"@id\": \"_:f4212571792b1\", \"@type\": [\"http://www.diachron-fp7.eu/qualityFramework#metricConfiguration\"], \"http://www.diachron-fp7.eu/diachron#metric\": [ {\"@value\": \"intrinsic.accuracy.DefinedOntologyAuthor\"}, {\"@value\": \"accessibility.availability.RDFAccessibility\"}, {\"@value\": \"representational.understandability.HumanReadableLabelling\"} ]}";
+		StringReader strReader = new StringReader(strJsonLd);
+		Model modelConfig = ModelFactory.createDefaultModel();
+		
+		RDFDataMgr.read(modelConfig, strReader, null, Lang.JSONLD);
+		
+		StmtIterator iter = modelConfig.listStatements();
+		while(iter.hasNext()) {
+			Statement curStm = iter.next();
+			System.out.println(curStm.toString());
+		}
+		
+	}
+	
+	// TODO: Remove test main method
+	public static void main_a (String [] args){
 		MultivaluedMap<String, String> m = new MultivaluedHashMap<String, String>();
 		m.add("Dataset", "http://oeg-dev.dia.fi.upm.es/licensius/rdflicense/rdflicense.ttl");
 		m.add("QualityReportRequired", "false");

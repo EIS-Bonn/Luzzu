@@ -31,11 +31,6 @@
 			<artifactId>jersey-media-json-processing</artifactId>
 			<version>${jerseymedia.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.github.jsonld-java</groupId>
-			<artifactId>jsonld-java</artifactId>
-			<version>${jsonld.version}</version>
-		</dependency>
 	</dependencies>
 	
 	    <build>
