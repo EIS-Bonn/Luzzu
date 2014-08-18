@@ -20,6 +20,7 @@
 		<jsonld.version>0.5.0</jsonld.version>
 		<powermock.version>1.5.5</powermock.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<bitbucket.global.server>bitbucket</bitbucket.global.server>
 	</properties>
 
 	<packaging>pom</packaging>
@@ -168,10 +169,21 @@
 					<configuration>
 						<mainClass>de.unibonn.iai.eis.luzzu.communications.Main</mainClass>
 					</configuration>
-				</plugin>
+				</plugin>	   
 			</plugins>
 		</pluginManagement>
 	</build>
+	
+	<!-- distribution management for deployment -->
+	<distributionManagement>
+    <repository>
+        <id>internal.repo</id>
+        <name>Temporary Staging Repository</name>
+        <url>file://${project.build.directory}/mvn-repo</url>
+    </repository>
+	</distributionManagement>
+
+
 
 
 </project>
