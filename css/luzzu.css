@@ -2,8 +2,27 @@ body{
 background-color: white;
 }
 
+.jumbotron{
+	margin-bottom:0px;
+}
+
 figcaption{
 	font-size: 10pt;
 	margin-top:-15px;
 	text-align: center;
+}
+
+.small figcaption{
+	font-size: 8pt;
+	margin-top:-15px;
+	text-align: center;
+}
+
+hr {
+	display: block; height: 10px;
+	    border: 0; border: 1px solid #ccc;
+	    margin: 1em 0; padding: 0; 
+		border-image: url(images/bg_hr.png)	;
+		margin-top:-10px;
+		margin-bottom:-5px;
 }

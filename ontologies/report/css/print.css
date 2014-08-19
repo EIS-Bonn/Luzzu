@@ -1,0 +1,13 @@
+div#bottom-bar, span.menu , .hidden , img#feedback {
+   visibility:hidden; 
+   display: none; 
+}
+
+a:link,a:visited {
+  color: #3333CC;
+  text-decoration: underline;
+}
+
+div.details, div.toc{
+	page-break-before:always;
+}

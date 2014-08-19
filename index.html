@@ -16,7 +16,8 @@
 	schema: http://www.schema.org/
 	dc: http://purl.org/dc/elements/1.1/
 	rdfs: http://www.w3.org/2000/01/rdf-schema#
-	owl: http://www.w3.org/2002/07/owl#">
+	owl: http://www.w3.org/2002/07/owl#
+	luzzu: http://eis-bonn.github.io/Luzzu/#">
 	
       <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -41,28 +42,73 @@
       </nav> <!-- /.navbar -->
 
     <div id="top" class="jumbotron">
-      <div class="container"> <!-- Luzzu About Container-->
-	      <div class="col-lg-6" resource="/pages/about/Luzzu_Boat" typeof="rdfs:Resource"> <!-- /pages/about/Luzzu_Boat image-->
-			  	<figure property="schema:image" resource="/pages/about/img/Luzzu_Boat" typeof="schema:ImageObject">
+      <div class="container"> <!-- Luzzu Top Container-->
+	      <div class="col-lg-6" resource="luzzu:Luzzu_Boat" typeof="rdfs:Resource"> <!-- /pages/about/Luzzu_Boat image-->
+			  	<figure property="schema:image" resource="luzzu:images/Luzzu_Boat" typeof="schema:ImageObject">
 				 	<a target="_blank"  property="schema:url" title="By Daniel Stout [CC-BY-SA-2.0 (http://creativecommons.org/licenses/by-sa/2.0)], via Wikimedia Commons" href="http://commons.wikimedia.org/wiki/File%3ATraditional_Maltese_fishing_boat.png"><img width="512" alt="Traditional Maltese fishing boat" src="//upload.wikimedia.org/wikipedia/commons/2/20/Traditional_Maltese_fishing_boat.png"/></a>
 				  	<figcaption property="schema:caption">Luzzu: Traditional Maltese Fishing Boat - Daniel Stout <a target="_blank"  property="http://creativecommons.org/ns#license" href="http://creativecommons.org/licenses/by-sa/2.0">(CC-BY-SA-2.0)</a></figcaption>
 				</figure>
 	      </div>
 		  
 		<div class="col-lg-6">
-			<span resource="/pages/about/Luzzu_Boat"> <!-- /pages/about/Luzzu_Boat description-->
-			 	<p property="dc:description" style="padding-top:10px">One of the most common sights around the coast of the <a target="_blank"  property="rdfs:seeAlso" href="http://dbpedia.org/page/Malta">Maltese Islands</a> is the traditional boat called <a target="_blank"  property="owl:sameAs" href="http://live.dbpedia.org/page/Luzzu">"Il-Luzzu"</a> (pronounced <a target="_blank"  href="http://www.forvo.com/word/luzzu/">loot-su</a>). "Il-Luzzu" is an eye-catching boat that is brightly painted in shades of brownish-red, yellow and blue. A pair of <a target="_blank"  property="rdfs:seeAlso" href="http://dbpedia.org/page/Osiris">Osiris</a> eyes are usually painted at the bow. This was done in order to protect the fishermen from any bad luck.</p>
+			<span resource="luzzu:Luzzu_Boat"> <!-- /pages/about/Luzzu_Boat description-->
+			 	<p property="dc:abstract" style="padding-top:10px">One of the most common sights around the coast of the <a target="_blank"  property="rdfs:seeAlso" href="http://dbpedia.org/page/Malta">Maltese Islands</a> is the traditional boat called <a target="_blank"  property="owl:sameAs" href="http://live.dbpedia.org/page/Luzzu">"Il-Luzzu"</a> (pronounced <a target="_blank"  href="http://www.forvo.com/word/luzzu/">loot-su</a>). "Il-Luzzu" is an eye-catching boat that is brightly painted in shades of brownish-red, yellow and blue. A pair of <a target="_blank"  property="rdfs:seeAlso" href="http://dbpedia.org/page/Osiris">Osiris</a> eyes are usually painted at the bow. This was done in order to protect the fishermen from any bad luck.</p>
 			</span>
-			<span resource="/pages/about/Luzzu_QF" typeof="schema:SoftwareApplication"> <!-- /pages/about/Luzzu_QF description-->
-				<p property="dc:description"><a target="_blank" property="owl:sameAs" href="https://github.com/EIS-Bonn/Luzzu">Luzzu</a> is also a Quality Assessment Framework for Linked Open Datasets. It is a generic framework based on the <a target="_blank" property="rdfs:seeAlso" href="http://purl.org/eis/vocab/daq">Dataset Quality Ontology (daQ)</a>, allowing users to define their own quality metrics. The current version of the framework is <span property="schema:softwareVersion">0.0.1-SNAPSHOT</span> and can be downloaded from here: (<a target="_blank" property="schema:downloadUrl" href="https://github.com/EIS-Bonn/Luzzu/tarball/master">TAR</a>/<a target="_blank" property="schema:downloadUrl" href="https://github.com/EIS-Bonn/Luzzu/zipball/master">ZIP</a>).</p>
+			<span resource="luzzu:Luzzu_QF" typeof="schema:SoftwareApplication"> <!-- /pages/about/Luzzu_QF description-->
+				<p property="dc:abstract"><a target="_blank" property="owl:sameAs" href="https://github.com/EIS-Bonn/Luzzu">Luzzu</a> is also a Quality Assessment Framework for Linked Open Datasets. It is a generic framework based on the <a target="_blank" property="rdfs:seeAlso" href="http://purl.org/eis/vocab/daq">Dataset Quality Ontology (daQ)</a>, allowing users to define their own quality metrics. The current version of the framework is <span property="schema:softwareVersion">0.0.1-SNAPSHOT</span> and can be downloaded from here: (<a target="_blank" property="schema:downloadUrl" href="https://github.com/EIS-Bonn/Luzzu/tarball/master"><span property="schema:fileFormat">TAR</span></a>/<a target="_blank" property="schema:downloadUrl" href="https://github.com/EIS-Bonn/Luzzu/zipball/master"><span property="schema:fileFormat">ZIP</span></a>).</p>
 			</span>
 	    </div>
 	  </div> <!-- /.container -->
     </div> <!-- /.jumbotron -->
-	
+	<hr/>
 	<div class="container"> <!-- About Container -->
 		<h3 id="about" class="subhead">About Luzzu</h3>
+		<div class="col-lg-6" resource="luzzu:Luzzu_QF" typeof="schema:SoftwareApplication"> <!-- /pages/about/Luzzu_QF Description-->
+			<p property="dc:description" style="padding-top:10px">
+				Luzzu is a generic Quality Assessment framework for Linked Open Datasets. The purpose of the Quality Framework is to provide an integrated platform that: <ol>
+					<li>assesses Linked Open Data (via RDF Dumps or SPARQL endpoints) in a scalable manner;</li>
+					<li>provides queryable quality metadata on the assessed datasets;</li>
+					<li>provides visualisations on the quality metadata.</li>
+					</ol>
+				Furthermore, we aim to create an infrastructure and a platform that (i) can be easily extensible by different third parties by creating their custom and more specific pluggable metrics required to assess their particular dataset domain, and (ii) having the the necessary ontology framework to represent the metadata about the quality of the assessed linked datasets.
+			<br/><br/>
+			The core assessment framework is make up of four modules:
+				<ul property="schema:featureList">
+					<li resource="luzzu:semantic_schema_layer"><a href="#semantic_schema_layer">Semantic Schema Layer</a>;</li>
+					<li resource="luzzu:processing_unit"><a href="#processing_unit">Processing Unit</a>;</li>
+					<li resource="luzzu:semantic_annotation_unit"><a href="#semantic_annotation_unit">Semantic Annotation Unit</a>;</li>
+					<li resource="luzzu:quality_assessment_layer"><a href="#quality_assessment_layer">Quality Assessment Layer</a>.</li>
+				</ul>
+			Luzzu also provides a RESTful API that allows the use of the Quality Framework from the World Wide Web.
+			</p>
+			
+			<span id="semantic_schema_layer">
+				<h4 style="padding-bottom:3px">Semantic Schema Layer</h4>
+				The Quality Framework is based on semantic technologies and thus has an underlying semantic vocabulary layer which currently consists of two ontologies: (i) the <a href="ontologies/daq.html">Dataset Quality Ontology</a>; and (ii) the <a href="ontologies/qr.html">Quality Problem Report</a> Ontology. The former describes the quality metadata representation whilst the latter describes quality problems found in the dataset itself.
+			</span>
+			<span id="processing_unit">
+				<h4 style="padding-bottom:3px">Processing Unit</h4>
+				The Processing Unit is an integral part of the Quality Framework. In this framework release, we provide a sequential stream processor. This processor streams triples from RDF data dumps in a sequential fashion, ensuring that the framework does not suffer from memory problems when assessing large datasets. In future releases, we aim to provide a SPARQL processor that allows the framework to assess quality on data that is available only in SPARQL endpoints
+			</span>
+			<span id="semantic_annotation_unit">
+				<h4 style="padding-bottom:3px">Semantic Annotation Unit</h4>
+				The Semantic Annotation Unit generates quality metadata for the assessed dataset.
+			</span>
+			<span id="quality_assessment_layer">
+				<h4 style="padding-bottom:3px">Quality Assessment Layer</h4>
+				The Quality Assessment Layer is the most important layer of the Quality Framework. The framework can be extended by any third party providing their own custom specific metric. The Quality Assessment Layer provides two interfaces and an abstract class that facilitate the quality framework to be a pluggable and extensible platform. More information about how metrics can be implemented can be found in the <a href="#howto">How-To</a> section.
+			</span>
+		</div>
+		<div class="col-lg-6" resource="luzzu:Luzzu_QF" typeof="schema:SoftwareApplication"> 
+		  	<figure property="schema:image" resource="luzzu:images/Luzzu_HLA" typeof="schema:ImageObject">
+			 	<center><img width="410px" alt="Luzzu Quality Framework High Level Architecture" src="images/framework.png"/></center>
+			  	<figcaption property="schema:caption">Luzzu Quality Framework High Level Architecture</figcaption>
+			</figure>
+		</div>
 	</div>
-	
+	<br clear="all"/><hr/>
+	<div class="container"> <!-- About Container -->
+		<h3 id="howto" class="subhead">Using Luzzu</h3>
+	</div>
   </body>
 </html>

@@ -1,0 +1,24 @@
+span.Keyword { 
+	color: #ffa500;
+	
+}
+span.Concept { 
+	color: #00907D;
+	border-bottom:1px #000 solid;
+	text-decoration:underline;
+	font-weight: bold;
+}
+span.Relation {
+	color: #0000ff;
+	border-bottom:1px #000 solid;
+	text-decoration:underline;
+	font-style: italic;
+}
+span.Instance {
+	color: #dc2300;
+	text-decoration:underline;
+	font-weight: bold;
+} 
+span.Rule {
+	text-decoration:underline;
+}

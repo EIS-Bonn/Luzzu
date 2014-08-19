@@ -1,0 +1,433 @@
+body {
+    padding: 0em;
+}
+
+div#content {
+    padding: 0em 5% 4em 5%;
+}
+
+div#footer {
+  margin-top: 5em;
+  border-top: 1px #3d506f solid;
+  padding-top: 0.5em;
+  padding-bottom: 3em;
+  font-size: 0.65em;
+  float: right;
+  margin-left: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,.toc {color: #5674BC; }
+
+h1 { font: 170% sans-serif;  }
+h2, .toc b { font: 140% sans-serif }
+h4 {
+	margin-bottom: 0.5em;
+}
+
+.details {
+   border: 1px solid #ccc;
+   margin-top: 2em;
+   padding-left: 1em;
+}
+
+.term p{
+	margin-top: 0em;
+}
+
+div.term a{
+	font-family: monospace;
+}
+
+div.term > div{
+    border-top: 3px groove red;
+    margin: 0px;
+    padding: 1em;
+    margin-right:1em;
+}
+
+.vci, .ti , .inuse , .otherinfo, .distribution{
+   border: 1px solid White;
+   padding-left: 1em;
+   margin-top: 1em;
+   background-color: White;
+}
+
+div.toc , div#prologue , div#appendix{
+	padding: 0em 1em 1em 1em;
+	border: solid #5674BC;
+	background-color: transparent;
+    margin: 1em -2em 0em -2em;
+}
+
+dt{
+ 	font-weight:bold;
+}
+
+.parrot-element-ref {
+	background-repeat: no-repeat;
+	background-position: 0 50%;
+	padding-left: 18px;
+}
+
+.parrot-element-title {
+	background-repeat: no-repeat;
+	background-position: 0 50%;
+	padding-left: 26px;
+}
+
+.parrot-undefined-ref{
+	padding-left: 0px;
+}
+
+.parrot-ontology-ref {
+	background-image: url("../images/icon-ontology-16.png");
+}
+
+.parrot-ontology-title {
+	background-image: url("../images/icon-ontology-24.png");
+}
+
+.parrot-class-ref {
+	background-image: url("../images/icon-class-16.png");
+}
+
+.parrot-class-title {
+	background-image: url("../images/icon-class-24.png");
+}
+
+.parrot-property-ref {
+	background-image: url("../images/icon-property-16.png");
+}
+
+.parrot-property-title {
+	background-image: url("../images/icon-property-24.png");
+}
+
+.parrot-individual-ref {
+	background-image: url("../images/icon-individual-16.png");
+}
+
+.parrot-individual-title {
+	background-image: url("../images/icon-individual-24.png");
+}
+
+.parrot-rule-ref {
+	background-image: url("../images/icon-rule-16.png");
+}
+
+.parrot-rule-title {
+	background-image: url("../images/icon-rule-24.png");
+}
+
+.parrot-ruleset-ref {
+	background-image: url("../images/icon-ruleset-16.png");
+}
+
+.parrot-ruleset-title {
+	background-image: url("../images/icon-ruleset-24.png");
+}
+
+.parrot-datatype-ref {
+	background-image: url("../images/icon-datatype-16.png");
+}
+
+.parrot-catalog-title {
+	background-image: url("../images/icon-catalog-24.png");
+}
+.parrot-catalog-ref {
+	background-image: url("../images/icon-catalog-16.png");
+}
+
+.parrot-dataset-title {
+	background-image: url("../images/icon-dataset-24.png");
+}
+
+.parrot-dataset-ref {
+	background-image: url("../images/icon-dataset-16.png");
+}
+
+.parrot-vocabulary-title {
+	background-image: url("../images/icon-vocabulary-24.png");
+}
+
+.parrot-vocabulary-ref {
+	background-image: url("../images/icon-vocabulary-16.png");
+}
+
+.parrot-label-locale {
+	color: green;
+}
+
+.parrot-label-text-pref , .parrot-label-text-alt {
+	font-weight:bold;
+}
+
+.related-document {
+	margin: 0 10px 5px 0px;
+	padding: 0;
+	border: 1px solid #d6d6d6;
+	background: #f0f0f0;
+	overflow: hidden;
+	font-size: 1em;
+	clear: both;
+}
+
+.related-document .block {
+	padding: 10px;
+}
+.related-document .block p {
+	padding: 5px 0;
+	margin: 5px 0;
+}
+.related-document h5 {
+	font: 2.5em normal Georgia, "Times New Roman", Times, serif;
+	margin: 0 0 10px;
+	padding: 0 0 5px 0;
+	border-bottom: 1px dashed #ccc;
+}
+.related-document img.related-document-icon {
+	float: left;
+	margin: 10px 15px 15px 0;
+	padding: 5px;
+	background: #ddd;
+	border: 1px solid #ccc;
+}
+
+.related-document img.related-image, .related-document object {
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+pre { margin: 0em }
+
+.deprecated {
+	color: red;
+}
+
+/** begin header **/
+
+div#header {
+  background-color: #336699;
+  text-align: left;
+  vertical-align: top;
+  margin: 0.3em;
+  background-image: url(../images/ctic-white.png);
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  border: 1px solid white;
+  padding:1em 3em 1em 3em;
+}
+
+#header h1 {
+  font-size: 2.4em;
+  font-weight: bold;
+  color: #ffffff;
+  display: inline;
+  background-color: transparent;
+}
+
+#header h2{
+  font-size: 1.4em;
+  color: #dddddd;
+  display: block;
+  clear:left;
+  padding-left: 0.4em;
+  background-color: transparent;
+}
+
+h1 a:link, h1 a:active, h1 a:hover, h1 a:visited {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+#header h2 a:link, #header h2 a:visited {
+  color: #dddddd;
+  text-decoration: none;
+  border-bottom: 1px dotted white;
+  font-weight: bold;
+}
+
+#header h2 a:active, #header h2 a:hover{
+  color: white;
+}
+
+h1 a[href]:hover, h2 a[href]:hover { background-color: transparent; }
+
+
+/** end header **/
+
+/** begin color details **/
+.ontologies , .ontologies h3{
+	background-color: #CCCCFF;
+}
+
+.classes , .classes h3 {
+	background-color: #FFFFCC;
+}
+
+.properties , .properties h3{
+	background-color: #E8E8E8;
+}
+
+.individuals , .individuals h3{
+	background-color: #FFCCFF;
+}
+
+.rulesets , .rulesets h3{
+	background-color: #C6E2FF;
+}
+
+.rules , .rules h3{
+	background-color: #CAFF70;
+}
+
+.vocabularies , .vocabularies h3{
+	background-color: #ffe7cd;
+}
+
+.datasets , .datasets h3{
+	background-color: #cbbffd;
+}
+
+.catalogs , .catalogs h3{
+	background-color: #FFCCCC;
+}
+
+/** end color details **/
+
+.details h3{
+    margin: 0em;
+    margin-right: 1em;
+    padding: 1em;
+}
+
+/** begin bar **/
+
+#bottom-bar a[href]:hover { background-color: transparent; }
+
+/** end bar**/
+
+
+/** begin metadata icons ***/
+.metadata-icon {
+	background-repeat: no-repeat;
+	background-position: 0 50%;
+    padding-left: 24px;
+}
+
+.date{
+	background-image: url("../images/date.png");
+}
+
+.creator{
+	background-image: url("../images/user.png");
+}
+
+.contributor{
+	background-image: url("../images/user-gray.png");
+}
+
+.publisher{
+	background-image: url("../images/user-suit.png");
+}
+
+.download{
+	background-image: url("../images/download.png");
+}
+
+/** end metadata icons ***/
+
+h3 img.icon {
+	vertical-align: text-bottom;
+	cursor: pointer;
+}
+
+/******/
+
+div.term h3 span.menu {
+    font-size: 0.6em;
+    float: right;
+}
+
+div.term h3 span.menu span{
+    padding: 0.7em;
+    font-weight: bold;
+    color: #2779AA;    
+    cursor: pointer;
+    text-align: center;
+    border: 2px solid #AED0EA;
+}
+
+span.no-active{
+    background-color: transparent;
+}
+
+span.active{
+    background-color: #FFFFFF;
+}
+
+
+div.vci , div.ti , div.inuse, div.otherinfo{
+    display:none
+}
+
+div.term div div table td {
+	text-align:left;
+	padding-right:0.5em;
+}
+
+div.ti table tr td:nth-child(1),
+div.inuse table tr td:nth-child(1){
+	white-space:nowrap;
+}
+
+div#languages{
+	text-align: right;
+}
+
+.hidden {
+	display: none;
+}
+
+div.term p.description {
+	white-space:pre-line;
+}
+
+a.external-link:link {
+	background: url("../images/external-link.png") no-repeat 100% 0;
+	padding: 0 15px 0 0;
+}
+
+a.parrot-link:link {
+	background: url("../images/parrot.png") no-repeat 100% 0;
+	padding: 0 20px 0 0;
+}
+.imports{
+	list-style-type: none;
+}
+
+/* begin feedback */
+
+img#feedback{
+	cursor:pointer;
+}
+
+#feedback-dialog a:link, #feedback-dialog a:visited {
+	color: #3A78AD;
+}
+
+#feedback-dialog p {
+	font: 75% arial,helvetica,clean,sans-serif;
+}
+
+#ui-dialog-title-feedback-dialog {
+	font: 75% arial,helvetica,clean,sans-serif;
+	color: #222;
+	font-weight: bold;
+}
+
+.lang {
+	color: #009933;
+}
+/* end feedback */

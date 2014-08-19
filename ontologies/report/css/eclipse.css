@@ -1,0 +1,11 @@
+div#header {
+    margin: 1%;
+}
+
+div#content {
+    padding: 0em 1% 4em 1%;
+}
+
+div.toc, div#prologue, div#appendix {
+    margin: 1em 0% 0em 0%;
+}
