@@ -1,17 +1,22 @@
 package de.unibonn.iai.eis.luzzu.semantics.utilities;
 
+import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.sparql.core.DatasetImpl;
+import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
 import de.unibonn.iai.eis.luzzu.semantics.configuration.InternalModelConf;
+import de.unibonn.iai.eis.luzzu.semantics.vocabularies.DAQ;
 
 public class DAQHelper {
 
@@ -88,5 +93,39 @@ public class DAQHelper {
 			label = iter.nextStatement().getObject().toString();
 		}
 		return label;
+	}
+	
+	/**
+	 * Returns the number of metrics computed on a dataset
+	 *  
+	 * @param Model of the quality metadata in the dataset
+	 * @return Returns the number of metrics in a dataset
+	 */
+	public static int getNumberOfMetricsInDataSet(Model m){
+		Integer total = 0;
+		
+		Model internal = InternalModelConf.getFlatModel();
+		Dataset _temp = new DatasetImpl(internal);
+		String _tempGraph = Commons.generateURI().toString();
+		_temp.addNamedModel(_tempGraph, m);
+		
+		String whereDefaultGraphClause = "?metricTypeURI " + SPARQLHelper.toSPARQL(RDFS.subClassOf) + " " + SPARQLHelper.toSPARQL(DAQ.Metric) + " .";
+		String graphClause = "GRAPH <"+_tempGraph+"> { [where] }";
+		String whereNamedGraphClause = "?typeURI " + SPARQLHelper.toSPARQL(RDF.type) + " ?metricTypeURI . ";
+		graphClause = graphClause.replace("[where]", whereNamedGraphClause);
+		
+		String whereClause = whereDefaultGraphClause + graphClause;
+		String query = SPARQLHelper.SELECT_STATEMENT.replace("[variables]", "(count(?typeURI) as ?count)").replace("[whereClauses]", whereClause);
+
+		Query qry = QueryFactory.create(query);
+	    QueryExecution qe = QueryExecutionFactory.create(qry, _temp);
+	    ResultSet rs = qe.execSelect();
+	    
+	    while (rs.hasNext()){
+	    	QuerySolution soln = rs.next();
+	    	total = new Integer(soln.getResource("count").toString());
+	    }
+		
+		return total.intValue();
 	}
 }
