@@ -149,34 +149,4 @@ public class QualityResource {
 		sbJsonResponse.append("\"ErrorCode\": \"" + errorCode + "\" }");
 		return sbJsonResponse.toString();
 	}
-	
-	//  TODO: Remove experiments
-	public static void main(String[] args) {
-		
-		// Read string as JSON-LD
-		String strJsonLd = "{\"@id\": \"_:f4212571792b1\", \"@type\": [\"http://www.diachron-fp7.eu/qualityFramework#metricConfiguration\"], \"http://www.diachron-fp7.eu/diachron#metric\": [ {\"@value\": \"intrinsic.accuracy.DefinedOntologyAuthor\"}, {\"@value\": \"accessibility.availability.RDFAccessibility\"}, {\"@value\": \"representational.understandability.HumanReadableLabelling\"} ]}";
-		StringReader strReader = new StringReader(strJsonLd);
-		Model modelConfig = ModelFactory.createDefaultModel();
-		
-		RDFDataMgr.read(modelConfig, strReader, null, Lang.JSONLD);
-		
-		StmtIterator iter = modelConfig.listStatements();
-		while(iter.hasNext()) {
-			Statement curStm = iter.next();
-			System.out.println(curStm.toString());
-		}
-		
-	}
-	
-	// TODO: Remove test main method
-	public static void main_a (String [] args){
-		MultivaluedMap<String, String> m = new MultivaluedHashMap<String, String>();
-		m.add("Dataset", "http://oeg-dev.dia.fi.upm.es/licensius/rdflicense/rdflicense.ttl");
-		m.add("QualityReportRequired", "false");
-		m.add("MetricsConfiguration", "{\"@id\": \"_:f4231157584b1\",\"@type\": [\"http://github.com/EIS-Bonn/Luzzu#LuzzuMetricJavaImplementation\"],\"http://github.com/EIS-Bonn/Luzzu#metric\": [{\"@value\": \"diachron.metrics.contextual.amountofdata.AmountOfTriples\"}]}");
-		
-		QualityResource q = new QualityResource();
-		q.computeQuality(m);
-	}
-
 }
