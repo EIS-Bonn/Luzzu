@@ -1,0 +1,32 @@
+<urn:a50f843c-1649-4f52-bda0-28b0ead913d2> <http://purl.org/linked-data/cube#structure> <http://purl.org/eis/vocab/daq#dsd> .
+<urn:a50f843c-1649-4f52-bda0-28b0ead913d2> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/eis/vocab/daq#QualityGraph> .
+<urn:obs4> <http://purl.org/eis/vocab/daq#metric> <urn:met4>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs4> <http://purl.org/dc/elements/1.1/date> "2014-08-14T12:54:28.096000+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs4> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs4> <http://purl.org/eis/vocab/daq#value> "0.9"^^<http://www.w3.org/2001/XMLSchema#double>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:met2> <http://purl.org/eis/vocab/daq#hasObservation> <urn:obs2>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:met2> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <urn:metricB>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:met4> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <urn:metricD>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:met4> <http://purl.org/eis/vocab/daq#hasObservation> <urn:obs4>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs3> <http://purl.org/eis/vocab/daq#value> "0.7"^^<http://www.w3.org/2001/XMLSchema#double>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs3> <http://purl.org/eis/vocab/daq#metric> <urn:met3>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs3> <http://purl.org/dc/elements/1.1/date> "2014-08-14T12:54:28.096000+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs3> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:met3> <http://purl.org/eis/vocab/daq#hasObservation> <urn:obs3>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:met3> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <urn:metricC>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs2> <http://purl.org/eis/vocab/daq#metric> <urn:met2>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs2> <http://purl.org/eis/vocab/daq#value> "0.8"^^<http://www.w3.org/2001/XMLSchema#double>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs2> <http://purl.org/dc/elements/1.1/date> "2014-08-14T12:54:28.096000+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs2> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs1> <http://purl.org/eis/vocab/daq#value> "0.5"^^<http://www.w3.org/2001/XMLSchema#double>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs1> <http://purl.org/eis/vocab/daq#metric> <urn:met1>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs1> <http://purl.org/dc/elements/1.1/date> "2014-08-14T12:54:28.096000+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs5> <http://purl.org/eis/vocab/daq#metric> <urn:met5>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs5> <http://purl.org/dc/elements/1.1/date> "2014-08-14T12:54:28.096000+00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs5> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:obs5> <http://purl.org/eis/vocab/daq#value> "0.4"^^<http://www.w3.org/2001/XMLSchema#double>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:met5> <http://purl.org/eis/vocab/daq#hasObservation> <urn:obs5>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:met5> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <urn:metricE>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:met1> <http://purl.org/eis/vocab/daq#hasObservation> <urn:obs1>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
+<urn:met1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <urn:metricA>  <urn:a50f843c-1649-4f52-bda0-28b0ead913d2> .
