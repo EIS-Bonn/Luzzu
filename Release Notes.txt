@@ -1,0 +1,6 @@
+Release Notes
+-------------
+
+[Version 1.0.1 - xx/xx/xxxx]
+* Fixed InternalConfigModel.java null exception when "externalVocab" folder is not found
+* Added luzzu-operations automatic unbiased ranking algorithm
