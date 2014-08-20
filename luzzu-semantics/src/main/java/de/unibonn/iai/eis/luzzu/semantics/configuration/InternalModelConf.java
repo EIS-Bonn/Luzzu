@@ -39,13 +39,15 @@ public class InternalModelConf {
 		semanticModel.addNamedModel(DAQ.NS, temp);
 
 		File externalsFolder = new File("externalvocab/");
-		File[] listOfOntologies = externalsFolder.listFiles();
-		for (File ontology : listOfOntologies) {
-			temp = ModelFactory.createDefaultModel();
-			logger.debug("Loading ontology : {} ", ontology.getName());
-			temp.read(ontology.getPath(), "N3");
-			semanticModel.addNamedModel(guessNamespace(temp), temp);
-		}		
+		if (externalsFolder.exists()){
+			File[] listOfOntologies = externalsFolder.listFiles();
+			for (File ontology : listOfOntologies) {
+				temp = ModelFactory.createDefaultModel();
+				logger.debug("Loading ontology : {} ", ontology.getName());
+				temp.read(ontology.getPath(), "N3");
+				semanticModel.addNamedModel(guessNamespace(temp), temp);
+			}	
+		}
 	}
 
 	private static String guessNamespace(Model temp) {
