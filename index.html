@@ -34,7 +34,9 @@
             <ul class="nav navbar-nav navbar-right">
               <li><a href="#about" class="nav-link">About</a></li>
               <li><a href="#howto" class="nav-link">How-To</a></li>
-              <li><a href="#about" class="nav-link">Downloads</a></li>
+              <li><a href="#publication" class="nav-link">Publications</a></li>
+			  <li><a href="#downloads" class="nav-link">Other Downloads</a></li>
+			  <li><a href="#team" class="nav-link">The Team</a></li>
               <li><a href="#contact">Contact Us</a></li>
             </ul>
           </div> <!-- /.navbar-collapse -->
@@ -64,7 +66,7 @@
 	<div class="container"> <!-- About Container -->
 		<h3 id="about" class="subhead">About Luzzu</h3>
 		<div class="col-lg-6" resource="luzzu:Luzzu_QF" typeof="schema:SoftwareApplication"> <!-- /pages/about/Luzzu_QF Description-->
-			<p property="dc:description" style="padding-top:10px">
+			<p property="schema:about" style="padding-top:10px">
 				Luzzu is a generic Quality Assessment framework for Linked Open Datasets. The purpose of the Quality Framework is to provide an integrated platform that: <ol>
 					<li>assesses Linked Open Data (via RDF Dumps or SPARQL endpoints) in a scalable manner;</li>
 					<li>provides queryable quality metadata on the assessed datasets;</li>
@@ -102,13 +104,75 @@
 		<div class="col-lg-6" resource="luzzu:Luzzu_QF" typeof="schema:SoftwareApplication"> 
 		  	<figure property="schema:image" resource="luzzu:images/Luzzu_HLA" typeof="schema:ImageObject">
 			 	<center><img width="410px" alt="Luzzu Quality Framework High Level Architecture" src="images/framework.png"/></center>
-			  	<figcaption property="schema:caption">Luzzu Quality Framework High Level Architecture</figcaption>
+			  	<figcaption property="schema:caption" style="padding-top:10px">Luzzu Quality Framework High Level Architecture</figcaption>
+			</figure>
+		</div>
+		<div class="col-lg-6" resource="luzzu:Luzzu_QF" typeof="schema:SoftwareApplication" style="margin-top:100px"> 
+		  	<figure property="schema:image" resource="luzzu:images/Luzzu_workflow" typeof="schema:ImageObject">
+			 	<center><img width="410px" alt="The Workflow" src="images/workflow.png"/></center>
+			  	<figcaption property="schema:caption" style="padding-top:10px">The Workflow</figcaption>
 			</figure>
 		</div>
 	</div>
 	<br clear="all"/><hr/>
 	<div class="container"> <!-- About Container -->
 		<h3 id="howto" class="subhead">Using Luzzu</h3>
-	</div>
+		<div class="col-lg-12" resource="luzzu:Luzzu_QF" typeof="schema:SoftwareApplication"> 
+			<h4 property="schema:text" resource="luzzu:requirements">Preliminary Requirements</h4>
+			Luzzu is an open-source Java based framework. We are currently using JDK Version 1.7.0_51. In order to run Luzzu on your system, the only two pre-requisites are:
+			<ul>
+				<li><a href="https://www.java.com/en/">Java Runtime Environment</a></li>
+				<li><a href="http://maven.apache.org">Apache Maven</a></li>
+			</ul> 
+			
+		  	<h4 property="schema:text" resource="luzzu:download">Downloading</h4>
+				There are two options that one could use to download Luzzu, either by downloading the source or executable, or by cloning the GIT Repository.
+				<br/><br/>
+			    <div class="col-lg-6">
+			      <div class="panel panel-primary">
+			  		<div class="panel-heading">Download</div>
+			  		<div class="panel-body" style="padding-bottom:22px">
+						<b>Source:</b>
+		                <a href="https://github.com/EIS-Bonn/Luzzu/zipball/master">ZIP</a>
+		                <a href="https://github.com/EIS-Bonn/Luzzu/tarball/master">TAR</a>
+						<br/><br/>
+						<b>Executable</b><br/>
+						<a href="">Version 0.0.1</a> <span class="label label-success">Stable</span> <br/>
+						<a href="">Version 1.0.1</a> <span class="label label-warning">Snapshot Release</span> <span class="label label-info">Release Notes</span>
+					</div>
+				  </div>
+			    </div>
+			    <div class="col-lg-6">
+			      <div class="panel panel-success">
+			  		<div class="panel-heading">Clone Git</div>
+			  		<div class="panel-body">
+<pre><code>$ cd your_repositories_directory
+$ git clone https://github.com/EIS-Bonn/Luzzu.git
+</code></pre>
+The cloned repository can be located at <code>$ cd your_repositories_directory/Luzzu</code>
+					</div>
+				  </div>
+			    </div>
+				
+				<h4 property="schema:text" resource="luzzu:building">Building Luzzu</h4>
+				This is only required if you cloned the repository or downloaded the source. Building the Luzzu framework is an easy job with Maven. Maven will handle all required dependencies and ensures a successful build. The framework will be compiled into a single JAR file. An inbuilt <a href="https://jersey.java.net/">Jersey</a> RESTFul web service will also be downloaded by maven, thus the framework does not require tools such as Apache or Tomcat to be installed. The following steps are required to build and compile Luzzu on your system:
+<pre><code>$ cd your_repositories_directory/Luzzu
+$ mvn clean install
+</code></pre>
+The newly compiled Luzzu JAR file can be found in the <code>your_repositories_directory/Luzzu/target</code> directory.
+<br/><br/>
+The <code>clean</code> directive ensures that the <code>target</code> folder has its contents removed prior to the compilation of Luzzu. If you already have your custom metrics and vocabulary installed and you need to re-compile Luzzu (say for example after an update of the framework or after a custom modification), then you can leave out the <code>clean</code> directive.
+
+				<h4 property="schema:text" resource="luzzu:executing">Executing Luzzu</h4>
+				
+				<h4 property="schema:text" resource="luzzu:executing">Creating Custom Metrics</h4>
+				-- maven dependencies
+				
+				<h4 property="schema:text" resource="luzzu:executing">Installing Custom Metrics</h4>
+				
+				<h4 property="schema:text" resource="luzzu:executing">Calling Web Service</h4>
+ 
+		</div> <!-- end of col-lg-12 div -->
+	</div> <!-- end of container div -->
   </body>
 </html>
