@@ -5,10 +5,13 @@
     <title>Luzzu - A Quality Assessment Framework for Linked Open Datasets</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link href="css/pygment_trac.css" rel="stylesheet">
+	 <link href="css/stylesheet.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
-    <link href="css/stylesheet.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/luzzu.css" rel="stylesheet">
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
   </head>
   
   <body prefix="
@@ -33,7 +36,17 @@
           <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav navbar-right">
               <li><a href="#about" class="nav-link">About</a></li>
-              <li><a href="#howto" class="nav-link">How-To</a></li>
+              <li class="dropdown" ><a href="#" class="dropdown-toggle" data-toggle="dropdown">How-To<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#preliminary">Preliminary Requirements</a></li>
+                <li><a href="#downloading">Downloading</a></li>
+				<li><a href="#building">Building Luzzu</a></li>
+				<li><a href="#executing">Executing Luzzu</a></li>
+				<li><a href="#customMetrics">Creating Custom Metrics</a></li>
+				<li><a href="#installing">Installing Custom Metrics</a></li>
+				<li><a href="#invocation">Web Service Invocation</a></li>
+              </ul>
+			  </li>
               <li><a href="#publication" class="nav-link">Publications</a></li>
 			  <li><a href="#downloads" class="nav-link">Other Downloads</a></li>
 			  <li><a href="#team" class="nav-link">The Team</a></li>
@@ -42,7 +55,7 @@
           </div> <!-- /.navbar-collapse -->
         </div> <!-- /.container -->
       </nav> <!-- /.navbar -->
-
+	   
     <div id="top" class="jumbotron">
       <div class="container"> <!-- Luzzu Top Container-->
 	      <div class="col-lg-6" resource="luzzu:Luzzu_Boat" typeof="rdfs:Resource"> <!-- /pages/about/Luzzu_Boat image-->
@@ -70,8 +83,7 @@
 				Luzzu is a generic Quality Assessment framework for Linked Open Datasets. The purpose of the Quality Framework is to provide an integrated platform that: <ol>
 					<li>assesses Linked Open Data (via RDF Dumps or SPARQL endpoints) in a scalable manner;</li>
 					<li>provides queryable quality metadata on the assessed datasets;</li>
-					<li>provides visualisations on the quality metadata.</li>
-					</ol>
+				</ol>
 				Furthermore, we aim to create an infrastructure and a platform that (i) can be easily extensible by different third parties by creating their custom and more specific pluggable metrics required to assess their particular dataset domain, and (ii) having the the necessary ontology framework to represent the metadata about the quality of the assessed linked datasets.
 			<br/><br/>
 			The core assessment framework is make up of four modules:
@@ -115,17 +127,17 @@
 		</div>
 	</div>
 	<br clear="all"/><hr/>
-	<div class="container"> <!-- About Container -->
+	<div class="container"> <!-- How-To Container -->
 		<h3 id="howto" class="subhead">Using Luzzu</h3>
 		<div class="col-lg-12" resource="luzzu:Luzzu_QF" typeof="schema:SoftwareApplication"> 
-			<h4 property="schema:text" resource="luzzu:requirements">Preliminary Requirements</h4>
+			<h4 id="preliminary" property="schema:text" resource="luzzu:requirements">Preliminary Requirements</h4>
 			Luzzu is an open-source Java based framework. We are currently using JDK Version 1.7.0_51. In order to run Luzzu on your system, the only two pre-requisites are:
 			<ul>
 				<li><a href="https://www.java.com/en/">Java Runtime Environment</a></li>
 				<li><a href="http://maven.apache.org">Apache Maven</a></li>
 			</ul> 
 			
-		  	<h4 property="schema:text" resource="luzzu:download">Downloading</h4>
+		  	<h4 id="downloading" property="schema:text" resource="luzzu:download">Downloading</h4>
 				There are two options that one could use to download Luzzu, either by downloading the source or executable, or by cloning the GIT Repository.
 				<br/><br/>
 			    <div class="col-lg-6">
@@ -154,7 +166,7 @@ The cloned repository can be located at <code>$ cd your_repositories_directory/L
 				  </div>
 			    </div>
 				
-				<h4 property="schema:text" resource="luzzu:building">Building Luzzu</h4>
+				<h4 id="building" property="schema:text" resource="luzzu:building">Building Luzzu</h4>
 				This is only required if you cloned the repository or downloaded the source. Building the Luzzu framework is an easy job with Maven. Maven will handle all required dependencies and ensures a successful build. The framework will be compiled into a single JAR file. An inbuilt <a href="https://jersey.java.net/">Jersey</a> RESTFul web service will also be downloaded by maven, thus the framework does not require tools such as Apache or Tomcat to be installed. The following steps are required to build and compile Luzzu on your system:
 <pre><code>$ cd your_repositories_directory/Luzzu
 $ mvn clean install
@@ -163,14 +175,148 @@ The newly compiled Luzzu JAR file can be found in the <code>your_repositories_di
 <br/><br/>
 The <code>clean</code> directive ensures that the <code>target</code> folder has its contents removed prior to the compilation of Luzzu. If you already have your custom metrics and vocabulary installed and you need to re-compile Luzzu (say for example after an update of the framework or after a custom modification), then you can leave out the <code>clean</code> directive.
 
-				<h4 property="schema:text" resource="luzzu:executing">Executing Luzzu</h4>
+				<h4 id="executing" property="schema:text" resource="luzzu:executing">Executing Luzzu</h4>
+				Maven handles the execution and initialisation of the web service and any external metrics added to Luzzu. After locating the luzzu directory, continue the following:
+<pre><code>Luzzu $ cd luzzu-communications/
+luzzu-communications $ mvn exec:java -X
+</code></pre>
+				<h4 property="schema:text" resource="luzzu:customMetrics" id="customMetrics">Creating Custom Metrics</h4>
+				The Luzzu framework purpose is to allow third parties to create their own domain specific quality metrics and then assess Linked Open Datasets using the framework itself. In order to create your own metrics, <code>luzzu-assessment.jar</code> has to be part of the build path. The mentioned library consists of two main interfaces - <code>de.unibonn.iai.eis.luzzu.assessment.QualityMetric</code> and <code>de.unibonn.iai.eis.luzzu.assessment.ComplexQualityMetric</code>. The former allows developers to create simple metrics whilst the latter allows developers to define more complex quality metrics that might require pre-processing or post-processing.
+				<br/><br/>
+					When implementing the QualityMetric interface, the following methods need to be defined:
+					<ol>
+						<li><code>void compute(com.hp.hpl.jena.sparql.core.Quad quad);</code> - This method should compute the metric. The processor automatically pass objects of type quad to the quality metric.</li>
+						<li><code>double metricValue();</code> - Returns the value of the Quality Metric.</li>
+						<li><code>com.hp.hpl.jena.rdf.model.Resource getMetricURI()</code> -  Returns the URI of the Quality Metric.</li>
+						<li><code>ProblemList<?> getQualityProblems();</code> -  Returns a typed ProblemList which will be used to create a problem report of the computed metric.</li>
+					</ol>
+					When implementing the ComplexQualityMetric interface, two other methods need to be implemented together with the four methods mentioned above:
+					<ol>
+						<li><code>void before(Object ... args);</code> - Pre-processing data before metric assessment.</li>
+						<li><code>void after(Object ... args);</code> - Post-processing data after metric assessment.</li>
+					</ol>
+	<p>
+		Here is a simple metric implemented using the QualityMetric interface. This metric simply counts the number of triples in a dataset and checks if a data set is very large, large, etc...
+	</p>
+<pre><code>public class AmountOfTriples implements QualityMetric {
+	private final Resource METRIC_URI = DQM.AmountOfTriplesMetric; 
+	
+	private static Logger logger = Logger.getLogger(AmountOfTriples.class);
+	protected double metricValue;
+	protected int numTriples;
+
+	// -- Stats taken from lod-cloud.net --//
+	protected long high = 1000000000;
+	protected long mediumHigh = 10000000;
+	protected long mediumLow = 500000;
+	protected long low = 10000;
+	
+	public void compute(Quad quad) {
+			numTriples++;
+	}
+	
+	public double metricValue() {
+		if (numTriples > high)
+			metricValue = 1;
+		else if ((numTriples <= high) && (numTriples > mediumHigh))
+			metricValue = 0.80;
+		else if ((numTriples <= mediumHigh) && (numTriples > mediumLow))
+			metricValue = 0.60;
+		else if ((numTriples <= mediumLow) && (numTriples > low))
+			metricValue = 0.40;
+		else
+			metricValue = 0.20;
+		
+		return metricValue;
+	}
+	
+	public Resource getMetricURI() {
+		return this.METRIC_URI;
+	}
+	
+	public ProblemList<?> getQualityProblems() {
+		// We do not really have quality problems as this is a statistical quality metric.
+		return null;
+	}
+}</code></pre>
+
+For adding maven dependencies, the following is required (we aim to eventually release maven dependencies in maven central):
+<code>
+	<repository>
+		<id>dropbox</id>
+		<url>http://dl.dropboxusercontent.com/u/5895290/mvn-repo</url>
+	</repository>
+	...
+	...
+	<dependency>
+		<groupId>de.unibonn.iai.eis</groupId>
+		<artifactId>luzzu-assessment</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+</code>
+
+<!--<h4 property="schema:text" resource="luzzu:vocab">Extending daQ with Custom Metrics</h4> -->
 				
-				<h4 property="schema:text" resource="luzzu:executing">Creating Custom Metrics</h4>
-				-- maven dependencies
-				
-				<h4 property="schema:text" resource="luzzu:executing">Installing Custom Metrics</h4>
-				
-				<h4 property="schema:text" resource="luzzu:executing">Calling Web Service</h4>
+				<h4 property="schema:text" resource="luzzu:installing" id="installing">Installing Custom Metrics</h4>
+				Custom metrics should be packaged as jar and together with the <code>metrics.trig</code>, they should be copied to <code>Luzzu/luzzu-communications/external</code>, whilst the external vocabulary should be copied to <code>Luzzu/luzzu-communications/externalVocab</code>.
+				<br/><br/>
+				The <code>metrics.trig</code> file should contain a list of all custom implemented metrics available in the packaged jar. These JARs should be described using the Luzzu Metric Implementation ontology, which a java class can be found in the <code>luzzu-semantics</code> library.
+
+<pre><code>@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfg: <http://www.w3.org/2004/03/trix/rdfg-1> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix lmi: <http://github.com/EIS-Bonn/Luzzu#> .
+
+_:DataSourceScalability a lmi:LuzzuMetricJavaImplementation ;
+	rdfs:label "Data Source Scalability" ;
+	lmi:javaPackageName "eu.diachron.qualitymetrics.accessibility.performance.DataSourceScalability" . 
+
+_:DefinedOntologyAuthor a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Defined Ontology Author" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.accuracy.DefinedOntologyAuthor" . 
+
+_:SynonymUsage a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Synonym Usage" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.accuracy.SynonymUsage" . 
+
+_:POBODefinitionUsage a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "POBO Definition Usage" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.accuracy.POBODefinitionUsage" . 
+
+_:EntitiesAsMembersOfDisjointClasses a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Entities As Members Of Disjoint Classes" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.consistency.EntitiesAsMembersOfDisjointClasses" . 
+
+_:HomogeneousDatatypes a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Homogeneous Datatypes" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.consistency.HomogeneousDatatypes" . 
+
+_:ObsoleteConceptsInOntology a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Obsolete Concepts In Ontology" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.consistency.ObsoleteConceptsInOntology" . 
+
+_:OntologyVersioningConciseness a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Ontology Versioning Conciseness" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.conciseness.OntologyVersioningConciseness" . 
+
+_:TimelinessOfResource a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Timeliness Of Resource" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.dynamicity.timeliness.TimelinessOfResource" . 
+
+_:HumanReadableLabelling a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Human Readable Labelling" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.representational.understandability.HumanReadableLabelling" . 
+
+_:LowBlankNodeUsage a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Low Blank Node Usage" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.representational.understandability.LowBlankNodeUsage" . 
+
+_:AmountOfTriples a lmi:LuzzuMetricJavaImplementation ;
+	rdfs:label "Amount of Triples" ;
+	lmi:javaPackageName "eu.diachron.qualitymetrics.contextual.amountofdata.AmountOfTriples" . </code></pre>
+	
+				<h4 property="schema:text" resource="luzzu:invocation" id="invocation">Web Service Invocation</h4>
  
 		</div> <!-- end of col-lg-12 div -->
 	</div> <!-- end of container div -->
