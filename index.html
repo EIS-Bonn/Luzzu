@@ -258,9 +258,9 @@ For adding maven dependencies, the following is required (we aim to eventually r
 <!--<h4 property="schema:text" resource="luzzu:vocab">Extending daQ with Custom Metrics</h4> -->
 				
 				<h4 property="schema:text" resource="luzzu:installing" id="installing">Installing Custom Metrics</h4>
-				Custom metrics should be packaged as jar and together with the <code>metrics.trig</code> they should be copied to <code>Luzzu/luzzu-communications/external</code>, whilst the external vocabulary should be copied to <code>Luzzu/luzzu-communications/externalVocab</code>.
+				Custom metrics should be packaged as a JAR and copied together with the <code>metrics.trig</code> to <code>Luzzu/luzzu-communications/external</code>, whilst the external vocabulary should be copied to <code>Luzzu/luzzu-communications/externalVocab</code>.
 				<br/><br/>
-				The <code>metrics.trig</code> file should contain a list of all custom implemented metrics available in the packaged jar. These JARs should be described using the Luzzu Metric Implementation ontology, which a java class can be found in the <code>luzzu-semantics</code> library.
+				The <code>metrics.trig</code> file should contain a list of all custom implemented metrics available in the packaged jar. The java metrics should be described using the Luzzu Metric Implementation ontology (see <code>luzzu-semantics</code> library/dependency).
 
 <pre><code>@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfg: &lt;http://www.w3.org/2004/03/trix/rdfg-1> .
