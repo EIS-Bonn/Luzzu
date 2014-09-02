@@ -48,7 +48,7 @@
               </ul>
 			  </li>
               <li><a href="#publication" class="nav-link">Publications</a></li>
-			  <li><a href="#downloads" class="nav-link">Other Downloads</a></li>
+			  <!--<li><a href="#downloads" class="nav-link">Other Downloads</a></li>-->
 			  <li><a href="#team" class="nav-link">The Team</a></li>
               <li><a href="#contact">Contact Us</a></li>
             </ul>
@@ -181,14 +181,14 @@ The <code>clean</code> directive ensures that the <code>target</code> folder has
 luzzu-communications $ mvn exec:java -X
 </code></pre>
 				<h4 property="schema:text" resource="luzzu:customMetrics" id="customMetrics">Creating Custom Metrics</h4>
-				The Luzzu framework purpose is to allow third parties to create their own domain specific quality metrics and then assess Linked Open Datasets using the framework itself. In order to create your own metrics, <code>luzzu-assessment.jar</code> has to be part of the build path. The mentioned library consists of two main interfaces - <code>de.unibonn.iai.eis.luzzu.assessment.QualityMetric</code> and <code>de.unibonn.iai.eis.luzzu.assessment.ComplexQualityMetric</code>. The former allows developers to create simple metrics whilst the latter allows developers to define more complex quality metrics that might require pre-processing or post-processing.
+				The Luzzu framework's purpose is to allow third parties to create their own domain-specific quality metrics and then assess Linked Open Datasets using the framework itself. In order to create your own metrics, <code>luzzu-assessment.jar</code> has to be part of the build path. The mentioned library consists of two main interfaces - <code>de.unibonn.iai.eis.luzzu.assessment.QualityMetric</code> and <code>de.unibonn.iai.eis.luzzu.assessment.ComplexQualityMetric</code>. The former allows developers to create simple metrics whilst the latter allows developers to define more complex quality metrics that might require pre-processing or post-processing.
 				<br/><br/>
 					When implementing the QualityMetric interface, the following methods need to be defined:
 					<ol>
-						<li><code>void compute(com.hp.hpl.jena.sparql.core.Quad quad);</code> - This method should compute the metric. The processor automatically pass objects of type quad to the quality metric.</li>
+						<li><code>void compute(com.hp.hpl.jena.sparql.core.Quad quad);</code> - This method should compute the metric. The processor automatically passes objects of type quad to the quality metric.</li>
 						<li><code>double metricValue();</code> - Returns the value of the Quality Metric.</li>
 						<li><code>com.hp.hpl.jena.rdf.model.Resource getMetricURI()</code> -  Returns the URI of the Quality Metric.</li>
-						<li><code>ProblemList<?> getQualityProblems();</code> -  Returns a typed ProblemList which will be used to create a problem report of the computed metric.</li>
+						<li><code>ProblemList&lt;?> getQualityProblems();</code> -  Returns a typed ProblemList that will be used to create a problem report of the computed metric.</li>
 					</ol>
 					When implementing the ComplexQualityMetric interface, two other methods need to be implemented together with the four methods mentioned above:
 					<ol>
@@ -196,7 +196,7 @@ luzzu-communications $ mvn exec:java -X
 						<li><code>void after(Object ... args);</code> - Post-processing data after metric assessment.</li>
 					</ol>
 	<p>
-		Here is a simple metric implemented using the QualityMetric interface. This metric simply counts the number of triples in a dataset and checks if a data set is very large, large, etc...
+		Here is a simple metric implemented using the QualityMetric interface. This metric simply counts the number of triples in a dataset and checks if a data set is small, medium or large.
 	</p>
 <pre><code>public class AmountOfTriples implements QualityMetric {
 	private final Resource METRIC_URI = DQM.AmountOfTriplesMetric; 
@@ -216,13 +216,13 @@ luzzu-communications $ mvn exec:java -X
 	}
 	
 	public double metricValue() {
-		if (numTriples > high)
+		if (numTriples &gt; high)
 			metricValue = 1;
-		else if ((numTriples <= high) && (numTriples > mediumHigh))
+		else if ((numTriples &lt;= high) && (numTriples &gt; mediumHigh))
 			metricValue = 0.80;
-		else if ((numTriples <= mediumHigh) && (numTriples > mediumLow))
+		else if ((numTriples &lt;= mediumHigh) && (numTriples &gt; mediumLow))
 			metricValue = 0.60;
-		else if ((numTriples <= mediumLow) && (numTriples > low))
+		else if ((numTriples &lt;= mediumLow) && (numTriples &gt; low))
 			metricValue = 0.40;
 		else
 			metricValue = 0.20;
@@ -234,39 +234,39 @@ luzzu-communications $ mvn exec:java -X
 		return this.METRIC_URI;
 	}
 	
-	public ProblemList<?> getQualityProblems() {
+	public ProblemList&lt;?> getQualityProblems() {
 		// We do not really have quality problems as this is a statistical quality metric.
 		return null;
 	}
 }</code></pre>
 
 For adding maven dependencies, the following is required (we aim to eventually release maven dependencies in maven central):
-<code>
-	<repository>
-		<id>dropbox</id>
-		<url>http://dl.dropboxusercontent.com/u/5895290/mvn-repo</url>
-	</repository>
+<pre><code>
+	&lt;repository>
+		&lt;id>dropbox&lt;/id>
+		&lt;url>http://dl.dropboxusercontent.com/u/5895290/mvn-repo&lt;/url>
+	&lt;/repository>
 	...
 	...
-	<dependency>
-		<groupId>de.unibonn.iai.eis</groupId>
-		<artifactId>luzzu-assessment</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</dependency>
-</code>
+	&lt;dependency>
+		&lt;groupId>de.unibonn.iai.eis&lt;/groupId>
+		&lt;artifactId>luzzu-assessment&lt;/artifactId>
+		&lt;version>0.0.1-SNAPSHOT&lt;/version>
+	&lt;/dependency>
+</code></pre>
 
 <!--<h4 property="schema:text" resource="luzzu:vocab">Extending daQ with Custom Metrics</h4> -->
 				
 				<h4 property="schema:text" resource="luzzu:installing" id="installing">Installing Custom Metrics</h4>
-				Custom metrics should be packaged as jar and together with the <code>metrics.trig</code>, they should be copied to <code>Luzzu/luzzu-communications/external</code>, whilst the external vocabulary should be copied to <code>Luzzu/luzzu-communications/externalVocab</code>.
+				Custom metrics should be packaged as jar and together with the <code>metrics.trig</code> they should be copied to <code>Luzzu/luzzu-communications/external</code>, whilst the external vocabulary should be copied to <code>Luzzu/luzzu-communications/externalVocab</code>.
 				<br/><br/>
 				The <code>metrics.trig</code> file should contain a list of all custom implemented metrics available in the packaged jar. These JARs should be described using the Luzzu Metric Implementation ontology, which a java class can be found in the <code>luzzu-semantics</code> library.
 
-<pre><code>@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfg: <http://www.w3.org/2004/03/trix/rdfg-1> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix lmi: <http://github.com/EIS-Bonn/Luzzu#> .
+<pre><code>@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfg: &lt;http://www.w3.org/2004/03/trix/rdfg-1> .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#> .
+@prefix lmi: &lt;http://github.com/EIS-Bonn/Luzzu#> .
 
 _:DataSourceScalability a lmi:LuzzuMetricJavaImplementation ;
 	rdfs:label "Data Source Scalability" ;
@@ -316,9 +316,110 @@ _:AmountOfTriples a lmi:LuzzuMetricJavaImplementation ;
 	rdfs:label "Amount of Triples" ;
 	lmi:javaPackageName "eu.diachron.qualitymetrics.contextual.amountofdata.AmountOfTriples" . </code></pre>
 	
-				<h4 property="schema:text" resource="luzzu:invocation" id="invocation">Web Service Invocation</h4>
- 
+	<h4 property="schema:text" resource="luzzu:invocation" id="invocation">Web Service Invocation</h4>
+	The Luzzu web service can be invoked by the URI <code>http://localhost:8080/luzzu/compute_quality</code>. The <code>compute_quality</code> module accepts as input an instance of a DIACHRON dataset (an HTTP URI or FILE URI), a list of metrics required to be assessed and if a quality problem report is required. 
+	
+<table>
+  <tr>
+    <th>Post</th>
+    <th>HTTP Method</th>
+  </tr>
+  <tr>
+    <td><b>Dataset</b> - An instance of a DIACHRON dataset URI. <br/><b>QualityReportRequired</b> - A boolean indicating whether a quality report is required. <br/><b>MetricsConfiguration</b> - an object with a list of metrics in JSON-LD format</td>
+    <td><b>Parameters</b></td>
+  </tr>
+  <tr>
+    <td>If QualityReportRequired is true, this method returns a quality report (e.g.a set of DIACHRON triple instances violating quality metrics). An empty model (which is not realistic) means that a model passed all the metrics and contain no metric violation. If QualityReportRequired is false, then the method would return only the dataset URI.</td>
+    <td><b>Returns</b></td>
+  </tr>
+  <tr>
+	<td>
+<pre><code>"Dataset": "http://exampleuri.com/rdfdump", 
+"QualityReportRequired": true, 
+"MetricsConfiguration" : [{
+ "@id": "_:f4212571792b1", 
+ "@type": [ "http://www.diachron-fp7.eu/qualityFramework#metricConfiguration" ],
+	"http://www.diachron-fp7.eu/diachron#metric": [ 
+	{ "@value": "eu.diachron.qualitymetrics.intrinsic.accuracy.DefinedOntologyAuthor" },
+	{ "@value": "eu.diachron.qualitymetrics.accessibility.availability.RDFAccessibility" },
+	{ "@value": "eu.diachron.qualitymetrics.representational.understandability.HumanReadableLabelling" },
+	{ "@value": "eu.diachron.qualitymetrics.intrinsic.consistency.ObsoleteConceptsInOntology" },
+ 	{ "@value": "eu.diachron.qualitymetrics.accessibility.availability.SPARQLAccessibility" },
+	{ "@value": "eu.diachron.qualitymetrics.accessibility.performance.HighThroughput" },
+	{ "@value": "eu.diachron.qualitymetrics.intrinsic.consistency.EntitiesAsMembersOfDisjointClasses" },
+	{ "@value": "eu.diachron.qualitymetrics.intrinsic.accuracy.SynonymUsage" }
+]}]</pre></code>
+	</td>
+    <td><b>Input Message Format and Example</b></td>
+  </tr>
+  <tr>
+    <td>
+<pre><code>“Dataset”: “http://exampleuri.com/rdfdump”,
+“QualityReport” : { 
+  "@graph": [{
+	"@id": "uri:problem2",
+	"@type": "http://www.diachron-fp7.eu/vocab/quality#qualityProblem", 
+	"http://www.diachron-fp7.eu/vocab/quality#describedBy": { "@id": "uri:metric15" },
+	"http://www.diachron-fp7.eu/vocab/quality#problematicThing": { "@id": "uri:b" } },
+	{"@id": "uri: problem1",
+	"@type": "http://www.diachron-fp7.eu/vocab/quality#qualityProblem", 
+	"http://www.diachron-fp7.eu/vocab/quality#describedBy": {"@id": "uri:metric1" },
+	"http://www.diachron-fp7.eu/vocab/quality#problematicThing": { "@id": "uri:a"} },
+	{"@id": "uri:qualRep",
+	"@type": "http://www.diachron-fp7.eu/vocab/quality#qualityReport", 
+	"http://www.diachron-fp7.eu/vocab/quality#computedOn": {"@id": "http://aksw.org" },
+	"http://www.diachron-fp7.eu/vocab/quality#hasProblem": [ 
+	 { "@id": "uri:problem1" },
+	 { "@id": "uri:problem2"} ]}, 
+	{ "@id": "uri:a",
+	"@type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq" },
+	{
+	 "@id": "uri:b", 
+	 "http://www.diachron-fp7.eu/resource/hasObject": {"@id": "http://www.example.org/objectTriple" },
+	 "http://www.diachron-fp7.eu/resource/predicate": {"@id": "http://www.example.org/predicateTriple"}, 
+	 "http://www.diachron-fp7.eu/resource/subject": {"@id": "http://www.example.org/subjectTriple" }
+	} ] }</code></pre>    	
+    </td>
+    <td><b>Output Message Format and Example</b></td>
+  </tr>
+</table>
 		</div> <!-- end of col-lg-12 div -->
 	</div> <!-- end of container div -->
+	
+	<div class="container"> <!-- Publication Container -->
+		<h3 id="publications" class="subhead">Publications</h3>
+		<div class="col-lg-12" resource="luzzu:Publications"> 
+			<ol>
+				<li>J Debattista, C Lange, S Auer - <a href="http://events.linkeddata.org/ldow2014/papers/ldow2014_paper_09.pdf">daQ, an Ontology for Dataset Quality Information</a> - LDOW2014</li>
+				<li>J Debattista, C Lange, S Auer - <a href="http://arxiv.org/abs/1408.2468">Representing Dataset Quality Metadata using Multi-Dimensional Views</a> - SEMANTiCS2014</li>
+			</ol>
+		</div> <!-- end of col-lg-12 div -->
+	</div> <!-- end of container div -->
+	
+	<div class="container"> <!-- Team Container -->
+		<h3 id="team" class="subhead">The Team</h3>
+		<div class="col-lg-12" resource="luzzu:Team"> 
+			<ol>
+				<li><a href="mailto:jeremy.debattista@iais-extern.fraunhofer.de">Jeremy Debattista</a> - Lead Researcher and Developer, PhD Student</li>
+				<li><a href="mailto:math.semantic.web@gmail.com">Christoph Lange</a> - Advisor, Post Doctoral</li>
+				<li>Santiago Londono - Developer, Student Assistant</li>
+			</ol>
+		</div> <!-- end of col-lg-12 div -->
+	</div> <!-- end of container div -->
+	
+	
+	<div class="container"> <!-- Contact Us Container -->
+		<h3 id="team" class="subhead">Contact Us</h3>
+		<div class="col-lg-12" resource="luzzu:ContactUs"> 
+			If you have any questions or you are interested in this project, please contact <a href="mailto:jeremy.debattista@iais-extern.fraunhofer.de">Jeremy Debattista</a> or <a href="mailto:math.semantic.web@gmail.com">Christoph Lange</a> for more information.
+		</div> <!-- end of col-lg-12 div -->
+	</div> <!-- end of container div -->
+	<br clear="all"/>
+	
+    <div id="footer_wrap" class="outer">
+      <footer class="inner" style="padding-top:5px; padding-bottom:10px;">
+        <span class="copyright" style="color:white">Luzzu maintained by <a href="http://eis.iai.uni-bonn.de">Enterprise Information Systems - Univeristy of Bonn</a> <img src="images/logo-eis.png" width="80px" style="margin-left:15px; "/></p>
+      </footer>
+    </div>
   </body>
 </html>
