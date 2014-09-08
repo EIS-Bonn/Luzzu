@@ -25,7 +25,7 @@ class Cache {
 	 * @param maxItems - Number of object allowed
 	 */
 	protected Cache(String name, int maxItems){
-		this.cache = (Map<Object, Object>) Collections.synchronizedMap(new LRUMap<Object, Object>(maxItems, true));
+		this.cache = Collections.synchronizedMap(new LRUMap<Object, Object>(maxItems, true));
 		this.name = name;
 	}
 	
@@ -36,7 +36,7 @@ class Cache {
 	 * @param value - The item added
 	 */
 	protected void addToCache(Object key, Object value){
-		((LRUMap<Object, Object>) this.cache).put(key, value);
+		this.cache.put(key, value);
 	}
 	
 	/**
@@ -46,7 +46,7 @@ class Cache {
 	 * @return Returns the object from cache
 	 */
 	protected Object getFromCache(Object key){
-		return ((LRUMap<Object, Object>) this.cache).get(key);
+		return this.cache.get(key);
 	}
 	
 	/**
