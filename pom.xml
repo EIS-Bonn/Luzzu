@@ -18,6 +18,8 @@
 		<grizzly.version>2.11</grizzly.version>
 		<jerseymedia.version>2.11</jerseymedia.version>
 		<powermock.version>1.5.5</powermock.version>
+		<httpclient.version>4.3.5</httpclient.version>
+		<httpmime.version>4.3.5</httpmime.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<bitbucket.global.server>bitbucket</bitbucket.global.server>
 	</properties>
