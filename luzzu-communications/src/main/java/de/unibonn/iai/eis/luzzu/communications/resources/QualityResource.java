@@ -21,7 +21,6 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessor;
-import de.unibonn.iai.eis.luzzu.communications.QualityResultsLoader;
 
 /**
  * REST resource, providing the functionalities to assess the quality of datasets, 
@@ -95,10 +94,7 @@ public class QualityResource {
 			
 			jsonResponse = buildJsonResponse(datasetURI, modelQualityRep);
 			logger.debug("Quality computation request completed. Output: {}", jsonResponse);
-			
-			// Launch processing of quality assessment results. TODO: Should this be done here?
-			QualityResultsLoader.getInstance().processAllQualityResultFiles();
-			
+						
 		} catch(Exception ex) {
 			String errorTimeStamp = Long.toString((new Date()).getTime());
 			logger.error("Error processing quality computation request [" + errorTimeStamp + "]", ex);
