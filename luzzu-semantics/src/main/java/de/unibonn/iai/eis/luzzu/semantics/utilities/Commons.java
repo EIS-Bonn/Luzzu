@@ -10,7 +10,9 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.impl.ModelCom;
+import com.hp.hpl.jena.sparql.core.Quad;
 
 public class Commons {
 
@@ -37,5 +39,9 @@ public class Commons {
 	public static RDFNode asRDFNode(Node n){
 		ModelCom mc = new ModelCom(Graph.emptyGraph);
 		return mc.asRDFNode(n);
+	}
+	
+	public static Quad statementToQuad(Statement statement, Resource graph){
+		return new Quad(statement.getSubject().asNode(), statement.getPredicate().asNode(), statement.getObject().asNode(), graph.asNode());
 	}
 }
