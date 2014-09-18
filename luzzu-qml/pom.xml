@@ -8,4 +8,72 @@
   <artifactId>luzzu-qml</artifactId>
   <name>Luzzu Quality Metric Language</name>
   <description>The Luzzu Quality Metric Language (LQML) is a simple declerative language which allows users of the Luzzu Framework to define their own metrics in a simple declerative manner.</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>net.java.dev.javacc</groupId>
+			<artifactId>javacc</artifactId>
+			<version>6.1.2</version>
+		</dependency>
+	</dependencies>
+
+<build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>javacc-maven-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+          <execution>
+            <id>javacc</id>
+            <goals>
+              <goal>javacc</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+    	<plugins>
+    		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+    		<plugin>
+    			<groupId>org.eclipse.m2e</groupId>
+    			<artifactId>lifecycle-mapping</artifactId>
+    			<version>1.0.0</version>
+    			<configuration>
+    				<lifecycleMappingMetadata>
+    					<pluginExecutions>
+    						<pluginExecution>
+    							<pluginExecutionFilter>
+    								<groupId>org.codehaus.mojo</groupId>
+    								<artifactId>
+    									javacc-maven-plugin
+    								</artifactId>
+    								<versionRange>[2.6,)</versionRange>
+    								<goals>
+    									<goal>javacc</goal>
+    								</goals>
+    							</pluginExecutionFilter>
+    							<action>
+    								<ignore></ignore>
+    							</action>
+    						</pluginExecution>
+    					</pluginExecutions>
+    				</lifecycleMappingMetadata>
+    			</configuration>
+    		</plugin>
+    	</plugins>
+    </pluginManagement>
+</build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>javacc-maven-plugin</artifactId>
+        <version>2.6</version>
+      </plugin>
+    </plugins>
+  </reporting>
+  
 </project>
