@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>de.unibonn.iai.eis</groupId>
+    <artifactId>luzzu</artifactId>
+    <version>1.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>luzzu-evaluation</artifactId>
+  <name>Luzzu Evaluation Module</name>
+  <description>This module is intended to be in the Experiments Branch only, for the evaluation of new functions</description>
+  <dependencies>
+  	<dependency>
+  		<groupId>de.unibonn.iai.eis</groupId>
+  		<artifactId>luzzu-operations</artifactId>
+  		<version>1.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.unibonn.iai.eis</groupId>
+  		<artifactId>luzzu-io</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.perf4j</groupId>
+  		<artifactId>perf4j</artifactId>
+  		<version>0.9.16</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.apache.commons</groupId>
+  		<artifactId>commons-compress</artifactId>
+  		<version>1.0</version>
+	</dependency>
+	<dependency>
+		<groupId>commons-io</groupId>
+		<artifactId>commons-io</artifactId>
+	<version>2.4</version>
+</dependency>
+	
+  </dependencies>
+</project>
