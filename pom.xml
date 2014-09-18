@@ -32,6 +32,7 @@
 		<module>luzzu-io</module>
 		<module>luzzu-operations</module>
 		<module>luzzu-evaluation</module>
+		<module>luzzu-qml</module>
 	</modules>
 
 
