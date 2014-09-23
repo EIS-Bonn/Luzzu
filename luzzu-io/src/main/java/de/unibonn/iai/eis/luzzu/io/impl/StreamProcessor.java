@@ -15,9 +15,6 @@ import org.apache.jena.riot.lang.PipedQuadsStream;
 import org.apache.jena.riot.lang.PipedRDFIterator;
 import org.apache.jena.riot.lang.PipedRDFStream;
 import org.apache.jena.riot.lang.PipedTriplesStream;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,6 +72,8 @@ public class StreamProcessor implements IOProcessor {
 		this.metricConfiguration = configuration;
 		
 		cacheMgr.createNewCache(graphCacheName, 50);
+		
+		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", datasetURI);
 	}
 	
 	public void processorWorkFlow(){
