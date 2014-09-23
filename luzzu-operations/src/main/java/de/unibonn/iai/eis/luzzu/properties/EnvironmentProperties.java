@@ -9,6 +9,14 @@ package de.unibonn.iai.eis.luzzu.properties;
 public class EnvironmentProperties {
 
 	protected static String datasetURI = "";
+	private static EnvironmentProperties instance = null;
+	
+	protected EnvironmentProperties(){	}
+	
+	public static EnvironmentProperties getInstance(){
+		if (instance == null) instance = new EnvironmentProperties();
+		return instance;
+	}
 	
 	//TODO: Change exception type
 	/**
