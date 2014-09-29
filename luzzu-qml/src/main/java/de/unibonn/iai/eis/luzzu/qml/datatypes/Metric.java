@@ -4,10 +4,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 public class Metric {
 
 	private final static String TYPEOF = "if ((quad.getObject().isURI()) && (quad.getObject().getURI().equals(%%VALUE%%))){ %%ACTION%% }";
 	private final static String NORMAL = "if (%%VALUE%%){ %%ACTION%% }";
+	private final static String IMPORT = "import %%package%%;";
 	
 	private Set<String> imports = new HashSet<String>();
 	private Set<String> variables = new HashSet<String>();
@@ -19,10 +21,35 @@ public class Metric {
 		this.action = action;
 	}
 	
-	public String toJavaDecleration(){
+	public String getImports(){
+		StringBuilder sb = new StringBuilder();
+		for(String s : imports){
+			String str = IMPORT.replace("%%package%%", s);
+			sb.append(str);
+			sb.append(System.getProperty("line.separator"));
+		}
+		return sb.toString();
+	}
+	
+	public String getVariables(){
+		StringBuilder sb = new StringBuilder();
+		for(String s : variables){
+			sb.append(s);
+			sb.append(System.getProperty("line.separator"));
+		}
+		return sb.toString();
+	}
+	
+	public String getComputeFunction(){
 		if (action == Action.MAP){
 			imports.add("import java.util.Map;");
 			imports.add("import java.util.HashMap;");
+			imports.add("import com.hp.hpl.jena.graph.Node;");
+			imports.add("import com.hp.hpl.jena.rdf.model.Resource;");
+			imports.add("import com.hp.hpl.jena.sparql.core.Quad;");
+			imports.add("import java.util.Set;");
+			imports.add("import java.util.HashSet;");
+
 			variables.add("private Map<Node, Set<String>> _hashMap = new HashMap<Node, Set<String>>();");
 		}
 		if (action == Action.COUNT){
@@ -83,6 +110,23 @@ public class Metric {
 		return sb.toString();
 	}
 	
+	public String actionToJava(){
+		StringBuilder sb = new StringBuilder();
+		if (action == Action.MAP){
+			sb.append("int entitiesWithoutTerms = 0;");
+			sb.append("for (Node n : _hashMap.keySet()){");
+			sb.append("entitiesWithoutTerms += (this._hashMap.get(n).size() > 0) ? 1 : 0;");
+			sb.append("}");
+			sb.append("return  (double) entitiesWithoutTerms / (double) _hashMap.keySet().size()");
+			
+		}
+
+		if (action == Action.COUNT){
+			sb.append("return counter;");
+		}
+		
+		return sb.toString();
+	}
 	
 	private boolean isIRI(String rhsCondition){
 		return (rhsCondition.startsWith("<") && rhsCondition.endsWith(">"));	
