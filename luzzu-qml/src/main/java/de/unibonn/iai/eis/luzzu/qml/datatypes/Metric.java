@@ -24,8 +24,7 @@ public class Metric {
 	public String getImports(){
 		StringBuilder sb = new StringBuilder();
 		for(String s : imports){
-			String str = IMPORT.replace("%%package%%", s);
-			sb.append(str);
+			sb.append(s);
 			sb.append(System.getProperty("line.separator"));
 		}
 		return sb.toString();
@@ -62,7 +61,7 @@ public class Metric {
 			for(Condition condition : conditionLst){
 				
 				if (condition.getConditionType() == ConditionType.TYPEOF){
-					String s = Metric.TYPEOF.replace("%%VALUE%%", condition.getRhs());
+					String s = Metric.TYPEOF.replace("%%VALUE%%", condition.getRhs().replace("<","\"").replace(">", "\""));
 					if (action == Action.MAP){
 						//the condition has another constraint
 						s = s.replace("%%ACTION%%", "if (!(this._hashMap.containsKey(quad.getSubject()))) this._hashMap.put(quad.getSubject(), new HashSet<String>());");
@@ -90,7 +89,7 @@ public class Metric {
 					if (condition.getBooleanOperator().equals("!=")) constraint = "!("+constraint+".equals(%%CONSTRAINT%%)"+")";
 					
 					// check rhs
-					constraint = constraint.replace("%%CONSTRAINT%%", condition.getRhs());
+					constraint = constraint.replace("%%CONSTRAINT%%", condition.getRhs().replace("<","\"").replace(">", "\""));
 					s = s.replace("%%VALUE%%", constraint);
 					if (action == Action.MAP){
 						//the condition has another constraint
@@ -117,7 +116,7 @@ public class Metric {
 			sb.append("for (Node n : _hashMap.keySet()){");
 			sb.append("entitiesWithoutTerms += (this._hashMap.get(n).size() > 0) ? 1 : 0;");
 			sb.append("}");
-			sb.append("return  (double) entitiesWithoutTerms / (double) _hashMap.keySet().size()");
+			sb.append("return  (double) entitiesWithoutTerms / (double) _hashMap.keySet().size();");
 			
 		}
 

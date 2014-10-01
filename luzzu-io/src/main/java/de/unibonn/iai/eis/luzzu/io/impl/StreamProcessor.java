@@ -1,5 +1,6 @@
 package de.unibonn.iai.eis.luzzu.io.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +35,10 @@ import de.unibonn.iai.eis.luzzu.exceptions.ExternalMetricLoaderException;
 import de.unibonn.iai.eis.luzzu.exceptions.MetadataException;
 import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
 import de.unibonn.iai.eis.luzzu.io.IOProcessor;
+import de.unibonn.iai.eis.luzzu.io.configuration.DeclerativeMetricCompiler;
 import de.unibonn.iai.eis.luzzu.io.configuration.ExternalMetricLoader;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
+import de.unibonn.iai.eis.luzzu.qml.parser.ParseException;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.LMI;
 
 /**
@@ -49,6 +52,7 @@ public class StreamProcessor implements IOProcessor {
 	private final String graphCacheName = PropertyManager.getInstance().getProperties("cache.properties").getProperty("GRAPH_METADATA_CACHE");
 	private ConcurrentMap<String, QualityMetric> metricInstances = new ConcurrentHashMap<String, QualityMetric>();
 	private ExternalMetricLoader loader = ExternalMetricLoader.getInstance();
+	private DeclerativeMetricCompiler dmc  = DeclerativeMetricCompiler.getInstance();
 
 	final static Logger logger = LoggerFactory.getLogger(StreamProcessor.class);
 
@@ -150,6 +154,19 @@ public class StreamProcessor implements IOProcessor {
 	private void loadMetrics() throws ExternalMetricLoaderException {
 		NodeIterator iter = metricConfiguration.listObjectsOfProperty(LMI.metric);
 		Map<String, Class<? extends QualityMetric>> map = loader.getQualityMetricClasses();
+		
+		//Add declerative instance classes
+		//TODO better exception handling
+		try {
+			map.putAll(this.dmc.compile());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		
 		while(iter.hasNext()){
 			String className = iter.next().toString();

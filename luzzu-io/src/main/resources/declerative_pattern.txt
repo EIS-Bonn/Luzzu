@@ -1,0 +1,39 @@
+package [%%packagename%%];
+
+import de.unibonn.iai.eis.luzzu.assessment.QualityMetric;
+import de.unibonn.iai.eis.luzzu.datatypes.ProblemList;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+
+[%%imports%%]
+
+/**
+ * @author [%%author%%]
+ *
+ * [%%label%%]
+ * [%%description%%]
+ */
+public class [%%classname%%] implements QualityMetric{
+
+	private final Resource METRIC_URI = ModelFactory.createDefaultModel().createResource("[%%metricuri%%]");
+	
+	[%%variables%%]
+	
+	public void compute(Quad quad) {
+		[%%computefunction%%]
+	}
+
+	public double metricValue() {
+		[%%metricvaluefuntion%%]
+	}
+
+	
+	public Resource getMetricURI() {
+		return this.METRIC_URI;
+	}
+
+	
+	public ProblemList<?> getQualityProblems() {
+		return null;
+	}
+
+}
