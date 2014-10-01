@@ -1,0 +1,9 @@
+%% author: "Jeremy Debattista"
+%% package: "eu.diachron.ebi.metrics"
+
+def{POBODefinitionUsage}:
+	metric{<http://www.diachron-fp7.eu/dqm#POBODefinitionUsageMetric>};
+	label{"POBODefinitionUsage"};
+    description{"Provides a measure for an Ontology checking the usage of <pobo:def> in defined classes"};
+    rule{( (typeof(?s) == <http://www.w3.org/2002/07/owl#Class>) & (?p == <http://purl.obolibrary.org/obo/def>) )};
+   	action{map}.
