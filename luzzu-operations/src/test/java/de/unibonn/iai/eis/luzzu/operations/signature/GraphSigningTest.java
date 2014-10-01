@@ -1,5 +1,6 @@
 package de.unibonn.iai.eis.luzzu.operations.signature;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -25,7 +26,7 @@ import de.unibonn.iai.eis.luzzu.semantics.vocabularies.DAQ;
 public class GraphSigningTest extends Assert {
 
 	@Test
-	public void createAndValidateHash_NoModification(){
+	public void createAndValidateHash_NoModification() throws IOException{
 		Dataset d = RDFDataMgr.loadDataset(this.getClass().getClassLoader().getResource("ranking/dataset1.nq").toExternalForm());
 		// create
 		String creationHash = this.createHash(d);
@@ -37,7 +38,7 @@ public class GraphSigningTest extends Assert {
 	}
 	
 	@Test
-	public void createAndValidateHash_ModifyTriplePosition(){
+	public void createAndValidateHash_ModifyTriplePosition() throws IOException{
 		Dataset d = RDFDataMgr.loadDataset(this.getClass().getClassLoader().getResource("ranking/dataset1.nq").toExternalForm());
 		// create
 		String creationHash = this.createHash(d);
@@ -50,7 +51,7 @@ public class GraphSigningTest extends Assert {
 		StmtIterator iter = defaultModel.listStatements();
 		while (iter.hasNext()){
 			Statement stmt = iter.next();
-		//	gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource()));
+			gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource()));
 		}
 		
 		// - create - named graphs
@@ -63,7 +64,7 @@ public class GraphSigningTest extends Assert {
 		Collections.shuffle(stmts, new Random(System.nanoTime()));
 		
 		for(Statement stmt : stmts){
-			//gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource("urn:a50f843c-1649-4f52-bda0-28b0ead913d2")));
+			gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource("urn:a50f843c-1649-4f52-bda0-28b0ead913d2")));
 		}
 		
 		String validationHash =  gs.retrieveHash();
@@ -71,7 +72,7 @@ public class GraphSigningTest extends Assert {
 	}
 	
 	@Test
-	public void createAndValidateHash_ModifyTripleData(){
+	public void createAndValidateHash_ModifyTripleData() throws IOException{
 		Dataset d = RDFDataMgr.loadDataset(this.getClass().getClassLoader().getResource("ranking/dataset1.nq").toExternalForm());
 		// create
 		String creationHash = this.createHash(d);
@@ -84,7 +85,7 @@ public class GraphSigningTest extends Assert {
 		StmtIterator iter = defaultModel.listStatements();
 		while (iter.hasNext()){
 			Statement stmt = iter.next();
-			//gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource()));
+			gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource()));
 		}
 		
 		// - create - named graphs
@@ -99,14 +100,14 @@ public class GraphSigningTest extends Assert {
 			if ((stmt.getSubject().toString().contains("urn:obs3")) && (stmt.getPredicate().toString().equals(DAQ.value.toString()))){
 				stmt = new StatementImpl(stmt.getSubject(), stmt.getPredicate(), Commons.generateDoubleTypeLiteral(1.0d));
 			}
-			//gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource("urn:a50f843c-1649-4f52-bda0-28b0ead913d2")));
+			gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource("urn:a50f843c-1649-4f52-bda0-28b0ead913d2")));
 		}
 		
 		String validationHash =  gs.retrieveHash();
 		assertNotEquals(creationHash, validationHash);
 	}
 	
-	private String createHash(Dataset d){
+	private String createHash(Dataset d) throws IOException{
 		GraphSigning gs = new GraphSigning();
 		
 		// - create - start with default model
@@ -114,7 +115,7 @@ public class GraphSigningTest extends Assert {
 		StmtIterator iter = defaultModel.listStatements();
 		while (iter.hasNext()){
 			Statement stmt = iter.next();
-			//gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource()));
+			gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource()));
 		}
 		
 		// - create - named graphs
@@ -122,7 +123,7 @@ public class GraphSigningTest extends Assert {
 		iter = graph.listStatements();
 		while (iter.hasNext()){
 			Statement stmt = iter.next();
-			//gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource("urn:a50f843c-1649-4f52-bda0-28b0ead913d2")));
+			gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource("urn:a50f843c-1649-4f52-bda0-28b0ead913d2")));
 		}
 		
 		return gs.retrieveHash();
@@ -130,7 +131,7 @@ public class GraphSigningTest extends Assert {
 	
 	@Ignore
 	@Test
-	public void bigDataSet(){
+	public void bigDataSet() throws IOException{
 		Dataset d = RDFDataMgr.loadDataset(this.getClass().getClassLoader().getResource("bigdata/dbpedia1.nq").toExternalForm());
 		// create
 		GraphSigning gs = new GraphSigning();
@@ -140,7 +141,7 @@ public class GraphSigningTest extends Assert {
 		StmtIterator iter = defaultModel.listStatements();
 		while (iter.hasNext()){
 			Statement stmt = iter.next();
-			//gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource()));
+			gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource()));
 		}
 		
 		// - create - named graphs
@@ -151,7 +152,7 @@ public class GraphSigningTest extends Assert {
 			iter = graph.listStatements();
 			while (iter.hasNext()){
 				Statement stmt = iter.next();
-				//gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource(nm)));
+				gs.addHash(Commons.statementToQuad(stmt, ModelFactory.createDefaultModel().createResource(nm)));
 			}
 		}
 		

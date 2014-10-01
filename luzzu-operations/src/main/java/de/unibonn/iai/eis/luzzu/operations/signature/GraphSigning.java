@@ -4,10 +4,6 @@ import it.unimi.dsi.fastutil.ints.IntAVLTreeSet;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Set;
-import java.util.TreeSet;
-
 import net.jpountz.xxhash.StreamingXXHash32;
 import net.jpountz.xxhash.XXHashFactory;
 
