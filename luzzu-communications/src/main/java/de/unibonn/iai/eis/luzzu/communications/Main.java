@@ -16,11 +16,13 @@ import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 public class Main {
 	
 	private static final Properties PROP = PropertyManager.getInstance().getProperties("webservice.properties");
+	private static final String SCHEME = PROP.getProperty("SCHEME");
+	private static final String DOMAIN = PROP.getProperty("DOMAIN");
 	private static final String PORT_NUMBER = PROP.getProperty("PORT");
 	private static final String APPLICATION = PROP.getProperty("APPLICATION");
 	
 	// Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://localhost:"+PORT_NUMBER+"/"+ APPLICATION + "/";
+    public static final String BASE_URI = SCHEME+"://"+DOMAIN+":"+PORT_NUMBER+"/"+ APPLICATION + "/";
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
