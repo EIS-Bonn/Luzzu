@@ -35,6 +35,7 @@ import de.unibonn.iai.eis.luzzu.exceptions.MetadataException;
 import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
 import de.unibonn.iai.eis.luzzu.io.IOProcessor;
 import de.unibonn.iai.eis.luzzu.io.configuration.ExternalMetricLoader;
+import de.unibonn.iai.eis.luzzu.io.util.CountLatch;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.LMI;
 
@@ -62,8 +63,10 @@ public class StreamProcessor implements IOProcessor {
 	
 	private ExecutorService executor = Executors.newSingleThreadExecutor(); // PipedRDFStream and PipedRDFIterator need to be on different threads
 	private ExecutorService metricThreadPool = Executors.newCachedThreadPool();
+	private final CountLatch metricThreadLatch = new CountLatch(0);
 
 	private boolean isInitalised = false;
+	
 	
 	
 	public StreamProcessor(String datasetURI, boolean genQualityReport, Model configuration){
@@ -128,12 +131,18 @@ public class StreamProcessor implements IOProcessor {
 			
 			for(String className : this.metricInstances.keySet()){
 				logger.debug("Statement with triple <{}> passed to metric {}", stmt.getStatement().asTriple().toString(), className);
-				//QualityMetric m = this.metricInstances.get(className);
-				//m.compute(stmt.getStatement());
+//				this.metricInstances.get(className).compute(stmt.getStatement());
+				this.metricThreadLatch.increment();
 				this.metricThreadPool.submit(new MetricThread(this.metricInstances.get(className), stmt));
 			}
 		}
 		
+		try {
+			this.metricThreadLatch.awaitZero();
+		} catch (InterruptedException e) {
+			logger.error("Exception on metric assessment calculation : {}",e.getLocalizedMessage());
+		}
+				
 		if (sniffer.getCachingObject() != null){
 			cacheMgr.addToCache(graphCacheName, datasetURI, sniffer.getCachingObject());
 		}
@@ -208,13 +217,19 @@ public class StreamProcessor implements IOProcessor {
 	private final class MetricThread implements Runnable {
         QualityMetric m;
         Object2Quad stmt;
+        
         MetricThread(QualityMetric m, Object2Quad stmt) { 
         	this.m = m;
         	this.stmt = stmt;
         }
+        
         public void run() {
-        	m.compute(stmt.getStatement());
+        	synchronized(m){
+        		m.compute(stmt.getStatement());
+        	}
+			metricThreadLatch.decrement();
         }
+        
     }
 
 }
