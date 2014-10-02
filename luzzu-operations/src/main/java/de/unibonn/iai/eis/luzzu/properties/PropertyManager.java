@@ -23,6 +23,10 @@ public class PropertyManager {
 			Properties prop = new Properties();
 			prop.load(getClass().getResourceAsStream("/properties/cache.properties"));
 			propMap.put("cache.properties", prop);	
+			
+			prop = new Properties();
+			prop.load(getClass().getResourceAsStream("/properties/webservice.properties"));
+			propMap.put("webservice.properties", prop);
 		} catch (IOException ex)  {
 			//TODO: good exception handling
 			ex.printStackTrace();

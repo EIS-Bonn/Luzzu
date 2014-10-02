@@ -3,6 +3,7 @@ package de.unibonn.iai.eis.luzzu.communications;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Properties;
 
 import javax.json.stream.JsonGenerator;
 
@@ -10,10 +11,16 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
+
 public class Main {
 	
+	private static final Properties PROP = PropertyManager.getInstance().getProperties("webservice.properties");
+	private static final String PORT_NUMBER = PROP.getProperty("PORT");
+	private static final String APPLICATION = PROP.getProperty("APPLICATION");
+	
 	// Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://localhost:8080/luzzu/";
+    public static final String BASE_URI = "http://localhost:"+PORT_NUMBER+"/"+ APPLICATION + "/";
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
