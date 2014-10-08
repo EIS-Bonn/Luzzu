@@ -37,7 +37,8 @@ public class QualityResource {
 	/**
 	 * Initiates the calculation of a specificed set of quality metrics on the dataset with the provided URI, 
 	 * returns as response, a report listing the triple instances violating quality metrics
-	 * @param formParams parameters for the calculation: Dataset = URI of the dataset to evaluate, 
+	 * @param formParams parameters for the calculation: Dataset = URI of the dataset to evaluate
+	 *  (a URI should be encoded to avoid unsafe ASCII characters such as '&'), 
 	 * 			QualityReportRequired = boolean, should a quality report be generated?, 
 	 * 			MetricsConfiguration = JSON-LD specifying the metrics to be calculated (refer to documentation for details)
 	 * @return quality report in JSON-LD format, if parameter QualityReportRequired was true, 
