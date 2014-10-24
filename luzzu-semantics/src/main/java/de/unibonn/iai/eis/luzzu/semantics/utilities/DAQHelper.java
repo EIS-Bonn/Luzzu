@@ -102,6 +102,23 @@ public class DAQHelper {
 	 * @return Returns the number of metrics in a dataset
 	 */
 	public static int getNumberOfMetricsInDataSet(Model m){
+		return getNumberOfMetricsInDataSet(m, "");
+	}
+	
+	public static int getNumberOfMetricsInDataSet(Model m, Resource dimensionOrCategoryURI, boolean isCategory){
+		String extraWhereClause = "";
+		
+		if (isCategory){
+			extraWhereClause = SPARQLHelper.toSPARQL(dimensionOrCategoryURI) + " ?hasDimensionProperty ?dimensionTypeURI . ";
+			extraWhereClause = "?dimensionTypeURI  ?hasMetricProperty ?metricTypeURI .";
+		} else {
+			extraWhereClause = SPARQLHelper.toSPARQL(dimensionOrCategoryURI) + " ?hasMetricProperty ?metricTypeURI . ";
+		}
+		
+		return getNumberOfMetricsInDataSet(m, extraWhereClause);
+	}
+	
+	private static int getNumberOfMetricsInDataSet(Model m, String extraSPARQLstmt){
 		Integer total = 0;
 		
 		Model internal = InternalModelConf.getFlatModel();
@@ -110,6 +127,7 @@ public class DAQHelper {
 		_temp.addNamedModel(_tempGraph, m);
 		
 		String whereDefaultGraphClause = "?metricTypeURI " + SPARQLHelper.toSPARQL(RDFS.subClassOf) + " " + SPARQLHelper.toSPARQL(DAQ.Metric) + " .";
+		whereDefaultGraphClause = whereDefaultGraphClause + extraSPARQLstmt;
 		String graphClause = "GRAPH <"+_tempGraph+"> { [where] }";
 		String whereNamedGraphClause = "?typeURI " + SPARQLHelper.toSPARQL(RDF.type) + " ?metricTypeURI . ";
 		graphClause = graphClause.replace("[where]", whereNamedGraphClause);
