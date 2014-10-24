@@ -16,12 +16,17 @@ public class PropertyManager {
 
 	private static PropertyManager instance = null;
 	private ConcurrentMap<String,Properties> propMap = new ConcurrentHashMap<String,Properties>();
+	protected ConcurrentMap<String, String> environmentVars = new ConcurrentHashMap<String, String>();
 	
 	protected PropertyManager(){
 		try{
 			Properties prop = new Properties();
 			prop.load(getClass().getResourceAsStream("/properties/cache.properties"));
 			propMap.put("cache.properties", prop);	
+			
+			prop = new Properties();
+			prop.load(getClass().getResourceAsStream("/properties/webservice.properties"));
+			propMap.put("webservice.properties", prop);
 		} catch (IOException ex)  {
 			//TODO: good exception handling
 			ex.printStackTrace();
@@ -45,5 +50,15 @@ public class PropertyManager {
 	 */
 	public Properties getProperties(String propertiesRequired){
 		return this.propMap.get(propertiesRequired);
+	}
+	
+	/**
+	 * Adds an environment variable value
+	 * 
+	 * @param key - Variable's name
+	 * @param value - Variable's value
+	 */
+	public void addToEnvironmentVars(String key, String value){
+		this.environmentVars.put(key, value);
 	}
 }

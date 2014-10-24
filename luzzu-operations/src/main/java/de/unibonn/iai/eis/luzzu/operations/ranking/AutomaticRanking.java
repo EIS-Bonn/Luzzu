@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +15,7 @@ import org.apache.jena.riot.RDFDataMgr;
 
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.DC;
@@ -50,9 +52,22 @@ public class AutomaticRanking {
 	 * @return A list of Ranked Datasets (RankedElement).
 	 */
 	public List<RankedElement> rank(List<String> datasets, Set<String> filtersChosen){
+		return this.rank(datasets, filtersChosen, "", false);
+	}
+	
+	public List<RankedElement> rank(List<String> datasets, String categoryOrDimensionUri, boolean isCategory){
+		return this.rank(datasets, new HashSet<String>() ,categoryOrDimensionUri, isCategory);
+	}
+	
+	private List<RankedElement> rank(List<String> datasets, Set<String> filtersChosen, String categoryOrDimensionUri, boolean isCategory){
 		List<RankedElement> sortedElements = new ArrayList<RankedElement>();
 		
-		int totMet = this.getTotalNumberOfMetrics(datasets);
+		int totMet = 0;
+		if (categoryOrDimensionUri.equals(""))	totMet = this.getTotalNumberOfMetrics(datasets);
+		else {
+			if (isCategory) totMet = this.getTotalNumberOfMetricsForCategory(datasets, categoryOrDimensionUri);
+			else totMet = this.getTotalNumberOfMetricsForDimension(datasets, categoryOrDimensionUri);
+		}
 		this.setWeights(totMet, filtersChosen.size());
 		
 		for(String ds : datasets){
@@ -65,12 +80,30 @@ public class AutomaticRanking {
 			for(String metricType : observations.keySet()){
 				Observation obs = this.getLatestObservation(observations.get(metricType));
 				
-				if (filtersChosen.contains(metricType)){
-					double val = this.thetaWeight * obs.getValue();
-					thetaTotal += val;
+				
+				if (!(categoryOrDimensionUri.equals(""))){
+					//ranking at category or dimension level
+					if (isCategory){
+						if (DAQHelper.getCategoryResource(ModelFactory.createDefaultModel().createResource(metricType)).getURI().equals(categoryOrDimensionUri))
+						{
+							double val = this.rhoWeight * obs.getValue();
+							rhoTotal += val;
+						}
+					} else {
+						if (DAQHelper.getDimensionResource(ModelFactory.createDefaultModel().createResource(metricType)).getURI().equals(categoryOrDimensionUri))
+						{
+							double val = this.rhoWeight * obs.getValue();
+							rhoTotal += val;
+						}
+					}
 				} else {
-					double val = this.rhoWeight * obs.getValue();
-					rhoTotal += val;
+					if (filtersChosen.contains(metricType)){
+						double val = this.thetaWeight * obs.getValue();
+						thetaTotal += val;
+					} else {
+						double val = this.rhoWeight * obs.getValue();
+						rhoTotal += val;
+					}
 				}
 			}
 			
@@ -100,6 +133,36 @@ public class AutomaticRanking {
 			Model qualityMD = d.getNamedModel(graph.getURI());
 			
 			int _retMetNo = DAQHelper.getNumberOfMetricsInDataSet(qualityMD);
+			metrics = (metrics <= _retMetNo) ? _retMetNo : metrics;
+		}
+		
+		return metrics;
+	}
+	
+	private int getTotalNumberOfMetricsForDimension(List<String> datasets, String dimensionUri){
+		int metrics = 0;
+		for(String ds : datasets){
+			Dataset d = RDFDataMgr.loadDataset(ds);
+
+			Resource graph = d.getDefaultModel().listSubjectsWithProperty(RDF.type, DAQ.QualityGraph).next();
+			Model qualityMD = d.getNamedModel(graph.getURI());
+			
+			int _retMetNo = DAQHelper.getNumberOfMetricsInDataSet(qualityMD, qualityMD.createResource(dimensionUri), false);
+			metrics = (metrics <= _retMetNo) ? _retMetNo : metrics;
+		}
+		
+		return metrics;
+	}
+	
+	private int getTotalNumberOfMetricsForCategory(List<String> datasets, String categoryUri){
+		int metrics = 0;
+		for(String ds : datasets){
+			Dataset d = RDFDataMgr.loadDataset(ds);
+
+			Resource graph = d.getDefaultModel().listSubjectsWithProperty(RDF.type, DAQ.QualityGraph).next();
+			Model qualityMD = d.getNamedModel(graph.getURI());
+			
+			int _retMetNo = DAQHelper.getNumberOfMetricsInDataSet(qualityMD, qualityMD.createResource(categoryUri), true);
 			metrics = (metrics <= _retMetNo) ? _retMetNo : metrics;
 		}
 		
