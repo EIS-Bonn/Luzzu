@@ -1,0 +1,58 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfg: <http://www.w3.org/2004/03/trix/rdfg-1> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix lmi: <http://github.com/EIS-Bonn/Luzzu#> .
+
+
+_:AmountOfTriples a lmi:LuzzuMetricJavaImplementation ;
+	rdfs:label "Amount of Triples" ;
+	lmi:javaPackageName "eu.diachron.qualitymetrics.contextual.amountofdata.AmountOfTriples" . 
+
+_:DuplicateInstance a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Duplicate Instance" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.conciseness.DuplicateInstance" . 
+
+_:ExtensionalConciseness a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Extensional Conciseness" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.conciseness.ExtensionalConciseness" . 
+
+_:MalformedDatatypeLiterals a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Malformed Datatype Literals" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.accuracy.MalformedDatatypeLiterals" . 
+
+_:ShortUris a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Short URIs" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.representational.conciseness.ShortURIs" . 
+
+_:HumanReadableLabelling a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Human Readable Labelling" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.representational.understandability.HumanReadableLabelling" . 
+	
+_:HumanReadableLicense a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Human Readable License" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.accessibility.licensing.HumanReadableLicense" . 
+
+_:DereferenceableBacklinks a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Dereferenceable Backlinks" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.accessibility.availability.DereferencibilityBackLinks" . 
+	
+_:DereferenceableForwardlinks a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Dereferenceable Forward" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.accessibility.availability.DereferencibilityForwardLinks" . 
+
+_:LinkExternalDataProviders a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Link external data providers" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.accessibility.interlinking.LinkExternalDataProviders" . 
+	
+_:HomogeneousDatatypes a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Homogeneous Datatypes" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.consistency.HomogeneousDatatypes" . 
+
+_:InterlinkDetection a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Interlink Detection" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.accessibility.interlinking.InterlinkDetectionMetric" . 
+	
+_:MachineReadableLicense a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Machine Readable License" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.accessibility.licensing.MachineReadableLicense" . 
