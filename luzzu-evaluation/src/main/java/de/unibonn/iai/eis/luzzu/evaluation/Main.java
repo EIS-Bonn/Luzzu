@@ -18,8 +18,25 @@ public class Main {
 	private static long tEnd;
 	
 	private static List<EvaluationCase> eCases = new ArrayList<EvaluationCase>();
-	private static int metrics[] = new int[] {0}; 
-
+	//private static int metrics[] = new int[] {1,2,3,4,5,6,7,8,9,10,11,12,13}; 
+	private static int scalefactor[] = new int[]{24,57,128,199,256,666,1369,2089,2785,28453,70812,141000,284826};
+	protected static String fileNames[] = new String[]{
+		"ec_0_9861_091545.dat",
+	    "ec_0_25730_091548.dat",
+		"ec_0_51091_091555.dat",
+		"ec_0_76010_091604.dat",
+		"ec_0_99032_091614.dat",
+		"ec_0_251428_091636.dat",
+		"ec_0_503996_091717.dat",
+		"ec_0_754624_091817.dat",
+		"ec_0_999972_091935.dat",
+		"ec_0_10011487_093209.dat",
+		"ec_0_24835339_100613.dat",
+		"ec_0_49013816_114828.dat",
+		"ec_0_98957876_144830.dat"
+	};
+	
+	private static int eCaseNumber = 14;
 	
 	private static void setUp(int metrics){
 		//Evaluation Case #1 - approximately 10K triples (BSBM scale factor 24)
@@ -115,8 +132,17 @@ public class Main {
 		
 	}
 	
+	private static void setUp2(int metrics) throws ClassNotFoundException, IOException{
+		for (String str : fileNames){
+			EvaluationCase _case = new EvaluationCase("evaluation_cases/"+str, metrics);
+			_case.setCaseName("Case "+ (eCaseNumber) + " -  Metrics Initialised : " + metrics + "; Dataset " + _case.getTotalTriples() + " triples");
+			_case.setCaseDescription("In this Evaluation Case, we evaluated the stream processor with "+ metrics +" initialised metrics and a dataset with "+  _case.getTotalTriples()  + " triples");
+			eCases.add(_case);
+			eCaseNumber++;
+		}
+	}
 	
-	public static void main (String [] args) throws ProcessorNotInitialised, IOException{
+	public static void main (String [] args) throws ProcessorNotInitialised, IOException, ClassNotFoundException{
 		//create csv file
 		File csv = new File("benchmark.csv");
 		
@@ -126,8 +152,9 @@ public class Main {
 		FileUtils.write(csv, header, true);
 		FileUtils.write(csv, System.getProperty("line.separator"), true);
 		
-		for (int metricCount : metrics){
-			setUp(metricCount);
+		for (int metric = 1; metric <=13 ; metric++ ){
+			eCases = new ArrayList<EvaluationCase>();
+			setUp2(metric);
 			int iterations = 10;
 			
 			for (EvaluationCase eCase : eCases){

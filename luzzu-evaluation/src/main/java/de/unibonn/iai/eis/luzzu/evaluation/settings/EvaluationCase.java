@@ -2,11 +2,14 @@ package de.unibonn.iai.eis.luzzu.evaluation.settings;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class EvaluationCase implements Serializable {
 
@@ -40,6 +44,40 @@ public class EvaluationCase implements Serializable {
 		this.datasetURI = datasetURI;
 		this.metricsInitalised = metricsInitalised;
 		this.metricConfiguration = ModelConfiguration.getModelConfiguration(metricsInitalised);
+	}
+	
+	public EvaluationCase(String evaluationCasePath, boolean copy) throws IOException, ClassNotFoundException{
+		EvaluationCase e = null;
+
+		FileInputStream fileIn = new FileInputStream(evaluationCasePath);
+		ObjectInputStream in = new ObjectInputStream(fileIn);
+		e = (EvaluationCase) in.readObject();
+		in.close();
+		fileIn.close();
+		
+		this.caseName = e.getCaseName();
+		this.datasetURI = e.getDatasetURI();	  
+		this.metricsInitalised = e.getMetricsInitalised();
+		StringReader sr = new StringReader(e.getMetricDump());
+		this.metricConfiguration = ModelFactory.createDefaultModel().read(sr, "RDF/XML");
+		this.totalTriples = e.getTotalTriples();
+		
+		if (!copy){
+			this.tIterations = e.gettIterations();
+			this.tAvg = e.gettAvg();
+			this.tMax = e.gettMax();
+			this.tMin = e.gettMax();
+			this.caseDescription = e.getCaseDescription();
+		}
+		
+		e = null;
+		Runtime.getRuntime().gc();
+	}
+	
+	public EvaluationCase(String evaluationCasePath, int metricsInitialised) throws ClassNotFoundException, IOException{
+		this(evaluationCasePath,true);
+		this.metricsInitalised = metricsInitialised;
+		this.metricConfiguration = ModelConfiguration.getModelConfiguration(metricsInitialised);
 	}
 	
 	public int getMetricsInitalised(){
@@ -86,6 +124,10 @@ public class EvaluationCase implements Serializable {
 	}
 
 
+	public void setCaseName(String caseName) {
+		this.caseName = caseName;
+	}
+	
 	public String getCaseName() {
 		return caseName;
 	}
