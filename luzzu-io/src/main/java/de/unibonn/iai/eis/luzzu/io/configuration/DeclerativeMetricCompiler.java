@@ -46,7 +46,7 @@ public class DeclerativeMetricCompiler {
 	private final StringBuilder javaClass = new StringBuilder();
 	
 	public DeclerativeMetricCompiler() throws URISyntaxException, IOException{
-		this.loadDeclerativePattern();
+//		this.loadDeclerativePattern(); //TODO: fix Paths.get not working
 	}
 
 	public static DeclerativeMetricCompiler getInstance(){
@@ -93,6 +93,15 @@ public class DeclerativeMetricCompiler {
 	    
 		// parse and compile declerative functions
 		Set<URI> lqiSet = this.loadMetrics();
+		
+		if (lqiSet.size() > 0){
+		try {
+			this.loadDeclerativePattern();
+		} catch (URISyntaxException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}}
+		
 		
 		for(URI lqiMetric : lqiSet){
 			//parse
