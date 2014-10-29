@@ -160,6 +160,7 @@ public class Main {
 	
 	
 	public static void main (String [] args) throws ProcessorNotInitialised, IOException, ClassNotFoundException{
+		System.out.println("generate data");
 		generateData();
 		
 		//create csv file

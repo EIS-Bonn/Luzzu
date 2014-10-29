@@ -70,7 +70,7 @@
   </dependencies>
     
   
-  <build>
+ <!--  <build>
     <plugins>
       	<plugin>
   		<groupId>org.apache.maven.plugins</groupId>
@@ -190,5 +190,23 @@
     		</plugin>
     	</plugins>
     </pluginManagement> 
-  </build>  	
+  </build>  	-->
+  
+  <build>
+  <plugins>
+    <plugin>
+      <artifactId>maven-assembly-plugin</artifactId>
+      <configuration>
+        <archive>
+          <manifest>
+            <mainClass>de.unibonn.iai.eis.luzzu.evaluation.Main</mainClass>
+          </manifest>
+        </archive>
+        <descriptorRefs>
+          <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
 </project>
