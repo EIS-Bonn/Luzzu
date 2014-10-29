@@ -181,7 +181,7 @@ public class Main {
 				System.out.println("=================================");
 				
 				StreamProcessor p = new StreamProcessor(eCase.getDatasetURI(), false, eCase.getMetricConfiguration()); 		// initiate stream processor
-	
+				
 				//Run benchmark for 10 iterations + 3 cold starts
 				for(int i = -1; i <= iterations; i++){
 					// setup processor

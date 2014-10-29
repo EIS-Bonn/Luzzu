@@ -8,6 +8,8 @@
   <artifactId>luzzu-evaluation</artifactId>
   <name>Luzzu Evaluation Module</name>
   <description>This module is intended to be in the Experiments Branch only, for the evaluation of new functions</description>
+  
+  
   <dependencies>
   	<dependency>
   		<groupId>de.unibonn.iai.eis</groupId>
@@ -45,24 +47,25 @@
 	<artifactId>log4j</artifactId>
 	<version>1.2.12</version>
 </dependency>
-
+  
 <dependency>
 	<groupId>bsbm</groupId>
 	<artifactId>bsbm</artifactId>
-	<version>0</version>
+	<version>0.1</version>
 </dependency>
 
 <dependency>
 	<groupId>ssj</groupId>
 	<artifactId>ssj</artifactId>
-	<version>0</version>
+	<version>0.1</version>
 </dependency>
 
 <dependency>
 	<groupId>jdom</groupId>
 	<artifactId>jdom</artifactId>
-	<version>0</version>
+	<version>0.1</version>
 </dependency>
+
 
   </dependencies>
     
@@ -77,6 +80,8 @@
   			<archive><manifest>
   				<mainClass>de.unibonn.iai.eis.luzzu.evaluation.Main</mainClass>
   			</manifest></archive>
+  			<source>1.7</source>
+          <target>1.7</target>
   		</configuration>
   		</plugin>
     
@@ -91,6 +96,8 @@
   			<descriptorRefs>
   				<descriptorRef>jar-with-dependencies</descriptorRef>
   			</descriptorRefs>
+  			<source>1.7</source>
+          <target>1.7</target>
   		</configuration>
   		<executions>
   			<execution>
@@ -100,8 +107,7 @@
   			</execution>
   		</executions>
   	</plugin>
-  	
-  	<plugin>
+	<plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-install-plugin</artifactId>
     <version>2.4</version>
@@ -115,7 +121,7 @@
             <configuration>
                 <groupId>bsbm</groupId>
                 <artifactId>bsbm</artifactId>
-                <version>0</version>
+                <version>0.1</version>
                 <packaging>jar</packaging>
                 <file>${basedir}/lib/bsbm.jar</file>
             </configuration>
@@ -129,7 +135,7 @@
             <configuration>
                 <groupId>ssj</groupId>
                 <artifactId>ssj</artifactId>
-                <version>0</version>
+                <version>0.1</version>
                 <packaging>jar</packaging>
                 <file>${basedir}/lib/ssj.jar</file>
             </configuration>
@@ -143,7 +149,7 @@
             <configuration>
                 <groupId>jdom</groupId>
                 <artifactId>jdom</artifactId>
-                <version>0</version>
+                <version>0.1</version>
                 <packaging>jar</packaging>
                 <file>${basedir}/lib/jdom.jar</file>
             </configuration>
@@ -154,7 +160,6 @@
   </plugins>
     <pluginManagement>
     	<plugins>
-    		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
     		<plugin>
     			<groupId>org.eclipse.m2e</groupId>
     			<artifactId>lifecycle-mapping</artifactId>
@@ -184,7 +189,6 @@
     			</configuration>
     		</plugin>
     	</plugins>
-    </pluginManagement>
-  </build>
-  
+    </pluginManagement> 
+  </build>  	
 </project>
