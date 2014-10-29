@@ -35,6 +35,30 @@
         	<artifactId>luzzu-qml</artifactId>
         	<version>1.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+        	<groupId>org.apache.spark</groupId>
+        	<artifactId>spark-core_2.10</artifactId>
+        	<version>1.1.0</version>
+        </dependency>
+        
+        <dependency>
+        	<groupId>org.apache.spark</groupId>
+        	<artifactId>spark-examples_2.10</artifactId>
+        	<version>1.1.0</version>
+        </dependency>
+        
+        <dependency>
+        	<groupId>org.apache.spark</groupId>
+        	<artifactId>spark-streaming_2.10</artifactId>
+        	<version>1.1.0</version>
+        </dependency>
+        
+        <dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka_2.10</artifactId>
+			<version>0.8.1.1</version>
+		</dependency>
+
        </dependencies> 
        
            <build>
