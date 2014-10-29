@@ -2,12 +2,15 @@ package de.unibonn.iai.eis.luzzu.io.impl;
 
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.Function2;
+import org.apache.spark.api.java.function.VoidFunction;
 
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.rdf.model.Literal;
@@ -23,8 +26,13 @@ public class SparkProcessor {
 	private static JavaSparkContext sc = new JavaSparkContext(conf);
 	private static Model m = ModelFactory.createDefaultModel();
 	
-	public static void parse(final List<Triple> _queue, String datasetURI){
-//		sink.start();
+	private static Queue<Triple> _queue = new LinkedBlockingQueue<Triple>();
+	static int counter = 0;
+	
+	public static boolean isParsing;
+	
+	public static void parse(String datasetURI){
+		isParsing = true;
 		JavaRDD<String> datasetRDD = sc.textFile(datasetURI);
 		
 		JavaRDD<String> queue = datasetRDD.map(new Function<String, String>(){
@@ -35,19 +43,22 @@ public class SparkProcessor {
 			}
 		});
 		
-		queue.reduce(new Function2<String, String, String>(){
-			private static final long serialVersionUID = 6618564349759850297L;
-
-			public String call(String a, String b) {
-//				if (sink instanceof PipedQuadsStream) sink.quad(SSE.parseQuad(a));
-//				if (sink instanceof PipedTriplesStream) sink.triple(toTripleStmt(a));
-				_queue.add(toTripleStmt(a));
-				return b;
-			}
+		
+		queue.foreach(new VoidFunction<String>() {
+				public void call(String a) {
+					_queue.add(toTripleStmt(a));
+				}
 		});
 		
-		
-		//sink.finish();
+		isParsing = false;
+	}
+	
+	public static Queue<Triple> getProducerQueue(){
+		return _queue;
+	}
+	
+	public static Triple pollProducerQueue(){
+		return _queue.poll();
 	}
 	
 	private static Triple toTripleStmt(String stmt){

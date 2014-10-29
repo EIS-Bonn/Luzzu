@@ -209,7 +209,8 @@ public class StreamProcessor implements IOProcessor {
 		this.qualityReport = r.createQualityReport(res, qualityProblems);
 	}
 	
-	private void generateQualityMetadata(){
+	public void generateQualityMetadata(){
+		System.out.println(this.metricThreadLatch.toString());
 		Resource res = ModelFactory.createDefaultModel().createResource(this.datasetURI);
 		
 		QualityMetadata md = new QualityMetadata(res, false);
@@ -240,9 +241,7 @@ public class StreamProcessor implements IOProcessor {
         }
         
         public void run() {
-        	synchronized(m){
-        		m.compute(stmt.getStatement());
-        	}
+        	m.compute(stmt.getStatement());
 			metricThreadLatch.decrement();
         }
         
