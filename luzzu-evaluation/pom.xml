@@ -48,6 +48,7 @@
 	<version>1.2.12</version>
 </dependency>
   
+  
 <dependency>
 	<groupId>bsbm</groupId>
 	<artifactId>bsbm</artifactId>
@@ -190,7 +191,7 @@
     		</plugin>
     	</plugins>
     </pluginManagement> 
-  </build>  	-->
+  </build>  	
   
   <build>
   <plugins>
@@ -208,5 +209,31 @@
       </configuration>
     </plugin>
   </plugins>
-</build>
+</build> -->
+
+<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>1.3.2</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>exec</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<mainClass>de.unibonn.iai.eis.luzzu.evaluation.Main</mainClass>
+					</configuration>
+				</plugin>	
+				
+				
+				   
+			</plugins>
+		</pluginManagement>
+	</build>
+	
 </project>
