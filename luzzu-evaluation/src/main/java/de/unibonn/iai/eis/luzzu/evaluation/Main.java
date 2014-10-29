@@ -142,7 +142,26 @@ public class Main {
 		}
 	}
 	
+	private static void generateData(){
+		DataGenerator.generateData(24, "bsbm-24");
+		DataGenerator.generateData(57, "bsbm-57");
+		 DataGenerator.generateData(128, "bsbm-128");
+		 DataGenerator.generateData(199, "bsbm-199");
+		 DataGenerator.generateData(256, "bsbm-256");
+		 DataGenerator.generateData(666, "bsbm-666");
+		 DataGenerator.generateData(1369, "bsbm-1369");
+		 DataGenerator.generateData(2089, "bsbm-2089");
+		 DataGenerator.generateData(2785, "bsbm-2785");
+		 DataGenerator.generateData(28453, "bsbm-28453");
+		 DataGenerator.generateData(70812, "bsbm-70812");
+		 DataGenerator.generateData(141000, "bsbm-141000");
+		 DataGenerator.generateData(284826, "bsbm-284826");
+	}
+	
+	
 	public static void main (String [] args) throws ProcessorNotInitialised, IOException, ClassNotFoundException{
+		generateData();
+		
 		//create csv file
 		File csv = new File("benchmark.csv");
 		
@@ -152,10 +171,10 @@ public class Main {
 		FileUtils.write(csv, header, true);
 		FileUtils.write(csv, System.getProperty("line.separator"), true);
 		
-		for (int metric = 1; metric <=13 ; metric++ ){
+		for (int metric = 0; metric <=13 ; metric++ ){
 			eCases = new ArrayList<EvaluationCase>();
 			setUp2(metric);
-			int iterations = 10;
+			int iterations = 3;
 			
 			for (EvaluationCase eCase : eCases){
 				System.out.println("Evaluating " + eCase.getCaseName());
@@ -164,7 +183,7 @@ public class Main {
 				StreamProcessor p = new StreamProcessor(eCase.getDatasetURI(), false, eCase.getMetricConfiguration()); 		// initiate stream processor
 	
 				//Run benchmark for 10 iterations + 3 cold starts
-				for(int i = -3; i <= iterations; i++){
+				for(int i = -1; i <= iterations; i++){
 					// setup processor
 					p.setUpProcess();
 	

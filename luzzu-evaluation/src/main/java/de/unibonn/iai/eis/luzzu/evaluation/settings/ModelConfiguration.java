@@ -14,7 +14,7 @@ public class ModelConfiguration {
 	public static Model getModelConfiguration(int initialisedMetrics){
 		List<String> metricList = new ArrayList<String>();
 		switch (initialisedMetrics){
-			case 13 : metricList.add("eu.diachron.qualitymetrics.intrinsic.consistency.HomogeneousDatatypes"); 
+		//	case 13 : metricList.add("eu.diachron.qualitymetrics.intrinsic.consistency.HomogeneousDatatypes"); 
 			case 12 : metricList.add("eu.diachron.qualitymetrics.accessibility.interlinking.InterlinkDetectionMetric");
 			case 11 : metricList.add("eu.diachron.qualitymetrics.accessibility.licensing.MachineReadableLicense");
 			case 10 : metricList.add("eu.diachron.qualitymetrics.accessibility.interlinking.LinkExternalDataProviders");
