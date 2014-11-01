@@ -153,19 +153,12 @@ public class StreamProcessorObserver implements IOProcessor {
 				
 				if (lstMetricConsumers != null){
 					for(MetricProcess mConsumer : lstMetricConsumers) {
-						metricThreadLatch.increment();
 						mConsumer.notifyNewQuad(stmt);
 					}
 				}
 			}
 		} 
 		finally {
-			try {
-				metricThreadLatch.awaitZero();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			if (lstMetricConsumers != null){
 				for(MetricProcess mConsumer : lstMetricConsumers) {
 					mConsumer.stop();
@@ -293,12 +286,12 @@ public class StreamProcessorObserver implements IOProcessor {
         					logger.debug("Metric {}, Processing new quad...", m.getClass().getName());
         					
 	        				m.compute(curQuad.getStatement());
-	        				metricThreadLatch.decrement();
+	        				
 	        				curQuad = null;
 	            			stmtsProcessed++;
         				}
         			}
-        			System.out.println(m.getClass().getName() + " " + stmtsProcessed);
+        			System.out.println(m.getClass().getName() + " " + stmtsProcessed + "pushed on queue: " + qCount);
         			logger.debug("Thread for metric {} completed, total statements processed {}", m.getClass().getName(), stmtsProcessed);
         		}
         	});
@@ -306,7 +299,9 @@ public class StreamProcessorObserver implements IOProcessor {
         	this.metricThread.start();
         }
 
+        int qCount = 0;
 		public void notifyNewQuad(Object2Quad newQuad) {
+			qCount++;
 			quadsToProcess.add(newQuad);
 		}
 		
