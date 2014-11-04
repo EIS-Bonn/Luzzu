@@ -133,7 +133,7 @@ public class SparkStreamProcessorObserver  implements IOProcessor, Serializable 
 		}
 	}
 	
-	private static SparkConf conf = new SparkConf().setAppName("Luzzu").setMaster("local[4]"); // TODO: fix appname and master
+	private static SparkConf conf = new SparkConf().setAppName("Luzzu").setMaster("spark://10.240.241.73:7077"); // TODO: fix appname and master
 	private static JavaSparkContext sc = new JavaSparkContext(conf);
 	private static  List<MetricProcess> lstMetricConsumers = new ArrayList<MetricProcess>();
 	private static StreamMetadataSniffer sniffer = new StreamMetadataSniffer();

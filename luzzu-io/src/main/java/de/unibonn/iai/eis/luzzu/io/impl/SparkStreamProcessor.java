@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFLanguages;
@@ -18,6 +19,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
+
 import de.unibonn.iai.eis.luzzu.annotations.QualityMetadata;
 import de.unibonn.iai.eis.luzzu.annotations.QualityReport;
 import de.unibonn.iai.eis.luzzu.assessment.QualityMetric;
@@ -50,7 +52,7 @@ public class SparkStreamProcessor implements IOProcessor {
 	private Model qualityReport;
 	
 	// Processor
-	private ExecutorService executor = Executors.newSingleThreadExecutor(); 
+	private ExecutorService executor = Executors.newCachedThreadPool(); 
 	
 	
 	
@@ -99,12 +101,9 @@ public class SparkStreamProcessor implements IOProcessor {
 		}
 	}
 
-	int counter = 0;
-	
-	
 	public void startProcessing() throws ProcessorNotInitialised{
 		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");		
-		StreamMetadataSniffer sniffer = new StreamMetadataSniffer();
+//		StreamMetadataSniffer sniffer = new StreamMetadataSniffer();
 		
 		
 		SparkProcessor.isParsing = true;
@@ -119,11 +118,12 @@ public class SparkStreamProcessor implements IOProcessor {
 		while (SparkProcessor.isParsing){
 			while (!(SparkProcessor.getProducerQueue().isEmpty())){
 				Object2Quad stmt = new Object2Quad(SparkProcessor.pollProducerQueue());
-				sniffer.sniff(stmt.getStatement());
+//				sniffer.sniff(stmt.getStatement());
 				for(String className : this.metricInstances.keySet()){
-					logger.debug("Statement with triple <{}> passed to metric {}", stmt.getStatement().asTriple().toString(), className);
-					this.metricThreadLatch.increment();
-					this.metricThreadPool.submit(new MetricThread(this.metricInstances.get(className), stmt));
+					//logger.debug("Statement with triple <{}> passed to metric {}", stmt.getStatement().asTriple().toString(), className);
+					this.metricInstances.get(className).compute(stmt.getStatement());
+//					this.metricThreadLatch.increment();
+//					this.metricThreadPool.submit(new MetricThread(this.metricInstances.get(className), stmt));
 				}
 			}
 		}
@@ -134,9 +134,9 @@ public class SparkStreamProcessor implements IOProcessor {
 			logger.error("Exception on metric assessment calculation : {}",e.getLocalizedMessage());
 		}
 				
-		if (sniffer.getCachingObject() != null){
-			cacheMgr.addToCache(graphCacheName, datasetURI, sniffer.getCachingObject());
-		}
+//		if (sniffer.getCachingObject() != null){
+//			cacheMgr.addToCache(graphCacheName, datasetURI, sniffer.getCachingObject());
+//		}
 	}
 
 	
@@ -228,7 +228,9 @@ public class SparkStreamProcessor implements IOProcessor {
         }
         
         public void run() {
-        	m.compute(stmt.getStatement());
+        	synchronized (m) {
+        		m.compute(stmt.getStatement());
+			}
 			metricThreadLatch.decrement();
         }
         

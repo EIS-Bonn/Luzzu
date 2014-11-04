@@ -1,16 +1,18 @@
 package de.unibonn.iai.eis.luzzu.io.impl;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
-import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.VoidFunction;
+import org.apache.spark.broadcast.Broadcast;
 
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.rdf.model.Literal;
@@ -26,10 +28,13 @@ public class SparkProcessor {
 	private static JavaSparkContext sc = new JavaSparkContext(conf);
 	private static Model m = ModelFactory.createDefaultModel();
 	
-	private static Queue<Triple> _queue = new LinkedBlockingQueue<Triple>();
+	
+	private static Queue<Triple> _queue = new ConcurrentLinkedQueue<Triple>();
 	static int counter = 0;
 	
 	public static boolean isParsing;
+	
+	private static HashMap<String, String> test = new HashMap<String, String>();
 	
 	public static void parse(String datasetURI){
 		isParsing = true;
@@ -42,7 +47,6 @@ public class SparkProcessor {
 				return quadOrTriple;
 			}
 		});
-		
 		
 		queue.foreach(new VoidFunction<String>() {
 				public void call(String a) {

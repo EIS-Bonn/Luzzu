@@ -66,11 +66,10 @@ public class StreamProcessor implements IOProcessor {
 	protected PipedRDFStream<?> rdfStream;
 	
 	private ExecutorService executor = Executors.newSingleThreadExecutor(); // PipedRDFStream and PipedRDFIterator need to be on different threads
-	private ExecutorService metricThreadPool = Executors.newCachedThreadPool();
+	private ExecutorService metricThreadPool = Executors.newFixedThreadPool(10);
 	private final CountLatch metricThreadLatch = new CountLatch(0);
 
 	private boolean isInitalised = false;
-	
 	
 	
 	public StreamProcessor(String datasetURI, boolean genQualityReport, Model configuration){
@@ -119,7 +118,7 @@ public class StreamProcessor implements IOProcessor {
 
 	public void startProcessing() throws ProcessorNotInitialised{
 		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");		
-		StreamMetadataSniffer sniffer = new StreamMetadataSniffer();
+//		StreamMetadataSniffer sniffer = new StreamMetadataSniffer();
 		
 		Runnable parser = new Runnable(){
 			public void run() {
@@ -131,13 +130,13 @@ public class StreamProcessor implements IOProcessor {
 
 		while (this.iterator.hasNext()){
 			Object2Quad stmt = new Object2Quad(this.iterator.next());
-			sniffer.sniff(stmt.getStatement());
+//			sniffer.sniff(stmt.getStatement());
 			
 			for(String className : this.metricInstances.keySet()){
-				logger.debug("Statement with triple <{}> passed to metric {}", stmt.getStatement().asTriple().toString(), className);
-//				this.metricInstances.get(className).compute(stmt.getStatement());
-				this.metricThreadLatch.increment();
-				this.metricThreadPool.submit(new MetricThread(this.metricInstances.get(className), stmt));
+//				logger.debug("Statement with triple <{}> passed to metric {}", stmt.getStatement().asTriple().toString(), className);
+				this.metricInstances.get(className).compute(stmt.getStatement());
+//				this.metricThreadLatch.increment();
+//				this.metricThreadPool.submit(new MetricThread(this.metricInstances.get(className), stmt));
 			}
 		}
 		
@@ -147,9 +146,9 @@ public class StreamProcessor implements IOProcessor {
 			logger.error("Exception on metric assessment calculation : {}",e.getLocalizedMessage());
 		}
 				
-		if (sniffer.getCachingObject() != null){
-			cacheMgr.addToCache(graphCacheName, datasetURI, sniffer.getCachingObject());
-		}
+//		if (sniffer.getCachingObject() != null){
+//			cacheMgr.addToCache(graphCacheName, datasetURI, sniffer.getCachingObject());
+//		}
 	}
 
 
@@ -241,8 +240,11 @@ public class StreamProcessor implements IOProcessor {
         }
         
         public void run() {
-        	m.compute(stmt.getStatement());
+        	synchronized(m){
+        		m.compute(stmt.getStatement());
+        	}
 			metricThreadLatch.decrement();
+
         }
         
     }

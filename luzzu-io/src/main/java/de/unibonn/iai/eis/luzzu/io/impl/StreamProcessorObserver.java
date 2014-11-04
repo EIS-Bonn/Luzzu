@@ -176,9 +176,7 @@ public class StreamProcessorObserver implements IOProcessor {
 		
 		for(String clazz : metricInstances.keySet()){
 			if(metricInstances.get(clazz) instanceof ComplexQualityMetric){
-				System.out.println("in the after");
 				((ComplexQualityMetric)metricInstances.get(clazz)).after();
-				System.out.println("out of the after");
 			}
 			metricInstances.get(clazz).metricValue();
 		}
