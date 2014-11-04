@@ -5,17 +5,17 @@
 @prefix lmi: <http://github.com/EIS-Bonn/Luzzu#> .
 
 
-_:AmountOfTriples a lmi:LuzzuMetricJavaImplementation ;
-	rdfs:label "Amount of Triples" ;
-	lmi:javaPackageName "eu.diachron.qualitymetrics.contextual.amountofdata.AmountOfTriples" . 
+#_:AmountOfTriples a lmi:LuzzuMetricJavaImplementation ;
+#	rdfs:label "Amount of Triples" ;
+#	lmi:javaPackageName "eu.diachron.qualitymetrics.contextual.amountofdata.AmountOfTriples" . 
 
-_:DuplicateInstance a lmi:LuzzuMetricJavaImplementation ;
-		rdfs:label "Duplicate Instance" ;
-		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.conciseness.DuplicateInstance" . 
+#_:DuplicateInstance a lmi:LuzzuMetricJavaImplementation ;
+#		rdfs:label "Duplicate Instance" ;
+#		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.conciseness.DuplicateInstance" . 
 
 _:ExtensionalConciseness a lmi:LuzzuMetricJavaImplementation ;
 		rdfs:label "Extensional Conciseness" ;
-		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.conciseness.ExtensionalConciseness" . 
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.conciseness.ExtensionalConcisenessBloom" . 
 
 _:MalformedDatatypeLiterals a lmi:LuzzuMetricJavaImplementation ;
 		rdfs:label "Malformed Datatype Literals" ;
@@ -45,13 +45,13 @@ _:LinkExternalDataProviders a lmi:LuzzuMetricJavaImplementation ;
 		rdfs:label "Link external data providers" ;
 		lmi:javaPackageName "eu.diachron.qualitymetrics.accessibility.interlinking.LinkExternalDataProviders" . 
 	
-_:HomogeneousDatatypes a lmi:LuzzuMetricJavaImplementation ;
-		rdfs:label "Homogeneous Datatypes" ;
-		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.consistency.HomogeneousDatatypes" . 
+#_:HomogeneousDatatypes a lmi:LuzzuMetricJavaImplementation ;
+#		rdfs:label "Homogeneous Datatypes" ;
+#		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.consistency.HomogeneousDatatypes" . 
 
 _:InterlinkDetection a lmi:LuzzuMetricJavaImplementation ;
 		rdfs:label "Interlink Detection" ;
-		lmi:javaPackageName "eu.diachron.qualitymetrics.accessibility.interlinking.InterlinkDetectionMetric" . 
+		lmi:javaPackageName "eu.diachron.qualitymetrics.accessibility.interlinking.InterlinkDetectionMetricNeo4J" . 
 	
 _:MachineReadableLicense a lmi:LuzzuMetricJavaImplementation ;
 		rdfs:label "Machine Readable License" ;
