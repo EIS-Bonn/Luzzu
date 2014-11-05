@@ -21,7 +21,7 @@ public class Main {
 	private static long tEnd;
 	
 	private static List<EvaluationCase> eCases = new ArrayList<EvaluationCase>();
-	private static int scalefactor[] = new int[]{24,57,128,199,256,666,1369,2089,2785,28453,70812,141000,284826};
+	private static int scalefactor[] = new int[]{141000};
 	private static Map<Integer, Integer> generatedTriples = new HashMap<Integer,Integer>();
 	static{
 		generatedTriples.put(24, 9861);
@@ -39,6 +39,23 @@ public class Main {
 		generatedTriples.put(284826, 98957876);
 	}
 	
+	private static Map<Integer, String> generatedStoredTriples = new HashMap<Integer, String>();
+	static{
+		generatedStoredTriples.put(24, "http://storage.googleapis.com/luzzu/bsbm-24.nt");
+		generatedStoredTriples.put(57, "http://storage.googleapis.com/luzzu/bsbm-57.nt");
+		generatedStoredTriples.put(128, "http://storage.googleapis.com/luzzu/bsbm-128.nt");
+		generatedStoredTriples.put(199, "http://storage.googleapis.com/luzzu/bsbm-199.nt");
+		generatedStoredTriples.put(256, "http://storage.googleapis.com/luzzu/bsbm-256.nt");
+		generatedStoredTriples.put(666, "http://storage.googleapis.com/luzzu/bsbm-666.nt");
+		generatedStoredTriples.put(1369, "http://storage.googleapis.com/luzzu/bsbm-1368.nt");
+		generatedStoredTriples.put(2089, "http://storage.googleapis.com/luzzu/bsbm-2089.nt");
+		generatedStoredTriples.put(2785, "http://storage.googleapis.com/luzzu/bsbm-2785.nt");
+		generatedStoredTriples.put(28453, "http://storage.googleapis.com/luzzu/bsbm-28453.nt");
+		generatedStoredTriples.put(70812, "http://storage.googleapis.com/luzzu/bsbm-70812.nt");
+		generatedStoredTriples.put(141000, "http://storage.googleapis.com/luzzu/bsbm-141000.nt");
+		generatedStoredTriples.put(284826, "http://storage.googleapis.com/luzzu/bsbm-284826.nt");
+	}
+	
 	private static boolean firstTimeGeneration = false;
 
 	private static void setUp(int metrics) throws ClassNotFoundException, IOException{
@@ -52,7 +69,7 @@ public class Main {
 			} else {
 				triples = generatedTriples.get(sf);
 			}
-			EvaluationCase _case = new EvaluationCase("Metrics Initialised : " + metrics + "; Dataset: " + triples + " triples; Scale Factor: "+sf, new File("bsbm-"+sf+".nt").getPath(), metrics);
+			EvaluationCase _case = new EvaluationCase("Metrics Initialised : " + metrics + "; Dataset: " + triples + " triples; Scale Factor: "+sf, generatedStoredTriples.get(metrics), metrics);
 			_case.setCaseDescription("In this Evaluation Case, we evaluated the stream processor with no initialised metrics and a dataset with "+ triples + " triples");
 			_case.setTotalTriples(triples);
 			eCases.add(_case);
@@ -72,7 +89,7 @@ public class Main {
 			FileUtils.write(csv, System.getProperty("line.separator"), true);
 		}
 		
-//		firstTimeGeneration = true;
+		//firstTimeGeneration = true;
 		for (int metric = 0; metric <= 9 ; metric++ ){
 			eCases = new ArrayList<EvaluationCase>();
 			setUp(metric);
@@ -84,7 +101,7 @@ public class Main {
 							
 				//Run benchmark for 10 iterations + 3 cold starts
 				for(int i = -2; i <= iterations; i++){
-					SparkStreamProcessorObserver p = new SparkStreamProcessorObserver(eCase.getDatasetURI(), false, eCase.getMetricConfiguration()); 		// initiate stream processor
+					StreamProcessorObserver p = new StreamProcessorObserver(eCase.getDatasetURI(), false, eCase.getMetricConfiguration()); 		// initiate stream processor
 
 					// setup processor
 					p.setUpProcess();
