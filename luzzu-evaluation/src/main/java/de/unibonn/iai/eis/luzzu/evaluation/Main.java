@@ -23,17 +23,21 @@ public class Main {
 	private static List<EvaluationCase> eCases = new ArrayList<EvaluationCase>();
 	private static int scalefactor[] = new int[]{24,57,128,199,256,666,1369,2089,2785,28453,70812,141000,284826};
 	private static Map<Integer, Integer> generatedTriples = new HashMap<Integer,Integer>();
-//	static{
-//		generatedTriples.put(24, 9861);
-//		generatedTriples.put(57, 25730);
-//		generatedTriples.put(128, 51091);
-//		generatedTriples.put(199, 76010);
-//		generatedTriples.put(256, 99032);
-//		generatedTriples.put(666, 251428);
-//		generatedTriples.put(1369, 503996);
-//		generatedTriples.put(2089, 754624);
-//		generatedTriples.put(2785, 999972);
-//	}
+	static{
+		generatedTriples.put(24, 9861);
+		generatedTriples.put(57, 25730);
+		generatedTriples.put(128, 51091);
+		generatedTriples.put(199, 76010);
+		generatedTriples.put(256, 99032);
+		generatedTriples.put(666, 251428);
+		generatedTriples.put(1369, 503996);
+		generatedTriples.put(2089, 754624);
+		generatedTriples.put(2785, 999972);
+		generatedTriples.put(28453, 10011487);
+		generatedTriples.put(70812, 24835339);
+		generatedTriples.put(141000, 49013816);
+		generatedTriples.put(284826, 98957876);
+	}
 	
 	private static boolean firstTimeGeneration = false;
 
@@ -68,7 +72,7 @@ public class Main {
 			FileUtils.write(csv, System.getProperty("line.separator"), true);
 		}
 		
-		firstTimeGeneration = true;
+//		firstTimeGeneration = true;
 		for (int metric = 0; metric <= 9 ; metric++ ){
 			eCases = new ArrayList<EvaluationCase>();
 			setUp(metric);
