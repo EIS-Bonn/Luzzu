@@ -152,7 +152,7 @@ public class SparkStreamProcessorObserver  implements IOProcessor, Serializable 
 	private static Channel channel;
 	static{
 		 	ConnectionFactory factory = new ConnectionFactory();
-		    factory.setHost("130.211.112.37:5672");
+		    factory.setHost("amqp://130.211.112.37:5672");
 			try {
 				connection = factory.newConnection();
 				channel = connection.createChannel();
@@ -314,7 +314,7 @@ public class SparkStreamProcessorObserver  implements IOProcessor, Serializable 
         MetricProcess(final QualityMetric m) { 
         	
         	ConnectionFactory factory = new ConnectionFactory();
-		    factory.setHost("130.211.112.37:5672");
+		    factory.setHost("amqp://130.211.112.37:5672");
 			try {
 				connection = factory.newConnection();
 				channel = connection.createChannel();
