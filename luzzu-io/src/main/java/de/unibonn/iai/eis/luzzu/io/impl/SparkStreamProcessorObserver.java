@@ -30,6 +30,13 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.ConsumerCancelledException;
+import com.rabbitmq.client.QueueingConsumer;
+import com.rabbitmq.client.ShutdownSignalException;
+
 import de.unibonn.iai.eis.luzzu.annotations.QualityMetadata;
 import de.unibonn.iai.eis.luzzu.annotations.QualityReport;
 import de.unibonn.iai.eis.luzzu.assessment.ComplexQualityMetric;
@@ -133,10 +140,27 @@ public class SparkStreamProcessorObserver  implements IOProcessor, Serializable 
 		}
 	}
 	
-	private static SparkConf conf = new SparkConf().setAppName("Luzzu").setMaster("spark://hadoop-m-zzvh:7077"); // TODO: fix appname and master
+	private static SparkConf conf = new SparkConf().setAppName("Luzzu").setMaster("spark://146.148.11.180:7077"); // TODO: fix appname and master
 	private static JavaSparkContext sc = new JavaSparkContext(conf);
 	private static  List<MetricProcess> lstMetricConsumers = new ArrayList<MetricProcess>();
 	private static StreamMetadataSniffer sniffer = new StreamMetadataSniffer();
+	
+	
+	//rabbitmq
+	private final static String QUEUE_NAME = "luzzu";
+	private static Connection connection;
+	private static Channel channel;
+	static{
+		 	ConnectionFactory factory = new ConnectionFactory();
+		    factory.setHost("130.211.112.37:15672");
+			try {
+				connection = factory.newConnection();
+				channel = connection.createChannel();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
 	
 	public void startProcessing() throws ProcessorNotInitialised{
 		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");		
@@ -149,7 +173,6 @@ public class SparkStreamProcessorObserver  implements IOProcessor, Serializable 
 			}
 		});
 		
-		
 		try {
 			queue.foreach(new VoidFunction<String>() {
 				/**
@@ -158,14 +181,29 @@ public class SparkStreamProcessorObserver  implements IOProcessor, Serializable 
 				private static final long serialVersionUID = 5371361721653134126L;
 
 				public void call(String a) {
-					Triple t = toTripleStmt(a);
-					Object2Quad stmt = new Object2Quad(t);
-//					sniffer.sniff(stmt.getStatement());
-					for(MetricProcess mConsumer : lstMetricConsumers) {
-						mConsumer.notifyNewQuad(stmt);
+//					Triple t = toTripleStmt(a);
+//					Object2Quad stmt = new Object2Quad(t);
+					try {
+						channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+					    channel.basicPublish("", QUEUE_NAME, null, a.getBytes());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
+					
+//					sniffer.sniff(stmt.getStatement());
+//					for(MetricProcess mConsumer : lstMetricConsumers) {
+//						mConsumer.notifyNewQuad(stmt);
+//					}
 				}});
 		}	finally {
+			try {
+				channel.close();
+			    connection.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			if (lstMetricConsumers != null){
 				for(MetricProcess mConsumer : lstMetricConsumers) {
 					mConsumer.stop();
@@ -269,8 +307,22 @@ public class SparkStreamProcessorObserver  implements IOProcessor, Serializable 
         Integer stmtsProcessed = 0;
         boolean stopSignal = false;
         
+        private final static String QUEUE_NAME = "hello";
+        private Connection connection;
+    	private Channel channel;
+        
         MetricProcess(final QualityMetric m) { 
         	
+        	ConnectionFactory factory = new ConnectionFactory();
+		    factory.setHost("130.211.112.37:15672");
+			try {
+				connection = factory.newConnection();
+				channel = connection.createChannel();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
         	this.metricName = m.getClass().getSimpleName();
         	        	
         	this.metricThread = (new Thread() { 
@@ -280,19 +332,35 @@ public class SparkStreamProcessorObserver  implements IOProcessor, Serializable 
         			
         			Object2Quad curQuad = null;
         			
-        			while(!stopSignal || !quadsToProcess.isEmpty()) {
-        				
-        				curQuad = quadsToProcess.poll();
-        				
-        				if(curQuad != null) {
-        					logger.trace("Metric {}, new quad (processed: {}, to-process: {})", m.getClass().getName(), stmtsProcessed, quadsToProcess.size());
-        					
-	        				m.compute(curQuad.getStatement());
-	        				
-	        				curQuad = null;
-	            			stmtsProcessed++;
-        				}
-        			}
+        			QueueingConsumer consumer = new QueueingConsumer(channel);
+        		    try {
+						channel.basicConsume(QUEUE_NAME, true, consumer);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        			
+        		    QueueingConsumer.Delivery delivery = null;
+        			try {
+						while(!stopSignal || ((delivery = consumer.nextDelivery()) != null)) {
+							
+							curQuad = new Object2Quad(toTripleStmt(new String(delivery.getBody())));
+							
+							if(curQuad != null) {
+								logger.trace("Metric {}, new quad (processed: {}, to-process: {})", m.getClass().getName(), stmtsProcessed, quadsToProcess.size());
+								
+								m.compute(curQuad.getStatement());
+								
+								curQuad = null;
+								stmtsProcessed++;
+							}
+						}
+					} catch (ShutdownSignalException
+							| ConsumerCancelledException | InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        			System.out.println(stmtsProcessed);
         			logger.debug("Thread for metric {} completed, total statements processed {}", m.getClass().getName(), stmtsProcessed);
         		}
         		
