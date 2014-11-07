@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.VoidFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,15 +50,22 @@ public class TriplePublisher implements Serializable {
 	}
 		
 	public void publishTriples(JavaRDD<String> datasetRDD) throws IOException {
-				
 			logger.debug("Initiating publication of triples on the queue...");
+
+			JavaRDD<String> queue = datasetRDD.map(new Function<String, String>(){
+				private static final long serialVersionUID = -44291655703031316L;
+
+				public String call(String quadOrTriple){
+					return quadOrTriple;
+				}
+			});
 			
-			datasetRDD.foreach(new VoidFunction<String>() {
+			queue.foreach(new VoidFunction<String>() {
 				private static final long serialVersionUID = 7603190977649586962L;
 
 				@Override
 				public void call(String stmt) throws Exception {
-					// publish triple (statement) into the exchange
+					// publish triple (statement) into the exchange 
 					channel.basicPublish(EXCHANGE_NAME, "", null, stmt.getBytes());
 				}
 			});
