@@ -33,11 +33,15 @@ public class TriplePublisher implements Serializable {
         factory.setPort(5672);
         
 		try {
+			logger.debug("Connecting channel to MQ service...");
+			
 			connection = factory.newConnection();
 			channel = connection.createChannel();
 			
 			// [slondono] - create an exchange to publish triples
 			channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+			
+			logger.debug("OK connected to MQ service, exchange {} created", EXCHANGE_NAME);
 		} catch (IOException e) {
 			logger.error("IO Error connecting to MQ service", e);
 		}
