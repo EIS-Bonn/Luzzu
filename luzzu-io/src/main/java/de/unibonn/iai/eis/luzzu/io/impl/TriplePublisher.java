@@ -56,14 +56,9 @@ public class TriplePublisher implements Serializable {
 				private static final long serialVersionUID = 7603190977649586962L;
 
 				@Override
-				public void call(String stmt) {
+				public void call(String stmt) throws Exception {
 					// publish triple (statement) into the exchange 
-					try {
-						channel.basicPublish(EXCHANGE_NAME, "", null, stmt.getBytes());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					channel.basicPublish(EXCHANGE_NAME, "", null, stmt.getBytes());
 				}
 			});
 			
