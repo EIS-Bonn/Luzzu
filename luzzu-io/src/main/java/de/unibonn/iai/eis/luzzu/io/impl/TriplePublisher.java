@@ -52,21 +52,18 @@ public class TriplePublisher implements Serializable {
 	public void publishTriples(JavaRDD<String> datasetRDD) throws IOException {
 			logger.debug("Initiating publication of triples on the queue...");
 
-			JavaRDD<String> queue = datasetRDD.map(new Function<String, String>(){
-				private static final long serialVersionUID = -44291655703031316L;
-
-				public String call(String quadOrTriple){
-					return quadOrTriple;
-				}
-			});
-			
-			queue.foreach(new VoidFunction<String>() {
+			datasetRDD.foreach(new VoidFunction<String>() {
 				private static final long serialVersionUID = 7603190977649586962L;
 
 				@Override
-				public void call(String stmt) throws Exception {
+				public void call(String stmt) {
 					// publish triple (statement) into the exchange 
-					channel.basicPublish(EXCHANGE_NAME, "", null, stmt.getBytes());
+					try {
+						channel.basicPublish(EXCHANGE_NAME, "", null, stmt.getBytes());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			});
 			
