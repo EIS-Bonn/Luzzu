@@ -58,7 +58,9 @@ public class TriplePublisher implements Serializable {
 				@Override
 				public void call(String stmt) throws Exception {
 					// publish triple (statement) into the exchange 
-					channel.basicPublish(EXCHANGE_NAME, "", null, stmt.getBytes());
+					if(stmt != null) {
+						channel.basicPublish(EXCHANGE_NAME, "", null, stmt.getBytes());
+					}
 				}
 			});
 			
