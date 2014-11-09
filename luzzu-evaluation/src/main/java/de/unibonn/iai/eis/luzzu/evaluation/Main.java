@@ -13,6 +13,7 @@ import de.unibonn.iai.eis.luzzu.evaluation.settings.DataGenerator;
 import de.unibonn.iai.eis.luzzu.evaluation.settings.EvaluationCase;
 import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
 import de.unibonn.iai.eis.luzzu.io.impl.SparkStreamProcessorObserver;
+import de.unibonn.iai.eis.luzzu.io.impl.SparkStreamProcessorPubSub;
 import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessorObserver;
 
 public class Main {
@@ -84,7 +85,7 @@ public class Main {
 							
 				//Run benchmark for 10 iterations + 3 cold starts
 				for(int i = -2; i <= iterations; i++){
-					StreamProcessorObserver p = new StreamProcessorObserver(eCase.getDatasetURI(), false, eCase.getMetricConfiguration()); 		// initiate stream processor
+					SparkStreamProcessorPubSub p = new SparkStreamProcessorPubSub(eCase.getDatasetURI(), false, eCase.getMetricConfiguration()); 		// initiate stream processor
 
 					// setup processor
 					p.setUpProcess();
@@ -112,5 +113,7 @@ public class Main {
 				eCase.storeEvaluationCase();
 			}
 		}
+		
+		SparkStreamProcessorPubSub.close();
 	}
 }

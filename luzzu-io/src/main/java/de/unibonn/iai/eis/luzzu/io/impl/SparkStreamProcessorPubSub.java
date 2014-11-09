@@ -125,7 +125,7 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 	public void cleanUp() throws ProcessorNotInitialised{
 		
 		this.isInitalised = false;
-		
+				
 		// Clear list of metrics
 		this.lstMetricConsumers.clear();
 		this.metricInstances.clear();
@@ -136,12 +136,13 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 		if (!this.executor.isShutdown()){
 			this.executor.shutdownNow();
 		}
-		
+	}
+	
+	public static void close() {
 		if(connection.isOpen()) {
 			try {
 				connection.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -358,14 +359,11 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 						hasFinished = true;
 					} catch (ShutdownSignalException | ConsumerCancelledException | InterruptedException e) {
 						logger.error("Error processing triple", e);
-					} finally {						
+					} finally {
 						try {
 							if(channel.isOpen()) {
 								channel.close();
-							}					
-//							if(connection.isOpen()) {
-//								connection.close();
-//							}
+							}
 						} catch (IOException e) {
 							logger.warn("Could not close channel or connection");
 						}
@@ -387,6 +385,7 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 		public boolean isFinished() {
 			return this.hasFinished;
 		}
+
 	}
 	
 	private static Triple toTripleStmt(String stmt){
