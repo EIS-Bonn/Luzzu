@@ -147,7 +147,7 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 		}
 	}
 	
-	private static SparkConf conf = new SparkConf().setAppName("Luzzu");//.setMaster("local[4]");
+	private static SparkConf conf = new SparkConf().setAppName("Luzzu").setMaster("local[4]");
 	private static JavaSparkContext sc = new JavaSparkContext(conf);	
 	private static StreamMetadataSniffer sniffer = new StreamMetadataSniffer();
 	

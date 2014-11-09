@@ -26,7 +26,7 @@ public class TriplePublisher implements Serializable {
 	
 	private static void connect() {
 		ConnectionFactory factory = new ConnectionFactory();
-	 	factory.setHost("146.148.49.148");
+	 	factory.setHost("130.211.56.15");
         factory.setUsername("luzzu");
         factory.setPassword("luzzu");
         factory.setVirtualHost("luzzu");
