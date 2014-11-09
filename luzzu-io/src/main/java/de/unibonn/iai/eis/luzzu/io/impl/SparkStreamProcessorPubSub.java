@@ -75,7 +75,7 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 		
 	private boolean isInitalised = false;
 	
-	private TriplePublisher triplePublisher = new TriplePublisher();
+	private TriplePublisher triplePublisher = new TriplePublisher(connection);
 	private List<MetricProcess> lstMetricConsumers = new ArrayList<MetricProcess>();
 			
 	public SparkStreamProcessorPubSub(String datasetURI, boolean genQualityReport, Model configuration){
@@ -136,12 +136,38 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 		if (!this.executor.isShutdown()){
 			this.executor.shutdownNow();
 		}
+		
+		if(connection.isOpen()) {
+			try {
+				connection.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
-	private static SparkConf conf = new SparkConf().setAppName("Luzzu").setMaster("local[4]");
+	private static SparkConf conf = new SparkConf().setAppName("Luzzu");//.setMaster("local[4]");
 	private static JavaSparkContext sc = new JavaSparkContext(conf);	
 	private static StreamMetadataSniffer sniffer = new StreamMetadataSniffer();
 	
+    private static Connection connection;
+    static {
+    	ConnectionFactory factory = new ConnectionFactory();
+    	factory.setHost("130.211.56.15");
+        factory.setUsername("luzzu");
+        factory.setPassword("luzzu");
+        factory.setVirtualHost("luzzu");
+        factory.setPort(5672);
+        try {
+			connection = factory.newConnection();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    }
+    
+
 	public void startProcessing() throws ProcessorNotInitialised{
 		
 		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");		
@@ -225,7 +251,7 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 			}
 			
 			// [slondono] - create and initialize subscribers
-			this.lstMetricConsumers.add(new MetricProcess(this.metricInstances.get(className)));
+			this.lstMetricConsumers.add(new MetricProcess(this.metricInstances.get(className), connection));
 		}
 		
 	}
@@ -280,22 +306,12 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 	    	    	    
 	    private final static String EXCHANGE_NAME = "triples_publish";
 	    
-	    private Connection connection;
 		private Channel channel;
 		private QueueingConsumer consumer;
 		private String subscribeQueueName;
 		
-	    MetricProcess(final QualityMetric m) { 
-	    	
-	    	ConnectionFactory factory = new ConnectionFactory();
-	    	factory.setHost("146.148.49.148");
-	        factory.setUsername("luzzu");
-	        factory.setPassword("luzzu");
-	        factory.setVirtualHost("luzzu");
-	        factory.setPort(5672);
-		    
+	    MetricProcess(final QualityMetric m, final Connection connection) { 
 			try {
-				connection = factory.newConnection();
 				channel = connection.createChannel();
 				channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
 								
@@ -347,9 +363,9 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 							if(channel.isOpen()) {
 								channel.close();
 							}					
-							if(connection.isOpen()) {
-								connection.close();
-							}
+//							if(connection.isOpen()) {
+//								connection.close();
+//							}
 						} catch (IOException e) {
 							logger.warn("Could not close channel or connection");
 						}

@@ -25,17 +25,17 @@ public class TriplePublisher implements Serializable {
 	private static Channel channel;
 	
 	private static void connect() {
-		ConnectionFactory factory = new ConnectionFactory();
-	 	factory.setHost("146.148.49.148");
-        factory.setUsername("luzzu");
-        factory.setPassword("luzzu");
-        factory.setVirtualHost("luzzu");
-        factory.setPort(5672);
+//		ConnectionFactory factory = new ConnectionFactory();
+//	 	factory.setHost("146.148.49.148");
+//        factory.setUsername("luzzu");
+//        factory.setPassword("luzzu");
+//        factory.setVirtualHost("luzzu");
+//        factory.setPort(5672);
         
 		try {
 			logger.debug("Connecting channel to MQ service...");
 			
-			connection = factory.newConnection();
+//			connection = factory.newConnection();
 			channel = connection.createChannel();
 			
 			// [slondono] - create an exchange to publish triples
@@ -47,7 +47,8 @@ public class TriplePublisher implements Serializable {
 		}
 	}
 	
-	public TriplePublisher() {
+	public TriplePublisher(Connection conn) {
+		connection = conn;
 		if(connection == null || channel == null || !connection.isOpen() || !channel.isOpen()) {
 			connect();
 		}
@@ -76,9 +77,9 @@ public class TriplePublisher implements Serializable {
 			if(channel.isOpen()) {
 				channel.close();			
 			}					
-			if(connection.isOpen()) {
-				connection.close();
-			}
+//			if(connection.isOpen()) {
+//				connection.close();
+//			}
 		} catch (IOException e) {
 			logger.warn("Error closing channel or connection to MQ service", e);
 		}
