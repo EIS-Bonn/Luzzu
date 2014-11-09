@@ -75,7 +75,7 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 		
 	private boolean isInitalised = false;
 	
-	private TriplePublisher triplePublisher = new TriplePublisher(connection);
+	private TriplePublisher triplePublisher = new TriplePublisher();
 	private List<MetricProcess> lstMetricConsumers = new ArrayList<MetricProcess>();
 			
 	public SparkStreamProcessorPubSub(String datasetURI, boolean genQualityReport, Model configuration){
