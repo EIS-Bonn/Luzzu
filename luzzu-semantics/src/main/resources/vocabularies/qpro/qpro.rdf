@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/qpro#computedOn">
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/qpro#QualityReport"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label>computed on</rdfs:label>
+    <rdfs:comment>Represents the dataset URI on which quality metrics where computed</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/qpro#QualityProblem">
+    <rdfs:comment>Represents a quality problem detected during the assessment of quality metrics on triples.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label>Quality Problem</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/qpro#hasProblem">
+    <rdfs:label>has problem</rdfs:label>
+    <rdfs:comment>Identifies problem instances in the report</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/qpro#QualityReport"/>
+    <rdfs:range rdf:resource="http://purl.org/eis/vocab/qpro#QualityProblem"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/qpro#QualityReport">
+    <rdfs:label>Quality Report</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:comment>Represents a report on the problems detected during the assessment of quality on a dataset.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/qpro#problematicThing">
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/qpro#QualityProblem"/>
+    <rdfs:comment>Represent the actual problematic instance from the dataset. This could be a list of resources (rdf:Seq) or a list of reified statements.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdfs:label>problematic thing</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/qpro#inGraph">
+    <rdfs:range rdf:resource="http://www.w3.org/2004/03/trix/rdfg-1Graph"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"/>
+    <rdfs:comment>This property enables the reification of quads by creating a new property to define the context of a triple statement.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label>in graph</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/qpro#isDescribedBy">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/qpro#QualityProblem"/>
+    <rdfs:comment>Represent the URI of the metric which instantiated this problem</rdfs:comment>
+    <rdfs:label>is described by</rdfs:label>
+    <rdfs:range rdf:resource="http://purl.org/eis/vocab/daq#Metric"/>
+  </rdf:Description>
+</rdf:RDF>
+
