@@ -2,47 +2,47 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfg: <http://www.w3.org/2004/03/trix/rdfg-1>.
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
-@prefix qr: <http://purl.org/eis/vocab/qr#>.
+@prefix qpro: <http://purl.org/eis/vocab/qpro#>.
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
 @prefix daq: <http://purl.org/eis/vocab/daq#>.
 
 
 # Classes
-qr:QualityReport a rdfs:Class ;
+qpro:QualityReport a rdfs:Class ;
 	rdfs:comment "Represents a report on the problems detected during the assessment of quality on a dataset." ;
 	rdfs:label "Quality Report" .
 	
-qr:QualityProblem a rdfs:Class ;
+qpro:QualityProblem a rdfs:Class ;
 	rdfs:comment "Represents a quality problem detected during the assessment of quality metrics on triples." ;
 	rdfs:label "Quality Problem" .
 
 	
 # Properties
-qr:computedOn a rdf:Property ;
-	rdfs:domain qr:QualityReport ;
+qpro:computedOn a rdf:Property ;
+	rdfs:domain qpro:QualityReport ;
 	rdfs:range rdfs:Resource ;
 	rdfs:comment "Represents the dataset URI on which quality metrics where computed" ;
 	rdfs:label "computed on" .
 	
-qr:hasProblem a rdf:Property ;
-	rdfs:domain qr:QualityReport ;
-	rdfs:range qr:QualityProblem ;
+qpro:hasProblem a rdf:Property ;
+	rdfs:domain qpro:QualityReport ;
+	rdfs:range qpro:QualityProblem ;
 	rdfs:comment "Identifies problem instances in the report";
 	rdfs:label "has problem" .
 
-qr:isDescribedBy a rdf:Property;
-	rdfs:domain qr:QualityProblem;
+qpro:isDescribedBy a rdf:Property;
+	rdfs:domain qpro:QualityProblem;
 	rdfs:range daq:Metric;
 	rdfs:comment "Represent the URI of the metric which instantiated this problem";
 	rdfs:label "is described by" .
 
-qr:problematicThing a rdf:Property;
-	rdfs:domain qr:QualityProblem;
+qpro:problematicThing a rdf:Property;
+	rdfs:domain qpro:QualityProblem;
 	rdfs:range rdfs:Resource;
 	rdfs:comment "Represent the actual problematic instance from the dataset. This could be a list of resources (rdf:Seq) or a list of reified statements.";
 	rdfs:label "problematic thing".
 	
-qr:inGraph a rdf:Property;
+qpro:inGraph a rdf:Property;
 	rdfs:domain rdf:Statement ;
 	rdfs:range rdfg:Graph ;
 	rdfs:comment "This property enables the reification of quads by creating a new property to define the context of a triple statement.";
