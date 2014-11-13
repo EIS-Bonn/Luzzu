@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Luzzu - A Linked Data Quality Assessment Framework">
+    <meta name="author" content="Jeremy Debattista">
+
+    <title>Luzzu - A Quality Assessment Framework for Linked Open Data</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/heroic-features.css" rel="stylesheet">
+    <link href="css/pygment_trac.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		
+	<style>
+	table, th, td {
+	   border: 1px solid black;
+	   padding: 10px;
+	}
+	</style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/index.html">Luzzu - A Quality Assessment Framework for LOD</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="float:right">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="howto.html">How-To</a>
+                    </li>
+                    <li>
+                        <a href="downloads.html">Downloads</a>
+                    </li>
+                    <li>
+                        <a href="publications.html">Publications</a>
+                    </li>
+                    <li>
+                        <a href="team.html">The Team</a>
+                    </li>
+                    <li>
+                        <a href="contactus.html">Contact Us</a>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+    <!-- Page Content -->
+    <div class="container">
+		<h1 class="page-header">How To</h1>
+		
+		<ol class="breadcrumb">
+		  <li id="preliminaryLi" class="active"><a href="#" class="active howToLink" id="preliminary" style="pointer-events: none; cursor: default; color:gray;">Preliminary Requirements</a></li>
+		  <li id="downloadLi"><a href="#" class="howToLink" id="download">Downloading</a></li>
+		  <li id="buildLi"><a href="#" class="howToLink" id="build">Build and Execute</a></li>
+		  <li id="customLi"><a href="#" class="howToLink" id="custom">Custom Metrics</a></li>
+		  <li id="servicesLi"><a href="#" class="howToLink" id="services">Web Service Invocation</a></li>
+		</ol>
+
+        <!-- Page Features -->
+        <div class="row text-left">
+			<div id="preliminaryDiv">
+				<h4>Preliminary Requirements</h4>
+				Luzzu is an open-source Java based framework. We are currently using JDK Version 1.7.0_51. In order to run Luzzu on your system, the only two pre-requisites are:
+				<ul>
+					<li><a href="https://www.java.com/en/">Java Runtime Environment</a></li>
+					<li><a href="http://maven.apache.org">Apache Maven</a></li>
+				</ul>
+			</div>
+			
+			<div id="downloadDiv" style="display:none">
+				<h4>Downloading the Framework</h4>
+				There are two options that one could use to download Luzzu, either by downloading the source or executable, or by cloning the GIT Repository.<br /><br />
+				 <div class="col-lg-6">
+					 <div class="panel panel-primary">
+						<div class="panel-heading">
+	    					Executable / Source
+	  					</div>
+
+						<div class="panel-body">
+	   						<span class="label label-info">Stable Release</span> Version 1.0.1 (Source: Zip/Tar) | Release Notes<br/>
+							<span class="label label-warning">Older Releases</span> Version 0.0.1 (Source: Zip/Tar) | Other Versions...<br/>
+	  					</div>
+					</div>
+				</div>
+				
+				 <div class="col-lg-6">
+					 <div class="panel panel-success">
+						<div class="panel-heading">
+	    					Cloning/Forking Repository
+	  					</div>
+
+						<div class="panel-body">
+							First create a fork of the Luzzu project available here <a href="https://github.com/EIS-Bonn/Luzzu"><img src="images/github.png" width="20px"></a>. Then download a local clone of the forked repository. For more information visit <a href="https://help.github.com/articles/fork-a-repo/">Git User Documentation</a>.
+	  					</div>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div id="buildDiv" style="display:none">
+				<h4>Building the Framework</h4>
+				<p>This is only required if you cloned the repository or downloaded the source. Building the Luzzu framework is an easy job with Maven. Maven will handle all required dependencies and ensures a successful build. The framework will be compiled into a single JAR file. An inbuilt <a href="https://jersey.java.net/">Jersey</a> RESTFul web service will also be downloaded by maven, thus the framework does not require tools such as Apache or Tomcat to be installed. The following steps are required to build and compile Luzzu on your system:
+<pre><code>$ cd your_repositories_directory/Luzzu
+$ mvn clean install
+</code></pre>
+The newly compiled Luzzu JAR file can be found in the <code>your_repositories_directory/Luzzu/target</code> directory.
+<br/><br/>
+The <code>clean</code> directive ensures that the <code>target</code> folder has its contents removed prior to the compilation of Luzzu. If you already have your custom metrics and vocabulary installed and you need to re-compile Luzzu (say for example after an update of the framework or after a custom modification), then you can leave out the <code>clean</code> directive.</p>
+
+			<h4>Executing the Framework</h4>
+			<p>Maven handles the execution and initialisation of the web service and any external metrics added to Luzzu. After locating the luzzu directory, continue the following:
+<pre><code>Luzzu/$ cd luzzu-communications/
+luzzu-communications $ mvn exec:java -X
+</code></pre></p>
+			</div>
+			
+			<div id="servicesDiv" style="display:none">
+				<h4>Web Service Invocation</h4>
+				<p>The Luzzu web service can be invoked (by default) by the URI <code>http://localhost:8080/luzzu/compute_quality</code>. The <code>compute_quality</code> module accepts as input an instance of a DIACHRON dataset (an HTTP URI or FILE URI), a list of metrics required to be assessed and if a quality problem report is required. Port number and domain can be changed via the webservices.properties file. Changing the properties file would require a new build.</p>
+	
+<table>
+  <tr>
+    <th>Post</th>
+    <th>HTTP Method</th>
+  </tr>
+  <tr>
+    <td><b>Dataset</b> - An instance of a DIACHRON dataset URI. <br/><b>QualityReportRequired</b> - A boolean indicating whether a quality report is required. <br/><b>MetricsConfiguration</b> - an object with a list of metrics in JSON-LD format</td>
+    <td><b>Parameters</b></td>
+  </tr>
+  <tr>
+    <td>If QualityReportRequired is true, this method returns a quality report (e.g.a set of DIACHRON triple instances violating quality metrics). An empty model (which is not realistic) means that a model passed all the metrics and contain no metric violation. If QualityReportRequired is false, then the method would return only the dataset URI.</td>
+    <td><b>Returns</b></td>
+  </tr>
+  <tr>
+	<td>
+<pre><code>"Dataset": "http://exampleuri.com/rdfdump", 
+"QualityReportRequired": true, 
+"MetricsConfiguration" : [{
+ "@id": "_:f4212571792b1", 
+ "@type": [ "http://www.diachron-fp7.eu/qualityFramework#metricConfiguration" ],
+	"http://www.diachron-fp7.eu/diachron#metric": [ 
+	{ "@value": "eu.diachron.qualitymetrics.intrinsic.accuracy.DefinedOntologyAuthor" },
+	{ "@value": "eu.diachron.qualitymetrics.accessibility.availability.RDFAccessibility" },
+	{ "@value": "eu.diachron.qualitymetrics.representational.understandability.HumanReadableLabelling" },
+	{ "@value": "eu.diachron.qualitymetrics.intrinsic.consistency.ObsoleteConceptsInOntology" },
+ 	{ "@value": "eu.diachron.qualitymetrics.accessibility.availability.SPARQLAccessibility" },
+	{ "@value": "eu.diachron.qualitymetrics.accessibility.performance.HighThroughput" },
+	{ "@value": "eu.diachron.qualitymetrics.intrinsic.consistency.EntitiesAsMembersOfDisjointClasses" },
+	{ "@value": "eu.diachron.qualitymetrics.intrinsic.accuracy.SynonymUsage" }
+]}]</pre></code>
+	</td>
+    <td><b>Input Message Format and Example</b></td>
+  </tr>
+  <tr>
+    <td>
+<pre><code>“Dataset”: “http://exampleuri.com/rdfdump”,
+“QualityReport” : { 
+  "@graph": [{
+	"@id": "uri:problem2",
+	"@type": "http://www.diachron-fp7.eu/vocab/quality#qualityProblem", 
+	"http://www.diachron-fp7.eu/vocab/quality#describedBy": { "@id": "uri:metric15" },
+	"http://www.diachron-fp7.eu/vocab/quality#problematicThing": { "@id": "uri:b" } },
+	{"@id": "uri: problem1",
+	"@type": "http://www.diachron-fp7.eu/vocab/quality#qualityProblem", 
+	"http://www.diachron-fp7.eu/vocab/quality#describedBy": {"@id": "uri:metric1" },
+	"http://www.diachron-fp7.eu/vocab/quality#problematicThing": { "@id": "uri:a"} },
+	{"@id": "uri:qualRep",
+	"@type": "http://www.diachron-fp7.eu/vocab/quality#qualityReport", 
+	"http://www.diachron-fp7.eu/vocab/quality#computedOn": {"@id": "http://aksw.org" },
+	"http://www.diachron-fp7.eu/vocab/quality#hasProblem": [ 
+	 { "@id": "uri:problem1" },
+	 { "@id": "uri:problem2"} ]}, 
+	{ "@id": "uri:a",
+	"@type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq" },
+	{
+	 "@id": "uri:b", 
+	 "http://www.diachron-fp7.eu/resource/hasObject": {"@id": "http://www.example.org/objectTriple" },
+	 "http://www.diachron-fp7.eu/resource/predicate": {"@id": "http://www.example.org/predicateTriple"}, 
+	 "http://www.diachron-fp7.eu/resource/subject": {"@id": "http://www.example.org/subjectTriple" }
+	} ] }</code></pre>    	
+    </td>
+    <td><b>Output Message Format and Example</b></td>
+  </tr>
+</table>
+			</div>
+			
+			
+		<div id="customDiv" style="display:none">
+			<h4>Creating Custom Metrics</h4>
+			<p>	
+	      <div class="panel panel-primary" style="width:100%; cursor: pointer; cursor: hand;">
+	  		<div class="panel-heading customMetric" id="lqml">Luzzu Quality Metric Language</div>
+	  		<div class="panel-body" style="padding-bottom:22px;" id="lqmlBody">
+	  			<p>The Luzzu framework enables knowledge engineers without Java expertise to create quality metrics in a declarative manner. This is attributable to the fact that LQML caters for varying linked data quality metrics, which can be as basic as matching a particular triple pattern. An LQML rule is made up of METRIC, LABEL, DESCRIPTION, MATCH, and ACTION.
+
+Click here for LQML Documentation.
+					
+<pre><code><strong>def</strong>{SubClassCounter}:
+	 <strong>metric</strong>{&lt;http://www.example.org/ebi/qm#SubClassCountingMetric&gt;}; 
+	 <strong>label</strong>{"SubClassCountingMetric"};
+	 <strong>description</strong>{"Provides a measure for counting the number of resources that are defined as sub-classes"}; 
+	 <strong>match</strong>{(?p == rdfs:subClassOf)};
+	 <strong>action</strong>{count}.
+</code></pre>
+				</p>
+	  		</div>
+		  </div>
+		
+      	<div class="panel panel-success" style="width:100%; cursor: pointer; cursor: hand;">
+  			<div class="panel-heading customMetric" id="java">Extending Java Classes</div>
+  			<div class="panel-body" style="padding-bottom:22px;display:none" id="javaBody">
+  				<p>The Luzzu framework's purpose is to allow third parties to create their own domain-specific quality metrics and then assess Linked Open Datasets using the framework itself. In order to create your own metrics, <code>luzzu-assessment.jar</code> has to be part of the build path (or adding the maven dependencies). The mentioned library consists of two main interfaces - <code>de.unibonn.iai.eis.luzzu.assessment.QualityMetric</code> and <code>de.unibonn.iai.eis.luzzu.assessment.ComplexQualityMetric</code>. The former allows developers to create simple metrics whilst the latter allows developers to define more complex quality metrics that might require pre-processing or post-processing.
+				<br/><br/>
+					When implementing the QualityMetric interface, the following methods need to be defined:
+					<ol>
+						<li><code>void compute(com.hp.hpl.jena.sparql.core.Quad quad);</code> - This method should compute the metric. The processor automatically passes objects of type quad to the quality metric.</li>
+						<li><code>double metricValue();</code> - Returns the value of the Quality Metric.</li>
+						<li><code>com.hp.hpl.jena.rdf.model.Resource getMetricURI()</code> -  Returns the URI of the Quality Metric.</li>
+						<li><code>ProblemList&lt;?> getQualityProblems();</code> -  Returns a typed ProblemList that will be used to create a problem report of the computed metric.</li>
+					</ol>
+					When implementing the ComplexQualityMetric interface, two other methods need to be implemented together with the four methods mentioned above:
+					<ol>
+						<li><code>void before(Object ... args);</code> - Pre-processing data before metric assessment.</li>
+						<li><code>void after(Object ... args);</code> - Post-processing data after metric assessment.</li>
+					</ol>
+				</p>
+	   		 To add maven dependencies, the following is required (the repository might change anytime):
+<pre><code>&lt;repository>
+	&lt;id>dropbox&lt;/id>
+	&lt;url>http://dl.dropboxusercontent.com/u/5895290/mvn-repo&lt;/url>
+&lt;/repository>
+	...
+	...
+&lt;dependency>
+	&lt;groupId>de.unibonn.iai.eis&lt;/groupId>
+	&lt;artifactId>luzzu-assessment&lt;/artifactId>
+	&lt;version>1.0.1-RELEASE&lt;/version>
+&lt;/dependency></code></pre>
+  			</div>
+	 	 </div>
+
+		<h4>Installing Custom Metrics</h4>
+			<p>LQML metrics should be copied to a subfolder in the <code>Luzzu/luzzu-communications/external</code> folder, with th extension <code>.lmi</code>. The external vocabulary should be copied to <code>Luzzu/luzzu-communications/externalVocab</code>.</p>
+			<p>Custom Java implemented metrics should be packaged as a JAR and copied together with the <code>metrics.trig</code> to <code>Luzzu/luzzu-communications/external</code>, whilst the external vocabulary should be copied to <code>Luzzu/luzzu-communications/externalVocab</code>.
+				<br/><br/>
+				The <code>metrics.trig</code> file should contain a list of all custom implemented metrics available in the packaged jar. The java metrics should be described using the Luzzu Metric Implementation ontology (see <code>luzzu-semantics</code> library/dependency).
+				A typical metric.trig configuration file can be viewed <a href="config.trig">here</a>.</p>
+		</div>
+			
+		<div id="templateDiv" style="display:none">
+			<h4>Title</h4>
+			<p>body</p>
+		</div>
+						
+        </div>
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Maintained by: Enterprise Information Systems - University of Bonn <img src="images/logo-eis.png" width="80px" style="margin-left:15px; "/></p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+	
+	<!-- custom script -->
+	<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		$('.howToLink').click(function(){
+			// do something		
+		    $('#preliminary').removeClass('active');
+			$('#download').removeClass('active');
+			$('#build').removeClass('active');
+			$('#custom').removeClass('active');
+			$('#services').removeClass('active');
+			
+		    $('#preliminary').removeAttr('style');
+			$('#download').removeAttr('style');
+			$('#build').removeAttr('style');
+			$('#custom').removeAttr('style');
+			$('#services').removeAttr('style');
+	    
+			var item_id = $(this).attr('id');
+					
+		    $('#preliminaryDiv').css('display','none');
+			$('#downloadDiv').css('display','none');
+			$('#buildDiv').css('display','none');
+			$('#customDiv').css('display','none');
+			$('#servicesDiv').css('display','none');
+		
+			$('#'+item_id+'Div').css('display','inline-block');
+			$('#'+item_id).css('pointer-events','none');
+			$('#'+item_id).css('cursor','default');
+			$('#'+item_id).css('color','gray');
+		});
+	});
+	</script>
+	
+	<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		$('.customMetric').click(function(){
+			// do something		
+	    
+			var item_id = $(this).attr('id');
+					
+		    $('#lqmlBody').css('display','none');
+			$('#javaBody').css('display','none');
+		
+			$('#'+item_id+'Body').css('display','inline-block');
+
+		});
+	});
+	</script>
+
+</body>
+
+</html>
