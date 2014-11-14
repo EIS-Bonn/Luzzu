@@ -38,7 +38,7 @@ public class InternalModelConf {
 
 		semanticModel.addNamedModel(DAQ.NS, temp);
 
-		File externalsFolder = new File("externalvocab/");
+		File externalsFolder = new File("externals/vocabs");
 		if (externalsFolder.exists()){
 			File[] listOfOntologies = externalsFolder.listFiles();
 			for (File ontology : listOfOntologies) {

@@ -57,7 +57,7 @@ public class ExternalMetricLoader {
 	}
 	
 	private static void loadMetrics(){
-		File externalsFolder = new File("externals/");
+		File externalsFolder = new File("externals/metrics/");
 		File[] listOfFiles = externalsFolder.listFiles();
 		
 		for(File metrics : listOfFiles){
