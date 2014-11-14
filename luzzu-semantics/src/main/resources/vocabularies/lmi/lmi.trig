@@ -1,16 +1,21 @@
-@prefix lmi: <http://github.com/EIS-Bonn/Luzzu#> .
+@prefix daq: <http://purl.org/eis/vocab/daq#> .
+@prefix lmi: <http://purl.org/eis/vocab/lmi#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-lmi:LuzzuMetricJavaImplementation a rdf:Class .
+lmi:LuzzuMetricJavaImplementation a rdfs:Class .
 
-lmi:javaPackageName a rdf:Property ;
+lmi:javaPackageName a rdfs:Property ;
 	rdfs:domain lmi:LuzzuMetricJavaImplementation ;
-	rdfs:range xsd:String .
+	rdfs:range xsd:string .
 	
-lmi:MetricConfiguration a rdf:Class .
+lmi:referTo a rdfs:Property ;
+	rdfs:domain lmi:LuzzuMetricJavaImplementation ;
+	rdfs:range daq:Metric .
+	
+lmi:MetricConfiguration a rdfs:Class .
 
-lmi:metric a rdf:Property ;
+lmi:metric a rdfs:Property ;
 	rdfs:domain lmi:MetricConfiguration ;
-	rdfs:range xsd:String . 
+	rdfs:range xsd:string . 
