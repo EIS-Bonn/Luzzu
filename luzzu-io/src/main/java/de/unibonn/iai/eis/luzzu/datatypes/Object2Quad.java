@@ -1,13 +1,7 @@
 package de.unibonn.iai.eis.luzzu.datatypes;
 
 import com.hp.hpl.jena.graph.Triple;
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.sparql.core.Quad;
-import com.hp.hpl.jena.sparql.sse.SSE;;
+import com.hp.hpl.jena.sparql.core.Quad;;
 
 public class Object2Quad {
 

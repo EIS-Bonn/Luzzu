@@ -36,7 +36,6 @@ import de.unibonn.iai.eis.luzzu.qml.parser.LQMLParser;
 import de.unibonn.iai.eis.luzzu.qml.parser.ParseException;
 
 
-@SuppressWarnings("restriction")
 public class DeclerativeMetricCompiler {
 	
 	final static Logger logger = LoggerFactory.getLogger(DeclerativeMetricCompiler.class);
@@ -46,7 +45,7 @@ public class DeclerativeMetricCompiler {
 	private final StringBuilder javaClass = new StringBuilder();
 	
 	public DeclerativeMetricCompiler() throws URISyntaxException, IOException{
-//		this.loadDeclerativePattern(); //TODO: fix Paths.get not working
+		this.loadDeclerativePattern(); 
 	}
 
 	public static DeclerativeMetricCompiler getInstance(){
