@@ -12,9 +12,8 @@ import org.apache.commons.io.FileUtils;
 import de.unibonn.iai.eis.luzzu.evaluation.settings.DataGenerator;
 import de.unibonn.iai.eis.luzzu.evaluation.settings.EvaluationCase;
 import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
-import de.unibonn.iai.eis.luzzu.io.impl.SparkStreamProcessorObserver;
-import de.unibonn.iai.eis.luzzu.io.impl.SparkStreamProcessorPubSub;
-import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessorObserver;
+import de.unibonn.iai.eis.luzzu.io.impl.SparkStreamProcessor;
+import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessor;
 
 public class Main {
 	
@@ -22,7 +21,7 @@ public class Main {
 	private static long tEnd;
 	
 	private static List<EvaluationCase> eCases = new ArrayList<EvaluationCase>();
-	private static int scalefactor[] = new int[]{24,57,128,199,256,666,1369,2089,2785,28453,70812,141000,284826};
+	private static int scalefactor[] = new int[]{2089};//,2785,28453,70812,141000,284826};
 	private static Map<Integer, Integer> generatedTriples = new HashMap<Integer,Integer>();
 	static{
 		generatedTriples.put(24, 9861);
@@ -73,8 +72,8 @@ public class Main {
 			FileUtils.write(csv, System.getProperty("line.separator"), true);
 		}
 		
-		//firstTimeGeneration = true;
-		for (int metric = 0; metric <= 9 ; metric++ ){
+		firstTimeGeneration = true;
+		for (int metric = 9; metric <= 9 ; metric++ ){
 			eCases = new ArrayList<EvaluationCase>();
 			setUp(metric);
 			int iterations = 4;
@@ -85,7 +84,7 @@ public class Main {
 							
 				//Run benchmark for 10 iterations + 3 cold starts
 				for(int i = -2; i <= iterations; i++){
-					SparkStreamProcessorPubSub p = new SparkStreamProcessorPubSub(eCase.getDatasetURI(), false, eCase.getMetricConfiguration()); 		// initiate stream processor
+					StreamProcessor p = new StreamProcessor(eCase.getDatasetURI(), false, eCase.getMetricConfiguration()); 		// initiate stream processor
 
 					// setup processor
 					p.setUpProcess();
@@ -114,6 +113,6 @@ public class Main {
 			}
 		}
 		
-		SparkStreamProcessorPubSub.close();
+		SparkStreamProcessor.close();
 	}
 }
