@@ -27,6 +27,10 @@ public class PropertyManager {
 			prop = new Properties();
 			prop.load(getClass().getResourceAsStream("/properties/webservice.properties"));
 			propMap.put("webservice.properties", prop);
+			
+			prop = new Properties();
+			prop.load(getClass().getResourceAsStream("/properties/spark.properties"));
+			propMap.put("spark.properties", prop);
 		} catch (IOException ex)  {
 			//TODO: good exception handling
 			ex.printStackTrace();
