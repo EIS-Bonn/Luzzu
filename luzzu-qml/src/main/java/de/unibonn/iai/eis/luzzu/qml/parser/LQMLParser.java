@@ -106,7 +106,7 @@ public class LQMLParser implements LQMLParserConstants {
   final public Rule extractRule() throws ParseException {
   Rule r = new Rule();
   List<ArrayList<Condition>> conditionList = new ArrayList<ArrayList<Condition>>();
-    jj_consume_token(RULE);
+    jj_consume_token(MATCH);
     jj_consume_token(LBRACE);
          ArrayList<Condition> condLst = new ArrayList<Condition>();
     extractCondition(condLst);
@@ -261,10 +261,10 @@ public class LQMLParser implements LQMLParserConstants {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x800000,0x0,0x100000,0x0,0xc000,};
+      jj_la1_0 = new int[] {0x1000000,0x0,0x200000,0x0,0x18000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x10,0x200,0x1c0,0x0,};
+      jj_la1_1 = new int[] {0x0,0x20,0x400,0x380,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -381,7 +381,7 @@ public class LQMLParser implements LQMLParserConstants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[42];
+    boolean[] la1tokens = new boolean[43];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -398,7 +398,7 @@ public class LQMLParser implements LQMLParserConstants {
         }
       }
     }
-    for (int i = 0; i < 42; i++) {
+    for (int i = 0; i < 43; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

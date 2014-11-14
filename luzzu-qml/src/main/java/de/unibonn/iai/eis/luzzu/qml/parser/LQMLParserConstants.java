@@ -11,79 +11,79 @@ public interface LQMLParserConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int DEF = 5;
+  int DEF = 6;
   /** RegularExpression Id. */
-  int LABEL = 6;
+  int LABEL = 7;
   /** RegularExpression Id. */
-  int DESC = 7;
+  int DESC = 8;
   /** RegularExpression Id. */
-  int RULE = 8;
+  int MATCH = 9;
   /** RegularExpression Id. */
-  int ACTION = 9;
+  int ACTION = 10;
   /** RegularExpression Id. */
-  int METRICURI = 10;
+  int METRICURI = 11;
   /** RegularExpression Id. */
-  int AUTHOR = 11;
+  int AUTHOR = 12;
   /** RegularExpression Id. */
-  int PACKAGE = 12;
+  int PACKAGE = 13;
   /** RegularExpression Id. */
-  int TYPEOF = 13;
+  int TYPEOF = 14;
   /** RegularExpression Id. */
-  int COUNT = 14;
+  int COUNT = 15;
   /** RegularExpression Id. */
-  int MAP = 15;
+  int MAP = 16;
   /** RegularExpression Id. */
-  int CHAR = 16;
+  int CHAR = 17;
   /** RegularExpression Id. */
-  int NUMBER = 17;
+  int NUMBER = 18;
   /** RegularExpression Id. */
-  int STRICT_STR = 18;
+  int STRICT_STR = 19;
   /** RegularExpression Id. */
-  int STR = 19;
+  int STR = 20;
   /** RegularExpression Id. */
-  int QUOTED_STR = 20;
+  int QUOTED_STR = 21;
   /** RegularExpression Id. */
-  int LBRACE = 21;
+  int LBRACE = 22;
   /** RegularExpression Id. */
-  int RBRACE = 22;
+  int RBRACE = 23;
   /** RegularExpression Id. */
-  int LPAREN = 23;
+  int LPAREN = 24;
   /** RegularExpression Id. */
-  int RPAREN = 24;
+  int RPAREN = 25;
   /** RegularExpression Id. */
-  int COLON = 25;
+  int COLON = 26;
   /** RegularExpression Id. */
-  int SEMI_COLON = 26;
+  int SEMI_COLON = 27;
   /** RegularExpression Id. */
-  int PERIOD = 27;
+  int PERIOD = 28;
   /** RegularExpression Id. */
-  int QUOTES = 28;
+  int QUOTES = 29;
   /** RegularExpression Id. */
-  int BOOLEAN_OPERATOR = 29;
+  int BOOLEAN_OPERATOR = 30;
   /** RegularExpression Id. */
-  int EQ = 30;
+  int EQ = 31;
   /** RegularExpression Id. */
-  int NEQ = 31;
+  int NEQ = 32;
   /** RegularExpression Id. */
-  int LT = 32;
+  int LT = 33;
   /** RegularExpression Id. */
-  int GT = 33;
+  int GT = 34;
   /** RegularExpression Id. */
-  int LTE = 34;
+  int LTE = 35;
   /** RegularExpression Id. */
-  int GTE = 35;
+  int GTE = 36;
   /** RegularExpression Id. */
-  int LOGICAL_OPERATOR = 36;
+  int LOGICAL_OPERATOR = 37;
   /** RegularExpression Id. */
-  int HEADER_INDICATOR = 37;
+  int HEADER_INDICATOR = 38;
   /** RegularExpression Id. */
-  int SUBJECT_VAR = 38;
+  int SUBJECT_VAR = 39;
   /** RegularExpression Id. */
-  int PREDICATE_VAR = 39;
+  int PREDICATE_VAR = 40;
   /** RegularExpression Id. */
-  int OBJECT_VAR = 40;
+  int OBJECT_VAR = 41;
   /** RegularExpression Id. */
-  int IRIref = 41;
+  int IRIref = 42;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -95,10 +95,11 @@ public interface LQMLParserConstants {
     "\"\\r\"",
     "\"\\t\"",
     "\"\\n\"",
+    "\"//\"",
     "\"def\"",
     "\"label\"",
     "\"description\"",
-    "\"rule\"",
+    "\"match\"",
     "\"action\"",
     "\"metric\"",
     "\"author\"",
