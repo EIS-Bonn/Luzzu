@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
@@ -16,6 +17,7 @@ import org.apache.jena.riot.lang.PipedQuadsStream;
 import org.apache.jena.riot.lang.PipedRDFIterator;
 import org.apache.jena.riot.lang.PipedRDFStream;
 import org.apache.jena.riot.lang.PipedTriplesStream;
+import org.eclipse.jetty.util.BlockingArrayQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +30,7 @@ import com.hp.hpl.jena.sparql.core.Quad;
 
 import de.unibonn.iai.eis.luzzu.annotations.QualityMetadata;
 import de.unibonn.iai.eis.luzzu.annotations.QualityReport;
+import de.unibonn.iai.eis.luzzu.assessment.ComplexQualityMetric;
 import de.unibonn.iai.eis.luzzu.assessment.QualityMetric;
 import de.unibonn.iai.eis.luzzu.cache.CacheManager;
 import de.unibonn.iai.eis.luzzu.datatypes.Object2Quad;
@@ -37,7 +40,6 @@ import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
 import de.unibonn.iai.eis.luzzu.io.IOProcessor;
 import de.unibonn.iai.eis.luzzu.io.configuration.DeclerativeMetricCompiler;
 import de.unibonn.iai.eis.luzzu.io.configuration.ExternalMetricLoader;
-import de.unibonn.iai.eis.luzzu.io.util.CountLatch;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 import de.unibonn.iai.eis.luzzu.qml.parser.ParseException;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.LMI;
@@ -64,14 +66,13 @@ public class StreamProcessor implements IOProcessor {
 	
 	protected PipedRDFIterator<?> iterator;
 	protected PipedRDFStream<?> rdfStream;
-	
-	private ExecutorService executor = Executors.newSingleThreadExecutor(); // PipedRDFStream and PipedRDFIterator need to be on different threads
-	private ExecutorService metricThreadPool = Executors.newFixedThreadPool(10);
-	private final CountLatch metricThreadLatch = new CountLatch(0);
+		
+	private ExecutorService executor;
+	private List<MetricProcess> lstMetricConsumers = new ArrayList<MetricProcess>();
 
+	
 	private boolean isInitalised = false;
-	
-	
+			
 	public StreamProcessor(String datasetURI, boolean genQualityReport, Model configuration){
 		this.datasetURI = datasetURI;
 		this.genQualityReport = genQualityReport;
@@ -114,11 +115,26 @@ public class StreamProcessor implements IOProcessor {
 		} catch (ExternalMetricLoaderException e) {
 			logger.error(e.getLocalizedMessage());
 		}
+		
+		this.executor = Executors.newSingleThreadExecutor();
+	}
+	
+	public void cleanUp() throws ProcessorNotInitialised{
+		
+		this.isInitalised = false;
+		
+		this.lstMetricConsumers.clear();
+		this.metricInstances.clear();
+				
+		if (!this.executor.isShutdown()){
+			this.executor.shutdownNow();
+		}
 	}
 
 	public void startProcessing() throws ProcessorNotInitialised{
+				
 		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");		
-//		StreamMetadataSniffer sniffer = new StreamMetadataSniffer();
+		StreamMetadataSniffer sniffer = new StreamMetadataSniffer();
 		
 		Runnable parser = new Runnable(){
 			public void run() {
@@ -126,38 +142,38 @@ public class StreamProcessor implements IOProcessor {
 			}
 		};
 		
-		executor.submit(parser); 
-
-		while (this.iterator.hasNext()){
-			Object2Quad stmt = new Object2Quad(this.iterator.next());
-//			sniffer.sniff(stmt.getStatement());
-			
-			for(String className : this.metricInstances.keySet()){
-//				logger.debug("Statement with triple <{}> passed to metric {}", stmt.getStatement().asTriple().toString(), className);
-				this.metricInstances.get(className).compute(stmt.getStatement());
-//				this.metricThreadLatch.increment();
-//				this.metricThreadPool.submit(new MetricThread(this.metricInstances.get(className), stmt));
-			}
-		}
+		executor.submit(parser);
 		
 		try {
-			this.metricThreadLatch.awaitZero();
-		} catch (InterruptedException e) {
-			logger.error("Exception on metric assessment calculation : {}",e.getLocalizedMessage());
-		}
+			while (this.iterator.hasNext()) {
 				
-//		if (sniffer.getCachingObject() != null){
-//			cacheMgr.addToCache(graphCacheName, datasetURI, sniffer.getCachingObject());
-//		}
-	}
-
-
-	public void cleanUp() throws ProcessorNotInitialised{
-		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");
+				Object2Quad stmt = new Object2Quad(this.iterator.next());
+				sniffer.sniff(stmt.getStatement());
+				
+				if (lstMetricConsumers != null){
+					for(MetricProcess mConsumer : lstMetricConsumers) {
+						mConsumer.notifyNewQuad(stmt);
+					}
+				}
+			}
+		} 
+		finally {
+			if (lstMetricConsumers != null){
+				for(MetricProcess mConsumer : lstMetricConsumers) {
+					mConsumer.stop();
+				}	
+			}		
+		}
 		
-		if (!this.executor.isShutdown()){
-			this.executor.shutdown();
-			this.metricThreadPool.shutdown();
+		if (sniffer.getCachingObject() != null) {
+			cacheMgr.addToCache(graphCacheName, datasetURI, sniffer.getCachingObject());
+		}
+		
+		for(String clazz : metricInstances.keySet()){
+			if(metricInstances.get(clazz) instanceof ComplexQualityMetric){
+				((ComplexQualityMetric)metricInstances.get(clazz)).after();
+			}
+			metricInstances.get(clazz).metricValue();
 		}
 	}
 	
@@ -165,8 +181,6 @@ public class StreamProcessor implements IOProcessor {
 		NodeIterator iter = metricConfiguration.listObjectsOfProperty(LMI.metric);
 		Map<String, Class<? extends QualityMetric>> map = loader.getQualityMetricClasses();
 		
-		//Add declerative instance classes
-		//TODO better exception handling
 		try {
 			map.putAll(this.dmc.compile());
 		} catch (IOException e1) {
@@ -193,6 +207,13 @@ public class StreamProcessor implements IOProcessor {
 			metricInstances.put(className, metric);
 		}
 		
+		for(String className : this.metricInstances.keySet()) {
+			if (this.metricInstances.get(className) instanceof ComplexQualityMetric){
+				((ComplexQualityMetric)this.metricInstances.get(className)).before();
+			}
+			this.lstMetricConsumers.add(new MetricProcess(this.metricInstances.get(className)));
+		}
+		
 	}
 
 	private void generateQualityReport() {
@@ -208,8 +229,7 @@ public class StreamProcessor implements IOProcessor {
 		this.qualityReport = r.createQualityReport(res, qualityProblems);
 	}
 	
-	public void generateQualityMetadata(){
-		System.out.println(this.metricThreadLatch.toString());
+	private void generateQualityMetadata(){
 		Resource res = ModelFactory.createDefaultModel().createResource(this.datasetURI);
 		
 		QualityMetadata md = new QualityMetadata(res, false);
@@ -230,23 +250,59 @@ public class StreamProcessor implements IOProcessor {
 		return this.qualityReport;
 	}
 
-	private final class MetricThread implements Runnable {
-        QualityMetric m;
-        Object2Quad stmt;
+	private final class MetricProcess {
+		volatile Queue<Object2Quad> quadsToProcess = new BlockingArrayQueue<Object2Quad>(10000000);
+		Thread metricThread = null;
+		String metricName = null;
         
-        MetricThread(QualityMetric m, Object2Quad stmt) { 
-        	this.m = m;
-        	this.stmt = stmt;
+        Integer stmtsProcessed = 0;
+        boolean stopSignal = false;
+        
+        MetricProcess(final QualityMetric m) { 
+        	
+        	this.metricName = m.getClass().getSimpleName();
+        	        	
+        	this.metricThread = (new Thread() { 
+        		@Override
+        		public void run() {
+        			logger.debug("Starting thread for metric {}", m.getClass().getName());
+        			
+        			Object2Quad curQuad = null;
+        			
+        			while(!stopSignal || !quadsToProcess.isEmpty()) {
+        				
+        				curQuad = quadsToProcess.poll();
+        				
+        				if(curQuad != null) {
+        					logger.trace("Metric {}, new quad (processed: {}, to-process: {})", m.getClass().getName(), stmtsProcessed, quadsToProcess.size());
+        					
+	        				m.compute(curQuad.getStatement());
+	        				
+	        				curQuad = null;
+	            			stmtsProcessed++;
+        				}
+        			}
+        			logger.debug("Thread for metric {} completed, total statements processed {}", m.getClass().getName(), stmtsProcessed);
+        		}
+        		
+        	});
+        	
+        	this.metricThread.start();
         }
-        
-        public void run() {
-        	synchronized(m){
-        		m.compute(stmt.getStatement());
-        	}
-			metricThreadLatch.decrement();
 
-        }
-        
+		public void notifyNewQuad(Object2Quad newQuad) {
+			quadsToProcess.add(newQuad);
+			logger.trace("Metric {}, element added to queue (to-process: {})", this.metricName, quadsToProcess.size());
+		}
+		
+		public void stop() {
+			while(!quadsToProcess.isEmpty()) {
+				logger.debug("Waiting for items on queue: {} Metric: {}", quadsToProcess.size(), this.metricName);
+			}
+			
+			this.stopSignal = true;
+		}
+
     }
 
 }
