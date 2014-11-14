@@ -5,6 +5,8 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.core.Quad;
+
+import de.unibonn.iai.eis.luzzu.cache.CacheObject;
 import de.unibonn.iai.eis.luzzu.semantics.utilities.Commons;
 
 /**
@@ -13,13 +15,19 @@ import de.unibonn.iai.eis.luzzu.semantics.utilities.Commons;
  * Datastructure for caching Quality Metadata Graphs
  *  
  */
-public class TemporaryGraphMetadataCacheObject {
+public class TemporaryGraphMetadataCacheObject implements CacheObject {
 
-	private Resource graphURI = null;
-	private Model metadataModel = ModelFactory.createDefaultModel();
+	/**
+	 * Serial Version
+	 */
+	private static final long serialVersionUID = -286271367636630291L;
+	
+	transient private Resource graphURI = null;
+	transient private Model metadataModel = null;
 	
 	public TemporaryGraphMetadataCacheObject(Resource graphURI){
 		this.graphURI = graphURI;
+		this.metadataModel = ModelFactory.createDefaultModel();
 	}
 	
 	public void addTriplesToMetadata(Quad quad){
