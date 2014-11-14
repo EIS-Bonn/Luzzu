@@ -87,6 +87,9 @@ public class DeclerativeMetricCompiler {
 		
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(c, Locale.ENGLISH,null);
         
+        File f = new File("classes/");
+        if (!f.exists()) f.mkdir();
+        
         //specify classes output folder
         List<String> options = Arrays.asList("-d", "classes/");
 	    
