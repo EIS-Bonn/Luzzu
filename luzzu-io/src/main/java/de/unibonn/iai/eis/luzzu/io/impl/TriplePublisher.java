@@ -2,9 +2,9 @@ package de.unibonn.iai.eis.luzzu.io.impl;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Properties;
 
 import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.VoidFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +13,14 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
+import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
+
 public class TriplePublisher implements Serializable {
 	private static final long serialVersionUID = 7937360002166659060L;
+	private static final Properties sparkProperties = PropertyManager.getInstance().getProperties("spark.properties");
 
 	final static Logger logger = LoggerFactory.getLogger(TriplePublisher.class);
 	
-	// rabbitmq
 	private final static String EXCHANGE_NAME = "triples_publish";
 	
 	private static Connection connection;
@@ -26,11 +28,11 @@ public class TriplePublisher implements Serializable {
 	
 	private static void connect() {
 		ConnectionFactory factory = new ConnectionFactory();
-	 	factory.setHost("130.211.56.15");
-        factory.setUsername("luzzu");
-        factory.setPassword("luzzu");
-        factory.setVirtualHost("luzzu");
-        factory.setPort(5672);
+		factory.setHost(sparkProperties.getProperty("RABBIT_MQ_SERVER"));
+        factory.setUsername(sparkProperties.getProperty("RABBIT_MQ_USERNAME"));
+        factory.setPassword(sparkProperties.getProperty("RABBIT_MQ_PASSWORD"));
+        factory.setVirtualHost(sparkProperties.getProperty("RABBIT_MQ_VIRTUALHOST"));
+        factory.setPort(Integer.parseInt(sparkProperties.getProperty("RABBIT_MQ_PORT")));
         
 		try {
 			logger.debug("Connecting channel to MQ service...");
@@ -38,7 +40,6 @@ public class TriplePublisher implements Serializable {
 			connection = factory.newConnection();
 			channel = connection.createChannel();
 			
-			// [slondono] - create an exchange to publish triples
 			channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
 			
 			logger.debug("OK connected to MQ service, exchange {} created", EXCHANGE_NAME);

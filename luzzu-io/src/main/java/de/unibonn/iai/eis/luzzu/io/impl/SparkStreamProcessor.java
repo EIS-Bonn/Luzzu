@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
@@ -16,7 +17,6 @@ import org.apache.jena.riot.RDFLanguages;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.function.VoidFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,14 +49,12 @@ import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 import de.unibonn.iai.eis.luzzu.qml.parser.ParseException;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.LMI;
 
-/**
- * @author Jeremy Debattista
- *
- *	http://jena.apache.org/documentation/io/rdf-input.html
- */
-public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
+
+public class SparkStreamProcessor  implements IOProcessor, Serializable  {
 	
 	private static final long serialVersionUID = 2448767269028661064L;
+	transient private static final Properties sparkProperties = PropertyManager.getInstance().getProperties("spark.properties");
+
 
 	transient private ConcurrentMap<String, QualityMetric> metricInstances = new ConcurrentHashMap<String, QualityMetric>();
 	transient private ExternalMetricLoader loader = ExternalMetricLoader.getInstance();
@@ -69,7 +67,7 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 	transient private Model metricConfiguration;
 	transient private Model qualityReport;
 	
-	transient private ExecutorService executor; // PipedRDFStream and PipedRDFIterator need to be on different threads
+	transient private ExecutorService executor; 
 	
 	private JavaRDD<String> datasetRDD;
 		
@@ -78,7 +76,7 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 	private TriplePublisher triplePublisher = new TriplePublisher();
 	private List<MetricProcess> lstMetricConsumers = new ArrayList<MetricProcess>();
 			
-	public SparkStreamProcessorPubSub(String datasetURI, boolean genQualityReport, Model configuration){
+	public SparkStreamProcessor(String datasetURI, boolean genQualityReport, Model configuration){
 		this.datasetURI = datasetURI;
 		
 		this.datasetRDD = sc.textFile(datasetURI);
@@ -115,10 +113,6 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 			logger.error(e.getLocalizedMessage());
 		}
 		
-		// [slondono] - Create a thread pool intended to run all the metric threads in an individual thread,
-		// the pool takes care of mantaining the threads and reusing them for efficiency, the thread pool is initialized 
-		// here as we want to make the number of threads equal to the number of metrics to be used and we don't want to instantiate
-		// an executor every time startProcessing() is invoked. 
 		this.executor = Executors.newSingleThreadExecutor();
 	}
 
@@ -148,18 +142,17 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 		}
 	}
 	
-	private static SparkConf conf = new SparkConf().setAppName("Luzzu").setMaster("local[4]");
+	private static SparkConf conf = new SparkConf().setAppName(sparkProperties.getProperty("APPLICATION_NAME"));
 	private static JavaSparkContext sc = new JavaSparkContext(conf);	
-	private static StreamMetadataSniffer sniffer = new StreamMetadataSniffer();
 	
     private static Connection connection;
     static {
     	ConnectionFactory factory = new ConnectionFactory();
-    	factory.setHost("130.211.56.15");
-        factory.setUsername("luzzu");
-        factory.setPassword("luzzu");
-        factory.setVirtualHost("luzzu");
-        factory.setPort(5672);
+    	factory.setHost(sparkProperties.getProperty("RABBIT_MQ_SERVER"));
+        factory.setUsername(sparkProperties.getProperty("RABBIT_MQ_USERNAME"));
+        factory.setPassword(sparkProperties.getProperty("RABBIT_MQ_PASSWORD"));
+        factory.setVirtualHost(sparkProperties.getProperty("RABBIT_MQ_VIRTUALHOST"));
+        factory.setPort(Integer.parseInt(sparkProperties.getProperty("RABBIT_MQ_PORT")));
         try {
 			connection = factory.newConnection();
 		} catch (IOException e1) {
@@ -170,7 +163,6 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
     
 
 	public void startProcessing() throws ProcessorNotInitialised{
-		
 		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");		
 		
 		try {
@@ -178,15 +170,11 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 		} catch(IOException e){
 			logger.error("I/O error publising triples", e);
 		} finally {		
-			// [slondono] - signal all subscribers, letting them know that all triples have been published and hence they can stop when
-			// no more messages are available into the queues
 			if (lstMetricConsumers != null){
-				// signal all metric processors to stop...
 				for(MetricProcess mConsumer : lstMetricConsumers) {
 					mConsumer.stop();
 				}
 				
-				// and wait until all have finished...
 				boolean allFinished = false;
 				
 				while(!allFinished) {
@@ -203,9 +191,6 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 			}
 		}
 		
-//		if (sniffer.getCachingObject() != null) {
-//			cacheMgr.addToCache(graphCacheName, datasetURI, sniffer.getCachingObject());
-//		}
 		
 		for(String clazz : metricInstances.keySet()){
 			if(metricInstances.get(clazz) instanceof ComplexQualityMetric){
@@ -251,7 +236,6 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 				((ComplexQualityMetric)this.metricInstances.get(className)).before();
 			}
 			
-			// [slondono] - create and initialize subscribers
 			this.lstMetricConsumers.add(new MetricProcess(this.metricInstances.get(className), connection));
 		}
 		
@@ -296,8 +280,6 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 	private class MetricProcess implements Serializable {
 		private static final long serialVersionUID = -5844313472934426666L;
 		
-		// [slondono] - The quality metric instance stays alive, even after call has finished, this way accumulating the 
-		// results of all invocations of call performed on this instance
 		Thread metricThread = null;
 		String metricName = null;
 	    
@@ -316,7 +298,6 @@ public class SparkStreamProcessorPubSub  implements IOProcessor, Serializable  {
 				channel = connection.createChannel();
 				channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
 								
-				// [slondono] - declare exlusive queue for this paticular consumer
 				subscribeQueueName = channel.queueDeclare().getQueue();
 		        channel.queueBind(subscribeQueueName, EXCHANGE_NAME, "");
 		        
