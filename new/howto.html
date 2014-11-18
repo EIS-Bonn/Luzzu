@@ -224,7 +224,9 @@ luzzu-communications $ mvn exec:java -X
 			<h4>Creating Custom Metrics</h4>
 			<p>	
 	      <div class="panel panel-primary" style="width:100%; cursor: pointer; cursor: hand;">
-	  		<div class="panel-heading customMetric" id="lqml">Luzzu Quality Metric Language</div>
+	  		<div class="panel-heading customMetric" id="lqml">Luzzu Quality Metric Language
+									<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="float:right; padding-top:3px; padding-right:10px"></span>
+								</div>
 	  		<div class="panel-body" style="padding-bottom:22px;" id="lqmlBody">
 	  			<p>The Luzzu framework enables knowledge engineers without Java expertise to create quality metrics in a declarative manner. This is attributable to the fact that LQML caters for varying linked data quality metrics, which can be as basic as matching a particular triple pattern. An LQML rule is made up of METRIC, LABEL, DESCRIPTION, MATCH, and ACTION.
 
@@ -242,7 +244,9 @@ Click here for LQML Documentation.
 		  </div>
 		
       	<div class="panel panel-success" style="width:100%; cursor: pointer; cursor: hand;">
-  			<div class="panel-heading customMetric" id="java">Extending Java Classes</div>
+  			<div class="panel-heading customMetric" id="java">Extending Java Classes
+									<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="float:right; padding-top:3px; padding-right:10px"></span>
+								</div>
   			<div class="panel-body" style="padding-bottom:22px;display:none" id="javaBody">
   				<p>The Luzzu framework's purpose is to allow third parties to create their own domain-specific quality metrics and then assess Linked Open Datasets using the framework itself. In order to create your own metrics, <code>luzzu-assessment.jar</code> has to be part of the build path (or adding the maven dependencies). The mentioned library consists of two main interfaces - <code>de.unibonn.iai.eis.luzzu.assessment.QualityMetric</code> and <code>de.unibonn.iai.eis.luzzu.assessment.ComplexQualityMetric</code>. The former allows developers to create simple metrics whilst the latter allows developers to define more complex quality metrics that might require pre-processing or post-processing.
 				<br/><br/>
