@@ -38,6 +38,7 @@ public class QualityResource {
 	 * @param formParams parameters for the calculation: Dataset = URI of the dataset to evaluate, 
 	 * 			QualityReportRequired = boolean, should a quality report be generated?, 
 	 * 			MetricsConfiguration = JSON-LD specifying the metrics to be calculated (refer to documentation for details)
+	 * 			BaseURI = (Optional) define a base URI to the dataset when dataset dumps are split into more than one file/location
 	 * @return quality report in JSON-LD format, if parameter QualityReportRequired was true, 
 	 * 			otherwise, the dataset URI (refer to documentation for details)
 	 */
@@ -49,6 +50,7 @@ public class QualityResource {
 		String jsonResponse = null;
 		String datasetURI = null;
 		String jsonStrMetricsConfig = null;
+		String baseURI = "";
 		boolean genQualityReport = false;
 		
 		try {
@@ -58,9 +60,10 @@ public class QualityResource {
 			List<String> lstDatasetURI = formParams.get("Dataset");
 			List<String> lstQualityReportReq = formParams.get("QualityReportRequired");
 			List<String> lstMetricsConfig = formParams.get("MetricsConfiguration");
+			List<String> lstBaseUri = formParams.get("BaseUri");
 			
-			logger.debug("Processing request parameters. DatasetURI: {}; QualityReportRequired: {}; MetricsConfiguration: {}", 
-					lstDatasetURI, lstQualityReportReq, lstMetricsConfig);
+			logger.debug("Processing request parameters. DatasetURI: {}; QualityReportRequired: {}; MetricsConfiguration: {}; BaseUri: {}", 
+					lstDatasetURI, lstQualityReportReq, lstMetricsConfig, lstBaseUri);
 									
 			if(lstDatasetURI == null || lstDatasetURI.size() <= 0) {
 				throw new IllegalArgumentException("Dataset URI parameter was not provided");
@@ -73,7 +76,8 @@ public class QualityResource {
 			}
 			
 			// Assign parameter values to variables and set defaults
-			datasetURI = lstDatasetURI.get(0);
+
+			
 			jsonStrMetricsConfig = lstMetricsConfig.get(0);
 			genQualityReport = Boolean.parseBoolean(lstQualityReportReq.get(0));
 
@@ -81,7 +85,14 @@ public class QualityResource {
 			Model modelConfig = ModelFactory.createDefaultModel();
 			RDFDataMgr.read(modelConfig, new StringReader(jsonStrMetricsConfig), null, Lang.JSONLD);
 
-			StreamProcessor strmProc = new StreamProcessor(datasetURI, genQualityReport, modelConfig);
+			StreamProcessor strmProc;
+			if (lstDatasetURI.size() > 1){
+				datasetURI = lstDatasetURI.get(0);
+				strmProc = new StreamProcessor(datasetURI, genQualityReport, modelConfig);
+			} else {
+				if (lstBaseUri != null) baseURI = lstBaseUri.get(0);
+				strmProc = new StreamProcessor(baseURI, lstDatasetURI, genQualityReport, modelConfig);
+			}
 			strmProc.processorWorkFlow();
 			strmProc.cleanUp();
 			

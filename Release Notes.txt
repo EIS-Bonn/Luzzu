@@ -9,3 +9,4 @@ Release Notes
 * Added first version of a Spark Stream Processor
 * Persistence of Cache on disk
 * User Driven Ranking
+* Added functionality in stream processor to allow multiple dumps in the same dataset to be assessed 

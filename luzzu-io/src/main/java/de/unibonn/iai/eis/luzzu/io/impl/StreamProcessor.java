@@ -59,6 +59,7 @@ public class StreamProcessor implements IOProcessor {
 
 	final static Logger logger = LoggerFactory.getLogger(StreamProcessor.class);
 
+	private List<String> datasetList;
 	private String datasetURI;
 	private boolean genQualityReport;
 	private Model metricConfiguration;
@@ -74,7 +75,8 @@ public class StreamProcessor implements IOProcessor {
 	private boolean isInitalised = false;
 			
 	public StreamProcessor(String datasetURI, boolean genQualityReport, Model configuration){
-		this.datasetURI = datasetURI;
+		this.datasetList = new ArrayList<String>();
+		this.datasetList.add(datasetURI);
 		this.genQualityReport = genQualityReport;
 		this.metricConfiguration = configuration;
 		
@@ -83,12 +85,25 @@ public class StreamProcessor implements IOProcessor {
 		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", datasetURI);
 	}
 	
+	public StreamProcessor(String baseURI, List<String> datasetList, boolean genQualityReport, Model configuration){
+		this.datasetList = datasetList;
+		this.genQualityReport = genQualityReport;
+		this.metricConfiguration = configuration;
+		
+		cacheMgr.createNewCache(graphCacheName, 50);
+		
+		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", baseURI);
+	}
+	
 	public void processorWorkFlow(){
-		this.setUpProcess();
-		try {
-			this.startProcessing();
-		} catch (ProcessorNotInitialised e) {
-			this.processorWorkFlow();
+		for (String dataset : datasetList){
+			this.datasetURI = dataset;
+			this.setUpProcess();
+			try {
+				this.startProcessing();
+			} catch (ProcessorNotInitialised e) {
+				this.processorWorkFlow();
+			}
 		}
 		
 		this.generateQualityMetadata();
@@ -98,25 +113,25 @@ public class StreamProcessor implements IOProcessor {
 
 	@SuppressWarnings("unchecked")
 	public void setUpProcess() {
-		Lang lang  = RDFLanguages.filenameToLang(datasetURI);
-
-		if ((lang == Lang.NQ) || (lang == Lang.NQUADS)){
-			this.iterator = new PipedRDFIterator<Quad>();
-			this.rdfStream = new PipedQuadsStream((PipedRDFIterator<Quad>) iterator);
-		} else {
-			this.iterator = new PipedRDFIterator<Triple>();
-			this.rdfStream = new PipedTriplesStream((PipedRDFIterator<Triple>) iterator);
-		}
-		
-		this.isInitalised = true;
-		
-		try {
-			this.loadMetrics();
-		} catch (ExternalMetricLoaderException e) {
-			logger.error(e.getLocalizedMessage());
-		}
-		
-		this.executor = Executors.newSingleThreadExecutor();
+			Lang lang  = RDFLanguages.filenameToLang(datasetURI);
+	
+			if ((lang == Lang.NQ) || (lang == Lang.NQUADS)){
+				this.iterator = new PipedRDFIterator<Quad>();
+				this.rdfStream = new PipedQuadsStream((PipedRDFIterator<Quad>) iterator);
+			} else {
+				this.iterator = new PipedRDFIterator<Triple>();
+				this.rdfStream = new PipedTriplesStream((PipedRDFIterator<Triple>) iterator);
+			}
+			
+			this.isInitalised = true;
+			
+			try {
+				this.loadMetrics();
+			} catch (ExternalMetricLoaderException e) {
+				logger.error(e.getLocalizedMessage());
+			}
+			
+			this.executor = Executors.newSingleThreadExecutor();
 	}
 	
 	public void cleanUp() throws ProcessorNotInitialised{
