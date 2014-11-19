@@ -25,7 +25,7 @@ public class Main {
         final ResourceConfig rc = new ResourceConfig().packages("de.unibonn.iai.eis.luzzu").property(JsonGenerator.PRETTY_PRINTING, true);	;
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
-        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+       return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
 
     /**
@@ -37,10 +37,18 @@ public class Main {
     	    	
     	// Start server and wait for user input to stop
         final HttpServer server = startServer();
-        System.out.println(String.format("Jersey app started with WADL available at " + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
-        System.in.read();
         
-        server.shutdown();
+        try {
+            server.start();
+            // Wait forever (i.e. until the JVM instance is terminated externally)
+            Thread.currentThread().join();
+        } catch (Exception ioe) {
+            System.out.println("Error running Luzzu Communications service: " + ioe.toString());
+        } finally {
+        	if(server != null && server.isStarted()) {
+        		server.shutdownNow();
+        	}
+        }
     }
 
 }
