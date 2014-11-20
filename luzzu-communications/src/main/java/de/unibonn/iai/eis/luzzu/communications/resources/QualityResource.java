@@ -2,6 +2,7 @@ package de.unibonn.iai.eis.luzzu.communications.resources;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class QualityResource {
 	 * @param formParams parameters for the calculation: Dataset = URI of the dataset to evaluate, 
 	 * 			QualityReportRequired = boolean, should a quality report be generated?, 
 	 * 			MetricsConfiguration = JSON-LD specifying the metrics to be calculated (refer to documentation for details)
-	 * 			BaseURI = (Optional) define a base URI to the dataset when dataset dumps are split into more than one file/location
+	 * 			BaseUri = (Optional) define a base URI to the dataset when dataset dumps are split into more than one file/location
 	 * @return quality report in JSON-LD format, if parameter QualityReportRequired was true, 
 	 * 			otherwise, the dataset URI (refer to documentation for details)
 	 */
@@ -86,12 +87,13 @@ public class QualityResource {
 			RDFDataMgr.read(modelConfig, new StringReader(jsonStrMetricsConfig), null, Lang.JSONLD);
 
 			StreamProcessor strmProc;
-			if (lstDatasetURI.size() > 1){
-				datasetURI = lstDatasetURI.get(0);
+			String[] expandedListDatasetURI = lstDatasetURI.get(0).split(",");
+			if (expandedListDatasetURI.length == 1){
+				datasetURI = expandedListDatasetURI[0];
 				strmProc = new StreamProcessor(datasetURI, genQualityReport, modelConfig);
 			} else {
 				if (lstBaseUri != null) baseURI = lstBaseUri.get(0);
-				strmProc = new StreamProcessor(baseURI, lstDatasetURI, genQualityReport, modelConfig);
+				strmProc = new StreamProcessor(baseURI, Arrays.asList(expandedListDatasetURI), genQualityReport, modelConfig);
 			}
 			strmProc.processorWorkFlow();
 			strmProc.cleanUp();
@@ -103,7 +105,7 @@ public class QualityResource {
 				modelQualityRep = strmProc.retreiveQualityReport();
 			}
 			
-			jsonResponse = buildJsonResponse(datasetURI, modelQualityRep);
+			jsonResponse = buildJsonResponse((datasetURI == null) ? baseURI : datasetURI, modelQualityRep);
 			logger.debug("Quality computation request completed. Output: {}", jsonResponse);
 						
 		} catch(Exception ex) {

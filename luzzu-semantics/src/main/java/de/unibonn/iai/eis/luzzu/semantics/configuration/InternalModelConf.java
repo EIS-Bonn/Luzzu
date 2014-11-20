@@ -45,7 +45,11 @@ public class InternalModelConf {
 				temp = ModelFactory.createDefaultModel();
 				logger.debug("Loading ontology : {} ", ontology.getName());
 				temp.read(ontology.getPath(), "N3");
-				semanticModel.addNamedModel(guessNamespace(temp), temp);
+				try{
+					semanticModel.addNamedModel(guessNamespace(temp), temp);
+				} catch (Exception e) {
+					logger.debug("Could not load model " + ontology.getPath());
+				}
 			}	
 		}
 	}

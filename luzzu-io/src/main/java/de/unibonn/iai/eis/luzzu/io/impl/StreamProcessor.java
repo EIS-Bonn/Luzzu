@@ -40,6 +40,7 @@ import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
 import de.unibonn.iai.eis.luzzu.io.IOProcessor;
 import de.unibonn.iai.eis.luzzu.io.configuration.DeclerativeMetricCompiler;
 import de.unibonn.iai.eis.luzzu.io.configuration.ExternalMetricLoader;
+import de.unibonn.iai.eis.luzzu.properties.EnvironmentProperties;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 import de.unibonn.iai.eis.luzzu.qml.parser.ParseException;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.LMI;
@@ -96,20 +97,48 @@ public class StreamProcessor implements IOProcessor {
 	}
 	
 	public void processorWorkFlow(){
+		this.setUpProcess();
+		
 		for (String dataset : datasetList){
 			this.datasetURI = dataset;
-			this.setUpProcess();
 			try {
 				this.startProcessing();
 			} catch (ProcessorNotInitialised e) {
 				this.processorWorkFlow();
 			}
+			
+			this.reinitialiseProcessors();
 		}
 		
 		this.generateQualityMetadata();
 		if (this.genQualityReport) this.generateQualityReport();
 	}
 
+	@SuppressWarnings("unchecked")
+	private void reinitialiseProcessors(){
+		if (!this.executor.isShutdown()){
+			this.executor.shutdownNow();
+		}
+		
+		Lang lang  = RDFLanguages.filenameToLang(datasetURI);
+		
+		if ((lang == Lang.NQ) || (lang == Lang.NQUADS)){
+			this.iterator = new PipedRDFIterator<Quad>();
+			this.rdfStream = new PipedQuadsStream((PipedRDFIterator<Quad>) iterator);
+		} else {
+			this.iterator = new PipedRDFIterator<Triple>();
+			this.rdfStream = new PipedTriplesStream((PipedRDFIterator<Triple>) iterator);
+		}
+		
+		this.isInitalised = true;
+		
+		this.executor = Executors.newSingleThreadExecutor();
+		
+		lstMetricConsumers = new ArrayList<MetricProcess>();
+		for(String className : this.metricInstances.keySet()) {
+			this.lstMetricConsumers.add(new MetricProcess(this.metricInstances.get(className)));
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	public void setUpProcess() {
@@ -240,12 +269,22 @@ public class StreamProcessor implements IOProcessor {
 			qualityProblems.add(r.createQualityProblem(m.getMetricURI(), m.getQualityProblems()));
 		}
 		
-		Resource res = ModelFactory.createDefaultModel().createResource(this.datasetURI);
+		Resource res = null;
+		try {
+			res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getDatasetURI());
+		} catch (Exception e) {
+			logger.error("Dataset Exception " + e.getLocalizedMessage());
+		}
 		this.qualityReport = r.createQualityReport(res, qualityProblems);
 	}
 	
 	private void generateQualityMetadata(){
-		Resource res = ModelFactory.createDefaultModel().createResource(this.datasetURI);
+		Resource res = null;
+		try {
+			res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getDatasetURI());
+		} catch (Exception e1) {
+			logger.error("Dataset Exception " + e1.getLocalizedMessage());
+		}
 		
 		QualityMetadata md = new QualityMetadata(res, false);
 		

@@ -61,12 +61,13 @@ public class ExternalMetricLoader {
 		File[] listOfFiles = externalsFolder.listFiles();
 		
 		for(File metrics : listOfFiles){
+			if (!metrics.isDirectory()) break;
 			File jarFile = metrics.listFiles(jarFilter)[0];
 			metricsInFile.putIfAbsent(jarFile, new ArrayList<String>());
 			logger.info("Loading metrics from : {} ", jarFile.toPath());
 			
 			Model m = ModelFactory.createDefaultModel();
-			m.read(metrics+"//metrics.trig");
+			m.read(metrics+"/metrics.trig");
 			
 			
 			NodeIterator res = m.listObjectsOfProperty(LMI.javaPackageName);

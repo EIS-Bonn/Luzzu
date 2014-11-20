@@ -21,7 +21,7 @@ public class Main {
 	private static long tEnd;
 	
 	private static List<EvaluationCase> eCases = new ArrayList<EvaluationCase>();
-	private static int scalefactor[] = new int[]{2089};//,2785,28453,70812,141000,284826};
+	private static int scalefactor[] = new int[]{24,57,128,199,256,666,1369,2089,2785,28453,70812,141000,284826};
 	private static Map<Integer, Integer> generatedTriples = new HashMap<Integer,Integer>();
 	static{
 		generatedTriples.put(24, 9861);
@@ -73,10 +73,10 @@ public class Main {
 		}
 		
 		firstTimeGeneration = true;
-		for (int metric = 9; metric <= 9 ; metric++ ){
+		for (int metric = 0; metric <= 9 ; metric++ ){
 			eCases = new ArrayList<EvaluationCase>();
 			setUp(metric);
-			int iterations = 4;
+			int iterations = 10;
 			
 			for (EvaluationCase eCase : eCases){
 				System.out.println("Evaluating " + eCase.getCaseName());
