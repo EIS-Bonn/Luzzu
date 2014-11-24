@@ -72,81 +72,55 @@
         <!-- /.container -->
     </nav>
 
+
     <!-- Page Content -->
     <div class="container">
 
         <!-- Jumbotron Header -->
-        <header class="jumbotron hero-spacer" style="background: url('images/big_luzzu.jpg') no-repeat center center; height: 350px; top:0; left:0; z-index:-10; color:white">
-            <h1>Luzzu</h1>
-            <p>One of the most common sights around the coast of the Maltese Islands is the traditional boat called "Il-Luzzu" (pronounced loot-su). Luzzu is also a Quality Assessment Framework for Linked Open Datasets. Download the latest version here.</p>
-            <p><a class="btn btn-primary btn-large" href="about.html">Read More...</a>
-            </p>
+        <header>
+			<h1 class="page-header">About Luzzu</h1>
+	      	<div class="col-lg-6"> 
+			  <figure property="schema:image" resource="luzzu:images/Luzzu_Boat" typeof="schema:ImageObject">
+				 	<a target="_blank"  title="By Daniel Stout [CC-BY-SA-2.0 (http://creativecommons.org/licenses/by-sa/2.0)], via Wikimedia Commons" href="http://commons.wikimedia.org/wiki/File%3ATraditional_Maltese_fishing_boat.png"><img width="512" alt="Traditional Maltese fishing boat" src="//upload.wikimedia.org/wikipedia/commons/2/20/Traditional_Maltese_fishing_boat.png"/></a>
+				  	<figcaption property="schema:caption">Luzzu: Traditional Maltese Fishing Boat - Daniel Stout <a target="_blank"  property="http://creativecommons.org/ns#license" href="http://creativecommons.org/licenses/by-sa/2.0">(CC-BY-SA-2.0)</a></figcaption>
+			</figure>
+		</div>
+		  
+		<div class="col-lg-6">
+			 <p style="padding-top:10px">One of the most common sights around the coast of the Maltese Islands is the traditional boat called "Il-Luzzu" (pronounced loot-su). "Il-Luzzu" is an eye-catching boat that is brightly painted in shades of brownish-red, yellow and blue. A pair of Osiris eyes are usually painted at the bow. This was done in order to protect the fishermen from any bad luck.</p>
+				<p>Luzzu is also a Quality Assessment Framework for Linked Open Datasets. It is a generic framework based on the <a target="_blank" href="http://purl.org/eis/vocab/daq">Dataset Quality Ontology (daQ)</a>, allowing users to define their own quality metrics. We aim to provide an integrated platform that: 
+				<ol>
+					<li> assesses Linked Data quality using a library of generic and user-provided domain specific quality metrics in a scalable manner;</li>
+					<li> provides queryable quality metadata on the assessed datasets; </li>
+					<li> assembles detailed quality reports on assessed datasets. </li>
+				</ol></p>
+
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+    					Downloads
+  				</div>
+
+				<div class="panel-body">
+   					<span class="label label-info">Stable Release</span> Version 1.0.1 (Source: Zip/Tar) | Release Notes<br/>
+					<span class="label label-warning">Older Releases</span> Version 0.0.1 (Source: Zip/Tar) | Other Versions...<br/>
+					<div class="media">
+ 						 <a class="media-left" href="#"><img src="images/github.png" width="20px"></a>
+  						 <div class="media-body">GitHub Repository</div>
+					</div>
+  				</div>
+			</div>
+	    	</div>
         </header>
 
         <hr>
 
         <!-- Title -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h3>Features</h3>
-            </div>
-        </div>
         <!-- /.row -->
 
         <!-- Page Features -->
         <div class="row text-center">
 
-            <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img src="images/rdf.png" alt="" style="height:135px">
-                    <div class="caption">
-                        <h3>Ontology Driven Backend</h3>
-                        <p>Luzzu is based on a semantic schema backend, making its data interoperable with other semantic frameworks.</p>
-                        <p>
-                            <a href="#" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img src="images/bigdata.png" alt="">
-                    <div class="caption">
-                        <h3 style="margin-bottom:10px">Big Data Ready</h3>
-                        <p>Having hundred triples or billion triples makes no difference. The Luzzu stream processor scales linearly to the amount of triples available in a dataset.</p>
-                        <p>
-		   		<a href="evaluation.html" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img src="images/lqml.png" alt="">
-                    <div class="caption">
-                        <h3>Intuitive Metric Description</h3>
-                        <p>Define domain specific metrics using declarative patterns instead of implementing complex Java classes or XML.</p>
-                        <p>
-                            <a href="#" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-			
-            <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img src="images/ranking.png" alt="" style="height:135px">
-                    <div class="caption">
-                        <h3>Quality-Driven Ranking</h3>
-                        <p>Luzzu offers the possibility of ranking assessed datasets using the quality metadata attached to these LOD datasets.</p>
-                        <p>
-                            <a href="#" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
 
         </div>
         <!-- /.row -->
@@ -164,6 +138,8 @@
 
     </div>
     <!-- /.container -->
+
+
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Luzzu - A Linked Data Quality Assessment Framework">
+    <meta name="author" content="Jeremy Debattista">
+
+    <title>Luzzu - A Quality Assessment Framework for Linked Open Data</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/heroic-features.css" rel="stylesheet">
+    <link href="css/pygment_trac.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+	<link href="css/round-about.css" rel="stylesheet">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+		
+	<style>
+	table, th, td {
+	   border: 1px solid black;
+	   padding: 10px;
+	}
+
+	.axis path,
+	.axis line {
+	  fill: none;
+	  stroke: #000;
+	  shape-rendering: crispEdges;
+	}
+
+	.dot {
+	  stroke: #000;
+	}
+
+	.tooltip {
+	  position: absolute;
+	  width: 200px;
+	  height: 28px;
+	  pointer-events: none;
+	}
+	</style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/index.html">Luzzu - A Quality Assessment Framework for LOD</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="float:right">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="about.html">About</a>
+                    </li>
+                    <li>
+                        <a href="howto.html">How-To</a>
+                    </li>
+                    <li>
+                        <a href="downloads.html">Downloads</a>
+                    </li>
+                    <li>
+                        <a href="publications.html">Publications</a>
+                    </li>
+                    <li>
+                        <a href="team.html">The Team</a>
+                    </li>
+                    <li>
+                        <a href="contactus.html">Contact Us</a>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+    <!-- Page Content -->
+    <div class="container">
+		
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Big Data Suitability <small> - Evaluating the Stream Processor <span style="font-size:8pt; color:darkblack; float:right"><em><strong>Latest Update: 01/11/2014</strong></em></span></small></h1>
+				<p> Beyer and Laney<sup>1</sup> coined the definition of Big Data as <strong>High Volume</strong>, <strong>High Velocity</strong>, and <strong>High Variety</strong>. Volume means large amounts of data; velocity addresses how much information is handled in real time; variety addresses data diversity. The implemented Luzzu framework currently scales for both Volume and Variety. With regard to Volume, the processor runtime grows linearly with the amount of triples. We also cater for Variety since in Luzzu the results are not affected by data diversity. In particular, since we support the analysis of all kinds of data being represented as RDF any data schema and even various data models are supported as long as they can be mapped or encoded in RDF (e.g. relational data with R2RML mappings). Velocity completes the Big Data definition. Currently we employed Luzzu for quality assessment at well-defined checkpoints rather than in real time. However, due to its streaming nature, Luzzu can easily assess the performance of data streams as well thus catering for velocity.
+					
+					<p>We regularly evaluate our stream processors (Jena Stream Processor and Spark Stream Processor) and framework with regard to the scalability and big data. The latest evaluation tests were conducted on 01/11/2014. The following test parameters were used:
+					<ul>
+						<li>Setup: Google Cloud Platform (with 3 Clusters for the Spark Stream Processor)</li>
+						<li><a href="http://wifo5-03.informatik.uni-mannheim.de/bizer/berlinsparqlbenchmark/spec/" target="_blank">BSBM Generator</a> for datasets with different scale factors (24, 56, 128, 199, 256, 666, 1369, 2089, 2785, 28453, 70812, 284826)</li>
+						<li>Metrics (Available <a href="">here</a>) - Starting from no initialised metrics up till Extensional Conciseness: 
+							<ol>
+								<li>Dereferenceability of Forward Links (≈ 5.221s)</li>
+								<li>Detection of a Human Readable License (≈ 5.334s)</li>
+								<li>Detection of a Machine Readable License (≈ 5.228s)</li>
+								<li>Dereferenceability of Backward Links (≈ 14.364s)</li>
+								<li>Linkage Degree of Linked External Data Providers (≈ 25.415s)</li>
+								<li>Detection of a Human Readable Labels (≈ 6.283s)</li>
+								<li>Short URIs (≈ 5.069s)</li>
+								<li>Identification of Literals with Malformed Datatypes(≈ 5.346s)</li>
+								<li>Extensional Conciseness (≈ 5.376s)</li>
+							</ol>
+						</li>
+					</ul>
+					</p>
+					
+					
+			   <div class="panel panel-primary" style="width:100%; cursor: pointer; cursor: hand;">
+					<div class="panel-heading graph" id="jena_spark">Jena Stream Processor VS Spark Stream Processor
+						<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="float:right; padding-top:3px; padding-right:10px"></span>
+					</div>
+					<div class="panel-body" style="padding-bottom:22px;  display:none;" id="jena_sparkBody">
+						  	<div id="chart_div_js"></div>		
+					</div>
+			  </div>
+			  
+			   <div class="panel panel-success" style="width:100%; cursor: pointer; cursor: hand;">
+					<div class="panel-heading graph" id="jena">Time vs Dataset Triples with different Metric Initialisations
+											<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="float:right; padding-top:3px; padding-right:10px"></span>
+					</div>
+					<div class="panel-body" style="padding-bottom:22px; display:none;" id="jenaBody">
+						<div id="chart_div"></div>	
+					</div>
+			  </div>
+					
+					<hr>
+					<sup>1</sup> Beyer, M. A., Laney, D. The Importance of ‘Big Data’: A Definition. 21st June 2012. http://www.gartner.com/resId=2057415.
+            </div>
+        </div>
+		
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Maintained by: Enterprise Information Systems - University of Bonn <img src="images/logo-eis.png" width="80px" style="margin-left:15px; "/></p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+	
+	<!-- Custom -->
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	
+	<script>
+function loadChart(file, divId){
+	$("#"+divId).html('');
+	var margin = {top: 20, right: 20, bottom: 30, left: 40},
+	    width = 960 - margin.left - margin.right,
+	    height = 500 - margin.top - margin.bottom;
+
+	/* 
+	 * value accessor - returns the value to encode for a given data object.
+	 * scale - maps value to a visual display encoding, such as a pixel position.
+	 * map function - maps from data value to display value
+	 * axis - sets up axis
+	 */ 
+
+	// setup x 
+	var xValue = function(d) { return d.Triples;}, // data -> value
+	    xScale = d3.scale.linear().range([0, width]), // value -> display
+	    xMap = function(d) { return xScale(xValue(d));}, // data -> display
+	    xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+
+	// setup y
+	var yValue = function(d) { return d["Average Time (ms)"];}, // data -> value
+	    yScale = d3.scale.linear().range([height, 0]), // value -> display
+	    yMap = function(d) { return yScale(yValue(d));}, // data -> display
+	    yAxis = d3.svg.axis().scale(yScale).orient("left");
+
+	// setup fill color
+	var cValue = function(d) { return d.Metrics;},
+	    color = d3.scale.category10();
+
+	// add the graph canvas to the body of the webpage
+	var svg = d3.select("#"+divId).append("svg")
+	    .attr("width", width + margin.left + margin.right)
+	    .attr("height", height + margin.top + margin.bottom)
+	  .append("g")
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	// add the tooltip area to the webpage
+	var tooltip = d3.select("#"+divId).append("div")
+	    .attr("class", "tooltip")
+	    .style("opacity", 0);
+
+	// load data
+	d3.csv(file, function(error, data) {
+
+	  // change string (from CSV) into number format
+	  data.forEach(function(d) {
+	    d.Triples = +d.Triples;
+	    d["Average Time (ms)"] = +d["Average Time (ms)"];
+	  });
+
+	  // don't want dots overlapping axis, so add in buffer to data domain
+	  xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
+	  yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
+
+	  // x-axis
+	  svg.append("g")
+	      .attr("class", "x axis")
+	      .attr("transform", "translate(0," + height + ")")
+	      .call(xAxis)
+	    .append("text")
+	      .attr("class", "label")
+	      .attr("x", width)
+	      .attr("y", -6)
+	      .style("text-anchor", "end")
+	      .text("Log (Base 10) Triple Size");
+
+	  // y-axis
+	  svg.append("g")
+	      .attr("class", "y axis")
+	      .call(yAxis)
+	    .append("text")
+	      .attr("class", "label")
+	      .attr("transform", "rotate(-90)")
+	      .attr("y", 6)
+	      .attr("dy", ".71em")
+	      .style("text-anchor", "end")
+	      .text("Log (Base 10) Average Time (ms)");
+
+	  // draw dots
+	  svg.selectAll(".dot")
+	      .data(data)
+	    .enter().append("circle")
+	      .attr("class", "dot")
+	      .attr("r", 3.5)
+	      .attr("cx", xMap)
+	      .attr("cy", yMap)
+	      .style("fill", function(d) { return color(cValue(d));}) 
+	      .on("mouseover", function(d) {
+	          tooltip.transition()
+	               .duration(200)
+	               .style("opacity", .9);
+	          tooltip.html(d["Triple Size"] + "<br/> (" + xValue(d) 
+		        + ", " + yValue(d) + ")")
+	               .style("left", (d3.event.pageX + 5) + "px")
+	               .style("top", (d3.event.pageY - 28) + "px");
+	      })
+	      .on("mouseout", function(d) {
+	          tooltip.transition()
+	               .duration(500)
+	               .style("opacity", 0);
+	      });
+
+	  // draw legend
+	  var legend = svg.selectAll(".legend")
+	      .data(color.domain())
+	    .enter().append("g")
+	      .attr("class", "legend")
+	      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+	  // draw legend colored rectangles
+	  legend.append("rect")
+	      .attr("x", width - 18)
+	      .attr("width", 18)
+	      .attr("height", 18)
+	      .style("fill", color);
+
+	  // draw legend text
+	  legend.append("text")
+	      .attr("x", width - 24)
+	      .attr("y", 9)
+	      .attr("dy", ".35em")
+	      .style("text-anchor", "end")
+	      .text(function(d) { return d;})
+	});
+}
+
+	</script>
+	
+	<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+		$('.graph').click(function(){
+			// do something		
+	    
+			var item_id = $(this).attr('id');
+					
+		    $('#jena_sparkBody').css('display','none');
+			$('#jenaBody').css('display','none');
+		
+			$('#'+item_id+'Body').css('display','inline-block');
+			
+			if (item_id == "jena") {loadChart("evaluation/nov14.csv","chart_div")};
+			if (item_id == "jena_spark") {loadChart("evaluation/nov14js.csv","chart_div_js")};
+
+		});
+	});
+	</script>
+	
+</body>
+
+</html>

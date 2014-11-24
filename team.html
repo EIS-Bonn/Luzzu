@@ -18,6 +18,7 @@
     <link href="css/heroic-features.css" rel="stylesheet">
     <link href="css/pygment_trac.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
+	<link href="css/round-about.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -25,7 +26,13 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+		
+	<style>
+	table, th, td {
+	   border: 1px solid black;
+	   padding: 10px;
+	}
+	</style>
 </head>
 
 <body>
@@ -72,82 +79,52 @@
         <!-- /.container -->
     </nav>
 
+
     <!-- Page Content -->
     <div class="container">
-
-        <!-- Jumbotron Header -->
-        <header class="jumbotron hero-spacer" style="background: url('images/big_luzzu.jpg') no-repeat center center; height: 350px; top:0; left:0; z-index:-10; color:white">
-            <h1>Luzzu</h1>
-            <p>One of the most common sights around the coast of the Maltese Islands is the traditional boat called "Il-Luzzu" (pronounced loot-su). Luzzu is also a Quality Assessment Framework for Linked Open Datasets. Download the latest version here.</p>
-            <p><a class="btn btn-primary btn-large" href="about.html">Read More...</a>
-            </p>
-        </header>
-
-        <hr>
-
-        <!-- Title -->
+		
         <div class="row">
             <div class="col-lg-12">
-                <h3>Features</h3>
+                <h1 class="page-header">About Us
+                    <small>EIS Group @ Fraunhofer IAIS/University of Bonn</small>
+                </h1>
+                <p>The department Enterprise Information Systems (EIS) at the Institute for Applied Computer Science at University of Bonn and Fraunhofer Institute for Intelligent Analysis and Information Systems (IAIS) is led by <a href="http://eis.iai.uni-bonn.de/SoerenAuer.html">Sören Auer</a>.
+
+The primary objective of the research group is to advance research and technology in the field of enterprise information systems & semantic technologies and to widely apply this research in large-scale use cases. A particular focus of research and technology is information, data and knowledge integration employing Linked Data strategies. The department is committed to the open source, open access and open knowledge movements. For more information please visit our <a href="http://eis.iai.uni-bonn.de/">EIS homepage</a></p>
             </div>
         </div>
-        <!-- /.row -->
+		
 
         <!-- Page Features -->
-        <div class="row text-center">
-
-            <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img src="images/rdf.png" alt="" style="height:135px">
-                    <div class="caption">
-                        <h3>Ontology Driven Backend</h3>
-                        <p>Luzzu is based on a semantic schema backend, making its data interoperable with other semantic frameworks.</p>
-                        <p>
-                            <a href="#" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img src="images/bigdata.png" alt="">
-                    <div class="caption">
-                        <h3 style="margin-bottom:10px">Big Data Ready</h3>
-                        <p>Having hundred triples or billion triples makes no difference. The Luzzu stream processor scales linearly to the amount of triples available in a dataset.</p>
-                        <p>
-		   		<a href="evaluation.html" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img src="images/lqml.png" alt="">
-                    <div class="caption">
-                        <h3>Intuitive Metric Description</h3>
-                        <p>Define domain specific metrics using declarative patterns instead of implementing complex Java classes or XML.</p>
-                        <p>
-                            <a href="#" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">Luzzu's Team</h2>
             </div>
 			
-            <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img src="images/ranking.png" alt="" style="height:135px">
-                    <div class="caption">
-                        <h3>Quality-Driven Ranking</h3>
-                        <p>Luzzu offers the possibility of ranking assessed datasets using the quality metadata attached to these LOD datasets.</p>
-                        <p>
-                            <a href="#" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
-                </div>
+            <div class="col-lg-4 col-sm-6 text-center">
+                <img class="img-circle img-responsive img-center" src="images/jeremy.jpg" alt="" style="width:200px; height:200px">
+                <h3><a href="http://eis.iai.uni-bonn.de/JeremyDebattista.html">Jeremy Debattista</a>
+                    <br/><small>PhD Student - Principal Maintainer</small>
+                </h3>
+                <p>Lead researcher and developer of the quality assessment framework.</p>
             </div>
-
+			
+            <div class="col-lg-4 col-sm-6 text-center">
+                <img class="img-circle img-responsive img-center" src="images/christoph.jpg" alt="">
+                <h3><a href="http://eis.iai.uni-bonn.de/ChristophLange.html">Christoph Lange</a>
+                    <br/><small>Post Doctoral Researcher</small>
+                </h3>
+                <p>Advisor and Researcher</p>
+            </div>
+			
+            <div class="col-lg-4 col-sm-6 text-center">
+                <img class="img-circle img-responsive img-center" src="images/santiago.png" alt="" style="width:200px; height:200px">
+                <h3>Santiago Londo&ntilde;o<br/>
+                    <small>Student Assistant</small>
+                </h3>
+                <p>Developer</p>
+            </div>
+						
         </div>
         <!-- /.row -->
 
@@ -165,11 +142,15 @@
     </div>
     <!-- /.container -->
 
+
+
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+	
+	<!-- custom script -->
 
 </body>
 
