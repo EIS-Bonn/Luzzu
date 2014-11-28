@@ -1,4 +1,4 @@
-package de.unibonn.iai.eis.luzzu.operations.datatypes;
+package de.unibonn.iai.eis.luzzu.semantics.datatypes;
 
 import java.util.Date;
 
