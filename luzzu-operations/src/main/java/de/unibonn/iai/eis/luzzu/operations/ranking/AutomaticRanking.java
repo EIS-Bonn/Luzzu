@@ -21,8 +21,8 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.DC;
 import com.hp.hpl.jena.vocabulary.RDF;
 
-import de.unibonn.iai.eis.luzzu.datatypes.Observation;
-import de.unibonn.iai.eis.luzzu.datatypes.RankedElement;
+import de.unibonn.iai.eis.luzzu.operations.datatypes.RankedElement;
+import de.unibonn.iai.eis.luzzu.semantics.datatypes.Observation;
 import de.unibonn.iai.eis.luzzu.semantics.utilities.DAQHelper;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.CUBE;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.DAQ;
@@ -39,6 +39,7 @@ import de.unibonn.iai.eis.luzzu.semantics.vocabularies.DAQ;
  * the only metric assessed on.
  *
  */
+@Deprecated
 public class AutomaticRanking {
 
 	private double thetaWeight = 0.0d;
@@ -202,7 +203,7 @@ public class AutomaticRanking {
 			//get value
 			Float value = qualityMD.listObjectsOfProperty(res, DAQ.value).next().asLiteral().getFloat();
 			
-			Observation obs = new Observation(res, date, value);
+			Observation obs = new Observation(res, date, value, null);
 			
 			if (!(map.containsKey(metricType))){
 				map.put(metricType, new ArrayList<Observation>());

@@ -16,7 +16,7 @@ import org.powermock.modules.junit4.rule.PowerMockRule;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
-import de.unibonn.iai.eis.luzzu.datatypes.RankedElement;
+import de.unibonn.iai.eis.luzzu.operations.datatypes.RankedElement;
 import de.unibonn.iai.eis.luzzu.semantics.utilities.DAQHelper;
 
 

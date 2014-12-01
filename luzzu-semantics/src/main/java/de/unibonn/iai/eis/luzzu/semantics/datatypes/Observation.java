@@ -9,11 +9,13 @@ public class Observation implements Comparable<Observation> {
 	private Resource observationURI;
 	private Date dateComputed;
 	private Float value;
+	private Resource metricType;
 
-	public Observation(Resource observationURI, Date dateComputed, Float value){
+	public Observation(Resource observationURI, Date dateComputed, Float value, Resource metricType){
 		this.setObservationURI(observationURI);
 		this.setDateComputed(dateComputed);
 		this.setValue(value);
+		this.setMetricType(metricType);
 	}
 
 	public Resource getObservationURI() {
@@ -45,7 +47,12 @@ public class Observation implements Comparable<Observation> {
 		if (this.getDateComputed().before(anotherObservation.getDateComputed())) return -1;
 		else return 0;
 	}
-	
-	
 
+	public Resource getMetricType() {
+		return metricType;
+	}
+
+	public void setMetricType(Resource metricType) {
+		this.metricType = metricType;
+	}
 }

@@ -11,6 +11,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import com.hp.hpl.jena.sparql.core.Quad;
 
+
+//This is still Experimental
 public class GraphSigning {
 	
 //	private Set<String> hashSet = Collections.synchronizedSortedSet(new TreeSet<String>());
