@@ -14,7 +14,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.unibonn.iai.eis.luzzu.datatypes.RankedElement;
+import de.unibonn.iai.eis.luzzu.operations.datatypes.RankedElement;
 import de.unibonn.iai.eis.luzzu.operations.ranking.AutomaticRanking;
 
 @Path("/")
@@ -23,7 +23,7 @@ public class OperationResource {
 	final static Logger logger = LoggerFactory.getLogger(OperationResource.class);
 	
 	@POST
-	@Path("automatic_rank")
+	@Path("user_rank")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String automaticRank(MultivaluedMap<String, String> formParams) {
 		
