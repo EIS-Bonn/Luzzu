@@ -1,8 +1,10 @@
 package de.unibonn.iai.eis.luzzu.io.configuration;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
@@ -149,10 +151,23 @@ public class DeclerativeMetricCompiler {
 	
 	
 	private void loadDeclerativePattern() throws URISyntaxException, IOException{
-		URI decl = this.getClass().getClassLoader().getResource("declerative_pattern.txt").toURI();
-		List<String> lines = Files.readAllLines(Paths.get(decl), Charset.defaultCharset());
-		for (String s : lines)
-			this.javaClass.append(s);
+		
+		String nextLine = null;
+		BufferedReader reader = null;
+		
+		try {
+			reader = new BufferedReader(
+					new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("declerative_pattern.txt"), 
+					Charset.defaultCharset()));
+			
+			while((nextLine = reader.readLine()) != null) {
+				this.javaClass.append(nextLine);
+			}
+		} finally {
+			if(reader != null) {
+				reader.close();
+			}
+		}
 	}
 	
 	private Tuple parse(URI lqmFile) throws IOException, ParseException{
