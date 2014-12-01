@@ -1,0 +1,53 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfg: <http://www.w3.org/2004/03/trix/rdfg-1> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix lmi: <http://purl.org/eis/vocab/lmi> .
+
+_:DataSourceScalability a lmi:LuzzuMetricJavaImplementation ;
+	rdfs:label "Data Source Scalability" ;
+	lmi:javaPackageName "eu.diachron.qualitymetrics.accessibility.performance.DataSourceScalability" . 
+
+_:DefinedOntologyAuthor a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Defined Ontology Author" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.accuracy.DefinedOntologyAuthor" . 
+
+_:SynonymUsage a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Synonym Usage" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.accuracy.SynonymUsage" . 
+
+_:POBODefinitionUsage a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "POBO Definition Usage" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.accuracy.POBODefinitionUsage" . 
+
+_:EntitiesAsMembersOfDisjointClasses a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Entities As Members Of Disjoint Classes" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.consistency.EntitiesAsMembersOfDisjointClasses" . 
+
+_:HomogeneousDatatypes a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Homogeneous Datatypes" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.consistency.HomogeneousDatatypes" . 
+
+_:ObsoleteConceptsInOntology a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Obsolete Concepts In Ontology" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.consistency.ObsoleteConceptsInOntology" . 
+
+_:OntologyVersioningConciseness a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Ontology Versioning Conciseness" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.intrinsic.conciseness.OntologyVersioningConciseness" . 
+
+_:TimelinessOfResource a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Timeliness Of Resource" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.dynamicity.timeliness.TimelinessOfResource" . 
+
+_:HumanReadableLabelling a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Human Readable Labelling" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.representational.understandability.HumanReadableLabelling" . 
+
+_:LowBlankNodeUsage a lmi:LuzzuMetricJavaImplementation ;
+		rdfs:label "Low Blank Node Usage" ;
+		lmi:javaPackageName "eu.diachron.qualitymetrics.representational.understandability.LowBlankNodeUsage" . 
+
+_:AmountOfTriples a lmi:LuzzuMetricJavaImplementation ;
+	rdfs:label "Amount of Triples" ;
+	lmi:javaPackageName "eu.diachron.qualitymetrics.contextual.amountofdata.AmountOfTriples" . 
