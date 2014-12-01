@@ -1,7 +1,8 @@
 Release Notes
 -------------
 
-[Version 1.0.1 - 01/12/2013]
+[Version 1.0 - 01/12/2013]
+* First official version
 * Fixed InternalConfigModel.java null exception when "externals/vocabs" folder is not found
 * Added luzzu-operations automatic unbiased ranking algorithm
 * Added luzzu-operations graph signing using MD5
