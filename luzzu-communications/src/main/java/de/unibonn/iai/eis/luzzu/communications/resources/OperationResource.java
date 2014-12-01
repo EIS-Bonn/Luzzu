@@ -1,10 +1,9 @@
 package de.unibonn.iai.eis.luzzu.communications.resources;
 
 import java.util.Date;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-
+import java.util.Map;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -15,13 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.unibonn.iai.eis.luzzu.operations.datatypes.RankedElement;
-import de.unibonn.iai.eis.luzzu.operations.ranking.AutomaticRanking;
+import de.unibonn.iai.eis.luzzu.operations.ranking.RankBy;
+import de.unibonn.iai.eis.luzzu.operations.ranking.UserDrivenRanking;
 
 @Path("/")
 public class OperationResource {
 
 	final static Logger logger = LoggerFactory.getLogger(OperationResource.class);
 	
+	//Filters="uri|value..." RankBy="cat" or "dim" or "met"
 	@POST
 	@Path("user_rank")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -29,14 +30,21 @@ public class OperationResource {
 		
 		List<String> datasetURIs = null;
 		List<String> chosenFilters = null;
+		String rankBy = null;
 		String jsonResponse = "";
 		
 		try {
-			logger.info("Ranking Datasets: [{}] with filters: [{}]", formParams.get("Datasets"), formParams.get("Filters"));
+			logger.info("Ranking Datasets: [{}] with filters: [{}]", formParams.get("Datasets"), formParams.get("Filters"), formParams.get("RankBy"));
 			
 			datasetURIs = formParams.get("Datasets");
 			chosenFilters = formParams.get("Filters");
+			rankBy = formParams.getFirst("RankBy");
 			
+			RankBy rank = null;
+			if (rankBy.contains("cat")) rank = RankBy.CATEGORY;
+			if (rankBy.contains("dim")) rank = RankBy.DIMENSION;
+			if (rankBy.contains("met")) rank = RankBy.METRIC;
+		
 			if(datasetURIs == null) {
 				throw new IllegalArgumentException("Datasets parameter was not provided.");
 			}
@@ -46,12 +54,19 @@ public class OperationResource {
 			if(chosenFilters == null) {
 				throw new IllegalArgumentException("Filters parameter was not provided.");
 			}
+			if(rank == null) {
+				throw new IllegalArgumentException("Rank parameter is invalid. It should be cat/dim/met.");
+			}
 			
-			Set<String> distinctFilters = new HashSet<String>();
-			distinctFilters.addAll(chosenFilters);
+			Map<String, Float> weightFilter = new HashMap<String,Float>();
 
-			AutomaticRanking automaticRanking = new AutomaticRanking();
-			List<RankedElement> rankedElements = automaticRanking.rank(datasetURIs, distinctFilters);
+			for(String filter: chosenFilters){
+				weightFilter.put(filter.split("|")[0], Float.valueOf(filter.split("|")[1]));
+			}
+			
+			UserDrivenRanking ranking = new UserDrivenRanking(datasetURIs, weightFilter, rank);
+			List<RankedElement> rankedElements = ranking.getSortedList();
+			
 			jsonResponse = this.buildJsonResponse(rankedElements);
 			
 		} catch (Exception e){
