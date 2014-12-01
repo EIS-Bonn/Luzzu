@@ -30,10 +30,6 @@ class Cache {
 	 * @param maxItems - Number of object allowed
 	 */
 	protected Cache(String name, int maxItems){
-<<<<<<< HEAD
-		this.cache = Collections.synchronizedMap(new LRUMap<Object, Object>(maxItems, true));
-=======
->>>>>>> experiments
 		this.name = name;
 		
 		File tempFolder = new File("tmp/caches/");
@@ -63,11 +59,7 @@ class Cache {
 	 * @param key - An identifiable key for the item added
 	 * @param value - The item added
 	 */
-<<<<<<< HEAD
-	protected void addToCache(Object key, Object value){
-=======
 	protected void addToCache(Object key, CacheObject value){
->>>>>>> experiments
 		this.cache.put(key, value);
 	}
 	
@@ -77,11 +69,7 @@ class Cache {
 	 * @param key - The identifiable key
 	 * @return Returns the object from cache
 	 */
-<<<<<<< HEAD
-	protected Object getFromCache(Object key){
-=======
 	protected CacheObject getFromCache(Object key){
->>>>>>> experiments
 		return this.cache.get(key);
 	}
 	

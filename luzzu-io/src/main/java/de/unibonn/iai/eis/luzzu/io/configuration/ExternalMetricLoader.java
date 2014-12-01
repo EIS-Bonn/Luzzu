@@ -61,19 +61,8 @@ public class ExternalMetricLoader {
 		File[] listOfFiles = externalsFolder.listFiles();
 		
 		for(File metrics : listOfFiles){
-<<<<<<< HEAD
-			if (!(metrics.isDirectory())) continue;
-			File jarFile = null;
-			try{
-				jarFile = metrics.listFiles(jarFilter)[0];
-			} catch (Exception e){
-				logger.error("Could not load metrics in {} directory. Directory skipped", metrics.toString());
-				continue;
-			}
-=======
 			if (!metrics.isDirectory()) break;
 			File jarFile = metrics.listFiles(jarFilter)[0];
->>>>>>> experiments
 			metricsInFile.putIfAbsent(jarFile, new ArrayList<String>());
 			logger.info("Loading metrics from : {} ", jarFile.toPath());
 			

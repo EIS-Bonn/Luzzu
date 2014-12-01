@@ -17,10 +17,7 @@ import org.apache.jena.riot.lang.PipedQuadsStream;
 import org.apache.jena.riot.lang.PipedRDFIterator;
 import org.apache.jena.riot.lang.PipedRDFStream;
 import org.apache.jena.riot.lang.PipedTriplesStream;
-<<<<<<< HEAD
-=======
 import org.eclipse.jetty.util.BlockingArrayQueue;
->>>>>>> experiments
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,11 +40,7 @@ import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
 import de.unibonn.iai.eis.luzzu.io.IOProcessor;
 import de.unibonn.iai.eis.luzzu.io.configuration.DeclerativeMetricCompiler;
 import de.unibonn.iai.eis.luzzu.io.configuration.ExternalMetricLoader;
-<<<<<<< HEAD
-import de.unibonn.iai.eis.luzzu.io.util.CountLatch;
-=======
 import de.unibonn.iai.eis.luzzu.properties.EnvironmentProperties;
->>>>>>> experiments
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 import de.unibonn.iai.eis.luzzu.qml.parser.ParseException;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.LMI;
@@ -75,24 +68,13 @@ public class StreamProcessor implements IOProcessor {
 	
 	protected PipedRDFIterator<?> iterator;
 	protected PipedRDFStream<?> rdfStream;
-<<<<<<< HEAD
-	
-	private ExecutorService executor = Executors.newSingleThreadExecutor(); // PipedRDFStream and PipedRDFIterator need to be on different threads
-	private ExecutorService metricThreadPool = Executors.newCachedThreadPool();
-	private final CountLatch metricThreadLatch = new CountLatch(0);
-=======
 		
 	private ExecutorService executor;
 	private List<MetricProcess> lstMetricConsumers = new ArrayList<MetricProcess>();
->>>>>>> experiments
 
 	
-<<<<<<< HEAD
-	
-=======
 	private boolean isInitalised = false;
 			
->>>>>>> experiments
 	public StreamProcessor(String datasetURI, boolean genQualityReport, Model configuration){
 		this.datasetList = new ArrayList<String>();
 		this.datasetList.add(datasetURI);
@@ -102,8 +84,6 @@ public class StreamProcessor implements IOProcessor {
 		cacheMgr.createNewCache(graphCacheName, 50);
 		
 		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", datasetURI);
-<<<<<<< HEAD
-=======
 	}
 	
 	public StreamProcessor(String baseURI, List<String> datasetList, boolean genQualityReport, Model configuration){
@@ -114,7 +94,6 @@ public class StreamProcessor implements IOProcessor {
 		cacheMgr.createNewCache(graphCacheName, 50);
 		
 		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", baseURI);
->>>>>>> experiments
 	}
 	
 	public void processorWorkFlow(){
@@ -207,19 +186,6 @@ public class StreamProcessor implements IOProcessor {
 			}
 		};
 		
-<<<<<<< HEAD
-		executor.submit(parser); 
-
-		while (this.iterator.hasNext()){
-			Object2Quad stmt = new Object2Quad(this.iterator.next());
-			sniffer.sniff(stmt.getStatement());
-			
-			for(String className : this.metricInstances.keySet()){
-				logger.debug("Statement with triple <{}> passed to metric {}", stmt.getStatement().asTriple().toString(), className);
-//				this.metricInstances.get(className).compute(stmt.getStatement());
-				this.metricThreadLatch.increment();
-				this.metricThreadPool.submit(new MetricThread(this.metricInstances.get(className), stmt));
-=======
 		executor.submit(parser);
 		
 		try {
@@ -233,7 +199,6 @@ public class StreamProcessor implements IOProcessor {
 						mConsumer.notifyNewQuad(stmt);
 					}
 				}
->>>>>>> experiments
 			}
 		} 
 		finally {
@@ -244,17 +209,7 @@ public class StreamProcessor implements IOProcessor {
 			}		
 		}
 		
-<<<<<<< HEAD
-		try {
-			this.metricThreadLatch.awaitZero();
-		} catch (InterruptedException e) {
-			logger.error("Exception on metric assessment calculation : {}",e.getLocalizedMessage());
-		}
-				
-		if (sniffer.getCachingObject() != null){
-=======
 		if (sniffer.getCachingObject() != null) {
->>>>>>> experiments
 			cacheMgr.addToCache(graphCacheName, datasetURI, sniffer.getCachingObject());
 		}
 		
@@ -349,24 +304,6 @@ public class StreamProcessor implements IOProcessor {
 		return this.qualityReport;
 	}
 
-<<<<<<< HEAD
-	private final class MetricThread implements Runnable {
-        QualityMetric m;
-        Object2Quad stmt;
-        
-        MetricThread(QualityMetric m, Object2Quad stmt) { 
-        	this.m = m;
-        	this.stmt = stmt;
-        }
-        
-        public void run() {
-        	synchronized(m){
-        		m.compute(stmt.getStatement());
-        	}
-			metricThreadLatch.decrement();
-        }
-        
-=======
 	private final class MetricProcess {
 		volatile Queue<Object2Quad> quadsToProcess = new BlockingArrayQueue<Object2Quad>(10000000);
 		Thread metricThread = null;
@@ -420,7 +357,6 @@ public class StreamProcessor implements IOProcessor {
 			this.stopSignal = true;
 		}
 
->>>>>>> experiments
     }
 
 }
