@@ -1,8 +1,6 @@
 package de.unibonn.iai.eis.luzzu.cache;
 
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 
 /**
  * @author Jeremy Debattista
@@ -18,7 +16,8 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class CacheManager{
 
-	private ConcurrentMap<String, Cache> registeredCache = new ConcurrentHashMap<String,Cache>();
+	
+	private ConcurrentHashMap<String, Cache> registeredCache = new ConcurrentHashMap<String, Cache>();
 	private static CacheManager instance = null;
 	
 	protected CacheManager(){}
@@ -50,9 +49,9 @@ public class CacheManager{
 	 * 
 	 * @param cacheName - Cache identifier name to which item is being added
 	 * @param key - An identifiable key for the item added
-	 * @param value - The item added
+	 * @param value - The cache object added
 	 */
-	public void addToCache(String cacheName, Object key, Object value){
+	public void addToCache(String cacheName, Object key, CacheObject value){
 		registeredCache.get(cacheName).addToCache(key, value);
 	}
 	
@@ -64,8 +63,18 @@ public class CacheManager{
 	 * @param key - The identifiable key
 	 * @return Returns the object from cache
 	 */
-	public Object getFromCache(String cacheName, Object key){
+	public CacheObject getFromCache(String cacheName, Object key){
 		return registeredCache.get(cacheName).getFromCache(key);
+	}
+	
+	/**
+	 * Checks if cache exitsts
+	 * 
+	 * @param cacheName
+	 * @return true if cache exists
+	 */
+	public boolean cacheExists(String cacheName){
+		return registeredCache.containsKey(cacheName);
 	}
 	
 	/**

@@ -48,7 +48,9 @@ class StreamMetadataSniffer {
 	 * 
 	 * @param quad
 	 */
+	public int counter = 0;
 	protected void sniff(Quad quad){
+		counter++;
 		if (quad.getGraph() != null){
 			if (this._temp != null && this._temp.getGraphURI() != null){
 				if (quad.getGraph().getURI().equals(this._temp.getGraphURI().getURI())){

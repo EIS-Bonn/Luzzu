@@ -3,7 +3,7 @@
   <parent>
     <groupId>de.unibonn.iai.eis</groupId>
     <artifactId>luzzu</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>luzzu-assessment</artifactId>
   
@@ -11,7 +11,7 @@
         <dependency>
             <groupId>de.unibonn.iai.eis</groupId>
             <artifactId>luzzu-semantics</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
     

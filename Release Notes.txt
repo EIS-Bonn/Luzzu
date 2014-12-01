@@ -1,0 +1,12 @@
+Release Notes
+-------------
+
+[Version 1.0.1 - 17/11/2013]
+* Fixed InternalConfigModel.java null exception when "externals/vocabs" folder is not found
+* Added luzzu-operations automatic unbiased ranking algorithm
+* Added luzzu-operations graph signing using MD5
+* Fixed hanging thread in Stream Processor
+* Added first version of a Spark Stream Processor
+* Persistence of Cache on disk
+* User Driven Ranking
+* Added functionality in stream processor to allow multiple dumps in the same dataset to be assessed 

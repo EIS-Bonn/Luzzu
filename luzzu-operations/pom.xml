@@ -3,7 +3,7 @@
   <parent>
     <groupId>de.unibonn.iai.eis</groupId>
     <artifactId>luzzu</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>luzzu-operations</artifactId>
   <name>Luzzu Operations Module</name>
@@ -12,8 +12,32 @@
   	<dependency>
   		<groupId>de.unibonn.iai.eis</groupId>
   		<artifactId>luzzu-semantics</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
+  		<version>1.0.1-SNAPSHOT</version>
   	</dependency>
+  	<dependency>
+	<groupId>commons-codec</groupId>
+	<artifactId>commons-codec</artifactId>
+	<version>1.4</version>
+</dependency>
+
+<dependency>
+	<groupId>it.unimi.dsi</groupId>
+	<artifactId>fastutil</artifactId>
+	<version>6.5.15</version>
+</dependency>
+  	
+  	<dependency>
+  	<groupId>net.jpountz.lz4</groupId>
+	<artifactId>lz4</artifactId>
+	<version>1.2.0</version>
+</dependency>
+
+<dependency>
+	<groupId>org.mapdb</groupId>
+	<artifactId>mapdb</artifactId>
+	<version>1.0.6</version>
+</dependency>
+
   </dependencies>
   
       <build>

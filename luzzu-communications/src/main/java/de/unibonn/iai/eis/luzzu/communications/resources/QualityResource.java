@@ -2,6 +2,7 @@ package de.unibonn.iai.eis.luzzu.communications.resources;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +10,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.jena.riot.Lang;
@@ -20,8 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
+
 import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessor;
 
 /**
@@ -41,6 +40,7 @@ public class QualityResource {
 	 *  (a URI should be encoded to avoid unsafe ASCII characters such as '&'), 
 	 * 			QualityReportRequired = boolean, should a quality report be generated?, 
 	 * 			MetricsConfiguration = JSON-LD specifying the metrics to be calculated (refer to documentation for details)
+	 * 			BaseUri = (Optional) define a base URI to the dataset when dataset dumps are split into more than one file/location
 	 * @return quality report in JSON-LD format, if parameter QualityReportRequired was true, 
 	 * 			otherwise, the dataset URI (refer to documentation for details)
 	 */
@@ -52,6 +52,7 @@ public class QualityResource {
 		String jsonResponse = null;
 		String datasetURI = null;
 		String jsonStrMetricsConfig = null;
+		String baseURI = "";
 		boolean genQualityReport = false;
 		
 		try {
@@ -61,9 +62,10 @@ public class QualityResource {
 			List<String> lstDatasetURI = formParams.get("Dataset");
 			List<String> lstQualityReportReq = formParams.get("QualityReportRequired");
 			List<String> lstMetricsConfig = formParams.get("MetricsConfiguration");
+			List<String> lstBaseUri = formParams.get("BaseUri");
 			
-			logger.debug("Processing request parameters. DatasetURI: {}; QualityReportRequired: {}; MetricsConfiguration: {}", 
-					lstDatasetURI, lstQualityReportReq, lstMetricsConfig);
+			logger.debug("Processing request parameters. DatasetURI: {}; QualityReportRequired: {}; MetricsConfiguration: {}; BaseUri: {}", 
+					lstDatasetURI, lstQualityReportReq, lstMetricsConfig, lstBaseUri);
 									
 			if(lstDatasetURI == null || lstDatasetURI.size() <= 0) {
 				throw new IllegalArgumentException("Dataset URI parameter was not provided");
@@ -76,7 +78,8 @@ public class QualityResource {
 			}
 			
 			// Assign parameter values to variables and set defaults
-			datasetURI = lstDatasetURI.get(0);
+
+			
 			jsonStrMetricsConfig = lstMetricsConfig.get(0);
 			genQualityReport = Boolean.parseBoolean(lstQualityReportReq.get(0));
 
@@ -84,7 +87,15 @@ public class QualityResource {
 			Model modelConfig = ModelFactory.createDefaultModel();
 			RDFDataMgr.read(modelConfig, new StringReader(jsonStrMetricsConfig), null, Lang.JSONLD);
 
-			StreamProcessor strmProc = new StreamProcessor(datasetURI, genQualityReport, modelConfig);
+			StreamProcessor strmProc;
+			String[] expandedListDatasetURI = lstDatasetURI.get(0).split(",");
+			if (expandedListDatasetURI.length == 1){
+				datasetURI = expandedListDatasetURI[0];
+				strmProc = new StreamProcessor(datasetURI, genQualityReport, modelConfig);
+			} else {
+				if (lstBaseUri != null) baseURI = lstBaseUri.get(0);
+				strmProc = new StreamProcessor(baseURI, Arrays.asList(expandedListDatasetURI), genQualityReport, modelConfig);
+			}
 			strmProc.processorWorkFlow();
 			strmProc.cleanUp();
 			
@@ -95,9 +106,9 @@ public class QualityResource {
 				modelQualityRep = strmProc.retreiveQualityReport();
 			}
 			
-			jsonResponse = buildJsonResponse(datasetURI, modelQualityRep);
+			jsonResponse = buildJsonResponse((datasetURI == null) ? baseURI : datasetURI, modelQualityRep);
 			logger.debug("Quality computation request completed. Output: {}", jsonResponse);
-			
+						
 		} catch(Exception ex) {
 			String errorTimeStamp = Long.toString((new Date()).getTime());
 			logger.error("Error processing quality computation request [" + errorTimeStamp + "]", ex);
@@ -118,7 +129,7 @@ public class QualityResource {
 	private String buildJsonResponse(String datasetURI, Model qualityReport) {
 		StringBuilder sbJsonResponse = new StringBuilder();
 		sbJsonResponse.append("{ \"Dataset\": \"" + datasetURI + "\", ");
-		sbJsonResponse.append("\"Outcome\": SUCCESS");
+		sbJsonResponse.append("\"Outcome\": \"SUCCESS\"");
 
 		// If the quality report was generated, add its JSON representation to the response
 		if(qualityReport != null && !qualityReport.isEmpty()) {
@@ -145,7 +156,7 @@ public class QualityResource {
 	private String buildJsonErrorResponse(String datasetURI, String errorCode, String errorMessage) {
 		StringBuilder sbJsonResponse = new StringBuilder();
 		sbJsonResponse.append("{ \"Dataset\": \"" + datasetURI + "\", ");
-		sbJsonResponse.append("\"Outcome\": ERROR, ");
+		sbJsonResponse.append("\"Outcome\": \"ERROR\", ");
 		sbJsonResponse.append("\"ErrorMessage\": \"" + errorMessage + "\", ");
 		sbJsonResponse.append("\"ErrorCode\": \"" + errorCode + "\" }");
 		return sbJsonResponse.toString();

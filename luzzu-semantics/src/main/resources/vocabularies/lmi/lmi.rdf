@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdfs:Property rdf:about="http://purl.org/eis/vocab/lmi#metric">
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/lmi#MetricConfiguration"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </rdfs:Property>
+  <rdfs:Property rdf:about="http://purl.org/eis/vocab/lmi#referTo">
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/lmi#LuzzuMetricJavaImplementation"/>
+    <rdfs:range rdf:resource="http://purl.org/eis/vocab/daq#Metric"/>
+  </rdfs:Property>
+  <rdfs:Property rdf:about="http://purl.org/eis/vocab/lmi#javaPackageName">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/lmi#LuzzuMetricJavaImplementation"/>
+  </rdfs:Property>
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/lmi#MetricConfiguration"/>
+  <rdfs:Class rdf:about="http://purl.org/eis/vocab/lmi#LuzzuMetricJavaImplementation"/>
+</rdf:RDF>
+

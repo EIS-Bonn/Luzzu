@@ -57,10 +57,11 @@ public class ExternalMetricLoader {
 	}
 	
 	private static void loadMetrics(){
-		File externalsFolder = new File("externals/");
+		File externalsFolder = new File("externals/metrics/");
 		File[] listOfFiles = externalsFolder.listFiles();
 		
 		for(File metrics : listOfFiles){
+<<<<<<< HEAD
 			if (!(metrics.isDirectory())) continue;
 			File jarFile = null;
 			try{
@@ -69,11 +70,15 @@ public class ExternalMetricLoader {
 				logger.error("Could not load metrics in {} directory. Directory skipped", metrics.toString());
 				continue;
 			}
+=======
+			if (!metrics.isDirectory()) break;
+			File jarFile = metrics.listFiles(jarFilter)[0];
+>>>>>>> experiments
 			metricsInFile.putIfAbsent(jarFile, new ArrayList<String>());
 			logger.info("Loading metrics from : {} ", jarFile.toPath());
 			
 			Model m = ModelFactory.createDefaultModel();
-			m.read(metrics+"//metrics.trig");
+			m.read(metrics+"/metrics.trig");
 			
 			
 			NodeIterator res = m.listObjectsOfProperty(LMI.javaPackageName);

@@ -6,7 +6,6 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
 @prefix daq: <http://purl.org/eis/vocab/daq#>.
 
-
 # Classes
 qpro:QualityReport a rdfs:Class ;
 	rdfs:comment "Represents a report on the problems detected during the assessment of quality on a dataset." ;
