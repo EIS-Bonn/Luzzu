@@ -12,4 +12,15 @@ Furthermore, the infrastructure:
 - employs a comprehensive ontology framework for representing and exchanging all quality related information in the assessment workflow;
 - implements quality-driven dataset ranking algorithms facilitating use-case driven discovery and retrieval.
 
+# Building
+```mvn clean install```
+
+# Executing the Application
+```mvn exec:java -pl luzzu-communications```
+ 
+You should now be able to navigate to [http://localhost:8080/Luzzu/application.wadl](http://localhost:8080/Luzzu/application.wadl) and view a simplified Web Application Description Language (WADL) descriptior for the application with user and core resources only.
+
+To get full WADL with extended resources use the query parameter detail e.g [http://localhost:8080/Luzzu/application.wadl?detail=true](http://localhost:8080/Luzzu/application.wadl?detail=true)
+
+
 More information regarding the framework (including installation and execution) can be found at our website (http://eis-bonn.github.io/Luzzu)
