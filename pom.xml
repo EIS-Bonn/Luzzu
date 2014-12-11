@@ -3,8 +3,64 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.unibonn.iai.eis</groupId>
 	<artifactId>luzzu</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>Luzzu</name>
+
+
+	<description>Luzzu is a Quality Assessment Framework for Linked Open Datasets. It is
+a generic framework based on the Dataset Quality Ontology (daQ),
+allowing users to define their own quality metrics. Luzzu is an
+integrated platform that:
+
+- assesses Linked Data quality using a library of generic and
+user-provided domain specific quality metrics in a scalable manner;
+- provides queryable quality metadata on the assessed datasets;
+- assembles detailed quality reports on assessed datasets.
+
+Furthermore, the infrastructure:
+- scales for the assessment of big datasets;
+- can be easily extended by the users by creating their custom and
+domain-specific pluggable metrics, either by employing a novel
+declarative quality metric specification language or conventional
+imperative plugins;
+- employs a comprehensive ontology framework for representing and
+exchanging all quality related information in the assessment workflow;
+- implements quality-driven dataset ranking algorithms facilitating
+use-case driven discovery and retrieval.</description>
+	<url>http://eis-bonn.github.io/Luzzu/</url>
+	<organization>
+		<name>Enterprise Information Systems - University of Bonn</name>
+		<url>http://eis.iai.uni-bonn.de</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>GNU GENERAL PUBLIC LICENSE, Version 2.0</name>
+			<url>http://www.gnu.org/licenses/gpl-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Jeremy Debattista</name>
+			<email>jeremy.debattista@iais-extern.fraunhofer.de</email>
+			<organization>Enterprise Information Systems - University of Bonn</organization>
+			<organizationUrl>http://eis.iai.uni-bonn.de</organizationUrl>
+		</developer>
+		<developer>
+			<name>Santiago Londoño</name>
+			<email>londono@informatik.uni-bonn.de</email>
+			<organization>Enterprise Information Systems - University of Bonn</organization>
+			<organizationUrl>http://eis.iai.uni-bonn.de</organizationUrl>
+		</developer>
+	</developers>
+
+
+	<scm>
+		<connection>scm:git:git@github.com:EIS-Bonn/Luzzu.git</connection>
+		<developerConnection>scm:git:git@github.com:EIS-Bonn/Luzzu.git</developerConnection>
+		<url>git@github.com:EIS-Bonn/Luzzu.git</url>
+	</scm>
 
 	<properties>
 		<jdk.version>1.7</jdk.version>
@@ -19,7 +75,6 @@
 		<jerseymedia.version>2.11</jerseymedia.version>
 		<powermock.version>1.5.5</powermock.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<bitbucket.global.server>bitbucket</bitbucket.global.server>
 	</properties>
 
 	<packaging>pom</packaging>
@@ -31,35 +86,9 @@
 		<module>luzzu-communications</module>
 		<module>luzzu-io</module>
 		<module>luzzu-operations</module>
-<!-- 		<module>luzzu-evaluation</module>-->		
+		<!-- <module>luzzu-evaluation</module> -->
 		<module>luzzu-qml</module>
 	</modules>
-
-
-	<repositories>
-		<repository>
-			<id>semweb4j-repo</id>
-			<name>Semweb4j.org maven repo</name>
-			<url>http://semweb4j.org/repo/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>semweb4j-snapshots</id>
-			<name>Semweb4j.org maven snapshot repo</name>
-			<url>http://semweb4j.org/snapshots/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-				<checksumPolicy>fail</checksumPolicy>
-			</snapshots>
-		</repository>
-	</repositories>
-
 
 	<dependencies>
 		<!-- Testing Dependencies -->
@@ -103,13 +132,13 @@
 			<scope>test</scope>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-classloading-xstream</artifactId>
 			<version>${powermock.version}</version>
 			<scope>test</scope>
 		</dependency>
+		
 		<!-- Semantic Dependencies -->
 		<dependency>
 			<groupId>org.apache.jena</groupId>
@@ -170,32 +199,85 @@
 					<configuration>
 						<mainClass>de.unibonn.iai.eis.luzzu.communications.Main</mainClass>
 					</configuration>
-				</plugin>	
-				
-				      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-        </configuration>
-      </plugin>
-				
-				   
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.7</source>
+						<target>1.7</target>
+					</configuration>
+				</plugin>
+
+    <plugin>
+      <groupId>org.sonatype.plugins</groupId>
+      <artifactId>nexus-staging-maven-plugin</artifactId>
+      <version>1.6.5</version>
+      <extensions>true</extensions>
+      <configuration>
+        <serverId>ossrh</serverId>
+        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+      </configuration>
+    </plugin>
+    
+        <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-source-plugin</artifactId>
+      <version>2.2.1</version>
+      <executions>
+        <execution>
+          <id>attach-sources</id>
+          <goals>
+            <goal>jar-no-fork</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-javadoc-plugin</artifactId>
+      <version>2.9.1</version>
+      <executions>
+        <execution>
+          <id>attach-javadocs</id>
+          <goals>
+            <goal>jar</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+    
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-gpg-plugin</artifactId>
+      <version>1.5</version>
+      <executions>
+        <execution>
+          <id>sign-artifacts</id>
+          <phase>verify</phase>
+          <goals>
+            <goal>sign</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+
 			</plugins>
 		</pluginManagement>
 	</build>
-	
+
 	<!-- distribution management for deployment -->
-	<distributionManagement>
-    <repository>
-        <id>internal.repo</id>
-        <name>Temporary Staging Repository</name>
-        <url>file://${project.build.directory}/mvn-repo</url>
-    </repository>
-	</distributionManagement>
-
-
-
+<distributionManagement>
+  <snapshotRepository>
+    <id>ossrh</id>
+    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+  </snapshotRepository>
+  <repository>
+   <id>ossrh</id>
+    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+  </repository>
+</distributionManagement>
 
 </project>

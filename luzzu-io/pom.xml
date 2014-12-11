@@ -3,7 +3,7 @@
   <parent>
     <groupId>de.unibonn.iai.eis</groupId>
     <artifactId>luzzu</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
   </parent>
   <artifactId>luzzu-io</artifactId>
   <name>Luzzu IO Module</name>
@@ -13,27 +13,27 @@
         <dependency>
             <groupId>de.unibonn.iai.eis</groupId>
             <artifactId>luzzu-semantics</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>de.unibonn.iai.eis</groupId>
             <artifactId>luzzu-assessment</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
         	<groupId>de.unibonn.iai.eis</groupId>
         	<artifactId>luzzu-operations</artifactId>
-        	<version>1.0.1-SNAPSHOT</version>
+        	<version>1.0.0</version>
         </dependency>
         <dependency>
         	<groupId>de.unibonn.iai.eis</groupId>
         	<artifactId>luzzu-annotations</artifactId>
-        	<version>1.0.1-SNAPSHOT</version>
+        	<version>1.0.0</version>
         </dependency>
         <dependency>
         	<groupId>de.unibonn.iai.eis</groupId>
         	<artifactId>luzzu-qml</artifactId>
-        	<version>1.0.1-SNAPSHOT</version>
+        	<version>1.0.0</version>
         </dependency>
         <dependency>
         	<groupId>org.apache.spark</groupId>
