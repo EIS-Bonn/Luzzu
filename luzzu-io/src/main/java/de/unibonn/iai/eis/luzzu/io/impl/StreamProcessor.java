@@ -99,6 +99,7 @@ public class StreamProcessor implements IOProcessor {
 	public void processorWorkFlow(){
 		this.setUpProcess();
 		
+		int datasetListCounter = 0;
 		for (String dataset : datasetList){
 			this.datasetURI = dataset;
 			try {
@@ -106,8 +107,8 @@ public class StreamProcessor implements IOProcessor {
 			} catch (ProcessorNotInitialised e) {
 				this.processorWorkFlow();
 			}
-			
-			this.reinitialiseProcessors();
+			datasetListCounter++;
+			if (datasetListCounter < datasetList.size()) this.reinitialiseProcessors();
 		}
 		
 		this.generateQualityMetadata();
