@@ -61,6 +61,7 @@ public class ExternalMetricLoader {
 		File[] listOfFiles = externalsFolder.listFiles();
 		
 		for(File metrics : listOfFiles){
+			if (metrics.isHidden()) break;
 			if (!metrics.isDirectory()) break;
 			File jarFile = metrics.listFiles(jarFilter)[0];
 			metricsInFile.putIfAbsent(jarFile, new ArrayList<String>());

@@ -1,6 +1,9 @@
 Release Notes
 -------------
 
+* Updated README.md
+* Changed Distribution Platform - Dependencies can be found on Maven Central Repository
+
 [Version 1.0 - 01/12/2013]
 * First official version
 * Fixed InternalConfigModel.java null exception when "externals/vocabs" folder is not found
