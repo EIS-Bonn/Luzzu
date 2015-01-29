@@ -70,13 +70,7 @@ public class QualityReport {
 				Model qpModel = (Model) obj;
 				Resource sNode = qpModel.listSubjects().next();
 				m.add(new StatementImpl(problemURI, QPRO.problematicThing, sNode));
-				
-				Quad q = (Quad) obj;
 				m.add(qpModel);
-				
-				if (q.getGraph() != null){
-					m.add(new StatementImpl(sNode, QPRO.inGraph, Commons.asRDFNode(q.getGraph())));
-				}
 			}
 		} else {
 			Seq problemSeq = m.createSeq();
