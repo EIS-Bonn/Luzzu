@@ -58,7 +58,25 @@ public class QualityReport {
 				if (q.getGraph() != null){
 					m.add(new StatementImpl(bNode, QPRO.inGraph, Commons.asRDFNode(q.getGraph())));
 				}
+			}
+		} else if (problemList.getProblemList().get(0) instanceof Model){
+			for(Object obj : problemList.getProblemList()){
+				Resource problemURI = Commons.generateURI();
 				
+				m.add(new StatementImpl(problemURI, RDF.type, QPRO.QualityProblem));
+				m.add(new StatementImpl(problemURI, QPRO.isDescribedBy, metricURI));
+				
+				
+				Model qpModel = (Model) obj;
+				Resource sNode = qpModel.listSubjects().next();
+				m.add(new StatementImpl(problemURI, QPRO.problematicThing, sNode));
+				
+				Quad q = (Quad) obj;
+				m.add(qpModel);
+				
+				if (q.getGraph() != null){
+					m.add(new StatementImpl(sNode, QPRO.inGraph, Commons.asRDFNode(q.getGraph())));
+				}
 			}
 		} else {
 			Seq problemSeq = m.createSeq();

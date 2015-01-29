@@ -2,6 +2,7 @@ package de.unibonn.iai.eis.luzzu.datatypes;
 
 import java.util.List;
 
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.core.Quad;
 
@@ -22,8 +23,8 @@ public class ProblemList<T> {
 	private List<T> problemList;
 	
 	public ProblemList(List<T> problemList) throws ProblemListInitialisationException{
-		if (!(problemList.get(0) instanceof Resource) && !(problemList.get(0) instanceof Quad)){ // this is a quick hack since java does not allow the inferencing of the generic type of class during run-time
-			throw new ProblemListInitialisationException("A ProblemList should be typed to a Resource or a Quad");
+		if (!(problemList.get(0) instanceof Resource) && !(problemList.get(0) instanceof Quad) && !(problemList.get(0) instanceof Model)){ // this is a quick hack since java does not allow the inferencing of the generic type of class during run-time
+			throw new ProblemListInitialisationException("A ProblemList should be typed to a Resource, Model or a Quad");
 		} 
 		this.problemList = problemList;
 	}
