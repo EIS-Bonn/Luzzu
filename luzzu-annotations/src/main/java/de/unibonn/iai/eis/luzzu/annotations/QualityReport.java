@@ -11,7 +11,7 @@ import com.hp.hpl.jena.sparql.core.Quad;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 import de.unibonn.iai.eis.luzzu.semantics.utilities.Commons;
-import de.unibonn.iai.eis.luzzu.semantics.vocabularies.QR;
+import de.unibonn.iai.eis.luzzu.semantics.vocabularies.QPRO;
 import de.unibonn.iai.eis.luzzu.datatypes.ProblemList;
 
 /**
@@ -23,7 +23,7 @@ import de.unibonn.iai.eis.luzzu.datatypes.ProblemList;
  * This class describes these problematic triples in
  * terms of either Reified RDF or a Sequence of Resources.
  * The Quality Report description can be found in
- * @see src/main/resource/vocabularies/qr/qr.trig
+ * @see src/main/resource/vocabularies/QPRO/QPRO.trig
  * 
  */
 public class QualityReport {
@@ -43,11 +43,11 @@ public class QualityReport {
 			for(Object obj : problemList.getProblemList()){
 				Resource problemURI = Commons.generateURI();
 				
-				m.add(new StatementImpl(problemURI, RDF.type, QR.QualityProblem));
-				m.add(new StatementImpl(problemURI, QR.isDescribedBy, metricURI));
+				m.add(new StatementImpl(problemURI, RDF.type, QPRO.QualityProblem));
+				m.add(new StatementImpl(problemURI, QPRO.isDescribedBy, metricURI));
 				
 				Resource bNode = Commons.generateRDFBlankNode().asResource();
-				m.add(new StatementImpl(problemURI, QR.problematicThing, bNode));
+				m.add(new StatementImpl(problemURI, QPRO.problematicThing, bNode));
 				
 				Quad q = (Quad) obj;
 				m.add(new StatementImpl(bNode, RDF.type, RDF.Statement));
@@ -56,7 +56,7 @@ public class QualityReport {
 				m.add(new StatementImpl(bNode, RDF.object, Commons.asRDFNode(q.getObject())));
 				
 				if (q.getGraph() != null){
-					m.add(new StatementImpl(bNode, QR.inGraph, Commons.asRDFNode(q.getGraph())));
+					m.add(new StatementImpl(bNode, QPRO.inGraph, Commons.asRDFNode(q.getGraph())));
 				}
 				
 			}
@@ -70,10 +70,10 @@ public class QualityReport {
 			}
 			Resource problemURI = Commons.generateURI();
 			
-			m.add(new StatementImpl(problemURI, RDF.type, QR.QualityProblem));
-			m.add(new StatementImpl(problemURI, QR.isDescribedBy, metricURI));
+			m.add(new StatementImpl(problemURI, RDF.type, QPRO.QualityProblem));
+			m.add(new StatementImpl(problemURI, QPRO.isDescribedBy, metricURI));
 			
-			m.add(new StatementImpl(problemURI, QR.problematicThing, problemSeq));
+			m.add(new StatementImpl(problemURI, QPRO.problematicThing, problemSeq));
 		}
 		return m;
 	}
@@ -90,11 +90,11 @@ public class QualityReport {
 		Model m = ModelFactory.createDefaultModel();
 		
 		Resource reportURI = Commons.generateURI();
-		m.add(new StatementImpl(reportURI, RDF.type, QR.QualityReport));
-		m.add(new StatementImpl(reportURI, QR.computedOn, computedOn));
+		m.add(new StatementImpl(reportURI, RDF.type, QPRO.QualityReport));
+		m.add(new StatementImpl(reportURI, QPRO.computedOn, computedOn));
 		for(Model prModel : problemReportModels){
 			for(Resource r : getProblemURI(prModel)){
-				m.add(new StatementImpl(reportURI, QR.hasProblem, r));
+				m.add(new StatementImpl(reportURI, QPRO.hasProblem, r));
 				m.add(prModel);
 			}
 		}
@@ -109,6 +109,6 @@ public class QualityReport {
 	 * @return The resource URI
 	 */
 	public List<Resource> getProblemURI(Model problemReport){
-		return problemReport.listSubjectsWithProperty(RDF.type, QR.QualityProblem).toList();
+		return problemReport.listSubjectsWithProperty(RDF.type, QPRO.QualityProblem).toList();
 	}
 }

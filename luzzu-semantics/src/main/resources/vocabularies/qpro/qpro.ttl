@@ -15,6 +15,10 @@ qpro:QualityReport a rdfs:Class ;
 qpro:QualityProblem a rdfs:Class ;
 	rdfs:comment "Represents a quality problem detected during the assessment of quality metrics on triples." ;
 	rdfs:label "Quality Problem" .
+	
+qpro:Exception a rdfs:Class ;
+		rdfs:comment "Represents an Exception that causes the dataset to have Quality Problems. This is an abstract class" ;
+		rdfs:label "Exception (Abstract)" .
 
 	
 # Properties
@@ -39,11 +43,24 @@ qpro:isDescribedBy a rdf:Property;
 qpro:problematicThing a rdf:Property;
 	rdfs:domain qpro:QualityProblem;
 	rdfs:range rdfs:Resource;
-	rdfs:comment "Represent the actual problematic instance from the dataset. This could be a list of resources (rdf:Seq) or a list of reified statements.";
-	rdfs:label "problematic thing".
+	rdfs:comment "Represent the actual problematic instance from the dataset. This could be a list of resources (rdf:Seq), a list of reified statements, or a model representing a list of statements.";
+	rdfs:label "Problematic Thing".
 	
 qpro:inGraph a rdf:Property;
 	rdfs:domain rdf:Statement ;
 	rdfs:range rdfg:Graph ;
 	rdfs:comment "This property enables the reification of quads by creating a new property to define the context of a triple statement.";
 	rdfs:label "in graph".
+	
+qpro:exceptionDescription
+		a	rdfs:Property;
+		rdfs:comment "Describes a particular exception raised by the Resource or Triple in question, causing a quality problem" ;
+		rdfs:label "Exception Description" ;
+		rdfs:domain rdfs:Resource ;
+		rdfs:range qpro:Exception ;
+		rdfs:range xsd:Literal . 
+		
+qpro:extraExceptionProperty
+		a	rdfs:Property ;
+		rdfs:comment "Enables the description of extra exception properties. This is an abstract property." ;
+		rdfs:label "Extra Exception Property (Abstract)" .

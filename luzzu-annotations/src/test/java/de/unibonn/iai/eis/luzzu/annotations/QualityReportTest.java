@@ -22,7 +22,7 @@ import com.hp.hpl.jena.vocabulary.RDFS;
 import de.unibonn.iai.eis.luzzu.annotations.QualityReport;
 import de.unibonn.iai.eis.luzzu.datatypes.ProblemList;
 import de.unibonn.iai.eis.luzzu.exceptions.ProblemListInitialisationException;
-import de.unibonn.iai.eis.luzzu.semantics.vocabularies.QR;
+import de.unibonn.iai.eis.luzzu.semantics.vocabularies.QPRO;
 
 public class QualityReportTest extends Assert {
 
@@ -32,7 +32,7 @@ public class QualityReportTest extends Assert {
 	private ProblemList<Resource> resourceProblemList;
 	
 	private Resource metricURI = datasetSample.createResource("urn:metric/Capitalisation789");
-	private Resource computedOn = datasetSample.createResource("ex:qrtest.trig");
+	private Resource computedOn = datasetSample.createResource("ex:QPROtest.trig");
 	private Resource temporaryURI1;
 	private Resource temporaryURI2;
 	
@@ -52,10 +52,10 @@ public class QualityReportTest extends Assert {
 		// checks if model contains appropriate data 
 		assertEquals(14, qualityProblem.size()); 
 		
-		assertTrue(qualityProblem.listStatements(null, RDF.type, QR.QualityProblem).hasNext());
-		assertTrue(qualityProblem.listStatements(null, QR.isDescribedBy, metricURI).hasNext());
+		assertTrue(qualityProblem.listStatements(null, RDF.type, QPRO.QualityProblem).hasNext());
+		assertTrue(qualityProblem.listStatements(null, QPRO.isDescribedBy, metricURI).hasNext());
 		
-		NodeIterator objects = qualityProblem.listObjectsOfProperty(QR.problematicThing);
+		NodeIterator objects = qualityProblem.listObjectsOfProperty(QPRO.problematicThing);
 		assertTrue(objects.hasNext());
 		
 		RDFNode _node = objects.next();
@@ -74,10 +74,10 @@ public class QualityReportTest extends Assert {
 		// checks if model contains appropriate data 
 		assertEquals(6, qualityProblem.size()); 
 		
-		assertTrue(qualityProblem.listStatements(null, RDF.type, QR.QualityProblem).hasNext());
-		assertTrue(qualityProblem.listStatements(null, QR.isDescribedBy, metricURI).hasNext());
+		assertTrue(qualityProblem.listStatements(null, RDF.type, QPRO.QualityProblem).hasNext());
+		assertTrue(qualityProblem.listStatements(null, QPRO.isDescribedBy, metricURI).hasNext());
 		
-		assertEquals(1, qualityProblem.listObjectsOfProperty(QR.problematicThing).toList().size());
+		assertEquals(1, qualityProblem.listObjectsOfProperty(QPRO.problematicThing).toList().size());
 		
 		ResIterator seqURI = qualityProblem.listSubjectsWithProperty(RDF.type, RDF.Seq);
 		assertEquals(2,qualityProblem.getSeq(seqURI.next()).size());
@@ -92,10 +92,10 @@ public class QualityReportTest extends Assert {
 		// checks if model contains appropriate data 
 		assertEquals(18, qualityReport.size()); 
 		
-		assertTrue(qualityReport.listStatements(null, RDF.type, QR.QualityReport).hasNext());
-		assertTrue(qualityReport.listStatements(null, QR.computedOn, computedOn).hasNext());
+		assertTrue(qualityReport.listStatements(null, RDF.type, QPRO.QualityReport).hasNext());
+		assertTrue(qualityReport.listStatements(null, QPRO.computedOn, computedOn).hasNext());
 	
-		assertEquals(2, qualityReport.listObjectsOfProperty(QR.hasProblem).toList().size()); 
+		assertEquals(2, qualityReport.listObjectsOfProperty(QPRO.hasProblem).toList().size()); 
 	}
 	
 	@Test
@@ -108,10 +108,10 @@ public class QualityReportTest extends Assert {
 		// checks if model contains appropriate data 
 		assertEquals(25, qualityReport.size()); 
 		
-		assertTrue(qualityReport.listStatements(null, RDF.type, QR.QualityReport).hasNext());
-		assertTrue(qualityReport.listStatements(null, QR.computedOn, computedOn).hasNext());
+		assertTrue(qualityReport.listStatements(null, RDF.type, QPRO.QualityReport).hasNext());
+		assertTrue(qualityReport.listStatements(null, QPRO.computedOn, computedOn).hasNext());
 	
-		assertEquals(3, qualityReport.listObjectsOfProperty(QR.hasProblem).toList().size()); 
+		assertEquals(3, qualityReport.listObjectsOfProperty(QPRO.hasProblem).toList().size()); 
 	}
 	
 	private void populateProblemLists() throws ProblemListInitialisationException{

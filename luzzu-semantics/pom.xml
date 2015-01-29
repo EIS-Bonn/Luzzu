@@ -33,7 +33,7 @@
 								</java>
 								<java classname="jena.schemagen" classpath="${runtime_classpath}">
 									<arg
-										line="-i src/main/resources/vocabularies/qr/qr.trig -e N3 --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n QR" />
+										line="-i src/main/resources/vocabularies/qpro/qpro.ttl -e TTL --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n QPRO" />
 								</java>
 								<java classname="jena.schemagen" classpath="${runtime_classpath}">
 									<arg
