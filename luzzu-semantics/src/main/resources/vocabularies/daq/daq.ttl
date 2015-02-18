@@ -11,6 +11,7 @@
 @prefix sdmx-measure:   <http://purl.org/linked-data/sdmx/2009/measure#> .
 @prefix sdmx-attribute:  <http://purl.org/linked-data/sdmx/2009/attribute#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
 
 # VOCABULARY
 daq:
@@ -129,3 +130,17 @@ daq:requires
 	rdfs:comment	"A metric might require a number of external resources (e.g. a gold standard) in order to be able to measure the quality. In order to cater for the most generic requirement, this abstract property links a metric to the required resource. This property should not be used directly." ;
 	rdfs:domain	daq:Metric ;
 	rdfs:range	rdfs:Resource .
+	
+daq:isEstimate
+	a	rdf:Property, owl:ObjectProperty ;
+	rdfs:label	"is estimate" ;
+	rdfs:comment	"This property flags true if an assessed metric gives an estimate result instead of a more accurate one." ;
+	rdfs:domain	daq:Metric ;
+	rdfs:range	xsd:boolean .
+	
+daq:computedBy
+	a	rdf:Property, owl:ObjectProperty ;
+	rdfs:label	"computed by" ;
+	rdfs:comment	"A metric can have multiple observations calculated by different agents." ;
+	rdfs:domain	qb:Observation ;
+	rdfs:range	prov:Agent .
