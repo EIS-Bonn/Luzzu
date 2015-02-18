@@ -147,6 +147,24 @@ use-case driven discovery and retrieval.</description>
 			<artifactId>apache-jena-libs</artifactId>
 			<type>pom</type>
 			<version>${jena.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpcore</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpcomponents-client</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpcomponents-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Logging -->
