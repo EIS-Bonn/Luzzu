@@ -3,3 +3,12 @@ gems:
 - jemoji
 - jekyll-redirect-from
 - jekyll-sitemap
+
+
+mime_type:
+    rdfxml: ['application/rdf+xml']
+	turtle: ['text/turtle']
+
+serialization_formats:
+    rdfxml: rdf
+	turtle: ttl
