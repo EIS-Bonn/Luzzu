@@ -25,7 +25,7 @@
 								<echo message="Compiling Vocabularies into Classes" />
 								<java classname="jena.schemagen" classpath="${runtime_classpath}">
 									<arg
-										line="-i src/main/resources/vocabularies/daq/daq.trig -e N3 --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n DAQ" />
+										line="-i src/main/resources/vocabularies/daq/daq.ttl -e ttl --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n DAQ" />
 								</java>
 								<java classname="jena.schemagen" classpath="${runtime_classpath}">
 									<arg
@@ -41,11 +41,15 @@
 								</java>
 								<java classname="jena.schemagen" classpath="${runtime_classpath}">
 									<arg
-										line="-i src/main/resources/vocabularies/cube/sdmx-attribute.ttl -e N3 --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n SDMXATTRIBUTE	" />
+										line="-i src/main/resources/vocabularies/cube/sdmx-attribute.ttl -e TTL --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n SDMXATTRIBUTE	" />
 								</java>
 								<java classname="jena.schemagen" classpath="${runtime_classpath}">
 									<arg
-										line="-i src/main/resources/vocabularies/lmi/lmi.trig -e N3 --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n LMI" />
+										line="-i src/main/resources/vocabularies/lmi/lmi.ttl -e TTL --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n LMI" />
+								</java>
+								<java classname="jena.schemagen" classpath="${runtime_classpath}">
+									<arg
+										line="-i src/main/resources/vocabularies/prov/prov.ttl -e ttl --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n PROV" />
 								</java>
 							</tasks>
 						</configuration>
