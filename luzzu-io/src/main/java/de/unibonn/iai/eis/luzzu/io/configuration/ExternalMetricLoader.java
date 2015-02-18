@@ -44,6 +44,15 @@ public class ExternalMetricLoader {
 		}
 	};
 	
+	private static FileFilter pomFilter = new FileFilter() {
+		public boolean accept(File file) {
+			if (file.getName().equals("pom.xml")) {
+				return true;
+			}
+			return false;
+		}
+	};
+	
 	protected ExternalMetricLoader() {}
 	
 	public static ExternalMetricLoader getInstance(){
@@ -63,6 +72,14 @@ public class ExternalMetricLoader {
 		for(File metrics : listOfFiles){
 			if (metrics.isHidden()) continue;
 			if (!metrics.isDirectory()) continue;
+			
+			File pomFile = metrics.listFiles(pomFilter)[0];
+			if (pomFile != null)  {
+				//If we have a POM file then we should load dependencies
+				DependencyLoader dl = new DependencyLoader(pomFile.toPath().toString());
+				dl.resolve();
+			}
+			
 			File jarFile = metrics.listFiles(jarFilter)[0];
 			metricsInFile.putIfAbsent(jarFile, new ArrayList<String>());
 			logger.info("Loading metrics from : {} ", jarFile.toPath());
