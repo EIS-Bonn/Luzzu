@@ -75,6 +75,7 @@ use-case driven discovery and retrieval.</description>
 		<jerseymedia.version>2.11</jerseymedia.version>
 		<powermock.version>1.5.5</powermock.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<luzzu.version>1.1.0</luzzu.version>
 	</properties>
 
 	<packaging>pom</packaging>
@@ -88,6 +89,7 @@ use-case driven discovery and retrieval.</description>
 		<module>luzzu-operations</module>
 		<!-- <module>luzzu-evaluation</module> -->
 		<module>luzzu-qml</module>
+		<!-- <module>luzzu-plugins</module> -->	
 	</modules>
 
 	<dependencies>
