@@ -5,10 +5,6 @@ gems:
 - jekyll-sitemap
 
 
-mime_type:
-    rdfxml: ['application/rdf+xml']
-	turtle: ['text/turtle']
-
-serialization_formats:
-    rdfxml: rdf
-	turtle: ttl
+require 'webrick'
+include WEBrick
+WEBrick::HTTPUtils::DefaultMimeTypes.store 'rdf', 'application/rdf+xml'
