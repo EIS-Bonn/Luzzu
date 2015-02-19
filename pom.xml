@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.unibonn.iai.eis</groupId>
 	<artifactId>luzzu</artifactId>
-	<version>${luzzu.version}</version>
+	<version>1.0.1</version>
 	<name>Luzzu</name>
 
 
