@@ -32,6 +32,10 @@ public class Commons {
 		return ModelFactory.createDefaultModel().createTypedLiteral(d);
 	}
 	
+	public static Literal generateBooleanTypeLiteral(boolean b){
+		return ModelFactory.createDefaultModel().createTypedLiteral(b);
+	}
+	
 	public static RDFNode generateRDFBlankNode(){
 		return ModelFactory.createDefaultModel().asRDFNode(NodeFactory.createAnon());
 	}
