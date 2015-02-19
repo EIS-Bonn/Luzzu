@@ -134,8 +134,8 @@ daq:requires
 daq:isEstimate
 	a	rdf:Property, owl:ObjectProperty ;
 	rdfs:label	"is estimate" ;
-	rdfs:comment	"This property flags true if an assessed metric gives an estimate result instead of a more accurate one." ;
-	rdfs:domain	daq:Metric ;
+	rdfs:comment	"This property flags true if an assessed observation of a metric gives an estimate result instead of a more accurate one." ;
+	rdfs:domain	qb:Observation ;
 	rdfs:range	xsd:boolean .
 	
 daq:computedBy
