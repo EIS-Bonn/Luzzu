@@ -73,10 +73,10 @@ public class ExternalMetricLoader {
 			if (metrics.isHidden()) continue;
 			if (!metrics.isDirectory()) continue;
 			
-			File pomFile = metrics.listFiles(pomFilter)[0];
-			if (pomFile != null)  {
-				//If we have a POM file then we should load dependencies
-				DependencyLoader dl = new DependencyLoader(pomFile.toPath().toString());
+			//If we have a POM file then we should load dependencies
+			File[] pomFiles = metrics.listFiles(pomFilter);
+			if (pomFiles != null && pomFiles.length > 0 && pomFiles[0] != null)  {
+				DependencyLoader dl = new DependencyLoader(pomFiles[0].toPath().toString());
 				dl.resolve();
 			}
 			
