@@ -83,7 +83,7 @@ public class StreamProcessor implements IOProcessor {
 		
 		cacheMgr.createNewCache(graphCacheName, 50);
 		
-		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", datasetURI);
+//		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", datasetURI);
 	}
 	
 	public StreamProcessor(String baseURI, List<String> datasetList, boolean genQualityReport, Model configuration){
@@ -188,6 +188,13 @@ public class StreamProcessor implements IOProcessor {
 		};
 		
 		executor.submit(parser);
+		
+		//try get dataset uri
+		if (this.iterator.getBaseIri() != null){
+			PropertyManager.getInstance().addToEnvironmentVars("datasetURI", this.iterator.getBaseIri());
+		} else if (this.iterator.getPrefixes().expand(":") != null){
+			PropertyManager.getInstance().addToEnvironmentVars("datasetURI", this.iterator.getPrefixes().expand(":"));
+		}
 		
 		try {
 			while (this.iterator.hasNext()) {
