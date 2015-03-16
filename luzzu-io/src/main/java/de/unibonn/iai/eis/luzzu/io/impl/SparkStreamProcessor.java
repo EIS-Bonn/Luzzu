@@ -38,7 +38,10 @@ import de.unibonn.iai.eis.luzzu.annotations.QualityMetadata;
 import de.unibonn.iai.eis.luzzu.annotations.QualityReport;
 import de.unibonn.iai.eis.luzzu.assessment.ComplexQualityMetric;
 import de.unibonn.iai.eis.luzzu.assessment.QualityMetric;
+import de.unibonn.iai.eis.luzzu.datatypes.Args;
 import de.unibonn.iai.eis.luzzu.datatypes.Object2Quad;
+import de.unibonn.iai.eis.luzzu.exceptions.AfterException;
+import de.unibonn.iai.eis.luzzu.exceptions.BeforeException;
 import de.unibonn.iai.eis.luzzu.exceptions.ExternalMetricLoaderException;
 import de.unibonn.iai.eis.luzzu.exceptions.MetadataException;
 import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
@@ -194,7 +197,18 @@ public class SparkStreamProcessor  implements IOProcessor, Serializable  {
 		
 		for(String clazz : metricInstances.keySet()){
 			if(metricInstances.get(clazz) instanceof ComplexQualityMetric){
-				((ComplexQualityMetric)metricInstances.get(clazz)).after();
+				try {
+					List<Args> args = loader.getBeforeArgs(clazz);
+					
+					List<Object> pass = new ArrayList<Object>();
+					for(Args arg : args){
+						pass.add(this.transformJavaArgs(Class.forName(arg.getType()), arg.getParameter()));
+					}
+
+					((ComplexQualityMetric)this.metricInstances.get(clazz)).after(pass.toArray());				
+				} catch (AfterException | ClassNotFoundException  e) {
+					logger.error(e.getMessage());
+				}
 			}
 			metricInstances.get(clazz).metricValue();
 		}
@@ -233,12 +247,54 @@ public class SparkStreamProcessor  implements IOProcessor, Serializable  {
 		
 		for(String className : this.metricInstances.keySet()) {
 			if (this.metricInstances.get(className) instanceof ComplexQualityMetric){
-				((ComplexQualityMetric)this.metricInstances.get(className)).before();
+				try {
+					List<Args> args = loader.getBeforeArgs(className);
+				
+					List<Object> pass = new ArrayList<Object>();
+					for(Args arg : args){
+						pass.add(this.transformJavaArgs(Class.forName(arg.getType()), arg.getParameter()));
+					}
+
+					((ComplexQualityMetric)this.metricInstances.get(className)).before(pass.toArray());
+				} catch (BeforeException | ClassNotFoundException  e) {
+					logger.error(e.getMessage());
+				}
 			}
 			
 			this.lstMetricConsumers.add(new MetricProcess(this.metricInstances.get(className), connection));
 		}
 		
+	}
+	
+	private Object transformJavaArgs(Class<?> target, String s){
+		 if (target == Object.class || target == String.class || s == null) {
+		        return s;
+		    }
+		    if (target == Character.class || target == char.class) {
+		        return s.charAt(0);
+		    }
+		    if (target == Byte.class || target == byte.class) {
+		        return Byte.parseByte(s);
+		    }
+		    if (target == Short.class || target == short.class) {
+		        return Short.parseShort(s);
+		    }
+		    if (target == Integer.class || target == int.class) {
+		        return Integer.parseInt(s);
+		    }
+		    if (target == Long.class || target == long.class) {
+		        return Long.parseLong(s);
+		    }
+		    if (target == Float.class || target == float.class) {
+		        return Float.parseFloat(s);
+		    }
+		    if (target == Double.class || target == double.class) {
+		        return Double.parseDouble(s);
+		    }
+		    if (target == Boolean.class || target == boolean.class) {
+		        return Boolean.parseBoolean(s);
+		    }
+		    throw new IllegalArgumentException("Don't know how to convert to " + target);
 	}
 	
 	private void generateQualityReport() {

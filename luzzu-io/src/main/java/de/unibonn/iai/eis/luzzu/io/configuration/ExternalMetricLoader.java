@@ -18,8 +18,13 @@ import org.slf4j.LoggerFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.ResIterator;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.vocabulary.RDF;
 
 import de.unibonn.iai.eis.luzzu.assessment.QualityMetric;
+import de.unibonn.iai.eis.luzzu.datatypes.Args;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.LMI;
 
 
@@ -34,6 +39,10 @@ public class ExternalMetricLoader {
 	final static Logger logger = LoggerFactory.getLogger(ExternalMetricLoader.class);
 	private static ExternalMetricLoader instance = null;
 	private static ConcurrentMap<File,List<String>> metricsInFile = new ConcurrentHashMap<File,List<String>>(); // Jar File, List of Metrics
+	
+	private static ConcurrentMap<String, List<Args>> beforeArgsMap = new ConcurrentHashMap<String, List<Args>>();
+	private static ConcurrentMap<String, List<Args>> afterArgsMap = new ConcurrentHashMap<String, List<Args>>();
+
 	
 	private static FileFilter jarFilter = new FileFilter() {
 		public boolean accept(File file) {
@@ -88,11 +97,47 @@ public class ExternalMetricLoader {
 			m.read(metrics+"/metrics.trig");
 			
 			
-			NodeIterator res = m.listObjectsOfProperty(LMI.javaPackageName);
+//			NodeIterator res = m.listObjectsOfProperty(LMI.javaPackageName);
+//			while (res.hasNext()){
+//				String javaMetric = res.next().toString();
+//				metricsInFile.get(jarFile).add(javaMetric);
+//				logger.info("Metric : {} ", javaMetric);
+//			}
+			
+			ResIterator res = m.listSubjectsWithProperty(RDF.type, LMI.LuzzuMetricJavaImplementation);
 			while (res.hasNext()){
-				String javaMetric = res.next().toString();
+				Resource r = res.next();
+				NodeIterator n = m.listObjectsOfProperty(r, LMI.javaPackageName);
+				
+				String javaMetric = n.next().toString();
 				metricsInFile.get(jarFile).add(javaMetric);
-				logger.info("Metric : {} ", javaMetric);
+				logger.info("Metric : {} ", javaMetric); 
+				
+				n = m.listObjectsOfProperty(r, LMI.before);
+				List<Args> beforeArgs = new ArrayList<Args>();
+				while (n.hasNext()){
+					RDFNode before = n.next();
+					String type = m.listObjectsOfProperty(before.asResource(), LMI.type).next().asLiteral().getString();
+					String param = m.listObjectsOfProperty(before.asResource(), LMI.parameter).next().asLiteral().getString();
+					Args a = new Args();
+					a.setParameter(param);
+					a.setType(type);
+					beforeArgs.add(a);
+				}
+				beforeArgsMap.put(javaMetric, beforeArgs);
+				
+				List<Args> afterArgs = new ArrayList<Args>();
+				n = m.listObjectsOfProperty(r, LMI.after);
+				if (n.hasNext()){
+					RDFNode after = n.next();
+					String type = m.listObjectsOfProperty(after.asResource(), LMI.type).next().asLiteral().getString();
+					String param = m.listObjectsOfProperty(after.asResource(), LMI.parameter).next().asLiteral().getString();
+					Args a = new Args();
+					a.setParameter(param);
+					a.setType(type);
+					afterArgs.add(a);
+				}
+				afterArgsMap.put(javaMetric, afterArgs);
 			}
 		}
 	}
@@ -129,4 +174,11 @@ public class ExternalMetricLoader {
 		return clazzes;
 	}
 	
+	public List<Args> getBeforeArgs(String className){
+		return beforeArgsMap.get(className);
+	}
+	
+	public List<Args> getAfterArgs(String className){
+		return afterArgsMap.get(className);
+	}
 }
