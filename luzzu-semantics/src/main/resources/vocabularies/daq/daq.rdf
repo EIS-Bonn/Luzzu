@@ -6,6 +6,7 @@
    xmlns:qb="http://purl.org/linked-data/cube#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:daq="http://purl.org/eis/vocab/daq#"
 >
   <rdf:Description rdf:nodeID="ub60bL40C3">
     <owl:onProperty rdf:resource="http://purl.org/linked-data/cube#structure"/>

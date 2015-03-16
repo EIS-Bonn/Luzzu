@@ -3,6 +3,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl# > .
 
 lmi:LuzzuMetricJavaImplementation a rdfs:Class .
 
@@ -13,9 +14,43 @@ lmi:javaPackageName a rdfs:Property ;
 lmi:referTo a rdfs:Property ;
 	rdfs:domain lmi:LuzzuMetricJavaImplementation ;
 	rdfs:range daq:Metric .
+
+lmi:before a rdfs:Property ;
+	rdfs:domain lmi:LuzzuMetricJavaImplementation ;
+	rdfs:range lmi:LuzzuBeforeArg . 
+	
+lmi:after a rdfs:Property ;
+	rdfs:domain lmi:LuzzuMetricJavaImplementation ;
+	rdfs:range lmi:LuzzuBeforeArg . 
+	
+lmi:LuzzuMetricArg a rdfs:Class ;
+	rdfs:comment "This is an abstract class that is extended by lmi:LuzzuBeforeArg and lmi:LuzzuAfterArg. This should not be used directly." .
+	
+lmi:LuzzuBeforeArg a rdfs:Class ;
+	rdfs:subclassOf lmi:LuzzuMetricArg .
+
+lmi:LuzzuAfterArg a rdfs:Class ;
+	rdfs:subclassOf lmi:LuzzuMetricArg .
+
+lmi:type a rdfs:Property ;
+	rdfs:domain lmi:LuzzuMetricArg ;
+	rdfs:range xsd:string ;
+	owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:maxCardinality "1"^^xsd:nonNegativeInteger .
+	
+lmi:parameter a rdfs:Property ;
+	rdfs:domain lmi:LuzzuMetricArg ;
+	rdfs:range xsd:string ;
+	owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:maxCardinality "1"^^xsd:nonNegativeInteger . 
+
+
 	
 lmi:MetricConfiguration a rdfs:Class .
 
 lmi:metric a rdfs:Property ;
 	rdfs:domain lmi:MetricConfiguration ;
 	rdfs:range xsd:string . 
+	
+
+	
