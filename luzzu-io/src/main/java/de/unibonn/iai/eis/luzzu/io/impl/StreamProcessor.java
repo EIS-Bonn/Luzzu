@@ -1,6 +1,12 @@
 package de.unibonn.iai.eis.luzzu.io.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +52,7 @@ import de.unibonn.iai.eis.luzzu.io.configuration.ExternalMetricLoader;
 import de.unibonn.iai.eis.luzzu.properties.EnvironmentProperties;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 import de.unibonn.iai.eis.luzzu.qml.parser.ParseException;
+import de.unibonn.iai.eis.luzzu.semantics.utilities.Commons;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.LMI;
 
 /**
@@ -57,6 +64,8 @@ public class StreamProcessor implements IOProcessor {
 	
 	private final CacheManager cacheMgr = CacheManager.getInstance();
 	private final String graphCacheName = PropertyManager.getInstance().getProperties("cache.properties").getProperty("GRAPH_METADATA_CACHE");
+	private final String metadataBaseDir;
+	
 	private ConcurrentMap<String, QualityMetric> metricInstances = new ConcurrentHashMap<String, QualityMetric>();
 	private ExternalMetricLoader loader = ExternalMetricLoader.getInstance();
 	private DeclerativeMetricCompiler dmc  = DeclerativeMetricCompiler.getInstance();
@@ -64,6 +73,7 @@ public class StreamProcessor implements IOProcessor {
 	final static Logger logger = LoggerFactory.getLogger(StreamProcessor.class);
 
 	private List<String> datasetList;
+	private String baseURI;
 	private String datasetURI;
 	private boolean genQualityReport;
 	private Model metricConfiguration;
@@ -74,27 +84,42 @@ public class StreamProcessor implements IOProcessor {
 		
 	private ExecutorService executor;
 	private List<MetricProcess> lstMetricConsumers = new ArrayList<MetricProcess>();
-
 	
 	private boolean isInitalised = false;
+	
+	/**
+	 * Default initializations common to all constructors (is always called upon instance creation)
+	 */
+	{	
+		// Initialize cache manager
+		cacheMgr.createNewCache(graphCacheName, 50);
+		
+		// Load properties from configuration files
+		PropertyManager props = PropertyManager.getInstance();
+		// If the directory to store quality metadata and problem reports was not specified, set it to user's home
+		if(props.getProperties("directories.properties") == null || 
+				props.getProperties("directories.properties").getProperty("QUALITY_METADATA_BASE_DIR") == null) {
+			metadataBaseDir = System.getProperty("user.dir") + "/qualityMetadata";
+		} else {
+			metadataBaseDir = props.getProperties("directories.properties").getProperty("QUALITY_METADATA_BASE_DIR");
+		}
+	}
 			
-	public StreamProcessor(String datasetURI, boolean genQualityReport, Model configuration){
+	public StreamProcessor(String baseURI, String datasetURI, boolean genQualityReport, Model configuration){
 		this.datasetList = new ArrayList<String>();
 		this.datasetList.add(datasetURI);
 		this.genQualityReport = genQualityReport;
 		this.metricConfiguration = configuration;
+		this.baseURI = baseURI;
 		
-		cacheMgr.createNewCache(graphCacheName, 50);
-		
-//		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", datasetURI);
+		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", baseURI);
 	}
 	
 	public StreamProcessor(String baseURI, List<String> datasetList, boolean genQualityReport, Model configuration){
 		this.datasetList = datasetList;
 		this.genQualityReport = genQualityReport;
 		this.metricConfiguration = configuration;
-		
-		cacheMgr.createNewCache(graphCacheName, 50);
+		this.baseURI = baseURI;
 		
 		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", baseURI);
 	}
@@ -114,7 +139,7 @@ public class StreamProcessor implements IOProcessor {
 			if (datasetListCounter < datasetList.size()) this.reinitialiseProcessors();
 		}
 		
-		this.generateQualityMetadata();
+		generateQualityMetadata();
 		if (this.genQualityReport) this.generateQualityReport();
 	}
 
@@ -333,23 +358,12 @@ public class StreamProcessor implements IOProcessor {
 			qualityProblems.add(r.createQualityProblem(m.getMetricURI(), m.getQualityProblems()));
 		}
 		
-		Resource res = null;
-		try {
-			res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getDatasetURI());
-		} catch (Exception e) {
-			logger.error("Dataset Exception " + e.getLocalizedMessage());
-		}
+		Resource res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getDatasetURI());
 		this.qualityReport = r.createQualityReport(res, qualityProblems);
 	}
 	
 	private void generateQualityMetadata(){
-		Resource res = null;
-		try {
-			res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getDatasetURI());
-		} catch (Exception e1) {
-			logger.error("Dataset Exception " + e1.getLocalizedMessage());
-		}
-		
+		Resource res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getDatasetURI());
 		QualityMetadata md = new QualityMetadata(res, false);
 		
 		for(String className : this.metricInstances.keySet()){
@@ -363,7 +377,47 @@ public class StreamProcessor implements IOProcessor {
 			logger.error(e.getMessage());
 		}
 	}
-	
+
+	/**
+	 * Generates the quality metadata corresponding to the data processed by this instance. Stores the 
+	 * resulting metadata into a file, along the corresponding configuration parameters.
+	 * TODO: Consider other concurrency cases such as: several instances of the JVM and different class loaders
+	 */
+	private synchronized void writeQualityMetadataFile() {
+		// Build the full path of the file where quality metadata will be written
+		String metadataFilePath = this.metadataBaseDir + "/" + this.baseURI.replace("http://", "") + "/quality-meta-data.trig";
+		metadataFilePath = metadataFilePath.replace("//", "/");
+				
+		File fileMetadata = new File(metadataFilePath);
+		Model model = ModelFactory.createDefaultModel();
+		// Verify whether there's already a quality metadata file for the assessed resource and load it if so
+		if(fileMetadata.exists()) {
+			try {
+				model.read(new FileInputStream(fileMetadata), this.baseURI);
+			} catch (FileNotFoundException e) {
+				logger.warn("Quality metadata file found but could not be loaded: {}. A new resource will be created...", metadataFilePath);
+			}
+		}
+		// Note that createResource() intelligently reuses the resource if found within a read model
+		Resource res = model.createResource(this.baseURI);
+		QualityMetadata md = new QualityMetadata(res, false);
+		// Write quality metadata about the metrics assessed through this processor
+		for(String className : this.metricInstances.keySet()){
+			QualityMetric m = this.metricInstances.get(className);
+			md.addMetricData(m);
+		}
+
+		try {
+			// Make sure the file is created (the following call has no effect if the file exists)
+			fileMetadata.createNewFile();
+			// Write new quality metadata into file
+			OutputStream out = new FileOutputStream(fileMetadata, false);
+			RDFDataMgr.write(out, md.createQualityMetadata(), Lang.TRIG);
+		} catch(MetadataException | IOException ex) {
+			logger.error("Quality meta-data could not be written to file: " + metadataFilePath, ex);
+		}
+	}
+
 	public Model retreiveQualityReport(){
 		return this.qualityReport;
 	}

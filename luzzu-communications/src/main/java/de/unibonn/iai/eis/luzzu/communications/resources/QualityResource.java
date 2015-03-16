@@ -86,14 +86,18 @@ public class QualityResource {
 			// Parse the metrics configuration as JSON-LD and convert it to RDF to extract its triples, note that no base URI is expected
 			Model modelConfig = ModelFactory.createDefaultModel();
 			RDFDataMgr.read(modelConfig, new StringReader(jsonStrMetricsConfig), null, Lang.JSONLD);
+			
+			// Obtain the base URI of the resources, which is important as it will be used to name the quality metadata models
+			if (lstBaseUri != null) {
+				baseURI = lstBaseUri.get(0);
+			}
 
 			StreamProcessor strmProc;
 			String[] expandedListDatasetURI = lstDatasetURI.get(0).split(",");
 			if (expandedListDatasetURI.length == 1){
 				datasetURI = expandedListDatasetURI[0];
-				strmProc = new StreamProcessor(datasetURI, genQualityReport, modelConfig);
+				strmProc = new StreamProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
 			} else {
-				if (lstBaseUri != null) baseURI = lstBaseUri.get(0);
 				strmProc = new StreamProcessor(baseURI, Arrays.asList(expandedListDatasetURI), genQualityReport, modelConfig);
 			}
 			strmProc.processorWorkFlow();

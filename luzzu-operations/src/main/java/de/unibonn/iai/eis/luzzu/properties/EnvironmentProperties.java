@@ -17,16 +17,16 @@ public class EnvironmentProperties {
 		if (instance == null) instance = new EnvironmentProperties();
 		return instance;
 	}
-	
-	//TODO: Change exception type
+
 	/**
 	 * Returns the dataset URI being processed.
 	 * @throws Exception if the process is not initialised and dataset is not known
 	 */
-	public String getDatasetURI() throws Exception{
+	public String getDatasetURI() throws IllegalStateException {
 		if (PropertyManager.getInstance().environmentVars.containsKey("datasetURI")){
 			return PropertyManager.getInstance().environmentVars.get("datasetURI");
-		} else 
-			throw new Exception("Processor is not initialised yet");
+		} else {
+			throw new IllegalStateException("Processor is not initialised yet");
+		}
 	}
 }

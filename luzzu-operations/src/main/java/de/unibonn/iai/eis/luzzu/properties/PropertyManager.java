@@ -31,6 +31,10 @@ public class PropertyManager {
 			prop = new Properties();
 			prop.load(getClass().getResourceAsStream("/properties/spark.properties"));
 			propMap.put("spark.properties", prop);
+			
+			prop = new Properties();
+			prop.load(getClass().getResourceAsStream("/properties/directories.properties"));
+			propMap.put("directories.properties", prop);
 		} catch (IOException ex)  {
 			//TODO: good exception handling
 			ex.printStackTrace();
