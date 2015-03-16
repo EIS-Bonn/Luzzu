@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -52,7 +51,6 @@ import de.unibonn.iai.eis.luzzu.io.configuration.ExternalMetricLoader;
 import de.unibonn.iai.eis.luzzu.properties.EnvironmentProperties;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 import de.unibonn.iai.eis.luzzu.qml.parser.ParseException;
-import de.unibonn.iai.eis.luzzu.semantics.utilities.Commons;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.LMI;
 
 /**
@@ -383,6 +381,7 @@ public class StreamProcessor implements IOProcessor {
 	 * resulting metadata into a file, along the corresponding configuration parameters.
 	 * TODO: Consider other concurrency cases such as: several instances of the JVM and different class loaders
 	 */
+	@SuppressWarnings("unused")
 	private synchronized void writeQualityMetadataFile() {
 		// Build the full path of the file where quality metadata will be written
 		String metadataFilePath = this.metadataBaseDir + "/" + this.baseURI.replace("http://", "") + "/quality-meta-data.trig";
