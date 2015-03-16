@@ -3,7 +3,7 @@
   <parent>
     <groupId>de.unibonn.iai.eis</groupId>
     <artifactId>luzzu</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
   </parent>
   <artifactId>luzzu-operations</artifactId>
   <name>Luzzu Operations Module</name>
