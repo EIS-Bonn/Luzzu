@@ -216,11 +216,11 @@ public class StreamProcessor implements IOProcessor {
 		executor.submit(parser);
 		
 		//try get dataset uri
-		if (this.iterator.getBaseIri() != null){
-			PropertyManager.getInstance().addToEnvironmentVars("datasetURI", this.iterator.getBaseIri());
-		} else if (this.iterator.getPrefixes().expand(":") != null){
-			PropertyManager.getInstance().addToEnvironmentVars("datasetURI", this.iterator.getPrefixes().expand(":"));
-		}
+//		if (this.iterator.getBaseIri() != null){
+//			PropertyManager.getInstance().addToEnvironmentVars("datasetURI", this.iterator.getBaseIri());
+//		} else if (this.iterator.getPrefixes().expand(":") != null){
+//			PropertyManager.getInstance().addToEnvironmentVars("datasetURI", this.iterator.getPrefixes().expand(":"));
+//		}
 		
 		try {
 			while (this.iterator.hasNext()) {
