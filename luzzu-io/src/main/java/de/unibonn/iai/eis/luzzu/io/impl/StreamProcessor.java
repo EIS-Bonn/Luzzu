@@ -110,7 +110,7 @@ public class StreamProcessor implements IOProcessor {
 		this.metricConfiguration = configuration;
 		this.baseURI = baseURI;
 		
-		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", baseURI);
+		PropertyManager.getInstance().addToEnvironmentVars("baseURI", baseURI);
 	}
 	
 	public StreamProcessor(String baseURI, List<String> datasetList, boolean genQualityReport, Model configuration){
@@ -119,7 +119,7 @@ public class StreamProcessor implements IOProcessor {
 		this.metricConfiguration = configuration;
 		this.baseURI = baseURI;
 		
-		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", baseURI);
+		PropertyManager.getInstance().addToEnvironmentVars("baseURI", baseURI);
 	}
 	
 	public void processorWorkFlow(){

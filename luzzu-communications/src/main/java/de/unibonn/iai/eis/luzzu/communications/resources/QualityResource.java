@@ -76,6 +76,9 @@ public class QualityResource {
 			if(lstMetricsConfig == null || lstMetricsConfig.size() <= 0) {
 				throw new IllegalArgumentException("Metrics configuration parameter was not provided");
 			}
+			if(lstBaseUri == null || lstBaseUri.size() <= 0) {
+				throw new IllegalArgumentException("Base URI parameter was not provided");
+			}
 			
 			// Assign parameter values to variables and set defaults
 
