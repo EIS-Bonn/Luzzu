@@ -2,6 +2,7 @@ package de.unibonn.iai.eis.luzzu.communications.resources;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -101,7 +102,14 @@ public class QualityResource {
 				datasetURI = expandedListDatasetURI[0];
 				strmProc = new StreamProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
 			} else {
-				strmProc = new StreamProcessor(baseURI, Arrays.asList(expandedListDatasetURI), genQualityReport, modelConfig);
+				//if we have a void file (e.g. void.ttl) we have to make sure that it is processed first
+				List<String> datasetFiles = Arrays.asList(expandedListDatasetURI);
+				List<String> voidFiles = new ArrayList<String>();
+				for(String s : datasetFiles) if (s.startsWith("void.")) voidFiles.add(s);
+				for (String v : voidFiles) datasetFiles.remove(v);
+				datasetFiles.addAll(0, voidFiles);
+				
+				strmProc = new StreamProcessor(baseURI, datasetFiles, genQualityReport, modelConfig);
 			}
 			strmProc.processorWorkFlow();
 			strmProc.cleanUp();
