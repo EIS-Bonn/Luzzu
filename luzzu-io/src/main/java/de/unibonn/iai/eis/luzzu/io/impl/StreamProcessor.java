@@ -349,12 +349,12 @@ public class StreamProcessor implements IOProcessor {
 			qualityProblems.add(r.createQualityProblem(m.getMetricURI(), m.getQualityProblems()));
 		}
 		
-		Resource res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getDatasetURI());
+		Resource res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getBaseURI());
 		this.qualityReport = r.createQualityReport(res, qualityProblems);
 	}
 	
 	private void generateQualityMetadata(){
-		Resource res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getDatasetURI());
+		Resource res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getBaseURI());
 		QualityMetadata md = new QualityMetadata(res, false);
 		
 		for(String className : this.metricInstances.keySet()){
