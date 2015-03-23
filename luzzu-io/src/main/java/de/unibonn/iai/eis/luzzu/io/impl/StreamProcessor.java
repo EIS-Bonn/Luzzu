@@ -128,6 +128,7 @@ public class StreamProcessor implements IOProcessor {
 		int datasetListCounter = 0;
 		for (String dataset : datasetList){
 			this.datasetURI = dataset;
+			PropertyManager.getInstance().addToEnvironmentVars("datasetURI", this.datasetURI);
 			try {
 				this.startProcessing();
 			} catch (ProcessorNotInitialised e) {
