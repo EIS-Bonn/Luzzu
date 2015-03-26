@@ -11,7 +11,7 @@
     <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
     <rdfs:label>Metric</rdfs:label>
-    <rdfs:comment>The smallest unit of measuring a quality dimension is a metric. Each metric have a value which is associated to the quality computed. Since this value is multi-typed (i.e. one metric might return true/false whilst another might require a double value), then the value's (daq:hasValue) range is inherited by the metric's attributes. A metric might also require additional information (e.g. a gold standard dataset to compare with). Therefore, a concrete metric representation shall also define such properties (see daq:requires). Metrics are provided as subclasses of this abstract class, which is not intended for direct usage.</rdfs:comment>
+    <rdfs:comment>The smallest unit of measuring a quality dimension is a metric. A metric belongs to exactly one dimension. Each metric has one or more observations (\texttt{daq:hasObservation}), which records data quality assessment value following a computation. Metrics are provided as subclasses of this abstract class, which is not intended for direct usage.</rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#metric">
     <rdf:type rdf:resource="http://purl.org/linked-data/cube#DimensionProperty"/>
