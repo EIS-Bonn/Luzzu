@@ -10,6 +10,7 @@
 @prefix qb:		 		<http://purl.org/linked-data/cube#>.
 @prefix sdmx-measure:   <http://purl.org/linked-data/sdmx/2009/measure#> .
 @prefix sdmx-attribute:  <http://purl.org/linked-data/sdmx/2009/attribute#> .
+@prefix sdmx-dimension:  <http://purl.org/linked-data/sdmx/2009/dimension#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 
@@ -18,14 +19,15 @@ daq:
 	a owl:Ontology, voaf:Vocabulary ;
         rdfs:label "Dataset Quality Vocabulary (daQ)" ;
         rdfs:comment "The Dataset Quality Vocabulary (daQ) is a lightweight, extensible core vocabulary for attaching the result of quality benchmarking of a linked open dataset (usually an expensive process) to that dataset.  daQ is designed to be extended by custom quality metrics.  Use cases include filtering and ranking datasets by quality." ;
-        dct:creator [ foaf:name "Jeremy Debattista" ], [ foaf:name "Christoph Lange"; rdfs:seeAlso <http://purl.org/net/clange>; foaf:homepage <http://langec.wordpress.com/about/> ] ;
-        dct:modified "2014-05-21"^^xsd:date .
+        dct:creator [ foaf:name "Jeremy Debattista"; foaf:homepage <http://www.jeremydebattista.info> ; foaf:mbox <mailto:debattis@cs.uni-bonn.de>  ], [ foaf:name "Christoph Lange"; rdfs:seeAlso <http://purl.org/net/clange>; foaf:homepage <http://langec.wordpress.com/about/> ] ;
+        dct:modified "2015-03-26"^^xsd:date .
 
 # DATACUBE DATA STRUTURE DEFINITION
 daq:dsd a qb:DataStructureDefinition ;
 	# Dimensions
 	qb:component [ qb:dimension daq:metric ; qb:order 1 ; ] ;
 	qb:component [ qb:dimension daq:computedOn ; qb:order 2 ; ] ;
+	qb:component [ qb:dimension sdmx-dimension:timePeriod ; qb:order 3 ; ] ;
 	# Measures
 	qb:component [ qb:measure daq:value ; ] ;
 	# Attribute
@@ -72,8 +74,9 @@ daq:computedOn
 	rdfs:domain	qb:Observation ;
 	rdfs:range	rdfs:Resource .	
 
-dc:date
+sdmx-dimension:timePeriod
 	rdfs:domain	qb:Observation ;
+	rdfs:range xsd:dateTime ;
 	owl:cardinality "1"^^xsd:nonNegativeInteger .
 	
 daq:hasObservation
@@ -108,6 +111,22 @@ daq:expectedDataType
 		rdfs:domain	daq:Metric ;
 		rdfs:range	 xsd:anySimpleType ;
 		owl:cardinality "1"^^xsd:nonNegativeInteger .
+		
+daq:isEstimate
+	a	rdf:Property, owl:ObjectProperty ;
+	rdfs:label	"is estimate" ;
+	rdfs:comment	"This property flags true if an assessed observation of a metric gives an estimate result instead of a more accurate one." ;
+	rdfs:domain	qb:Observation ;
+	rdfs:range	xsd:boolean ;
+	owl:cardinality "1"^^xsd:nonNegativeInteger .
+	
+daq:computedBy
+	a	rdf:Property, owl:ObjectProperty ;
+	rdfs:label	"computed by" ;
+	rdfs:comment	"A metric can have multiple observations calculated by different agents." ;
+	rdfs:domain	qb:Observation ;
+	rdfs:range	prov:Agent ;
+	owl:cardinality "1"^^xsd:nonNegativeInteger .
 
 # Abstract Properties
 daq:hasDimension
@@ -130,17 +149,3 @@ daq:requires
 	rdfs:comment	"A metric might require a number of external resources (e.g. a gold standard) in order to be able to measure the quality. In order to cater for the most generic requirement, this abstract property links a metric to the required resource. This property should not be used directly." ;
 	rdfs:domain	daq:Metric ;
 	rdfs:range	rdfs:Resource .
-	
-daq:isEstimate
-	a	rdf:Property, owl:ObjectProperty ;
-	rdfs:label	"is estimate" ;
-	rdfs:comment	"This property flags true if an assessed observation of a metric gives an estimate result instead of a more accurate one." ;
-	rdfs:domain	qb:Observation ;
-	rdfs:range	xsd:boolean .
-	
-daq:computedBy
-	a	rdf:Property, owl:ObjectProperty ;
-	rdfs:label	"computed by" ;
-	rdfs:comment	"A metric can have multiple observations calculated by different agents." ;
-	rdfs:domain	qb:Observation ;
-	rdfs:range	prov:Agent .
