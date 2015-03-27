@@ -112,6 +112,13 @@ daq:expectedDataType
 		rdfs:range	 xsd:anySimpleType ;
 		owl:cardinality "1"^^xsd:nonNegativeInteger .
 		
+daq:requires
+	a	rdf:Property, owl:ObjectProperty ;
+	rdfs:label	"requires" ;
+	rdfs:comment	"A metric might require a number of external resources (e.g. a gold standard) in order to be able to measure the quality. In order to cater for the most generic requirement, this property links a metric to the required resource (e.g. a URI to the gold standard dataset used)." ;
+	rdfs:domain	daq:Metric ;
+	rdfs:range	rdfs:Resource .
+		
 daq:isEstimate
 	a	rdf:Property, owl:ObjectProperty ;
 	rdfs:label	"is estimate" ;
@@ -142,10 +149,3 @@ daq:hasMetric
 	rdfs:comment	"A dimension is an abstract concept which groups an number of more concrete metrics to measure quality of a dataset. This is an abstract property and should not be used directly. Specific sub-properties should be inherited for different metrics." ;
 	rdfs:domain	daq:Dimension ;
 	rdfs:range	daq:Metric .
-	
-daq:requires
-	a	rdf:Property, owl:ObjectProperty ;
-	rdfs:label	"requires" ;
-	rdfs:comment	"A metric might require a number of external resources (e.g. a gold standard) in order to be able to measure the quality. In order to cater for the most generic requirement, this abstract property links a metric to the required resource. This property should not be used directly." ;
-	rdfs:domain	daq:Metric ;
-	rdfs:range	rdfs:Resource .
