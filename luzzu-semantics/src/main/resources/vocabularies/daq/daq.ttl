@@ -20,7 +20,7 @@ daq:
         rdfs:label "Dataset Quality Vocabulary (daQ)" ;
         rdfs:comment "The Dataset Quality Vocabulary (daQ) is a lightweight, extensible core vocabulary for attaching the result of quality benchmarking of a linked open dataset (usually an expensive process) to that dataset.  daQ is designed to be extended by custom quality metrics.  Use cases include filtering and ranking datasets by quality." ;
         dct:creator [ foaf:name "Jeremy Debattista"; foaf:homepage <http://www.jeremydebattista.info> ; foaf:mbox <mailto:debattis@cs.uni-bonn.de>  ], [ foaf:name "Christoph Lange"; rdfs:seeAlso <http://purl.org/net/clange>; foaf:homepage <http://langec.wordpress.com/about/> ] ;
-        dct:modified "2015-03-26"^^xsd:date .
+        dct:modified "2015-04-01"^^xsd:date .
 
 # DATACUBE DATA STRUTURE DEFINITION
 daq:dsd a qb:DataStructureDefinition ;
@@ -46,6 +46,12 @@ daq:QualityGraph
 		];
 	rdfs:comment	"Defines a quality graph which will contain all metadata about quality metrics on the dataset." ;
 	rdfs:label "Quality Graph Statistics" .
+	
+daq:Observation
+	a	rdfs:Class, owl:Class ;
+	rdfs:subClassOf prov:Entity, qb:Observation ;
+	rdfs:comment "A quality observation represents the statistical and provenance information of the attached metric's assessment activity.";
+	rdfs:label "Quality Observation" .
 	
 # Abstract Classes
 daq:Category
@@ -84,7 +90,7 @@ daq:hasObservation
 		rdfs:label	"has observation" ;
 		rdfs:comment	"Computed metrics can have 1 or more quality observations, where each computed resource has one observation." ;
 		rdfs:domain	daq:Metric ;
-		rdfs:range	 qb:Observation ;
+		rdfs:range	 daq:Observation ;
 		owl:minCardinality "1"^^xsd:nonNegativeInteger ;
 		owl:inverseOf daq:metric .
 
@@ -127,14 +133,6 @@ daq:isEstimate
 	rdfs:range	xsd:boolean ;
 	owl:cardinality "1"^^xsd:nonNegativeInteger .
 	
-daq:computedBy
-	a	rdf:Property, owl:ObjectProperty ;
-	rdfs:label	"computed by" ;
-	rdfs:comment	"A metric can have multiple observations calculated by different agents." ;
-	rdfs:domain	qb:Observation ;
-	rdfs:range	prov:Agent ;
-	owl:cardinality "1"^^xsd:nonNegativeInteger .
-
 # Abstract Properties
 daq:hasDimension
 	a	rdf:Property, owl:ObjectProperty ;
