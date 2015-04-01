@@ -1,5 +1,6 @@
 package de.unibonn.iai.eis.luzzu.datatypes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -21,6 +22,12 @@ import de.unibonn.iai.eis.luzzu.exceptions.ProblemListInitialisationException;
 public class ProblemList<T> {
 
 	private List<T> problemList;
+	
+	// Default constructor. Support for empty problem lists is useful in many cases to signal 
+	// that assessing a metric did not revealed any quality problems
+	public ProblemList() {
+		this.problemList = new ArrayList<T>();
+	}
 	
 	public ProblemList(List<T> problemList) throws ProblemListInitialisationException{
 		if (!(problemList.get(0) instanceof Resource) && !(problemList.get(0) instanceof Quad) && !(problemList.get(0) instanceof Model)){ // this is a quick hack since java does not allow the inferencing of the generic type of class during run-time

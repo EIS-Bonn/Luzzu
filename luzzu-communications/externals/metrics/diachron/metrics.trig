@@ -70,10 +70,6 @@ _:MachineReadableLicense a lmi:LuzzuMetricJavaImplementation ;
 	rdfs:label "Machine-readable License" ;
 	lmi:javaPackageName "eu.diachron.qualitymetrics.accessibility.licensing.MachineReadableLicense" .
 
-_:LicensingModelClassifier a lmi:LuzzuMetricJavaImplementation ;
-	rdfs:label "Licensing Model Classifier" ;
-	lmi:javaPackageName "eu.diachron.qualitymetrics.accessibility.licensing.LicensingModelClassifier" .
-
 #--- Performance Dimension ----------------------------------------------------------------------------------------------------
 
 _:CorrectURIUsage a lmi:LuzzuMetricJavaImplementation ;
