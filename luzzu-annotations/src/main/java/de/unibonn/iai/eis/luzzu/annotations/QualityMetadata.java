@@ -124,7 +124,7 @@ public class QualityMetadata {
 		this.metadata.add(observationURI, DAQ.computedOn, this.computedOn);
 		this.metadata.add(observationURI, DAQ.value, Commons.generateDoubleTypeLiteral(metric.metricValue()));
 		this.metadata.add(observationURI, DAQ.isEstimate, Commons.generateBooleanTypeLiteral(metric.isEstimate()));
-		if (metric.getAgentURI() != null) this.metadata.add(observationURI, DAQ.computedBy, metric.getAgentURI());
+//		if (metric.getAgentURI() != null) this.metadata.add(observationURI, DAQ.computedBy, metric.getAgentURI());
 
 		this.metadata.add(observationURI, CUBE.dataSet, qualityGraph);
 	}
