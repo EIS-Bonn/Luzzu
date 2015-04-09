@@ -9,7 +9,7 @@ public class SPARQLHelper {
 	private SPARQLHelper(){}
 	
 	public static String toSPARQL(Resource n){
-		if (n.isResource() || n.isLiteral()){
+		if (n != null && (n.isResource() || n.isLiteral())){
 			if (n.isURIResource()) 
 				return "<" + n.getURI() + ">";
 			else if (n.isLiteral()) {

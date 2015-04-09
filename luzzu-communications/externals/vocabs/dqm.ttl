@@ -134,6 +134,11 @@ dqm:LuzzuProvenanceAgent
 		rdfs:comment	"Refers to technical aspects of the data, that is, whether information is represented using an appropriate notation" ;
 		rdfs:label	"Interpretability" .
 
+	dqm:Interoperability
+		a	rdfs:Class ;
+		rdfs:subClassOf	daq:Dimension ;
+		rdfs:comment	"Refers to the degree to which the format and structure of the information conforms to previously returned information as well as data from other sources." ;
+		rdfs:label	"Interoperability" .
 	
 	dqm:Currency
 		a	rdfs:Class ;
@@ -301,19 +306,13 @@ dqm:LuzzuProvenanceAgent
 		rdfs:comment	"Detect properties that are defined as a owl:datatype property but is used as object property and properties defined as a owl:object property and used as datatype property The metric is computed as a ratio of misused properties" ;
 		rdfs:label	"Misuse Owl datatype or object properties metric" .
 		
-	dqm:UndefinedClassesMetric
+	dqm:UndefinedClassesAndPropertiesMetric
 		a	rdfs:Class ;
 		rdfs:subClassOf	daq:Metric ; 
 		daq:expectedDataType xsd:double ;
-		rdfs:comment	"Detects undefined classes" ;
-		rdfs:label	"Undefined classes metric" .
+		rdfs:comment	"Detects undefined classes and properties" ;
+		rdfs:label	"Undefined classes and properties metric" .
 		
-	dqm:UndefinedPropertiesMetric
-		a	rdfs:Class ;
-		rdfs:subClassOf	daq:Metric ; 
-		daq:expectedDataType xsd:double ;
-		rdfs:comment	"Detects undefined properties" ;
-		rdfs:label	"Undefined properties metric" .
 		
 	dqm:OntologyHijackingMetric
 		a	rdfs:Class ;
@@ -392,6 +391,13 @@ dqm:LuzzuProvenanceAgent
 		daq:expectedDataType xsd:double ;
 		rdfs:comment	"Provides a measure for the usage of blank nodes in a dataset" ;
 		rdfs:label	"No blank node metric" .
+
+	dqm:ReuseExistingTermsMetric
+		a	rdfs:Class ;
+		rdfs:subClassOf	daq:Metric ; 
+		daq:expectedDataType xsd:double ;
+		rdfs:comment	"Provides a qualitative measure for detecting the overlap of terms used in a dataset with existing terms." ;
+		rdfs:label	"Reuse existing terms metric" .
 
 
 	
@@ -697,22 +703,7 @@ dqm:LuzzuProvenanceAgent
 		rdfs:label	"hasHomogeneousDatatypesMetric" ;
 		rdfs:domain	dqm:Consistency ;
 		rdfs:range	dqm:HomogeneousDatatypesMetric .
-		
-	dqm:hasUndefinedClassesMetric
-		a	rdfs:Property ;
-		rdfs:subPropertyOf	daq:hasMetric ;
-		rdfs:comment	"Links Consistency Dimension with Undefined classes metric" ;
-		rdfs:label	"hasUndefinedClassesMetric" ;
-		rdfs:domain	dqm:Consistency ;
-		rdfs:range	dqm:UndefinedClassesMetric .
-		
-	dqm:hasUndefinedPropertiesMetric
-		a	rdfs:Property ;
-		rdfs:subPropertyOf	daq:hasMetric ;
-		rdfs:comment	"Links Consistency Dimension with Undefined  properties metric" ;
-		rdfs:label	"hasUndefinedPropertiesMetric" ;
-		rdfs:domain	dqm:Consistency ;
-		rdfs:range	dqm:UndefinedPropertiesMetric .
+				
 		
 	dqm:hasMisuseOwlDatatypeOrObjectPropertiesMetric
 		a	rdfs:Property ;
@@ -858,15 +849,41 @@ dqm:LuzzuProvenanceAgent
 		rdfs:comment "Links Representational Category with Interpretability Dimension" ;
 		rdfs:label "Representational has interpretability dimension" ;
 		rdfs:domain dqm:Representational ;
-		rdfs:range dqm:Versatility .
+		rdfs:range dqm:Interpretability .
 
 	dqm:hasNoBlankNodeMetric
 		a	rdfs:Property ;
 		rdfs:subPropertyOf	daq:hasMetric ;
-		rdfs:comment	"Links Versatility Dimension with No Blank Node metric";
+		rdfs:comment	"Links Interpretability Dimension with No Blank Node metric";
 		rdfs:label	"Versatility has no blank node metric " ;
-		rdfs:domain	dqm:Versatility ;
+		rdfs:domain	dqm:Interpretability ;
 		rdfs:range	dqm:NoBlankNodeMetric .
+
+	dqm:hasUndefinedClassesAndPropertiesMetric
+		a	rdfs:Property ;
+		rdfs:subPropertyOf	daq:hasMetric ;
+		rdfs:comment	"Links Consistency Dimension with Undefined classes and properties metric" ;
+		rdfs:label	"hasUndefinedClassesMetric" ;
+		rdfs:domain	dqm:Interpretability ;
+		rdfs:range	dqm:UndefinedClassesAndPropertiesMetric .
+
+	#Interoperability Dimension Properties
+	dqm:hasInteroperabilityDimension
+		a rdfs:Property ;
+		rdfs:subPropertyOf daq:hasDimension ;
+		rdfs:comment "Links Representational Category with Interoperability Dimension" ;
+		rdfs:label "Representational has interoperability dimension" ;
+		rdfs:domain dqm:Representational ;
+		rdfs:range dqm:Interoperability .
+
+	dqm:hasReuseExistingTermsMetric
+		a	rdfs:Property ;
+		rdfs:subPropertyOf	daq:hasMetric ;
+		rdfs:comment	"Links Interpretability Dimension with No Blank Node metric";
+		rdfs:label	"Versatility has no blank node metric " ;
+		rdfs:domain	dqm:Interpretability ;
+		rdfs:range	dqm:ReuseExistingTermsMetric .
+
 
 
 	
@@ -1362,5 +1379,28 @@ dqm:ObsoleteConceptsInOntologyMetric
 		rdfs:subClassOf qpro:Exception ;
 		rdfs:comment "The defined format using the void:feature predicate is unknown. Check http://www.w3.org/ns/formats/." ;
 		rdfs:label "Incorrect defined format/feature" .
+
+### Undefined Classes and Properties
+	
+	dqm:UndefinedClass
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The class used is undefined in the respective schema" ;
+		rdfs:label "Undefined Class" .
+
+	dqm:UndefinedProperty
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The property used is undefined in its respective schema." ;
+		rdfs:label "Undefined Property" .
+
+
+### Reuse of Terms and Vocabularies
+
+	dqm:UnusedSuggestedVocabulary
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The dataset did not use terms from the suggested vocabulary." ;
+		rdfs:label "Unused suggested vocabulary" .
 
 

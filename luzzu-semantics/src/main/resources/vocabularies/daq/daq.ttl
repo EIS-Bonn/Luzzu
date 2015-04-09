@@ -73,6 +73,12 @@ daq:Metric
 # PROPERTIES
 
 # Generic Properties
+daq:computedBy
+	a	rdf:Property, owl:ObjectProperty, qb:DimensionProperty ;
+	rdfs:label	"computed by" ;
+	rdfs:comment "TODO: Define properly";
+	rdfs:domain	qb:Observation .
+
 daq:computedOn
 	a	rdf:Property, owl:ObjectProperty, qb:DimensionProperty ;
 	rdfs:label	"computed on" ;

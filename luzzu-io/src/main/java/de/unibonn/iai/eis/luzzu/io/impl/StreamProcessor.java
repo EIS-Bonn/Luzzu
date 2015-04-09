@@ -18,6 +18,7 @@ import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 import org.apache.jena.riot.RDFLanguages;
+import org.apache.jena.riot.RiotException;
 import org.apache.jena.riot.lang.PipedQuadsStream;
 import org.apache.jena.riot.lang.PipedRDFIterator;
 import org.apache.jena.riot.lang.PipedRDFStream;
@@ -81,6 +82,11 @@ public class StreamProcessor implements IOProcessor {
 	
 	protected PipedRDFIterator<?> iterator;
 	protected PipedRDFStream<?> rdfStream;
+	// RDFIterator parameters
+	private final int rdfIterBufferSize = PipedRDFIterator.DEFAULT_BUFFER_SIZE * 2;
+	private final int rdfIterPollTimeout = 10000;
+	private final int rdfIterMaxPolls = 50;
+	private final boolean rdfIterFairBufferLock = true;
 		
 	private ExecutorService executor;
 	private List<MetricProcess> lstMetricConsumers = new ArrayList<MetricProcess>();
@@ -157,10 +163,10 @@ public class StreamProcessor implements IOProcessor {
 		Lang lang  = RDFLanguages.filenameToLang(datasetURI);
 		
 		if ((lang == Lang.NQ) || (lang == Lang.NQUADS)){
-			this.iterator = new PipedRDFIterator<Quad>();
+			this.iterator = new PipedRDFIterator<Quad>(PipedRDFIterator.DEFAULT_BUFFER_SIZE*2, true, 25, 10000);
 			this.rdfStream = new PipedQuadsStream((PipedRDFIterator<Quad>) iterator);
 		} else {
-			this.iterator = new PipedRDFIterator<Triple>();
+			this.iterator = new PipedRDFIterator<Triple>(PipedRDFIterator.DEFAULT_BUFFER_SIZE*2, true, 25, 10000);
 			this.rdfStream = new PipedTriplesStream((PipedRDFIterator<Triple>) iterator);
 		}
 		
@@ -179,12 +185,14 @@ public class StreamProcessor implements IOProcessor {
 			Lang lang  = RDFLanguages.filenameToLang(datasetURI);
 	
 			if ((lang == Lang.NQ) || (lang == Lang.NQUADS)){
-				this.iterator = new PipedRDFIterator<Quad>();
+				this.iterator = new PipedRDFIterator<Quad>(rdfIterBufferSize, rdfIterFairBufferLock, rdfIterPollTimeout, rdfIterMaxPolls);
 				this.rdfStream = new PipedQuadsStream((PipedRDFIterator<Quad>) iterator);
 			} else {
-				this.iterator = new PipedRDFIterator<Triple>();
+				this.iterator = new PipedRDFIterator<Triple>(rdfIterBufferSize, rdfIterFairBufferLock, rdfIterPollTimeout, rdfIterMaxPolls);
 				this.rdfStream = new PipedTriplesStream((PipedRDFIterator<Triple>) iterator);
 			}
+			logger.debug("PipedRDFIterator initialized with: Buffer Size {}, Fair Lock {}, Poll Timeout {}, Max Polls {}", 
+					rdfIterBufferSize, rdfIterFairBufferLock, rdfIterPollTimeout, rdfIterMaxPolls);
 			
 			this.isInitalised = true;
 			
@@ -234,7 +242,10 @@ public class StreamProcessor implements IOProcessor {
 					}
 				}
 			}
-		} 
+		} catch(RiotException rex) {
+			logger.warn("Failed to process dataset: {}. RIOT exception: {}", datasetURI, rex.getMessage());
+			throw rex;
+		}
 		finally {
 			if (lstMetricConsumers != null){
 				for(MetricProcess mConsumer : lstMetricConsumers) {
