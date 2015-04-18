@@ -399,15 +399,27 @@ dqm:LuzzuProvenanceAgent
 		rdfs:comment	"Provides a qualitative measure for detecting the overlap of terms used in a dataset with existing terms." ;
 		rdfs:label	"Reuse existing terms metric" .
 
-
+	dqm:ReuseExistingVocabularyMetric
+		a	rdfs:Class ;
+		rdfs:subClassOf	daq:Metric ; 
+		daq:expectedDataType xsd:double ;
+		rdfs:comment	"Provides a qualitative measure for detecting the overlap of vocabularies used in a dataset." ;
+		rdfs:label	"Reuse existing vocabularies metric" .
 	
-	dqm:CurrencyOfDocumentStatementsMetric
+	dqm:CurrencyOfDatasetMetric
 		a	rdfs:Class ;
 		rdfs:subClassOf	daq:Metric ; 
 		daq:expectedDataType xsd:double ;
 		rdfs:comment	"Compares the time when the data was observed with the time when the data (document as a whole and individual triples) were last modified, thereby providing a measure of how current the dataset is" ;
 		rdfs:label	"Currency of document/statements metric" .
-		
+	
+	dqm:FreshnessOfDatasetMetric
+		a	rdfs:Class ;
+		rdfs:subClassOf	daq:Metric ; 
+		daq:expectedDataType xsd:double ;
+		rdfs:comment	"Checks if the data in the dataset is being updated with the original data" ;
+		rdfs:label	"Freshness of Dataset Metric" .
+	
 	dqm:TimeSinceModificationMetric
 		a	rdfs:Class ;
 		rdfs:subClassOf	daq:Metric ; 
@@ -705,13 +717,13 @@ dqm:LuzzuProvenanceAgent
 		rdfs:range	dqm:HomogeneousDatatypesMetric .
 				
 		
-	dqm:hasMisuseOwlDatatypeOrObjectPropertiesMetric
+	dqm:hasMisusedOwlDatatypeOrObjectPropertiesMetric
 		a	rdfs:Property ;
 		rdfs:subPropertyOf	daq:hasMetric ;
 		rdfs:comment	"Links Consistency Dimension with Misuse Owl- datatype or object properties metric" ;
 		rdfs:label	"hasMisuseOwlDatatypeOrObjectPropertiesMetric" ;
 		rdfs:domain	dqm:Consistency ;
-		rdfs:range	dqm:MisuseOwlDatatypeOrObjectPropertiesMetric .
+		rdfs:range	dqm:MisusedOwlDatatypeOrObjectPropertiesMetric .
 		
 	dqm:hasMisplacedClassesOrPropertiesMetric
 		a	rdfs:Property ;
@@ -879,10 +891,19 @@ dqm:LuzzuProvenanceAgent
 	dqm:hasReuseExistingTermsMetric
 		a	rdfs:Property ;
 		rdfs:subPropertyOf	daq:hasMetric ;
-		rdfs:comment	"Links Interpretability Dimension with No Blank Node metric";
-		rdfs:label	"Versatility has no blank node metric " ;
-		rdfs:domain	dqm:Interpretability ;
+		rdfs:comment	"Links Interoperability Dimension with Reuse Existing Terms";
+		rdfs:label	"Interoperability has reuse existing terms metric " ;
+		rdfs:domain	dqm:Interoperability ;
 		rdfs:range	dqm:ReuseExistingTermsMetric .
+
+
+	dqm:hasReuseExistingVocabularyMetric
+		a	rdfs:Property ;
+		rdfs:subPropertyOf	daq:hasMetric ;
+		rdfs:comment	"Links Interoperability Dimension with reuse existing vocabulary metric";
+		rdfs:label	"Interoperability has reuse existing vocabularies metric " ;
+		rdfs:domain	dqm:Interoperability ;
+		rdfs:range	dqm:ReuseExistingVocabularyMetric .
 
 
 
@@ -937,13 +958,13 @@ dqm:LuzzuProvenanceAgent
 		rdfs:domain dqm:Dynamicity ;
 		rdfs:range dqm:Currency .
 
-	dqm:hasCurrencyOfDocumentStatementsMetric
+	dqm:hasCurrencyOfDatasetMetric
 		a	rdfs:Property ;
 		rdfs:subPropertyOf	daq:hasMetric ;
 		rdfs:comment	"Links the Currency Dimension with the Currency of Document/Statements Metric (Currency of Document/Statements Metric belongs to the Currency Dimension)" ;
 		rdfs:label	"Currency has currency of document/statements metric" ;
 		rdfs:domain	dqm:Currency ;
-		rdfs:range	dqm:CurrencyOfDocumentStatementsMetric .
+		rdfs:range	dqm:CurrencyOfDatasetMetric .
 
 	dqm:hasTimeSinceModificationMetric
 		a	rdfs:Property ;
@@ -994,6 +1015,13 @@ dqm:LuzzuProvenanceAgent
 		rdfs:label	"Timeliness has timeliness of resource metric" ;
 		rdfs:domain	dqm:Timeliness ;
 		rdfs:range	dqm:TimelinessOfResourceMetric .
+
+	dqm:hasFreshnessOfDatasetMetric
+		a	rdfs:Property ;
+		rdfs:subPropertyOf	daq:hasMetric ;
+		rdfs:domain	dqm:Timeliness ;
+		rdfs:range	dqm:FreshnessOfDatasetMetric .
+
 		
 	#Reputation
 	dqm:hasReputationOfDatasetMetric
@@ -1404,3 +1432,98 @@ dqm:ObsoleteConceptsInOntologyMetric
 		rdfs:label "Unused suggested vocabulary" .
 
 
+### Entities members of disjoint classes
+	
+	dqm:MultiTypedResourceWithDisjointedClasses
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The referred resource is multi-typed with disjoined classes." ;
+		rdfs:label "Disjoined Classes Typing" .
+
+	dqm:violatingDisjoinedClass
+		a rdfs:Property ;
+		rdfs:subPropertyOf qpro:extraExceptionProperty ;
+		rdfs:domain	rdfs:Resource;
+		rdfs:range	rdfs:Resource .
+
+
+### Entities members of disjoint classes
+	
+	dqm:MisplacedClass
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The referred resource used a defined class instead of a property." ;
+		rdfs:label "Misplaced Class" .
+
+	dqm:hasMisplacedClass
+		a rdfs:Property ;
+		rdfs:subPropertyOf qpro:extraExceptionProperty ;
+		rdfs:domain	rdfs:Resource;
+		rdfs:range	rdfs:Resource .
+
+
+	dqm:MisplacedProperty
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The referred resource used a defined property instead of a class." ;
+		rdfs:label "Misplaced Property" .
+
+	dqm:hasMisplacedProperty
+		a rdfs:Property ;
+		rdfs:subPropertyOf qpro:extraExceptionProperty ;
+		rdfs:domain	rdfs:Resource;
+		rdfs:range	rdfs:Resource .
+
+
+### Misuse of owl:DatatypeProperty or owl:ObjectProprty	
+	dqm:MisusedDatatypeProperty
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The referred resource used a datatype property instead of an Object Property." ;
+		rdfs:label "Misused Datatype Property" .
+
+	dqm:hasMisusedDatatypeProperty
+		a rdfs:Property ;
+		rdfs:subPropertyOf qpro:extraExceptionProperty ;
+		rdfs:domain	rdfs:Resource;
+		rdfs:range	rdfs:Resource .
+
+
+	dqm:MisusedObjectProperty
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The referred resource used an object property instead of a datatype property." ;
+		rdfs:label "Misplaced Property" .
+
+	dqm:hasMisusedObjectProperty
+		a rdfs:Property ;
+		rdfs:subPropertyOf qpro:extraExceptionProperty ;
+		rdfs:domain	rdfs:Resource;
+		rdfs:range	rdfs:Resource .
+
+
+### CurrencyOfDataset
+	dqm:MissingMetadataForCurrency
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The referred dataset have missing metadata properties thus cannot calculate currency." ;
+		rdfs:label "Missing Metadata for Currency Calculation" .
+
+	dqm:MissingMetadataForFreshness
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The referred dataset have missing metadata properties thus cannot calculate data freshness." ;
+		rdfs:label "Missing Metadata for Freshness Calculation" .
+
+	dqm:MissingMetadataForTimelinessOfResource
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The referred dataset have missing metadata properties thus cannot calculate data timeliness." ;
+		rdfs:label "Missing Metadata for  Calculation" .
+
+### Extensional Conciseness
+	dqm:ResourceReplica
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The referred resource has a replica resource with a different id." ;
+		rdfs:label "Resource Replica" .
