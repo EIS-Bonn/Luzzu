@@ -22,7 +22,7 @@ public class Main {
 	private static final String PORT_NUMBER = PROP.getProperty("PORT");
 	private static final String APPLICATION = PROP.getProperty("APPLICATION");
 	
-	 public static final String BASE_URI = SCHEME+"://"+DOMAIN+":"+PORT_NUMBER+"/"+ APPLICATION + "/";
+	public static final String BASE_URI = SCHEME+"://"+DOMAIN+":"+PORT_NUMBER+"/"+ APPLICATION + "/";
 
 
     /**
