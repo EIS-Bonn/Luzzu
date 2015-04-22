@@ -163,10 +163,10 @@ public class StreamProcessor implements IOProcessor {
 		Lang lang  = RDFLanguages.filenameToLang(datasetURI);
 		
 		if ((lang == Lang.NQ) || (lang == Lang.NQUADS)){
-			this.iterator = new PipedRDFIterator<Quad>(PipedRDFIterator.DEFAULT_BUFFER_SIZE*2, true, 25, 10000);
+			this.iterator = new PipedRDFIterator<Quad>(rdfIterBufferSize, rdfIterFairBufferLock, rdfIterPollTimeout, rdfIterMaxPolls);
 			this.rdfStream = new PipedQuadsStream((PipedRDFIterator<Quad>) iterator);
 		} else {
-			this.iterator = new PipedRDFIterator<Triple>(PipedRDFIterator.DEFAULT_BUFFER_SIZE*2, true, 25, 10000);
+			this.iterator = new PipedRDFIterator<Triple>(rdfIterBufferSize, rdfIterFairBufferLock, rdfIterPollTimeout, rdfIterMaxPolls);
 			this.rdfStream = new PipedTriplesStream((PipedRDFIterator<Triple>) iterator);
 		}
 		
@@ -273,6 +273,7 @@ public class StreamProcessor implements IOProcessor {
 					logger.error(e.getMessage());
 				}
 			}
+//			metricInstances.get(clazz).metricValue();
 		}
 	}
 	
