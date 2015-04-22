@@ -10,7 +10,7 @@
 	</appender>
 
 	<appender name="rollingFile" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="/srv/luzzu/luzzucomms.log" />
+		<param name="file" value="/Users/jeremy/Desktop/270a-crawling/luzzucomms.log" />
 		<param name="MaxFileSize" value="500MB" />
 		<param name="MaxBackupIndex" value="2" />
 		<layout class="org.apache.log4j.PatternLayout">
