@@ -273,7 +273,7 @@ public class StreamProcessor implements IOProcessor {
 					logger.error(e.getMessage());
 				}
 			}
-			metricInstances.get(clazz).metricValue();
+//			metricInstances.get(clazz).metricValue();
 		}
 	}
 	
