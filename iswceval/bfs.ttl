@@ -1,0 +1,693 @@
+{ <urn:71757f8b-acca-4f5a-87db-768ea49d6f77>
+          a       <http://purl.org/eis/vocab/daq#QualityGraph> ;
+          <http://purl.org/linked-data/cube#structure>
+                  <http://purl.org/eis/vocab/daq#dsd> .
+}
+
+<urn:71757f8b-acca-4f5a-87db-768ea49d6f77> {
+    <urn:23ab48dc-4dd4-4564-abcc-dafdebfa1af5>
+            a       <http://www.diachron-fp7.eu/dqm#NoBlankNodeMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:5d749647-67fc-4e35-9fd2-a0e3739309ef> .
+    
+    <urn:c6159bba-1f5c-482d-b5ff-2bdc36ce643a>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-27T19:52:48.222Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:34cc0bcc-1835-4154-b90e-32d118700b36> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:5b6e9be7-4d0e-4567-b696-65d3b9944f98>
+            a       <http://www.diachron-fp7.eu/dqm#EndPointAvailabilityMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:f3e5c303-f5c5-4ece-9ea5-ae0bd6ca1d9b> , <urn:0794f92a-d7d3-4807-b752-9c2c8f2d39f6> .
+    
+    <urn:bbc854bc-2953-4ba5-995b-19e73db895d9>
+            a       <http://www.diachron-fp7.eu/dqm#MisplacedClassesOrPropertiesMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:8976992c-6e25-465e-97d4-d2ca9b1057f5> .
+    
+    <urn:8976992c-6e25-465e-97d4-d2ca9b1057f5>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:05.611Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:bbc854bc-2953-4ba5-995b-19e73db895d9> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "1.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:da386b7d-5081-444e-a3ae-1569ffc80948>
+            a       <http://www.diachron-fp7.eu/dqm#MachineReadableLicenseMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:7c8c3bf9-865e-4860-b769-e7f0d3a551d7> .
+    
+    <urn:7b561fca-0134-428e-bcbf-11a900511d34>
+            a       <http://www.diachron-fp7.eu/dqm#FreshnessOfDatasetMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:b3bd1381-b85e-4282-b67c-b8938cb7e637> .
+    
+    <urn:99ec9b36-b19a-42b5-b075-bf5cd10020dd>
+            a       <http://www.diachron-fp7.eu/dqm#HumanReadableLicenseMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:b9dbbc21-a752-4240-b5e6-40ad6d8b5ac7> .
+    
+    <urn:030be8e6-92cc-4435-9d1f-5e5f52d0cc84>
+            a       <http://www.diachron-fp7.eu/dqm#RepresentationalConciseness> ;
+            <http://www.diachron-fp7.eu/dqm#hasNoProlixRDFMetric>
+                    <urn:aedafe92-d074-4837-98c2-79fc92b33fc8> ;
+            <http://www.diachron-fp7.eu/dqm#hasShortURIsMetric>
+                    <urn:0873453d-924f-4a92-9bd7-f94e06b42c1a> .
+    
+    <urn:94ee8d10-db58-45c8-89dc-ef9723d05e88>
+            a       <http://www.diachron-fp7.eu/dqm#Interpretability> ;
+            <http://www.diachron-fp7.eu/dqm#hasNoBlankNodeMetric>
+                    <urn:23ab48dc-4dd4-4564-abcc-dafdebfa1af5> ;
+            <http://www.diachron-fp7.eu/dqm#hasUndefinedClassesAndPropertiesMetric>
+                    <urn:ec5dd52e-273a-4f48-861b-aa21ea408f91> .
+    
+    <urn:561394f1-3995-46b8-9595-52cef8f6ebbf>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:05.208Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:ec5dd52e-273a-4f48-861b-aa21ea408f91> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.9090909090909091"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:6e645b84-9490-44c8-9a33-431d1043348c>
+            a       <http://www.diachron-fp7.eu/dqm#ReuseExistingTermsMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:5587223f-1300-4d94-813c-db230dfc9ccb> .
+    
+    <urn:b65daf2c-2052-4586-89a9-521a020f8ca3>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:03.824Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:9a648ecf-7888-4a1c-aecd-146c6dfe397c> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "1.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:29eeac03-96f8-43ff-98ab-ca1542bfc368>
+            a       <http://www.diachron-fp7.eu/dqm#Timeliness> ;
+            <http://www.diachron-fp7.eu/dqm#hasFreshnessOfDatasetMetric>
+                    <urn:7b561fca-0134-428e-bcbf-11a900511d34> ;
+            <http://www.diachron-fp7.eu/dqm#hasTimelinessOfResourceMetric>
+                    <urn:39822121-6de7-4d64-a730-1545f2c7f05e> .
+    
+    <urn:fd566645-305e-4498-8b4f-befde53ef820>
+            a       <http://www.diachron-fp7.eu/dqm#Accessibility> ;
+            <http://www.diachron-fp7.eu/dqm#hasAvailabilityDimension>
+                    <urn:65cbbd2b-e36a-4d12-83a2-f2f18c149359> ;
+            <http://www.diachron-fp7.eu/dqm#hasLicensingDimension>
+                    <urn:00cb21b7-43a3-47cd-b21c-a7ce9249afac> ;
+            <http://www.diachron-fp7.eu/dqm#hasPerformanceDimension>
+                    <urn:3008cb15-5d6e-447b-bd0f-9af27bc2e86e> .
+    
+    <urn:32249299-cdff-4a1a-bb22-c2e515297879>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:04.439Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:aedafe92-d074-4837-98c2-79fc92b33fc8> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "1.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:fd40cefe-0f98-49e1-b538-4804d4a59ff9>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-27T19:51:34.765Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:1b12480e-3a5b-4d50-bb45-a20760a4e914> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "4.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:00cb21b7-43a3-47cd-b21c-a7ce9249afac>
+            a       <http://www.diachron-fp7.eu/dqm#Licensing> ;
+            <http://www.diachron-fp7.eu/dqm#hasHumanReadableLicenseMetric>
+                    <urn:99ec9b36-b19a-42b5-b075-bf5cd10020dd> ;
+            <http://www.diachron-fp7.eu/dqm#hasMachineReadableLicenseMetric>
+                    <urn:da386b7d-5081-444e-a3ae-1569ffc80948> .
+    
+    <urn:a6fea080-b78b-45d5-8cf5-4dc1e64aba5f>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:05.599Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:39822121-6de7-4d64-a730-1545f2c7f05e> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:f3e5c303-f5c5-4ece-9ea5-ae0bd6ca1d9b>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-29T06:48:52.153Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:5b6e9be7-4d0e-4567-b696-65d3b9944f98> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "1.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:1b12480e-3a5b-4d50-bb45-a20760a4e914>
+            a       <http://www.diachron-fp7.eu/dqm#MultipleLanguageUsageMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:fd40cefe-0f98-49e1-b538-4804d4a59ff9> , <urn:27c1b6a4-159b-425e-a3d6-81c51fdc145d> .
+    
+    <urn:71c60b13-31c2-4bd6-807b-d7d5af114880>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:05.219Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:cf7ae405-f2d1-4c03-86a1-607d39c3449a> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.9901"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:b2315c83-391d-47df-a799-8ab0b513e569>
+            a       <http://www.diachron-fp7.eu/dqm#BasicProvenanceMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:1ddfb550-d48d-4f1c-8f52-edd1728d864f> .
+    
+    <urn:4182b727-2272-478c-a491-d7e79a29a948>
+            a       <http://www.diachron-fp7.eu/dqm#LowLatencyMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:f5cf77f2-7615-422c-b8fb-5d6fc8248f6c> .
+    
+    <urn:e65d9eaf-4bb9-41bc-87c8-1057b80ca711>
+            a       <http://www.diachron-fp7.eu/dqm#MisreportedContentTypesMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:9ebf0431-d383-4917-b7ea-9f6dbd44eef2> .
+    
+    <urn:86aef6f7-e4be-4034-99b3-bed07577390b>
+            a       <http://www.diachron-fp7.eu/dqm#DereferenceabilityMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:9bbb20d6-66b0-458d-9736-418c55ae8c5c> .
+    
+    <urn:aedafe92-d074-4837-98c2-79fc92b33fc8>
+            a       <http://www.diachron-fp7.eu/dqm#NoProlixRDFMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:32249299-cdff-4a1a-bb22-c2e515297879> .
+    
+    <urn:39822121-6de7-4d64-a730-1545f2c7f05e>
+            a       <http://www.diachron-fp7.eu/dqm#TimelinessOfResourceMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:a6fea080-b78b-45d5-8cf5-4dc1e64aba5f> .
+    
+    <urn:b79d6ecf-a011-462c-bbc2-778b8bf7d499>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:04.38Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:09f6c331-c987-4d12-ac2a-7dfc429b11e0> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:df08c115-ff83-4708-a875-207725d23002>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:05.721Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:43f7fa80-e051-4429-bc1e-75d8efcbd3ba> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:0a2cca98-b59c-43fb-b75d-b8bc8cb8e46d>
+            a       <http://www.diachron-fp7.eu/dqm#DifferentSerialisationsMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:e9f94cad-9eb4-447e-b4f6-e8cda58ef1b6> .
+    
+    <urn:dd79cd6e-4177-436d-88ea-fdcebf592d47>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:05.623Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:0873453d-924f-4a92-9bd7-f94e06b42c1a> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.999554565701559"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:65cbbd2b-e36a-4d12-83a2-f2f18c149359>
+            a       <http://www.diachron-fp7.eu/dqm#Availability> ;
+            <http://www.diachron-fp7.eu/dqm#hasDereferenceabilityMetric>
+                    <urn:86aef6f7-e4be-4034-99b3-bed07577390b> ;
+            <http://www.diachron-fp7.eu/dqm#hasEndPointAvailabilityMetric>
+                    <urn:5b6e9be7-4d0e-4567-b696-65d3b9944f98> ;
+            <http://www.diachron-fp7.eu/dqm#hasMisreportedContentTypesMetric>
+                    <urn:e65d9eaf-4bb9-41bc-87c8-1057b80ca711> ;
+            <http://www.diachron-fp7.eu/dqm#hasRDFAvailabilityMetric>
+                    <urn:09f6c331-c987-4d12-ac2a-7dfc429b11e0> .
+    
+    <urn:2c97192f-9932-47fb-93ca-b4abe5de32af>
+            a       <http://www.diachron-fp7.eu/dqm#Provenance> ;
+            <http://www.diachron-fp7.eu/dqm#hasBasicProvenanceMetric>
+                    <urn:b2315c83-391d-47df-a799-8ab0b513e569> ;
+            <http://www.diachron-fp7.eu/dqm#hasExtendedProvenanceMetric>
+                    <urn:3cb6b979-4bb6-4231-99b0-1dcfe285603e> .
+    
+    <urn:3008cb15-5d6e-447b-bd0f-9af27bc2e86e>
+            a       <http://www.diachron-fp7.eu/dqm#Performance> ;
+            <http://www.diachron-fp7.eu/dqm#hasCorrectURIUsage>
+                    <urn:e4995c3e-f0f2-49d4-9fb2-d12d1c1ed31b> ;
+            <http://www.diachron-fp7.eu/dqm#hasHighThroughputMetric>
+                    <urn:9a648ecf-7888-4a1c-aecd-146c6dfe397c> ;
+            <http://www.diachron-fp7.eu/dqm#hasLowLatencyMetric>
+                    <urn:4182b727-2272-478c-a491-d7e79a29a948> ;
+            <http://www.diachron-fp7.eu/dqm#hasScalabilityOfDataSourceMetric>
+                    <urn:cf7ae405-f2d1-4c03-86a1-607d39c3449a> .
+    
+    <urn:ec5dd52e-273a-4f48-861b-aa21ea408f91>
+            a       <http://www.diachron-fp7.eu/dqm#UndefinedClassesAndPropertiesMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:561394f1-3995-46b8-9595-52cef8f6ebbf> .
+    
+    <urn:62130776-2477-4021-ba28-e6f9efcfcf88>
+            a       <http://www.diachron-fp7.eu/dqm#Dynamicity> ;
+            <http://www.diachron-fp7.eu/dqm#hasCurrencyDimension>
+                    <urn:d7005ddf-841b-4dc1-b387-9876fbcf11c3> ;
+            <http://www.diachron-fp7.eu/dqm#hasTimelinessDimension>
+                    <urn:29eeac03-96f8-43ff-98ab-ca1542bfc368> .
+    
+    <urn:e4995c3e-f0f2-49d4-9fb2-d12d1c1ed31b>
+            a       <http://www.diachron-fp7.eu/dqm#CorrectURIUsage> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:89703181-0e5b-424d-9279-e29f180e1cd2> .
+    
+    <urn:c27b42f0-cff6-4943-b9b6-021e949a6ab1>
+            a       <http://www.diachron-fp7.eu/dqm#Interoperability> ;
+            <http://www.diachron-fp7.eu/dqm#hasReuseExistingTermsMetric>
+                    <urn:6e645b84-9490-44c8-9a33-431d1043348c> ;
+            <http://www.diachron-fp7.eu/dqm#hasReuseExistingVocabularyMetric>
+                    <urn:34cc0bcc-1835-4154-b90e-32d118700b36> .
+    
+    <urn:d7005ddf-841b-4dc1-b387-9876fbcf11c3>
+            a       <http://www.diachron-fp7.eu/dqm#Currency> ;
+            <http://www.diachron-fp7.eu/dqm#hasCurrencyOfDatasetMetric>
+                    <urn:43f7fa80-e051-4429-bc1e-75d8efcbd3ba> .
+    
+    <urn:f6d9313c-4fb3-45f6-8a27-1ac29906ad4a>
+            a       <http://www.diachron-fp7.eu/dqm#Intrinsic> ;
+            <http://www.diachron-fp7.eu/dqm#hasConcisenessDimension>
+                    <urn:a6d19cd6-b457-4d2e-b8bd-34ebf1f2a160> ;
+            <http://www.diachron-fp7.eu/dqm#hasConsistencyDimension>
+                    <urn:aa511762-448b-481b-92d7-e2199a934f0a> .
+    
+    <urn:1ddfb550-d48d-4f1c-8f52-edd1728d864f>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:04.42Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:b2315c83-391d-47df-a799-8ab0b513e569> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "1.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:a930f7cc-af35-43dd-b017-cc1c2a063cd7>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-27T19:51:34.894Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    true ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:0ebbaf9d-544d-40d9-9678-a3024c82d5c5> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "1.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:0794f92a-d7d3-4807-b752-9c2c8f2d39f6>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:05.644Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:5b6e9be7-4d0e-4567-b696-65d3b9944f98> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "NaN"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:09f6c331-c987-4d12-ac2a-7dfc429b11e0>
+            a       <http://www.diachron-fp7.eu/dqm#RDFAvailabilityMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:68d872bd-d897-42f9-b3a4-98784bd91516> , <urn:b79d6ecf-a011-462c-bbc2-778b8bf7d499> .
+    
+    <urn:cf7ae405-f2d1-4c03-86a1-607d39c3449a>
+            a       <http://www.diachron-fp7.eu/dqm#ScalabilityOfDataSourceMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:71c60b13-31c2-4bd6-807b-d7d5af114880> .
+    
+    <urn:b3bd1381-b85e-4282-b67c-b8938cb7e637>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:05.193Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:7b561fca-0134-428e-bcbf-11a900511d34> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:aa511762-448b-481b-92d7-e2199a934f0a>
+            a       <http://www.diachron-fp7.eu/dqm#Consistency> ;
+            <http://www.diachron-fp7.eu/dqm#hasEntitiesAsMembersOfDisjointClassesMetric>
+                    <urn:0ebbaf9d-544d-40d9-9678-a3024c82d5c5> ;
+            <http://www.diachron-fp7.eu/dqm#hasMisplacedClassesOrPropertiesMetric>
+                    <urn:bbc854bc-2953-4ba5-995b-19e73db895d9> ;
+            <http://www.diachron-fp7.eu/dqm#hasMisusedOwlDatatypeOrObjectPropertiesMetric>
+                    <urn:3aa192db-9092-4075-9fdd-8d56f32bed17> .
+    
+    <urn:54647ad3-ef3a-492c-a27e-8b8075034601>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:05.633Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:3aa192db-9092-4075-9fdd-8d56f32bed17> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "1.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:68d872bd-d897-42f9-b3a4-98784bd91516>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-29T06:48:52.123Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:09f6c331-c987-4d12-ac2a-7dfc429b11e0> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "1.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:34cc0bcc-1835-4154-b90e-32d118700b36>
+            a       <http://www.diachron-fp7.eu/dqm#ReuseExistingVocabularyMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:c6159bba-1f5c-482d-b5ff-2bdc36ce643a> .
+    
+    <urn:9a648ecf-7888-4a1c-aecd-146c6dfe397c>
+            a       <http://www.diachron-fp7.eu/dqm#HighThroughputMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:b65daf2c-2052-4586-89a9-521a020f8ca3> .
+    
+    <urn:7c8c3bf9-865e-4860-b769-e7f0d3a551d7>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:05.673Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:da386b7d-5081-444e-a3ae-1569ffc80948> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.25"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:5587223f-1300-4d94-813c-db230dfc9ccb>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-27T19:51:34.879Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:6e645b84-9490-44c8-9a33-431d1043348c> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.178125"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:b9dbbc21-a752-4240-b5e6-40ad6d8b5ac7>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:05.711Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:99ec9b36-b19a-42b5-b075-bf5cd10020dd> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:3aa192db-9092-4075-9fdd-8d56f32bed17>
+            a       <http://www.diachron-fp7.eu/dqm#MisusedOwlDatatypeOrObjectPropertiesMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:54647ad3-ef3a-492c-a27e-8b8075034601> .
+    
+    <urn:0873453d-924f-4a92-9bd7-f94e06b42c1a>
+            a       <http://www.diachron-fp7.eu/dqm#ShortURIsMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:dd79cd6e-4177-436d-88ea-fdcebf592d47> .
+    
+    <urn:5d749647-67fc-4e35-9fd2-a0e3739309ef>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:05.701Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:23ab48dc-4dd4-4564-abcc-dafdebfa1af5> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.8037952022914429"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:89703181-0e5b-424d-9279-e29f180e1cd2>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:04.368Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:e4995c3e-f0f2-49d4-9fb2-d12d1c1ed31b> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.9999654358712387"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:e9f94cad-9eb4-447e-b4f6-e8cda58ef1b6>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:05.658Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:0a2cca98-b59c-43fb-b75d-b8bc8cb8e46d> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.3333333333333333"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:9bbb20d6-66b0-458d-9736-418c55ae8c5c>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-28T10:12:30.445Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    true ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:86aef6f7-e4be-4034-99b3-bed07577390b> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.4434782608695652"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:27c1b6a4-159b-425e-a3d6-81c51fdc145d>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:03.761Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:1b12480e-3a5b-4d50-bb45-a20760a4e914> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:9ebf0431-d383-4917-b7ea-9f6dbd44eef2>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-28T10:15:13.059Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    true ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:e65d9eaf-4bb9-41bc-87c8-1057b80ca711> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.9730290456431535"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:43f7fa80-e051-4429-bc1e-75d8efcbd3ba>
+            a       <http://www.diachron-fp7.eu/dqm#CurrencyOfDatasetMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:df08c115-ff83-4708-a875-207725d23002> .
+    
+    <urn:16a06de4-c47b-4aaa-9842-c31cd22b3739>
+            a       <http://www.diachron-fp7.eu/dqm#Representational> ;
+            <http://www.diachron-fp7.eu/dqm#hasInteroperabilityDimension>
+                    <urn:c27b42f0-cff6-4943-b9b6-021e949a6ab1> ;
+            <http://www.diachron-fp7.eu/dqm#hasInterpretabilityDimension>
+                    <urn:94ee8d10-db58-45c8-89dc-ef9723d05e88> ;
+            <http://www.diachron-fp7.eu/dqm#hasProvenanceDimension>
+                    <urn:2c97192f-9932-47fb-93ca-b4abe5de32af> ;
+            <http://www.diachron-fp7.eu/dqm#hasRepresentationalConcisenessDimension>
+                    <urn:030be8e6-92cc-4435-9d1f-5e5f52d0cc84> ;
+            <http://www.diachron-fp7.eu/dqm#hasVersatilityDimension>
+                    <urn:62576e0c-76b7-4500-97dc-28e8ea35c1e4> .
+    
+    <urn:62576e0c-76b7-4500-97dc-28e8ea35c1e4>
+            a       <http://www.diachron-fp7.eu/dqm#Versatility> ;
+            <http://www.diachron-fp7.eu/dqm#hasDifferentSerialisationsMetric>
+                    <urn:0a2cca98-b59c-43fb-b75d-b8bc8cb8e46d> ;
+            <http://www.diachron-fp7.eu/dqm#hasMultipleLanguageUsageMetric>
+                    <urn:1b12480e-3a5b-4d50-bb45-a20760a4e914> .
+    
+    <urn:8a02b5f7-2b02-4454-80dd-212abb8830b5>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:05.956Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:3cb6b979-4bb6-4231-99b0-1dcfe285603e> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "0.7443037974683544"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:3cb6b979-4bb6-4231-99b0-1dcfe285603e>
+            a       <http://www.diachron-fp7.eu/dqm#ExtendedProvenanceMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:8a02b5f7-2b02-4454-80dd-212abb8830b5> .
+    
+    <urn:f5cf77f2-7615-422c-b8fb-5d6fc8248f6c>
+            a       <http://purl.org/linked-data/cube#Observation> ;
+            <http://purl.org/dc/elements/1.1/date>
+                    "2015-04-23T11:40:05.739Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;
+            <http://purl.org/eis/vocab/daq#computedOn>
+                    <http://bfs.270a.info/> ;
+            <http://purl.org/eis/vocab/daq#isEstimate>
+                    false ;
+            <http://purl.org/eis/vocab/daq#metric>
+                    <urn:4182b727-2272-478c-a491-d7e79a29a948> ;
+            <http://purl.org/eis/vocab/daq#value>
+                    "1.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+            <http://purl.org/linked-data/cube#dataSet>
+                    <urn:71757f8b-acca-4f5a-87db-768ea49d6f77> .
+    
+    <urn:0ebbaf9d-544d-40d9-9678-a3024c82d5c5>
+            a       <http://www.diachron-fp7.eu/dqm#EntitiesAsMembersOfDisjointClassesMetric> ;
+            <http://purl.org/eis/vocab/daq#hasObservation>
+                    <urn:a930f7cc-af35-43dd-b017-cc1c2a063cd7> .
+}
