@@ -104,10 +104,10 @@
 		
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Big Data Suitability <small> - Evaluating the Stream Processor <span style="font-size:8pt; color:darkblack; float:right"><em><strong>Latest Update: 01/11/2014</strong></em></span></small></h1>
+                <h1 class="page-header">Big Data Suitability <small> - Evaluating the Stream Processor</h1>
 				<p> Beyer and Laney<sup>1</sup> coined the definition of Big Data as <strong>High Volume</strong>, <strong>High Velocity</strong>, and <strong>High Variety</strong>. Volume means large amounts of data; velocity addresses how much information is handled in real time; variety addresses data diversity. The implemented Luzzu framework currently scales for both Volume and Variety. With regard to Volume, the processor runtime grows linearly with the amount of triples. We also cater for Variety since in Luzzu the results are not affected by data diversity. In particular, since we support the analysis of all kinds of data being represented as RDF any data schema and even various data models are supported as long as they can be mapped or encoded in RDF (e.g. relational data with R2RML mappings). Velocity completes the Big Data definition. Currently we employed Luzzu for quality assessment at well-defined checkpoints rather than in real time. However, due to its streaming nature, Luzzu can easily assess the performance of data streams as well thus catering for velocity.
 					
-					<p>We regularly evaluate our stream processors (Jena Stream Processor and Spark Stream Processor) and framework with regard to the scalability and big data. The latest evaluation tests were conducted on 01/11/2014. The following test parameters were used:
+					<p>We regularly evaluate our stream processors (Jena Stream Processor and Spark Stream Processor) and framework with regard to the scalability and big data. The following test parameters were used:
 					<ul>
 						<li>Setup: Google Cloud Platform (with 3 Clusters for the Spark Stream Processor)</li>
 						<li><a href="http://wifo5-03.informatik.uni-mannheim.de/bizer/berlinsparqlbenchmark/spec/" target="_blank">BSBM Generator</a> for datasets with different scale factors (24, 56, 128, 199, 256, 666, 1369, 2089, 2785, 28453, 70812, 284826)</li>
