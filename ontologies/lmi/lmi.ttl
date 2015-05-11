@@ -1,0 +1,87 @@
+@prefix daq: <http://purl.org/eis/vocab/daq#> .
+@prefix lmi: <http://purl.org/eis/vocab/lmi#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix voaf:   <http://purl.org/vocommons/voaf#>.
+@prefix dct:   	<http://purl.org/dc/terms/>.
+@prefix foaf:    <http://xmlns.com/foaf/0.1/>.
+
+lmi:
+	a owl:Ontology, voaf:Vocabulary ;
+        rdfs:label "Luzzu Metric Implementation ontology (LMI)" ;
+        rdfs:comment "The Luzzu Metric Implementation ontology (LMI) enables the definition of specific metrics to be connected to their Java Implementations. This vocabulary is used in Luzzu to load the required metrics in the framework." ;
+        dct:creator [ foaf:name "Jeremy Debattista"; foaf:homepage <http://www.jeremydebattista.info> ; foaf:mbox <mailto:debattis@cs.uni-bonn.de>  ]  ;
+        dct:modified "2015-04-01"^^xsd:date .
+
+lmi:LuzzuMetricJavaImplementation a rdfs:Class, owl:Class ;
+	rdfs:label "Luzzu Metric Java Implementation" ;
+	rdfs:comment "Registers a Java metric implementation as a Luzzu plugin.".
+
+lmi:javaPackageName a rdfs:Property, owl:DatatypeProperty ;
+	rdfs:label "Java Package Name" ;
+	rdfs:comment "Registers the full Java package name of the metric, which will be used later for invocation by the lmi:metric property";
+	rdfs:domain lmi:LuzzuMetricJavaImplementation ;
+	rdfs:range xsd:string .
+	
+lmi:referTo a rdfs:Property, owl:ObjectProperty;
+	rdfs:label "refer to" ;
+	rdfs:comment "Attaches a Java Metric Implementation to a semantically described metric" ;
+	rdfs:domain lmi:LuzzuMetricJavaImplementation ;
+	rdfs:range daq:Metric .
+
+lmi:before a rdfs:Property , owl:ObjectProperty;
+	rdfs:label "before" ;
+	rdfs:comment "Attaches a Luzzu before argument to a metric";
+	rdfs:domain lmi:LuzzuMetricJavaImplementation ;
+	rdfs:range lmi:LuzzuBeforeArg . 
+	
+lmi:after a rdfs:Property , owl:ObjectProperty ;
+	rdfs:label "after" ;
+	rdfs:comment "Attaches a Luzzu after argument to a metric";
+	rdfs:domain lmi:LuzzuMetricJavaImplementation ;
+	rdfs:range lmi:LuzzuBeforeArg . 
+	
+lmi:LuzzuMetricArg a rdfs:Class, owl:Class ;
+	rdfs:label "Luzzu Metric Arg" ;
+	rdfs:comment "This is an abstract class that is extended by lmi:LuzzuBeforeArg and lmi:LuzzuAfterArg. This should not be used directly." .
+	
+lmi:LuzzuBeforeArg a rdfs:Class, owl:Class ;
+	rdfs:label "Luzzu Before Arg" ;
+	rdfs:comment "Specifies before arguments for Complex Metrics";
+	rdfs:subclassOf lmi:LuzzuMetricArg .
+
+lmi:LuzzuAfterArg a rdfs:Class, owl:Class ;
+	rdfs:label "Luzzu After Arg" ;
+	rdfs:comment "Specifies after arguments for Complex Metrics";
+	rdfs:subclassOf lmi:LuzzuMetricArg .
+
+lmi:type a rdfs:Property  , owl:DatatypeProperty ;
+	rdfs:label "type" ;
+	rdfs:comment "Specifies the Java type of the parameter (eg java.lang.String)";
+	rdfs:domain lmi:LuzzuMetricArg ;
+	rdfs:range xsd:string ;
+	owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:maxCardinality "1"^^xsd:nonNegativeInteger .
+	
+lmi:parameter a rdfs:Property  , owl:DatatypeProperty ;
+	rdfs:label "parameter" ;
+	rdfs:label "Specifies the value of the parameter (eg file name)" ;
+	rdfs:domain lmi:LuzzuMetricArg ;
+	rdfs:range xsd:string ;
+	owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+	owl:maxCardinality "1"^^xsd:nonNegativeInteger . 
+	
+lmi:MetricConfiguration a rdfs:Class , owl:Class ;
+	rdfs:label "Metric Configuration" ;
+	rdfs:comment "(Used for API Call) An instance of this class should have one or more metrics listed with the lmi:metric property. These will be passed to the Luzzu API to start a Quality Assessment. Metrics should exist in the Luzzu framework prior to invocation.".
+
+lmi:metric a rdfs:Property, owl:DatatypeProperty ;
+	rdfs:label "metric" ;
+	rdfs:comment "(Used for API Call)  The full Java package name of the metric that is required to be assessed.";
+	rdfs:domain lmi:MetricConfiguration ;
+	rdfs:range xsd:string . 
+	
+
+	

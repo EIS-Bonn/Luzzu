@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	
+    <title id="title"></title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/util.css" rel="stylesheet">
+	
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.js"></script>    
+	<script src="js/script.js"></script>
+	<script src="js/toc.js"></script>
+	
+		
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="container">
+
+         <!-- Static navbar -->
+         <nav class="navbar navbar-default"  id="topbar">
+           <div class="container-fluid">
+             <div class="navbar-header">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                 <span class="sr-only">Toggle navigation</span>
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+               </button>
+               <a class="navbar-brand" href="index.html"><span id="menutitle" /></a>
+             </div>
+             <div id="navbar" class="navbar-collapse collapse">
+               <ul class="nav navbar-nav" id="menuitems">
+				   
+               </ul>
+               
+             </div><!--/.nav-collapse -->
+           </div><!--/.container-fluid -->
+         </nav>
+
+         <!-- topclass -->
+		<h1>${ontology.label}</h1>
+		<h3>Namespace:</h3>
+		${ontology.namespace}
+		<h3>Authors:</h3>
+		<ul style="padding: 0; list-style-type: none;">
+			${ontology.authors}
+		</ul>
+		<h3>Serialisations:</h3>
+			<span id="serialisation"></span>
+		<hr/>
+		
+		<h3>Abstract</h3>
+		${ontology.abstract}
+		
+		<h3>Ontology Statistics</h3>
+		<!-- Here we list all classes and properties -->
+		<h5>Classes (${class.count}):</h5>
+		<p>${classes.label}</p>
+		
+		<h5>Properties (${property.count}):</h5>
+		<p>${properties.label}</p>
+		
+		<h5>Instances (${instances.count}):</h5>
+		<p>${instances.label}</p>
+		
+		<hr/>
+	 <h3>Table of Contents</h3>
+	<content>
+		<div id="toc"></div>
+		<hr/>
+		<!-- documentation -->
+		<div id="documentation"></div>
+ 	   <!-- script to load adoc -->
+ 		<script src="js/asciidoctor-all.js"></script>		
+	   
+ 		<script type="text/javascript">
+ 			var content = loadFile("${asciidoc.path}")
+ 			var options = Opal.hash2(['doctype', 'attributes'], {doctype: 'book', attributes: ['showtitle']});
+ 			var html = Opal.Asciidoctor.$convert(content, options);
+ 			$("#documentation").html(html);
+ 		</script>
+		<!-- end script to load adoc -->
+		
+		<hr/>
+		<h3>Term Description</h3>
+		In this section, the classes and properties that provide a basis for the ${ontology.label} are described
+		
+		<h4>Classes</h4>
+		<div class="panel panel-info" id="classTemplate">
+			<div class="panel-heading">
+				<h5 class="panel-title"><a id="${class.anchor}">${class.label}</a></h5>
+			</div>
+	    	<div class="panel-body">
+				<!--${class.uri}<br /> -->
+				
+				${class.description}<br/>
+				<h5>Described by:</h5> ${class.propertydomain}<br/>
+	    		<h5>In Range of:</h5> ${class.propertyrange}<br/>
+	    		<h5>Subclass of:</h5> ${class.subclassof}<br/>
+	    		<h5>Subclassed By:</h5> ${class.subclassedby}<br/>
+	    	</div>
+	   	</div>
+		
+		<h4>Properties</h4>
+	   	<div class="panel panel-warning" id="propertyTemplate">
+			<div class="panel-heading">
+				<h5 class="panel-title" style="display: inline-block;">
+				<a id="${property.anchor}">${property.label}</a></h5>&nbsp;${property.types}
+	    	</div>
+	    	<div class="panel-body">
+				<!--${property.uri}<br /> -->
+				
+	    		${property.description}<br/>
+	    		<h5>Domain of:</h5> ${property.classdomain}<br/>
+	    		<h5>Range of:</h5> ${property.classrange}<br/>
+	    		<h5>Has Minimum Cardinality:</h5> ${property.mincardinality}<br/>
+	    		<h5>Has Maximum Cardinality:</h5> ${property.maxcardinality}<br/>
+	    		<h5>Inverse of:</h5> ${property.inverse}<br/>
+	    		<h5>Sub-Property of:</h5> ${property.subpropertyof}<br/>
+	    		<h5>Super-Property of:</h5> ${property.subpropertyby}<br/>
+	    	</div>
+	    </div>
+	</content>
+		
+		
+		<footer class="footer text-muted">
+			<leftalign><small>Copyright:</small></leftalign><rightalign><small>Last Updated: ${ontology.modified}</small></rightalign>
+		</footer>
+
+       </div> <!-- /container -->
+  </body>
+</html>
+

@@ -1,0 +1,45 @@
+leftalign{
+	text-align: left;
+	float:left;
+	margin:auto;
+}
+
+rightalign{
+	text-align: right;
+	float:right;
+	margin:auto;
+}
+
+#toc {
+    top: 0px;
+    left: 0px;
+    padding-top: 20px;
+}
+
+#toc ol {
+    margin: 0;
+    padding: 0;
+}
+
+#toc li {
+    padding: 5px 10px;
+}
+
+#toc a {
+    text-decoration: none;
+    display: block;
+}
+
+#toc .toc-h2 {
+    padding-left: 10px;
+}
+
+#toc .toc-h3 {
+    padding-left: 20px;
+	font-size:15px;
+}
+
+#toc .toc-h4 {
+    padding-left: 30px;
+	font-size:10px;
+}

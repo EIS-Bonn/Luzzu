@@ -1,0 +1,29 @@
+{
+	"settings":
+	{
+		"topbar":true,
+		"toc":false
+	},
+    "topbar": 
+	{
+            "title": "Luzzu Ontology Stack",
+			"links":[
+				{
+					"name":"daQ",
+					"link":"http://purl.org/eis/vocab/daq"
+				},
+				{
+					"name":"QPRO",
+					"link":"http://purl.org/eis/vocab/qpro"
+				},
+				{
+					"name":"LMI",
+					"link":"http://purl.org/eis/vocab/lmi"
+				}
+			]
+    },
+	"serialisations" : [
+		"rdf/xml",
+		"turtle"
+	]
+}

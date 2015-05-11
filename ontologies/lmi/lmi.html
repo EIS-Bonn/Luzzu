@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head> 
+      <meta charset="utf-8" /> 
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+      <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+      <meta name="description" content="" /> 
+      <meta name="author" content="" /> 
+      <title id="title"></title> 
+      <!-- Bootstrap core CSS --> 
+      <link href="../css/main.css" rel="stylesheet" /> 
+      <link href="../css/util.css" rel="stylesheet" /> 
+      <script src="../js/jquery.min.js"></script> 
+      <script src="../js/bootstrap.js"></script> 
+      <script src="../js/script.js"></script> 
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries --> 
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]--> 
+   </head> 
+   <body> 
+      <div class="container"> 
+         <!-- Static navbar --> 
+         <nav class="navbar navbar-default" id="topbar"> 
+            <div class="container-fluid"> 
+               <div class="navbar-header"> 
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"> 
+                     <span class="sr-only">Toggle navigation</span> 
+                     <span class="icon-bar"></span> 
+                     <span class="icon-bar"></span> 
+                     <span class="icon-bar"></span> 
+                  </button> 
+                  <a class="navbar-brand" href="index.html">
+                     <span id="menutitle"></span>
+                  </a> 
+               </div> 
+               <div id="navbar" class="navbar-collapse collapse"> 
+                  <ul class="nav navbar-nav" id="menuitems"> 
+                  </ul> 
+               </div> 
+               <!--/.nav-collapse --> 
+            </div> 
+            <!--/.container-fluid --> 
+         </nav> 
+         <!-- topclass --> 
+         <h1>Luzzu Metric Implementation ontology (LMI)</h1> 
+         <h3>Namespace:</h3>
+          http://purl.org/eis/vocab/lmi# 
+         <h3>Authors:</h3> 
+         <ul style="padding: 0; list-style-type: none;"> 
+            <li>
+               <a href="http://www.jeremydebattista.info">Jeremy Debattista</a>
+               &nbsp;
+               <a href="mailto:debattis@cs.uni-bonn.de">Email</a>
+            </li> 
+         </ul> 
+         <h3>Serialisations:</h3> 
+         <span id="serialisation"></span> 
+         <hr /> 
+         <h3>Abstract</h3>
+          The Luzzu Metric Implementation ontology (LMI) enables the definition of specific metrics to be connected to their Java Implementations. This vocabulary is used in Luzzu to load the required metrics in the framework. 
+         <h3>Ontology Statistics</h3> 
+         <!-- Here we list all classes and properties --> 
+         <h5>Classes (5):</h5> 
+         <p>
+            <a data-toggle="tooltip" data-original-title="${class.shorttip}" href="#MetricConfiguration">MetricConfiguration</a>
+            , 
+            <a data-toggle="tooltip" data-original-title="${class.shorttip}" href="#LuzzuAfterArg">LuzzuAfterArg</a>
+            , 
+            <a data-toggle="tooltip" data-original-title="${class.shorttip}" href="#LuzzuBeforeArg">LuzzuBeforeArg</a>
+            , 
+            <a data-toggle="tooltip" data-original-title="${class.shorttip}" href="#LuzzuMetricArg">LuzzuMetricArg</a>
+            , 
+            <a data-toggle="tooltip" data-original-title="${class.shorttip}" href="#LuzzuMetricJavaImplementation">LuzzuMetricJavaImplementation</a> 
+         </p> 
+         <h5>Properties (7):</h5> 
+         <p>
+            <a href="#metric">metric</a>
+            , 
+            <a href="#parameter">parameter</a>
+            , 
+            <a href="#parameter">parameter</a>
+            , 
+            <a href="#type">type</a>
+            , 
+            <a href="#javaPackageName">javaPackageName</a>
+            , 
+            <a href="#after">after</a>
+            , 
+            <a href="#before">before</a>
+            , 
+            <a href="#referTo">referTo</a> 
+         </p> 
+         <h5>Instances (0):</h5> 
+         <p></p> 
+         <hr /> 
+         <!-- documentation --> 
+         <div id="documentation"></div> 
+         <!-- script to load adoc --> 
+         <script src="js/asciidoctor-all.js"></script> 
+         <script type="text/javascript">
+ 			var content = loadFile("lmi.adoc")
+ 			var options = Opal.hash2(['doctype', 'attributes'], {doctype: 'book', attributes: ['showtitle']});
+ 			var html = Opal.Asciidoctor.$convert(content, options);
+ 			$("#documentation").html(html);
+ 		
+         </script> 
+         <!-- end script to load adoc --> 
+         <hr /> 
+         <h3>Term Description</h3>
+          In this section, the classes and properties that provide a basis for the Luzzu Metric Implementation ontology (LMI) are described 
+         <h4>Classes</h4> 
+         <div class="panel panel-info" id="classTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title">
+                  <a id="MetricConfiguration">Metric Configuration</a>
+               </h3> 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/lmi#MetricConfiguration<br /> -->
+                (Used for API Call) An instance of this class should have one or more metrics listed with the lmi:metric property. These will be passed to the Luzzu API to start a Quality Assessment. Metrics should exist in the Luzzu framework prior to invocation. 
+               <br /> 
+               <h4>Described by:</h4> 
+               <a href="#metric">lmi:metric</a> 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-info" id="classTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title">
+                  <a id="LuzzuAfterArg">Luzzu After Arg</a>
+               </h3> 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/lmi#LuzzuAfterArg<br /> -->
+                Specifies after arguments for Complex Metrics 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-info" id="classTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title">
+                  <a id="LuzzuBeforeArg">Luzzu Before Arg</a>
+               </h3> 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/lmi#LuzzuBeforeArg<br /> -->
+                Specifies before arguments for Complex Metrics 
+               <br /> 
+               <h4>In Range of:</h4> 
+               <a href="#after">lmi:after</a>
+               , 
+               <a href="#before">lmi:before</a> 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-info" id="classTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title">
+                  <a id="LuzzuMetricArg">Luzzu Metric Arg</a>
+               </h3> 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/lmi#LuzzuMetricArg<br /> -->
+                This is an abstract class that is extended by lmi:LuzzuBeforeArg and lmi:LuzzuAfterArg. This should not be used directly. 
+               <br /> 
+               <h4>Described by:</h4> 
+               <a href="#parameter">lmi:parameter</a>
+               , 
+               <a href="#type">lmi:type</a> 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-info" id="classTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title">
+                  <a id="LuzzuMetricJavaImplementation">Luzzu Metric Java Implementation</a>
+               </h3> 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/lmi#LuzzuMetricJavaImplementation<br /> -->
+                Registers a Java metric implementation as a Luzzu plugin. 
+               <br /> 
+               <h4>Described by:</h4> 
+               <a href="#referTo">lmi:referTo</a>
+               , 
+               <a href="#after">lmi:after</a>
+               , 
+               <a href="#before">lmi:before</a>
+               , 
+               <a href="#javaPackageName">lmi:javaPackageName</a> 
+               <br /> 
+            </div> 
+         </div> 
+         <h4>Properties</h4> 
+         <div class="panel panel-warning" id="propertyTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title" style="display: inline-block;"> 
+                  <a id="metric">metric</a>
+               </h3>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#DatatypeProperty">owl:DatatypeProperty</a>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2000/01/rdf-schema#Property">rdfs:Property</a>
+               &nbsp; 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/lmi#metric<br /> -->
+                (Used for API Call) The full Java package name of the metric that is required to be assessed. 
+               <br /> 
+               <h4>Domain of:</h4> 
+               <a href="#MetricConfiguration">lmi:MetricConfiguration</a> 
+               <br /> 
+               <h4>Range of:</h4> 
+               <a target="_blank" class="text-warning" href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a> 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-warning" id="propertyTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title" style="display: inline-block;"> 
+                  <a id="parameter">Specifies the value of the parameter (eg file name)</a>
+               </h3>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#DatatypeProperty">owl:DatatypeProperty</a>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2000/01/rdf-schema#Property">rdfs:Property</a>
+               &nbsp; 
+            </div> 
+            <div class="panel-body"> 
+               <br /> 
+               <h4>Domain of:</h4> 
+               <a href="#LuzzuMetricArg">lmi:LuzzuMetricArg</a> 
+               <br /> 
+               <h4>Range of:</h4> 
+               <a target="_blank" class="text-warning" href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a> 
+               <br /> 
+               <h4>Has Minimum Cardinality:</h4>
+                1 
+               <br /> 
+               <h4>Has Maximum Cardinality:</h4>
+                1 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-warning" id="propertyTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title" style="display: inline-block;"> 
+                  <a id="parameter">parameter</a>
+               </h3>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#DatatypeProperty">owl:DatatypeProperty</a>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2000/01/rdf-schema#Property">rdfs:Property</a>
+               &nbsp; 
+            </div> 
+            <div class="panel-body"> 
+               <br /> 
+               <h4>Domain of:</h4> 
+               <a href="#LuzzuMetricArg">lmi:LuzzuMetricArg</a> 
+               <br /> 
+               <h4>Range of:</h4> 
+               <a target="_blank" class="text-warning" href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a> 
+               <br /> 
+               <h4>Has Minimum Cardinality:</h4>
+                1 
+               <br /> 
+               <h4>Has Maximum Cardinality:</h4>
+                1 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-warning" id="propertyTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title" style="display: inline-block;"> 
+                  <a id="type">type</a>
+               </h3>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#DatatypeProperty">owl:DatatypeProperty</a>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2000/01/rdf-schema#Property">rdfs:Property</a>
+               &nbsp; 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/lmi#type<br /> -->
+                Specifies the Java type of the parameter (eg java.lang.String) 
+               <br /> 
+               <h4>Domain of:</h4> 
+               <a href="#LuzzuMetricArg">lmi:LuzzuMetricArg</a> 
+               <br /> 
+               <h4>Range of:</h4> 
+               <a target="_blank" class="text-warning" href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a> 
+               <br /> 
+               <h4>Has Minimum Cardinality:</h4>
+                1 
+               <br /> 
+               <h4>Has Maximum Cardinality:</h4>
+                1 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-warning" id="propertyTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title" style="display: inline-block;"> 
+                  <a id="javaPackageName">Java Package Name</a>
+               </h3>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#DatatypeProperty">owl:DatatypeProperty</a>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2000/01/rdf-schema#Property">rdfs:Property</a>
+               &nbsp; 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/lmi#javaPackageName<br /> -->
+                Registers the full Java package name of the metric, which will be used later for invocation by the lmi:metric property 
+               <br /> 
+               <h4>Domain of:</h4> 
+               <a href="#LuzzuMetricJavaImplementation">lmi:LuzzuMetricJavaImplementation</a> 
+               <br /> 
+               <h4>Range of:</h4> 
+               <a target="_blank" class="text-warning" href="http://www.w3.org/2001/XMLSchema#string">xsd:string</a> 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-warning" id="propertyTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title" style="display: inline-block;"> 
+                  <a id="after">after</a>
+               </h3>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#ObjectProperty">owl:ObjectProperty</a>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2000/01/rdf-schema#Property">rdfs:Property</a>
+               &nbsp; 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/lmi#after<br /> -->
+                Attaches a Luzzu after argument to a metric 
+               <br /> 
+               <h4>Domain of:</h4> 
+               <a href="#LuzzuMetricJavaImplementation">lmi:LuzzuMetricJavaImplementation</a> 
+               <br /> 
+               <h4>Range of:</h4> 
+               <a href="#LuzzuBeforeArg">lmi:LuzzuBeforeArg</a> 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-warning" id="propertyTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title" style="display: inline-block;"> 
+                  <a id="before">before</a>
+               </h3>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#ObjectProperty">owl:ObjectProperty</a>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2000/01/rdf-schema#Property">rdfs:Property</a>
+               &nbsp; 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/lmi#before<br /> -->
+                Attaches a Luzzu before argument to a metric 
+               <br /> 
+               <h4>Domain of:</h4> 
+               <a href="#LuzzuMetricJavaImplementation">lmi:LuzzuMetricJavaImplementation</a> 
+               <br /> 
+               <h4>Range of:</h4> 
+               <a href="#LuzzuBeforeArg">lmi:LuzzuBeforeArg</a> 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-warning" id="propertyTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title" style="display: inline-block;"> 
+                  <a id="referTo">refer to</a>
+               </h3>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#ObjectProperty">owl:ObjectProperty</a>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/2000/01/rdf-schema#Property">rdfs:Property</a>
+               &nbsp; 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/lmi#referTo<br /> -->
+                Attaches a Java Metric Implementation to a semantically described metric 
+               <br /> 
+               <h4>Domain of:</h4> 
+               <a href="#LuzzuMetricJavaImplementation">lmi:LuzzuMetricJavaImplementation</a> 
+               <br /> 
+               <h4>Range of:</h4> 
+               <a target="_blank" class="text-warning" href="http://purl.org/eis/vocab/daq#Metric">daq:Metric</a> 
+               <br /> 
+            </div> 
+         </div> 
+   	  		<footer class="text-center">
+   		 	   	<div class="container">
+   		  			<span style="float:left"><small><a href="http://eis-bonn.github.io/Luzzu">Luzzu QA Framework Website</a></small></span> 
+   					<span style="float:center"><small>Maintained by Jeremy Debattista - MIT Licence</small></span>
+   					<span style="float:right"><small><em>Last Updated: 2015-04-01</em></small></span>
+   	  			</div>
+   	  	  </footer>
+      </div> 
+      <!-- /container -->  
+   </body>
+</html>

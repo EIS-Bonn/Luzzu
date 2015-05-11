@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head> 
+      <meta charset="utf-8" /> 
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+      <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+      <meta name="description" content="" /> 
+      <meta name="author" content="" /> 
+      <title id="title"></title> 
+      <!-- Bootstrap core CSS --> 
+      <link href="../css/main.css" rel="stylesheet" /> 
+      <link href="../css/util.css" rel="stylesheet" /> 
+      <script src="../js/jquery.min.js"></script> 
+      <script src="../js/bootstrap.js"></script> 
+      <script src="../js/script.js"></script> 
+      <script src="../js/toc.js"></script> 
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries --> 
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]--> 
+   </head> 
+   <body> 
+      <div class="container"> 
+         <!-- Static navbar --> 
+         <nav class="navbar navbar-default" id="topbar"> 
+            <div class="container-fluid"> 
+               <div class="navbar-header"> 
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"> 
+                     <span class="sr-only">Toggle navigation</span> 
+                     <span class="icon-bar"></span> 
+                     <span class="icon-bar"></span> 
+                     <span class="icon-bar"></span> 
+                  </button> 
+                  <a class="navbar-brand" href="index.html">
+                     <span id="menutitle"></span>
+                  </a> 
+               </div> 
+               <div id="navbar" class="navbar-collapse collapse"> 
+                  <ul class="nav navbar-nav" id="menuitems"> 
+                  </ul> 
+               </div> 
+               <!--/.nav-collapse --> 
+            </div> 
+            <!--/.container-fluid --> 
+         </nav> 
+         <!-- topclass --> 
+         <h1>Dataset Quality Vocabulary (daQ)</h1> 
+         <h3>Namespace:</h3>
+          http://purl.org/eis/vocab/daq# 
+         <h3>Authors:</h3> 
+         <ul style="padding: 0; list-style-type: none;"> 
+            <li>Jeremy Debattista</li> 
+            <li>
+               <a href="http://langec.wordpress.com/about/">Christoph Lange</a>
+            </li> 
+         </ul> 
+         <h3>Serialisations:</h3> 
+         <span id="serialisation"></span> 
+         <hr /> 
+         <h3>Abstract</h3>
+          The Dataset Quality Vocabulary (daQ) is a lightweight, extensible core vocabulary for attaching the result of quality benchmarking of a linked open dataset (usually an expensive process) to that dataset. daQ is designed to be extended by custom quality metrics. Use cases include filtering and ranking datasets by quality. 
+         <h3>Ontology Statistics</h3> 
+         <!-- Here we list all classes and properties --> 
+         <h5>Classes (4):</h5> 
+         <p>
+            <a data-toggle="tooltip" data-original-title="${class.shorttip}" href="#Category">Category</a>
+            , 
+            <a data-toggle="tooltip" data-original-title="${class.shorttip}" href="#Metric">Metric</a>
+            , 
+            <a data-toggle="tooltip" data-original-title="${class.shorttip}" href="#QualityGraph">QualityGraph</a>
+            , 
+            <a data-toggle="tooltip" data-original-title="${class.shorttip}" href="#Dimension">Dimension</a> 
+         </p> 
+         <h5>Properties (10):</h5> 
+         <p>
+            <a href="#value">value</a>
+            , 
+            <a href="#expectedDataType">expectedDataType</a>
+            , 
+            <a href="#requires">requires</a>
+            , 
+            <a href="#hasDimension">hasDimension</a>
+            , 
+            <a href="#isEstimate">isEstimate</a>
+            , 
+            <a href="#computedOn">computedOn</a>
+            , 
+            <a href="#hasObservation">hasObservation</a>
+            , 
+            <a href="#hasMetric">hasMetric</a>
+            , 
+            <a href="#computedBy">computedBy</a>
+            , 
+            <a href="#metric">metric</a> 
+         </p> 
+         <h5>Instances (1):</h5> 
+         <p>
+            <a href="#dsd">dsd</a> 
+            <br />
+         </p> 
+         <hr /> 
+		 <h3>Table of Contents</h3>
+         <content> 
+            <div id="toc"></div> 
+            <hr /> 
+            <!-- documentation --> 
+            <div id="documentation"></div> 
+            <!-- script to load adoc --> 
+            <script src="../js/asciidoctor-all.js"></script> 
+            <script type="text/javascript">
+ 			var content = loadFile("daq.adoc")
+ 			var options = Opal.hash2(['doctype', 'attributes'], {doctype: 'book', attributes: ['showtitle']});
+ 			var html = Opal.Asciidoctor.$convert(content, options);
+ 			$("#documentation").html(html);
+ 		
+            </script> 
+            <!-- end script to load adoc --> 
+            <hr /> 
+            <h3>Term Description</h3>
+             In this section, the classes and properties that provide a basis for the Dataset Quality Vocabulary (daQ) are described 
+            <h4>Classes</h4> 
+            <div class="panel panel-info" id="classTemplate"> 
+               <div class="panel-heading"> 
+                  <h5 class="panel-title">
+                     <a id="Category">Category</a>
+                  </h5> 
+               </div> 
+               <div class="panel-body"> 
+                  <!--http://purl.org/eis/vocab/daq#Category<br /> -->
+                   The highest level of quality metric is a category. A category groups a number of dimensions relevant to each other which aims at measuring the quality of a dataset from different aspects. Categories are provided as subclasses of this abstract class, which is not intended for direct usage. 
+                  <br /> 
+                  <h5>Described by:</h5> 
+                  <a href="#hasDimension">hasDimension</a> 
+                  <br /> 
+               </div> 
+            </div>
+            <div class="panel panel-info" id="classTemplate"> 
+               <div class="panel-heading"> 
+                  <h5 class="panel-title">
+                     <a id="Metric">Metric</a>
+                  </h5> 
+               </div> 
+               <div class="panel-body"> 
+                  <!--http://purl.org/eis/vocab/daq#Metric<br /> -->
+                   The smallest unit of measuring a quality dimension is a metric. Each metric have a value which is associated to the quality computed. Since this value is multi-typed (i.e. one metric might return true/false whilst another might require a double value), then the value's (daq:hasValue) range is inherited by the metric's attributes. A metric might also require additional information (e.g. a gold standard dataset to compare with). Therefore, a concrete metric representation shall also define such properties (see daq:requires). Metrics are provided as subclasses of this abstract class, which is not intended for direct usage. 
+                  <br /> 
+                  <h5>Described by:</h5> 
+                  <a href="#expectedDataType">expectedDataType</a>
+                  , 
+                  <a href="#requires">requires</a>
+                  , 
+                  <a href="#hasObservation">hasObservation</a>
+                  , 
+                  <a href="#isEstimate">isEstimate</a> 
+                  <br /> 
+                  <h5>In Range of:</h5> 
+                  <a href="#hasMetric">hasMetric</a>
+                  , 
+                  <a href="#metric">metric</a> 
+                  <br /> 
+               </div> 
+            </div>
+            <div class="panel panel-info" id="classTemplate"> 
+               <div class="panel-heading"> 
+                  <h5 class="panel-title">
+                     <a id="QualityGraph">Quality Graph Statistics</a>
+                  </h5> 
+               </div> 
+               <div class="panel-body"> 
+                  <!--http://purl.org/eis/vocab/daq#QualityGraph<br /> -->
+                   Defines a quality graph which will contain all metadata about quality metrics on the dataset. 
+                  <br /> 
+                  <h5>Subclass of:</h5> 
+                  <a target="_blank" class="text-warning" href="http://purl.org/linked-data/cube#DataSet">qb:DataSet</a>
+                  , 
+                  <a target="_blank" class="text-warning" href="http://www.w3.org/2004/03/trix/rdfg-1/Graph">trig:Graph</a> 
+                  <br /> 
+               </div> 
+            </div>
+            <div class="panel panel-info" id="classTemplate"> 
+               <div class="panel-heading"> 
+                  <h5 class="panel-title">
+                     <a id="Dimension">Dimension</a>
+                  </h5> 
+               </div> 
+               <div class="panel-body"> 
+                  <!--http://purl.org/eis/vocab/daq#Dimension<br /> -->
+                   Each dimension is part of a larger group called category (See daq:Category). Each dimension has a number of metrics which are associated to it. A dimension is linked with a category using the daq:hasDimension property. Dimensions are provided as subclasses of this abstract class, which is not intended for direct usage. 
+                  <br /> 
+                  <h5>Described by:</h5> 
+                  <a href="#hasMetric">hasMetric</a> 
+                  <br /> 
+                  <h5>In Range of:</h5> 
+                  <a href="#hasDimension">hasDimension</a> 
+                  <br /> 
+               </div> 
+            </div> 
+            <h4>Properties</h4> 
+            <div class="panel panel-warning" id="propertyTemplate"> 
+               <div class="panel-heading"> 
+                  <h5 class="panel-title" style="display: inline-block;"> 
+                     <a id="value">value</a>
+                  </h5>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">rdf:Property</a>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://purl.org/linked-data/cube#MeasureProperty">qb:MeasureProperty</a>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#DatatypeProperty">owl:DatatypeProperty</a>
+                  &nbsp; 
+               </div> 
+               <div class="panel-body"> 
+                  <!--http://purl.org/eis/vocab/daq#value<br /> -->
+                   Each metric will have a value computed. In order to deal with the different return type of the metric computation, this property links a metric with a value object (e.g. boolean, double, Literal). 
+                  <br /> 
+                  <h5>Domain of:</h5> 
+                  <a target="_blank" class="text-warning" href="http://purl.org/linked-data/cube#Observation">qb:Observation</a> 
+                  <br /> 
+               </div> 
+            </div>
+            <div class="panel panel-warning" id="propertyTemplate"> 
+               <div class="panel-heading"> 
+                  <h5 class="panel-title" style="display: inline-block;"> 
+                     <a id="expectedDataType">expected data type</a>
+                  </h5>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">rdf:Property</a>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#DatatypeProperty">owl:DatatypeProperty</a>
+                  &nbsp; 
+               </div> 
+               <div class="panel-body"> 
+                  <!--http://purl.org/eis/vocab/daq#expectedDataType<br /> -->
+                   Each metric should have an expect data type for it's observed value (e.g. xsd:boolean, xsd:double etc...) 
+                  <br /> 
+                  <h5>Domain of:</h5> 
+                  <a href="#Metric">Metric</a> 
+                  <br /> 
+                  <h5>Range of:</h5> 
+                  <a target="_blank" class="text-warning" href="http://www.w3.org/2001/XMLSchema#anySimpleType">xsd:anySimpleType</a> 
+                  <br /> 
+               </div> 
+            </div>
+            <div class="panel panel-warning" id="propertyTemplate"> 
+               <div class="panel-heading"> 
+                  <h5 class="panel-title" style="display: inline-block;"> 
+                     <a id="requires">requires</a>
+                  </h5>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">rdf:Property</a>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#ObjectProperty">owl:ObjectProperty</a>
+                  &nbsp; 
+               </div> 
+               <div class="panel-body"> 
+                  <!--http://purl.org/eis/vocab/daq#requires<br /> -->
+                   A metric might require a number of external resources (e.g. a gold standard) in order to be able to measure the quality. In order to cater for the most generic requirement, this abstract property links a metric to the required resource. This property should not be used directly. 
+                  <br /> 
+                  <h5>Domain of:</h5> 
+                  <a href="#Metric">Metric</a> 
+                  <br /> 
+                  <h5>Range of:</h5> 
+                  <a target="_blank" class="text-warning" href="http://www.w3.org/2000/01/rdf-schema#Resource">rdfs:Resource</a> 
+                  <br /> 
+               </div> 
+            </div>
+            <div class="panel panel-warning" id="propertyTemplate"> 
+               <div class="panel-heading"> 
+                  <h5 class="panel-title" style="display: inline-block;"> 
+                     <a id="hasDimension">hasDimension</a>
+                  </h5>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">rdf:Property</a>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#ObjectProperty">owl:ObjectProperty</a>
+                  &nbsp; 
+               </div> 
+               <div class="panel-body"> 
+                  <!--http://purl.org/eis/vocab/daq#hasDimension<br /> -->
+                   The category concept classifies dimensions related to the measurement of quality for a specific criteria. This is an abstract property and should not be used directly. Specific sub-properties should be inherited for different dimensions. 
+                  <br /> 
+                  <h5>Domain of:</h5> 
+                  <a href="#Category">Category</a> 
+                  <br /> 
+                  <h5>Range of:</h5> 
+                  <a href="#Dimension">Dimension</a> 
+                  <br /> 
+               </div> 
+            </div>
+            <div class="panel panel-warning" id="propertyTemplate"> 
+               <div class="panel-heading"> 
+                  <h5 class="panel-title" style="display: inline-block;"> 
+                     <a id="isEstimate">is estimate</a>
+                  </h5>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">rdf:Property</a>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#ObjectProperty">owl:ObjectProperty</a>
+                  &nbsp; 
+               </div> 
+               <div class="panel-body"> 
+                  <!--http://purl.org/eis/vocab/daq#isEstimate<br /> -->
+                   This property flags true if an assessed metric gives an estimate result instead of a more accurate one. 
+                  <br /> 
+                  <h5>Domain of:</h5> 
+                  <a href="#Metric">Metric</a> 
+                  <br /> 
+                  <h5>Range of:</h5> 
+                  <a target="_blank" class="text-warning" href="http://www.w3.org/2001/XMLSchema#boolean">xsd:boolean</a> 
+                  <br /> 
+               </div> 
+            </div>
+            <div class="panel panel-warning" id="propertyTemplate"> 
+               <div class="panel-heading"> 
+                  <h5 class="panel-title" style="display: inline-block;"> 
+                     <a id="computedOn">computed on</a>
+                  </h5>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">rdf:Property</a>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://purl.org/linked-data/cube#DimensionProperty">qb:DimensionProperty</a>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#ObjectProperty">owl:ObjectProperty</a>
+                  &nbsp; 
+               </div> 
+               <div class="panel-body"> 
+                  <!--http://purl.org/eis/vocab/daq#computedOn<br /> -->
+                   Quality metrics can be (in principle) calculated on various forms of data (such as datasets, graphs, set of triples etc...). This vocabulary allow the owner/user of such RDF data to calculate metrics on multiple (and different) resources. 
+                  <br /> 
+                  <h5>Domain of:</h5> 
+                  <a target="_blank" class="text-warning" href="http://purl.org/linked-data/cube#Observation">qb:Observation</a> 
+                  <br /> 
+                  <h5>Range of:</h5> 
+                  <a target="_blank" class="text-warning" href="http://www.w3.org/2000/01/rdf-schema#Resource">rdfs:Resource</a> 
+                  <br /> 
+               </div> 
+            </div>
+            <div class="panel panel-warning" id="propertyTemplate"> 
+               <div class="panel-heading"> 
+                  <h5 class="panel-title" style="display: inline-block;"> 
+                     <a id="hasObservation">has observation</a>
+                  </h5>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">rdf:Property</a>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#DatatypeProperty">owl:DatatypeProperty</a>
+                  &nbsp; 
+               </div> 
+               <div class="panel-body"> 
+                  <!--http://purl.org/eis/vocab/daq#hasObservation<br /> -->
+                   Computed metrics can have 1 or more quality observations, where each computed resource has one observation. 
+                  <br /> 
+                  <h5>Domain of:</h5> 
+                  <a href="#Metric">Metric</a> 
+                  <br /> 
+                  <h5>Range of:</h5> 
+                  <a target="_blank" class="text-warning" href="http://purl.org/linked-data/cube#Observation">qb:Observation</a> 
+                  <br /> 
+                  <h5>Has Minimum Cardinality:</h5>
+                   1 
+                  <br /> 
+                  <h5>Inverse of:</h5> 
+                  <a href="#metric">metric</a> 
+                  <br /> 
+               </div> 
+            </div>
+            <div class="panel panel-warning" id="propertyTemplate"> 
+               <div class="panel-heading"> 
+                  <h5 class="panel-title" style="display: inline-block;"> 
+                     <a id="hasMetric">hasMetric</a>
+                  </h5>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">rdf:Property</a>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#ObjectProperty">owl:ObjectProperty</a>
+                  &nbsp; 
+               </div> 
+               <div class="panel-body"> 
+                  <!--http://purl.org/eis/vocab/daq#hasMetric<br /> -->
+                   A dimension is an abstract concept which groups an number of more concrete metrics to measure quality of a dataset. This is an abstract property and should not be used directly. Specific sub-properties should be inherited for different metrics. 
+                  <br /> 
+                  <h5>Domain of:</h5> 
+                  <a href="#Dimension">Dimension</a> 
+                  <br /> 
+                  <h5>Range of:</h5> 
+                  <a href="#Metric">Metric</a> 
+                  <br /> 
+               </div> 
+            </div>
+            <div class="panel panel-warning" id="propertyTemplate"> 
+               <div class="panel-heading"> 
+                  <h5 class="panel-title" style="display: inline-block;"> 
+                     <a id="computedBy">computed by</a>
+                  </h5>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">rdf:Property</a>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#ObjectProperty">owl:ObjectProperty</a>
+                  &nbsp; 
+               </div> 
+               <div class="panel-body"> 
+                  <!--http://purl.org/eis/vocab/daq#computedBy<br /> -->
+                   A metric can have multiple observations calculated by different agents. 
+                  <br /> 
+                  <h5>Domain of:</h5> 
+                  <a target="_blank" class="text-warning" href="http://purl.org/linked-data/cube#Observation">qb:Observation</a> 
+                  <br /> 
+                  <h5>Range of:</h5> 
+                  <a target="_blank" class="text-warning" href="http://www.w3.org/ns/prov#Agent">prov:Agent</a> 
+                  <br /> 
+               </div> 
+            </div>
+            <div class="panel panel-warning" id="propertyTemplate"> 
+               <div class="panel-heading"> 
+                  <h5 class="panel-title" style="display: inline-block;"> 
+                     <a id="metric">metric</a>
+                  </h5>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">rdf:Property</a>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://purl.org/linked-data/cube#DimensionProperty">qb:DimensionProperty</a>
+                  &nbsp;
+                  <a target="_blank" class="label label-success" href="http://www.w3.org/2002/07/owl#DatatypeProperty">owl:DatatypeProperty</a>
+                  &nbsp; 
+               </div> 
+               <div class="panel-body"> 
+                  <!--http://purl.org/eis/vocab/daq#metric<br /> -->
+                   Represents the metric being observed. 
+                  <br /> 
+                  <h5>Domain of:</h5> 
+                  <a target="_blank" class="text-warning" href="http://purl.org/linked-data/cube#Observation">qb:Observation</a> 
+                  <br /> 
+                  <h5>Range of:</h5> 
+                  <a href="#Metric">Metric</a> 
+                  <br /> 
+                  <h5>Has Minimum Cardinality:</h5>
+                   1 
+                  <br /> 
+                  <h5>Inverse of:</h5> 
+                  <a href="#hasObservation">hasObservation</a> 
+                  <br /> 
+               </div> 
+            </div> 
+         </content> 
+         <footer class="footer text-muted"> 
+            <leftalign> 
+               <small>Copyright:</small> 
+            </leftalign> 
+            <rightalign> 
+               <small>Last Updated: 2014-05-21</small> 
+            </rightalign> 
+         </footer> 
+      </div> 
+      <!-- /container -->  
+   </body>
+</html>

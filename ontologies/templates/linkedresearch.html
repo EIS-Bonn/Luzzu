@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	
+    <title id="title"></title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/util.css" rel="stylesheet">
+
+<!--    <link type="text/css" rel="stylesheet" href="http://linked-research.270a.info/media/css/lncs.css" media="all" title="LNCS"/>-->
+<!--    <link type="text/css" rel="stylesheet alternate" href="http://linked-research.270a.info/media/css/acm.css" media="all" title="ACM"/>-->
+<!--    <link type="text/css" rel="stylesheet alternate" href="http://www.w3.org/StyleSheets/TR/W3C-ED.css" media="all" title="W3C"/>-->
+<!--    <link type="text/css" rel="stylesheet" href="http://linked-research.270a.info/media/css/lr.css" media="all"/>-->
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>    
+	<script src="js/script.js"></script>
+
+    <script type="text/javascript" src="http://linked-research.270a.info/scripts/lr.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+    <body>
+        <article class="container">
+
+         <!-- Static navbar -->
+         <nav class="navbar navbar-default">
+           <div class="container-fluid">
+             <div class="navbar-header">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                 <span class="sr-only">Toggle navigation</span>
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+               </button>
+               <a class="navbar-brand" href="index.html"><span id="menutitle" /></a>
+             </div>
+             <div id="navbar" class="navbar-collapse collapse">
+               <ul class="nav navbar-nav" id="menuitems">
+				   
+               </ul>
+               
+             </div><!--/.nav-collapse -->
+           </div><!--/.container-fluid -->
+         </nav>
+
+         <!-- topclass -->
+            <h1>${ontology.label}</h1>
+
+            <div id="authors">
+		        <dl id="author-name">
+		            <dt>Authors</dt>
+                    <dd>${ontology.authors}</dd>
+                </dl>
+
+
+            </div>
+
+
+            <dl id="namespace">
+        		<dt>Namespace:</dt>
+			    <dd>${ontology.namespace}</dd>
+            </dl>
+
+            <dl id="serialisations">
+        		<dt>Serialisations</dt>
+			    <dd><span id="serialisation"></dd>
+            </dl>
+
+            <div id="content">
+                <section id="abstact">
+		            <h2>Abstract</h2>
+		            <div>
+            		    <p>${ontology.abstract}</p>
+                    </div>
+                </section>
+
+		
+		        <!-- In the future we might add a functionality to transform docbooks to text, to describe ontologies -->
+		
+                <section id="ontology-statistics">
+            		<h2>Ontology Statistics</h2>
+		            <div>
+		                <!-- Here we list all classes and properties -->
+		                <section id="classes">
+	                        <h5>Classes (${class.count}):</h5>
+                            <div>
+		                        <p>${classes.label}</p>
+		                    </div>
+                        </section>
+
+		                <section id="properties">
+            		        <h5>Properties (${property.count}):</h5>
+            		        <div>
+                		        <p>${properties.label}</p>
+                            </div>
+                        </section>
+
+		                <section id="instances">
+            		        <h5>Instances (${instances.count}):</h5>
+                            <div>
+	                	        <p>${instances.label}</p>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+
+
+                <section id="term-description">
+            		<h2>Term Description</h2>
+		            <div>		
+		                <p>In this section, the classes and properties that provide a basis for the ${ontology.label} are described.</p>
+
+                        <section id="term-description-classes">
+                    		<h3>Classes</h3>
+                            <div id="classTemplate">
+		                            	<h4><a name="#{class.id}">${class.label}</a></h4>
+										<ul>
+		                            		<li>${class.description}</li>
+					                        <li>Described by: ${class.propertydomain}</li>
+					                        <li>In Range of: ${class.propertyrange}</li>
+					                        <li>Subclass of: ${class.subclassof}</li>
+					                        <li>Subclassed By: ${class.subclassedby}</li>
+		                          		</ul>
+		                    </div>
+                        </section>
+
+                        <section id="term-description-properties">
+	                        <h3>Properties</h3>
+                            <div id="propertyTemplate">
+		                            <h4><a name="#{property.id}">${property.label}</a></h4>
+		                          	<ul>
+		                            		<li>${property.description}</li>
+								    		<li>Domain of: ${property.classdomain}</li>
+								    		<li>Range of: ${property.classrange}</li>
+								    		<li>Sub-Property of: ${property.subpropertyof}</li>
+								    		<li>Super-Property of: ${property.subpropertyby}</li>
+		                          	</ul>
+		                    </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+		
+		    <footer class="footer text-muted">
+			    <leftalign><small>Copyright:</small></leftalign><rightalign><small>Last Updated: ${ontology.modified}</small></rightalign>
+		    </footer>
+        </article>
+    </body>
+</html>

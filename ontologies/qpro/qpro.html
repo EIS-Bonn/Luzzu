@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head> 
+      <meta charset="utf-8" /> 
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+      <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+      <meta name="description" content="" /> 
+      <meta name="author" content="" /> 
+      <title id="title"></title> 
+      <!-- Bootstrap core CSS --> 
+      <link href="../css/main.css" rel="stylesheet" /> 
+      <link href="../css/util.css" rel="stylesheet" /> 
+      <script src="../js/jquery.min.js"></script> 
+      <script src="../js/bootstrap.js"></script> 
+      <script src="../js/script.js"></script> 
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries --> 
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]--> 
+   </head> 
+   <body> 
+      <div class="container"> 
+         <!-- Static navbar --> 
+         <nav class="navbar navbar-default" id="topbar"> 
+            <div class="container-fluid"> 
+               <div class="navbar-header"> 
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"> 
+                     <span class="sr-only">Toggle navigation</span> 
+                     <span class="icon-bar"></span> 
+                     <span class="icon-bar"></span> 
+                     <span class="icon-bar"></span> 
+                  </button> 
+                  <a class="navbar-brand" href="index.html">
+                     <span id="menutitle"></span>
+                  </a> 
+               </div> 
+               <div id="navbar" class="navbar-collapse collapse"> 
+                  <ul class="nav navbar-nav" id="menuitems"> 
+                  </ul> 
+               </div> 
+               <!--/.nav-collapse --> 
+            </div> 
+            <!--/.container-fluid --> 
+         </nav> 
+         <!-- topclass --> 
+         <h1>Quality Problem Report (QPRO)</h1> 
+         <h3>Namespace:</h3>
+          http://purl.org/eis/vocab/qpro# 
+         <h3>Authors:</h3> 
+         <ul style="padding: 0; list-style-type: none;"> 
+            <li>
+               <a href="http://www.jeremydebattista.info">Jeremy Debattista</a>
+               &nbsp;
+               <a href="mailto:debattis@cs.uni-bonn.de">Email</a>
+            </li> 
+         </ul> 
+         <h3>Serialisations:</h3> 
+         <span id="serialisation"></span> 
+         <hr /> 
+         <h3>Abstract</h3>
+          The Quality Problem Report (QPRO) enables the fine-grained description of quality problems found while assessing a dataset. 
+         <h3>Ontology Statistics</h3> 
+         <!-- Here we list all classes and properties --> 
+         <h5>Classes (3):</h5> 
+         <p>
+            <a data-toggle="tooltip" data-original-title="${class.shorttip}" href="#Exception">Exception</a>
+            , 
+            <a data-toggle="tooltip" data-original-title="${class.shorttip}" href="#QualityProblem">QualityProblem</a>
+            , 
+            <a data-toggle="tooltip" data-original-title="${class.shorttip}" href="#QualityReport">QualityReport</a> 
+         </p> 
+         <h5>Properties (5):</h5> 
+         <p>
+            <a href="#inGraph">inGraph</a>
+            , 
+            <a href="#problematicThing">problematicThing</a>
+            , 
+            <a href="#isDescribedBy">isDescribedBy</a>
+            , 
+            <a href="#hasProblem">hasProblem</a>
+            , 
+            <a href="#computedOn">computedOn</a> 
+         </p> 
+         <h5>Instances (2):</h5> 
+         <p>
+            <a href="#extraExceptionProperty">qpro:extraExceptionProperty</a>
+            , 
+            <a href="#exceptionDescription">qpro:exceptionDescription</a> 
+            <br />
+         </p> 
+         <hr /> 
+         <!-- documentation --> 
+         <div id="documentation"></div> 
+         <!-- script to load adoc --> 
+         <script src="js/asciidoctor-all.js"></script> 
+         <script type="text/javascript">
+ 			var content = loadFile("qpro.adoc")
+ 			var options = Opal.hash2(['doctype', 'attributes'], {doctype: 'book', attributes: ['showtitle']});
+ 			var html = Opal.Asciidoctor.$convert(content, options);
+ 			$("#documentation").html(html);
+ 		
+         </script> 
+         <!-- end script to load adoc --> 
+         <hr /> 
+         <h3>Term Description</h3>
+          In this section, the classes and properties that provide a basis for the Quality Problem Report (QPRO) are described 
+         <h4>Classes</h4> 
+         <div class="panel panel-info" id="classTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title">
+                  <a id="Exception">Exception (Abstract)</a>
+               </h3> 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/qpro#Exception<br /> -->
+                Represents an Exception that causes the dataset to have Quality Problems. This is an abstract class 
+               <br /> 
+               <h4>In Range of:</h4> 
+               <a href="#exceptionDescription">qpro:exceptionDescription</a> 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-info" id="classTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title">
+                  <a id="QualityProblem">Quality Problem</a>
+               </h3> 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/qpro#QualityProblem<br /> -->
+                Represents a quality problem detected during the assessment of quality metrics on triples. 
+               <br /> 
+               <h4>Described by:</h4> 
+               <a href="#isDescribedBy">qpro:isDescribedBy</a>
+               , 
+               <a href="#problematicThing">qpro:problematicThing</a> 
+               <br /> 
+               <h4>In Range of:</h4> 
+               <a href="#hasProblem">qpro:hasProblem</a> 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-info" id="classTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title">
+                  <a id="QualityReport">Quality Report</a>
+               </h3> 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/qpro#QualityReport<br /> -->
+                Represents a report on the problems detected during the assessment of quality on a dataset. 
+               <br /> 
+               <h4>Described by:</h4> 
+               <a href="#computedOn">qpro:computedOn</a>
+               , 
+               <a href="#hasProblem">qpro:hasProblem</a> 
+               <br /> 
+            </div> 
+         </div> 
+         <h4>Properties</h4> 
+         <div class="panel panel-warning" id="propertyTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title" style="display: inline-block;"> 
+                  <a id="inGraph">in graph</a>
+               </h3>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">rdf:Property</a>
+               &nbsp; 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/qpro#inGraph<br /> -->
+                This property enables the reification of quads by creating a new property to define the context of a triple statement. 
+               <br /> 
+               <h4>Domain of:</h4> 
+               <a target="_blank" class="text-warning" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement">rdf:Statement</a> 
+               <br /> 
+               <h4>Range of:</h4> 
+               <a target="_blank" class="text-warning" href="http://www.w3.org/2004/03/trix/rdfg-1Graph">http://www.w3.org/2004/03/trix/rdfg-1Graph</a> 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-warning" id="propertyTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title" style="display: inline-block;"> 
+                  <a id="problematicThing">Problematic Thing</a>
+               </h3>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">rdf:Property</a>
+               &nbsp; 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/qpro#problematicThing<br /> -->
+                Represent the actual problematic instance from the dataset. This could be a list of resources (rdf:Seq), a list of reified statements, or a model representing a list of statements. 
+               <br /> 
+               <h4>Domain of:</h4> 
+               <a href="#QualityProblem">qpro:QualityProblem</a> 
+               <br /> 
+               <h4>Range of:</h4> 
+               <a target="_blank" class="text-warning" href="http://www.w3.org/2000/01/rdf-schema#Resource">rdfs:Resource</a> 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-warning" id="propertyTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title" style="display: inline-block;"> 
+                  <a id="isDescribedBy">is described by</a>
+               </h3>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">rdf:Property</a>
+               &nbsp; 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/qpro#isDescribedBy<br /> -->
+                Represent the URI of the metric which instantiated this problem 
+               <br /> 
+               <h4>Domain of:</h4> 
+               <a href="#QualityProblem">qpro:QualityProblem</a> 
+               <br /> 
+               <h4>Range of:</h4> 
+               <a target="_blank" class="text-warning" href="http://purl.org/eis/vocab/daq#Metric">daq:Metric</a> 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-warning" id="propertyTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title" style="display: inline-block;"> 
+                  <a id="hasProblem">has problem</a>
+               </h3>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">rdf:Property</a>
+               &nbsp; 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/qpro#hasProblem<br /> -->
+                Identifies problem instances in the report 
+               <br /> 
+               <h4>Domain of:</h4> 
+               <a href="#QualityReport">qpro:QualityReport</a> 
+               <br /> 
+               <h4>Range of:</h4> 
+               <a href="#QualityProblem">qpro:QualityProblem</a> 
+               <br /> 
+            </div> 
+         </div>
+         <div class="panel panel-warning" id="propertyTemplate"> 
+            <div class="panel-heading"> 
+               <h3 class="panel-title" style="display: inline-block;"> 
+                  <a id="computedOn">computed on</a>
+               </h3>
+               &nbsp;
+               <a target="_blank" class="label label-success" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property">rdf:Property</a>
+               &nbsp; 
+            </div> 
+            <div class="panel-body"> 
+               <!--http://purl.org/eis/vocab/qpro#computedOn<br /> -->
+                Represents the dataset URI on which quality metrics where computed 
+               <br /> 
+               <h4>Domain of:</h4> 
+               <a href="#QualityReport">qpro:QualityReport</a> 
+               <br /> 
+               <h4>Range of:</h4> 
+               <a target="_blank" class="text-warning" href="http://www.w3.org/2000/01/rdf-schema#Resource">rdfs:Resource</a> 
+               <br /> 
+            </div> 
+         </div> 
+<footer class="text-center">
+	   	<div class="container">
+ 			<span style="float:left"><small><a href="http://eis-bonn.github.io/Luzzu">Luzzu QA Framework Website</a></small></span> 
+		<span style="float:center"><small>Maintained by Jeremy Debattista - MIT Licence</small></span>
+		<span style="float:right"><small><em>Last Updated: 2015-04-01</em></small></span>
+	</div>
+ </footer>
+      </div> 
+      <!-- /container -->  
+   </body>
+</html>
