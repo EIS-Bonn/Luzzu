@@ -1,7 +1,7 @@
 Release Notes
 -------------
 
-[Version 1.1 - 01/12/2013]
+[Version 1.1 - 13/05/2015]
 * Updated README.md
 * Changed Distribution Platform - Dependencies can be found on Maven Central Repository
 * Can represent a defined model as a problem report not just Quads and Resources
@@ -9,7 +9,7 @@ Release Notes
 big external metrics jar files.
 * Representation of provenance and estimation information for metric observations
 
-[Version 1.0 - 01/12/2013]
+[Version 1.0 - 01/12/2014]
 * First official version
 * Fixed InternalConfigModel.java null exception when "externals/vocabs" folder is not found
 * Added luzzu-operations automatic unbiased ranking algorithm
