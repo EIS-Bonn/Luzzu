@@ -134,8 +134,9 @@ public class StreamProcessor implements IOProcessor {
 		this.setUpProcess();
 		
 		int datasetListCounter = 0;
+
 		for (String dataset : datasetList){
-			this.datasetURI = dataset;
+			this.datasetURI = dataset; 
 			PropertyManager.getInstance().addToEnvironmentVars("datasetURI", this.datasetURI);
 			try {
 				this.startProcessing();
@@ -219,12 +220,16 @@ public class StreamProcessor implements IOProcessor {
 
 	public void startProcessing() throws ProcessorNotInitialised{
 				
-		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");		
+		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");	
 		StreamMetadataSniffer sniffer = new StreamMetadataSniffer();
 		
 		Runnable parser = new Runnable(){
 			public void run() {
+				try{
 				RDFDataMgr.parse(rdfStream, datasetURI);
+				} catch (Exception e){
+					logger.error("Error parsing dataset {}. Error message {}", datasetURI, e.getMessage());
+				}
 			}
 		};
 		
@@ -473,11 +478,11 @@ public class StreamProcessor implements IOProcessor {
 	}
 
 	private final class MetricProcess {
-		volatile Queue<Object2Quad> quadsToProcess = new BlockingArrayQueue<Object2Quad>(10000000);
+		volatile Queue<Object2Quad> quadsToProcess = new BlockingArrayQueue<Object2Quad>(1000000);
 		Thread metricThread = null;
 		String metricName = null;
         
-        Integer stmtsProcessed = 0;
+        Long stmtsProcessed = 0l;
         boolean stopSignal = false;
         
         MetricProcess(final QualityMetric m) { 
