@@ -407,7 +407,13 @@ public class StreamProcessor implements IOProcessor {
 	 */
 	private synchronized void writeQualityMetadataFile() {
 		// Build the full path of the file where quality metadata will be written
-		String metadataFilePath = this.metadataBaseDir + "/" + this.baseURI.replace("http://", "") + "/quality-meta-data.trig";
+		String fld = this.metadataBaseDir + "/" + this.baseURI.replace("http://", "");
+		fld = fld.replaceFirst("^~",System.getProperty("user.home"));
+				
+		File folder = new File(fld);
+		folder.mkdirs();
+		
+		String metadataFilePath = fld + "/quality-meta-data.trig";
 		metadataFilePath = metadataFilePath.replace("//", "/");
 		logger.debug("Writing quality meta-data to file: metadataFilePath...");
 				
