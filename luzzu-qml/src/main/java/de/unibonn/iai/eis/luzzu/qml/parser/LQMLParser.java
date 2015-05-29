@@ -27,22 +27,27 @@ public class LQMLParser implements LQMLParserConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case DEF:
       def = extractDefinitionName();
-      Def();
+      MetricUriLabelDescRuleActionPerm();
       break;
     case METRICURI:
       metricUri = extractMetricURI();
+      DefLabelDescRuleActionPerm();
       break;
     case LABEL:
       label = extractLabel();
+      DefMetricUriDescRuleActionPerm();
       break;
     case DESC:
       desc = extractDescription();
+      DefMetricUriLabelRuleActionPerm();
       break;
     case MATCH:
       rule = extractRule();
+      DefMetricUriLabelDescActionPerm();
       break;
     case ACTION:
       action = extractAction();
+      DefMetricUriLabelDescRulePerm();
       break;
     default:
       jj_la1[0] = jj_gen;
@@ -270,24 +275,27 @@ public class LQMLParser implements LQMLParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public void Def() throws ParseException {
+  final public void MetricUriLabelDescRuleActionPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case METRICURI:
       metricUri = extractMetricURI();
-      DefMetricUri();
+      LabelDescRuleActionPerm();
       break;
     case LABEL:
       label = extractLabel();
-      DefLabel();
+      MetricUriDescRuleActionPerm();
       break;
     case DESC:
       desc = extractDescription();
+      MetricUriLabelRuleActionPerm();
       break;
     case MATCH:
       rule = extractRule();
+      MetricUriLabelDescActionPerm();
       break;
     case ACTION:
       action = extractAction();
+      MetricUriLabelDescRulePerm();
       break;
     default:
       jj_la1[6] = jj_gen;
@@ -296,20 +304,27 @@ public class LQMLParser implements LQMLParserConstants {
     }
   }
 
-  final public void DefLabel() throws ParseException {
+  final public void DefLabelDescRuleActionPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case METRICURI:
-      metricUri = extractMetricURI();
-      DefLabelMetricUri();
+    case DEF:
+      def = extractDefinitionName();
+      LabelDescRuleActionPerm();
+      break;
+    case LABEL:
+      label = extractLabel();
+      DefDescRuleActionPerm();
       break;
     case DESC:
       desc = extractDescription();
+      DefLabelRuleActionPerm();
       break;
     case MATCH:
       rule = extractRule();
+      DefLabelDescActionPerm();
       break;
     case ACTION:
       action = extractAction();
+      DefLabelDescRulePerm();
       break;
     default:
       jj_la1[7] = jj_gen;
@@ -318,17 +333,27 @@ public class LQMLParser implements LQMLParserConstants {
     }
   }
 
-  final public void DefLabelMetricUri() throws ParseException {
+  final public void DefMetricUriDescRuleActionPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      MetricUriDescRuleActionPerm();
+      break;
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DefDescRuleActionPerm();
+      break;
     case DESC:
       desc = extractDescription();
-      DefLabelMetricUriDesc();
+      DefMetricUriRuleActionPerm();
       break;
     case MATCH:
       rule = extractRule();
+      DefMetricUriDescActionPerm();
       break;
     case ACTION:
       action = extractAction();
+      DefMetricUriDescRulePerm();
       break;
     default:
       jj_la1[8] = jj_gen;
@@ -337,15 +362,27 @@ public class LQMLParser implements LQMLParserConstants {
     }
   }
 
-  final public void DefLabelMetricUriDesc() throws ParseException {
+  final public void DefMetricUriLabelRuleActionPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      MetricUriLabelRuleActionPerm();
+      break;
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DefLabelRuleActionPerm();
+      break;
+    case LABEL:
+      label = extractLabel();
+      DefMetricUriRuleActionPerm();
+      break;
     case MATCH:
       rule = extractRule();
-      action = extractAction();
+      DefMetricUriLabelActionPerm();
       break;
     case ACTION:
       action = extractAction();
-      rule = extractRule();
+      DefMetricUriLabelRulePerm();
       break;
     default:
       jj_la1[9] = jj_gen;
@@ -354,23 +391,27 @@ public class LQMLParser implements LQMLParserConstants {
     }
   }
 
-  final public void DefMetricUri() throws ParseException {
+  final public void DefMetricUriLabelDescActionPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      MetricUriLabelDescActionPerm();
+      break;
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DefLabelDescActionPerm();
+      break;
     case LABEL:
       label = extractLabel();
-      DefMetricUriLabel();
+      DefMetricUriDescActionPerm();
       break;
     case DESC:
       desc = extractDescription();
-      DefMetricUriDesc();
-      break;
-    case MATCH:
-      rule = extractRule();
-      DefMetricUriRule();
+      DefMetricUriLabelActionPerm();
       break;
     case ACTION:
       action = extractAction();
-      DefMetricUriAction();
+      DefMetricUriLabelDescPerm();
       break;
     default:
       jj_la1[10] = jj_gen;
@@ -379,19 +420,27 @@ public class LQMLParser implements LQMLParserConstants {
     }
   }
 
-  final public void DefMetricUriAction() throws ParseException {
+  final public void DefMetricUriLabelDescRulePerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      MetricUriLabelDescRulePerm();
+      break;
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DefLabelDescRulePerm();
+      break;
     case LABEL:
       label = extractLabel();
-      DefMetricUriActionLabel();
+      DefMetricUriDescRulePerm();
       break;
     case DESC:
       desc = extractDescription();
-      DefMetricUriActionDesc();
+      DefMetricUriLabelRulePerm();
       break;
     case MATCH:
       rule = extractRule();
-      DefMetricUriActionRule();
+      DefMetricUriLabelDescPerm();
       break;
     default:
       jj_la1[11] = jj_gen;
@@ -400,15 +449,23 @@ public class LQMLParser implements LQMLParserConstants {
     }
   }
 
-  final public void DefMetricUriActionRule() throws ParseException {
+  final public void LabelDescRuleActionPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case LABEL:
       label = extractLabel();
-      desc = extractDescription();
+      DescRuleActionPerm();
       break;
     case DESC:
       desc = extractDescription();
-      label = extractLabel();
+      LabelRuleActionPerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      LabelDescActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      LabelDescRulePerm();
       break;
     default:
       jj_la1[12] = jj_gen;
@@ -417,15 +474,23 @@ public class LQMLParser implements LQMLParserConstants {
     }
   }
 
-  final public void DefMetricUriActionDesc() throws ParseException {
+  final public void MetricUriDescRuleActionPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case LABEL:
-      label = extractLabel();
-      rule = extractRule();
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DescRuleActionPerm();
+      break;
+    case DESC:
+      desc = extractDescription();
+      MetricUriRuleActionPerm();
       break;
     case MATCH:
       rule = extractRule();
-      label = extractLabel();
+      MetricUriDescActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      MetricUriDescRulePerm();
       break;
     default:
       jj_la1[13] = jj_gen;
@@ -434,15 +499,23 @@ public class LQMLParser implements LQMLParserConstants {
     }
   }
 
-  final public void DefMetricUriActionLabel() throws ParseException {
+  final public void MetricUriLabelRuleActionPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case DESC:
-      desc = extractDescription();
-      rule = extractRule();
+    case METRICURI:
+      metricUri = extractMetricURI();
+      LabelRuleActionPerm();
+      break;
+    case LABEL:
+      label = extractLabel();
+      MetricUriRuleActionPerm();
       break;
     case MATCH:
       rule = extractRule();
-      desc = extractDescription();
+      MetricUriLabelActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      MetricUriLabelRulePerm();
       break;
     default:
       jj_la1[14] = jj_gen;
@@ -451,19 +524,23 @@ public class LQMLParser implements LQMLParserConstants {
     }
   }
 
-  final public void DefMetricUriRule() throws ParseException {
+  final public void MetricUriLabelDescActionPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case METRICURI:
+      metricUri = extractMetricURI();
+      LabelDescActionPerm();
+      break;
     case LABEL:
       label = extractLabel();
-      DefMetricUriRuleLabel();
+      MetricUriDescActionPerm();
       break;
     case DESC:
       desc = extractDescription();
-      DefMetricUriRuleDesc();
+      MetricUriLabelActionPerm();
       break;
     case ACTION:
       action = extractAction();
-      DefMetricUriRuleAction();
+      MetricUriLabelDescPerm();
       break;
     default:
       jj_la1[15] = jj_gen;
@@ -472,15 +549,23 @@ public class LQMLParser implements LQMLParserConstants {
     }
   }
 
-  final public void DefMetricUriRuleAction() throws ParseException {
+  final public void MetricUriLabelDescRulePerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case METRICURI:
+      metricUri = extractMetricURI();
+      LabelDescRulePerm();
+      break;
     case LABEL:
       label = extractLabel();
-      desc = extractDescription();
+      MetricUriDescRulePerm();
       break;
     case DESC:
       desc = extractDescription();
-      label = extractLabel();
+      MetricUriLabelRulePerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      MetricUriLabelDescPerm();
       break;
     default:
       jj_la1[16] = jj_gen;
@@ -489,15 +574,23 @@ public class LQMLParser implements LQMLParserConstants {
     }
   }
 
-  final public void DefMetricUriRuleDesc() throws ParseException {
+  final public void DefDescRuleActionPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case LABEL:
-      label = extractLabel();
-      action = extractAction();
+    case DEF:
+      def = extractDefinitionName();
+      DescRuleActionPerm();
+      break;
+    case DESC:
+      desc = extractDescription();
+      DefRuleActionPerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      DefDescActionPerm();
       break;
     case ACTION:
       action = extractAction();
-      label = extractLabel();
+      DefDescRulePerm();
       break;
     default:
       jj_la1[17] = jj_gen;
@@ -506,15 +599,23 @@ public class LQMLParser implements LQMLParserConstants {
     }
   }
 
-  final public void DefMetricUriRuleLabel() throws ParseException {
+  final public void DefLabelRuleActionPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case DESC:
-      desc = extractDescription();
-      action = extractAction();
+    case DEF:
+      def = extractDefinitionName();
+      LabelRuleActionPerm();
+      break;
+    case LABEL:
+      label = extractLabel();
+      DefRuleActionPerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      DefLabelActionPerm();
       break;
     case ACTION:
       action = extractAction();
-      desc = extractDescription();
+      DefLabelRulePerm();
       break;
     default:
       jj_la1[18] = jj_gen;
@@ -523,19 +624,23 @@ public class LQMLParser implements LQMLParserConstants {
     }
   }
 
-  final public void DefMetricUriDesc() throws ParseException {
+  final public void DefLabelDescActionPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      LabelDescActionPerm();
+      break;
     case LABEL:
       label = extractLabel();
-      DefMetricUriDescLabel();
+      DefDescActionPerm();
       break;
-    case MATCH:
-      rule = extractRule();
-      DefMetricUriDescRule();
+    case DESC:
+      desc = extractDescription();
+      DefLabelActionPerm();
       break;
     case ACTION:
       action = extractAction();
-      DefMetricUriDescAction();
+      DefLabelDescPerm();
       break;
     default:
       jj_la1[19] = jj_gen;
@@ -544,15 +649,23 @@ public class LQMLParser implements LQMLParserConstants {
     }
   }
 
-  final public void DefMetricUriDescAction() throws ParseException {
+  final public void DefLabelDescRulePerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      LabelDescRulePerm();
+      break;
     case LABEL:
       label = extractLabel();
-      rule = extractRule();
+      DefDescRulePerm();
+      break;
+    case DESC:
+      desc = extractDescription();
+      DefLabelRulePerm();
       break;
     case MATCH:
       rule = extractRule();
-      label = extractLabel();
+      DefLabelDescPerm();
       break;
     default:
       jj_la1[20] = jj_gen;
@@ -561,7 +674,628 @@ public class LQMLParser implements LQMLParserConstants {
     }
   }
 
-  final public void DefMetricUriDescRule() throws ParseException {
+  final public void DefMetricUriRuleActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      MetricUriRuleActionPerm();
+      break;
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DefRuleActionPerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      DefMetricUriActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      DefMetricUriRulePerm();
+      break;
+    default:
+      jj_la1[21] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefMetricUriDescActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      MetricUriDescActionPerm();
+      break;
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DefDescActionPerm();
+      break;
+    case DESC:
+      desc = extractDescription();
+      DefMetricUriActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      DefMetricUriDescPerm();
+      break;
+    default:
+      jj_la1[22] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefMetricUriDescRulePerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      MetricUriDescRulePerm();
+      break;
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DefDescRulePerm();
+      break;
+    case DESC:
+      desc = extractDescription();
+      DefMetricUriRulePerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      DefMetricUriDescPerm();
+      break;
+    default:
+      jj_la1[23] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefMetricUriLabelActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      MetricUriLabelActionPerm();
+      break;
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DefLabelActionPerm();
+      break;
+    case LABEL:
+      label = extractLabel();
+      DefMetricUriActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      DefMetricUriLabelPerm();
+      break;
+    default:
+      jj_la1[24] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefMetricUriLabelRulePerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      MetricUriLabelRulePerm();
+      break;
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DefLabelRulePerm();
+      break;
+    case LABEL:
+      label = extractLabel();
+      DefMetricUriRulePerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      DefMetricUriLabelPerm();
+      break;
+    default:
+      jj_la1[25] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefMetricUriLabelDescPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      MetricUriLabelDescPerm();
+      break;
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DefLabelDescPerm();
+      break;
+    case LABEL:
+      label = extractLabel();
+      DefMetricUriDescPerm();
+      break;
+    case DESC:
+      desc = extractDescription();
+      DefMetricUriLabelPerm();
+      break;
+    default:
+      jj_la1[26] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DescRuleActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DESC:
+      desc = extractDescription();
+      RuleActionPerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      DescActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      DescRulePerm();
+      break;
+    default:
+      jj_la1[27] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void LabelRuleActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case LABEL:
+      label = extractLabel();
+      RuleActionPerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      LabelActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      LabelRulePerm();
+      break;
+    default:
+      jj_la1[28] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void LabelDescActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case LABEL:
+      label = extractLabel();
+      DescActionPerm();
+      break;
+    case DESC:
+      desc = extractDescription();
+      LabelActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      LabelDescPerm();
+      break;
+    default:
+      jj_la1[29] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void LabelDescRulePerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case LABEL:
+      label = extractLabel();
+      DescRulePerm();
+      break;
+    case DESC:
+      desc = extractDescription();
+      LabelRulePerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      LabelDescPerm();
+      break;
+    default:
+      jj_la1[30] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void MetricUriRuleActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case METRICURI:
+      metricUri = extractMetricURI();
+      RuleActionPerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      MetricUriActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      MetricUriRulePerm();
+      break;
+    default:
+      jj_la1[31] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void MetricUriDescActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DescActionPerm();
+      break;
+    case DESC:
+      desc = extractDescription();
+      MetricUriActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      MetricUriDescPerm();
+      break;
+    default:
+      jj_la1[32] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void MetricUriDescRulePerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DescRulePerm();
+      break;
+    case DESC:
+      desc = extractDescription();
+      MetricUriRulePerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      MetricUriDescPerm();
+      break;
+    default:
+      jj_la1[33] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void MetricUriLabelActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case METRICURI:
+      metricUri = extractMetricURI();
+      LabelActionPerm();
+      break;
+    case LABEL:
+      label = extractLabel();
+      MetricUriActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      MetricUriLabelPerm();
+      break;
+    default:
+      jj_la1[34] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void MetricUriLabelRulePerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case METRICURI:
+      metricUri = extractMetricURI();
+      LabelRulePerm();
+      break;
+    case LABEL:
+      label = extractLabel();
+      MetricUriRulePerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      MetricUriLabelPerm();
+      break;
+    default:
+      jj_la1[35] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void MetricUriLabelDescPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case METRICURI:
+      metricUri = extractMetricURI();
+      LabelDescPerm();
+      break;
+    case LABEL:
+      label = extractLabel();
+      MetricUriDescPerm();
+      break;
+    case DESC:
+      desc = extractDescription();
+      MetricUriLabelPerm();
+      break;
+    default:
+      jj_la1[36] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefRuleActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      RuleActionPerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      DefActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      DefRulePerm();
+      break;
+    default:
+      jj_la1[37] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefDescActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      DescActionPerm();
+      break;
+    case DESC:
+      desc = extractDescription();
+      DefActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      DefDescPerm();
+      break;
+    default:
+      jj_la1[38] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefDescRulePerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      DescRulePerm();
+      break;
+    case DESC:
+      desc = extractDescription();
+      DefRulePerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      DefDescPerm();
+      break;
+    default:
+      jj_la1[39] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefLabelActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      LabelActionPerm();
+      break;
+    case LABEL:
+      label = extractLabel();
+      DefActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      DefLabelPerm();
+      break;
+    default:
+      jj_la1[40] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefLabelRulePerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      LabelRulePerm();
+      break;
+    case LABEL:
+      label = extractLabel();
+      DefRulePerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      DefLabelPerm();
+      break;
+    default:
+      jj_la1[41] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefLabelDescPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      LabelDescPerm();
+      break;
+    case LABEL:
+      label = extractLabel();
+      DefDescPerm();
+      break;
+    case DESC:
+      desc = extractDescription();
+      DefLabelPerm();
+      break;
+    default:
+      jj_la1[42] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefMetricUriActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      MetricUriActionPerm();
+      break;
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DefActionPerm();
+      break;
+    case ACTION:
+      action = extractAction();
+      DefMetricUriPerm();
+      break;
+    default:
+      jj_la1[43] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefMetricUriRulePerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      MetricUriRulePerm();
+      break;
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DefRulePerm();
+      break;
+    case MATCH:
+      rule = extractRule();
+      DefMetricUriPerm();
+      break;
+    default:
+      jj_la1[44] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefMetricUriDescPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      MetricUriDescPerm();
+      break;
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DefDescPerm();
+      break;
+    case DESC:
+      desc = extractDescription();
+      DefMetricUriPerm();
+      break;
+    default:
+      jj_la1[45] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefMetricUriLabelPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      MetricUriLabelPerm();
+      break;
+    case METRICURI:
+      metricUri = extractMetricURI();
+      DefLabelPerm();
+      break;
+    case LABEL:
+      label = extractLabel();
+      DefMetricUriPerm();
+      break;
+    default:
+      jj_la1[46] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void RuleActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case ACTION:
+      action = extractAction();
+      rule = extractRule();
+      break;
+    case MATCH:
+      rule = extractRule();
+      action = extractAction();
+      break;
+    default:
+      jj_la1[47] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DescActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DESC:
+      desc = extractDescription();
+      action = extractAction();
+      break;
+    case ACTION:
+      action = extractAction();
+      desc = extractDescription();
+      break;
+    default:
+      jj_la1[48] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DescRulePerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DESC:
+      desc = extractDescription();
+      rule = extractRule();
+      break;
+    case MATCH:
+      rule = extractRule();
+      desc = extractDescription();
+      break;
+    default:
+      jj_la1[49] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void LabelActionPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case LABEL:
       label = extractLabel();
@@ -572,102 +1306,199 @@ public class LQMLParser implements LQMLParserConstants {
       label = extractLabel();
       break;
     default:
-      jj_la1[21] = jj_gen;
+      jj_la1[50] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
   }
 
-  final public void DefMetricUriDescLabel() throws ParseException {
+  final public void LabelRulePerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case LABEL:
+      label = extractLabel();
+      rule = extractRule();
+      break;
     case MATCH:
       rule = extractRule();
-      action = extractAction();
-      break;
-    case ACTION:
-      action = extractAction();
-      rule = extractRule();
+      label = extractLabel();
       break;
     default:
-      jj_la1[22] = jj_gen;
+      jj_la1[51] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
   }
 
-  final public void DefMetricUriLabel() throws ParseException {
+  final public void LabelDescPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case LABEL:
+      label = extractLabel();
+      desc = extractDescription();
+      break;
     case DESC:
       desc = extractDescription();
-      DefMetricUriLabelDesc();
-      break;
-    case MATCH:
-      rule = extractRule();
-      DefMetricUriLabelRule();
-      break;
-    case ACTION:
-      action = extractAction();
-      DefMetricUriLabelAction();
+      label = extractLabel();
       break;
     default:
-      jj_la1[23] = jj_gen;
+      jj_la1[52] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
   }
 
-  final public void DefMetricUriLabelAction() throws ParseException {
+  final public void MetricUriActionPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case METRICURI:
+      metricUri = extractMetricURI();
+      action = extractAction();
+      break;
+    case ACTION:
+      action = extractAction();
+      metricUri = extractMetricURI();
+      break;
+    default:
+      jj_la1[53] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void MetricUriRulePerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case METRICURI:
+      metricUri = extractMetricURI();
+      rule = extractRule();
+      break;
+    case MATCH:
+      rule = extractRule();
+      metricUri = extractMetricURI();
+      break;
+    default:
+      jj_la1[54] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void MetricUriDescPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case METRICURI:
+      metricUri = extractMetricURI();
+      desc = extractDescription();
+      break;
     case DESC:
       desc = extractDescription();
-      rule = extractRule();
-      break;
-    case MATCH:
-      rule = extractRule();
-      desc = extractDescription();
+      metricUri = extractMetricURI();
       break;
     default:
-      jj_la1[24] = jj_gen;
+      jj_la1[55] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
   }
 
-  final public void DefMetricUriLabelRule() throws ParseException {
+  final public void MetricUriLabelPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case METRICURI:
+      metricUri = extractMetricURI();
+      label = extractLabel();
+      break;
+    case LABEL:
+      label = extractLabel();
+      metricUri = extractMetricURI();
+      break;
+    default:
+      jj_la1[56] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefActionPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      action = extractAction();
+      break;
+    case ACTION:
+      action = extractAction();
+      def = extractDefinitionName();
+      break;
+    default:
+      jj_la1[57] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefRulePerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      rule = extractRule();
+      break;
+    case MATCH:
+      rule = extractRule();
+      def = extractDefinitionName();
+      break;
+    default:
+      jj_la1[58] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void DefDescPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      desc = extractDescription();
+      break;
     case DESC:
       desc = extractDescription();
-      action = extractAction();
-      break;
-    case ACTION:
-      action = extractAction();
-      desc = extractDescription();
+      def = extractDefinitionName();
       break;
     default:
-      jj_la1[25] = jj_gen;
+      jj_la1[59] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
   }
 
-  final public void DefMetricUriLabelDesc() throws ParseException {
+  final public void DefLabelPerm() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case MATCH:
-      rule = extractRule();
-      action = extractAction();
+    case DEF:
+      def = extractDefinitionName();
+      label = extractLabel();
       break;
-    case ACTION:
-      action = extractAction();
-      rule = extractRule();
+    case LABEL:
+      label = extractLabel();
+      def = extractDefinitionName();
       break;
     default:
-      jj_la1[26] = jj_gen;
+      jj_la1[60] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
   }
 
-/* void MetricUri():{}{}  (  	metricUri = extractMetricURI()  	MetricUri()  ) |  (  	label = extractLabel()  	Label()  ) |  (  	desc = extractDescription()  	Desc()  ) |  (  	rule = extractRule()  	Rule()  ) |  (  	action = extractAction()  	Action()  ) |  (  	def = extractDefinitionName()  	Def()  ) */
+  final public void DefMetricUriPerm() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case DEF:
+      def = extractDefinitionName();
+      metricUri = extractMetricURI();
+      break;
+    case METRICURI:
+      metricUri = extractMetricURI();
+      def = extractDefinitionName();
+      break;
+    default:
+      jj_la1[61] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
   final public void EADM() throws ParseException {
     jj_consume_token(0);
   }
@@ -685,7 +1516,7 @@ public class LQMLParser implements LQMLParserConstants {
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[27];
+  final private int[] jj_la1 = new int[62];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -693,10 +1524,10 @@ public class LQMLParser implements LQMLParserConstants {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0xfc0,0x2000000,0x0,0x400000,0x0,0x30000,0xf80,0xf00,0x700,0x600,0x780,0x380,0x180,0x280,0x300,0x580,0x180,0x480,0x500,0x680,0x280,0x480,0x600,0x700,0x300,0x500,0x600,};
+      jj_la1_0 = new int[] {0xfc0,0x2000000,0x0,0x400000,0x0,0x30000,0xf80,0x7c0,0xf40,0xec0,0xdc0,0xbc0,0x780,0xf00,0xe80,0xd80,0xb80,0x740,0x6c0,0x5c0,0x3c0,0xe40,0xd40,0xb40,0xcc0,0xac0,0x9c0,0x700,0x680,0x580,0x380,0xe00,0xd00,0xb00,0xc80,0xa80,0x980,0x640,0x540,0x340,0x4c0,0x2c0,0x1c0,0xc40,0xa40,0x940,0x8c0,0x600,0x500,0x300,0x480,0x280,0x180,0xc00,0xa00,0x900,0x880,0x440,0x240,0x140,0xc0,0x840,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x0,0x40,0x800,0x700,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x0,0x0,0x40,0x800,0x700,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -710,7 +1541,7 @@ public class LQMLParser implements LQMLParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 62; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -724,7 +1555,7 @@ public class LQMLParser implements LQMLParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 62; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -734,7 +1565,7 @@ public class LQMLParser implements LQMLParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 62; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -744,7 +1575,7 @@ public class LQMLParser implements LQMLParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 62; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -753,7 +1584,7 @@ public class LQMLParser implements LQMLParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 62; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -762,7 +1593,7 @@ public class LQMLParser implements LQMLParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 62; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -818,7 +1649,7 @@ public class LQMLParser implements LQMLParserConstants {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 27; i++) {
+    for (int i = 0; i < 62; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
