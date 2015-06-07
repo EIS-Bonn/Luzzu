@@ -3,6 +3,8 @@ package [%%packagename%%];
 import de.unibonn.iai.eis.luzzu.assessment.QualityMetric;
 import de.unibonn.iai.eis.luzzu.datatypes.ProblemList;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.sparql.core.Quad;
 
 [%%imports%%]
 
@@ -35,5 +37,10 @@ public class [%%classname%%] implements QualityMetric{
 	public ProblemList<?> getQualityProblems() {
 		return null;
 	}
-
+	public Resource getAgentURI() {
+		return null;
+	}
+	public boolean isEstimate() {
+		return false;
+	}
 }
