@@ -42,6 +42,7 @@ public class InternalModelConf {
 		if (externalsFolder.exists()){
 			File[] listOfOntologies = externalsFolder.listFiles();
 			for (File ontology : listOfOntologies) {
+				if (ontology.isHidden()) continue;
 				temp = ModelFactory.createDefaultModel();
 				logger.debug("Loading ontology : {} ", ontology.getName());
 				temp.read(ontology.getPath(), "N3");
