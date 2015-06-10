@@ -29,12 +29,7 @@ daq:dsd a qb:DataStructureDefinition ;
 	qb:component [ qb:dimension daq:computedOn ; qb:order 2 ; ] ;
 	qb:component [ qb:dimension sdmx-dimension:timePeriod ; qb:order 3 ; ] ;
 	# Measures
-	qb:component [ qb:measure daq:value ; ] ;
-	# Attribute
-	qb:component [ qb:attribute sdmx-attribute:unitMeasure ; 
-				   qb:componentRequired "true"^^xsd:boolean ;
-				   qb:componentAttachment qb:DataSet ;
-				 ] .
+	qb:component [ qb:measure daq:value ; ] .
 
 # CLASSES
 daq:QualityGraph
@@ -74,7 +69,7 @@ daq:Metric
 
 # Generic Properties
 daq:computedBy
-	a	rdf:Property, owl:ObjectProperty, qb:DimensionProperty ;
+	a	rdf:Property, owl:ObjectProperty, owl:DeprecatedProperty ;
 	rdfs:label	"computed by" ;
 	rdfs:comment "TODO: Define properly";
 	rdfs:domain	qb:Observation .
@@ -87,6 +82,7 @@ daq:computedOn
 	rdfs:range	rdfs:Resource .	
 
 sdmx-dimension:timePeriod
+	a	qb:DimensionProperty ;
 	rdfs:domain	qb:Observation ;
 	rdfs:range xsd:dateTime ;
 	owl:cardinality "1"^^xsd:nonNegativeInteger .
