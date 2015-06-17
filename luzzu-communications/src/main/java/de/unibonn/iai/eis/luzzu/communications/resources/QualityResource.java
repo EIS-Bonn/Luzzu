@@ -96,7 +96,7 @@ public class QualityResource {
 				baseURI = lstBaseUri.get(0);
 			}
 
-			StreamProcessor strmProc;
+			StreamProcessor strmProc = null;
 			String[] expandedListDatasetURI = lstDatasetURI.get(0).split(",");
 			if (expandedListDatasetURI.length == 1){
 				datasetURI = expandedListDatasetURI[0];

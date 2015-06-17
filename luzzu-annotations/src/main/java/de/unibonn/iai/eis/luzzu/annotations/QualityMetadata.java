@@ -39,6 +39,9 @@ public class QualityMetadata {
 	private TemporaryGraphMetadataCacheObject _temp = null;
 	private Resource computedOn;
 	
+    private static final Property timePeriod = ModelFactory.createDefaultModel().createProperty( "http://purl.org/linked-data/sdmx/2009/dimension#timePeriod" );
+
+	
 	/**
 	 * Since each assessed dataset should have only one quality 
 	 * metadata graph, we need to check if it already exists
@@ -119,7 +122,7 @@ public class QualityMetadata {
 		this.metadata.add(metricURI, DAQ.hasObservation, observationURI);
 		
 		this.metadata.add(observationURI, RDF.type, CUBE.Observation);
-		this.metadata.add(observationURI, DC.date, Commons.generateCurrentTime());
+		this.metadata.add(observationURI, timePeriod, Commons.generateCurrentTime());
 		this.metadata.add(observationURI, DAQ.metric, metricURI);
 		this.metadata.add(observationURI, DAQ.computedOn, this.computedOn);
 		this.metadata.add(observationURI, DAQ.value, Commons.generateDoubleTypeLiteral(metric.metricValue()));

@@ -207,6 +207,9 @@ public class DeclerativeMetricCompiler {
 		File[] listOfFiles = externalsFolder.listFiles();
 		
 		for(File metrics : listOfFiles){
+			if (metrics.isHidden()) continue;
+			if (!metrics.isDirectory()) continue;
+			
 			for(File declFile : metrics.listFiles(lqmFilter))
 				files.add(declFile.toURI());
 		}
