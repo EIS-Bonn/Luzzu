@@ -1,0 +1,15 @@
+PREFIX daq:<http://purl.org/eis/vocab/daq#>
+PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?dataset ?metric_name ?metric
+WHERE {
+  	?metric_uri a ?metric .
+    ?metric_uri daq:hasObservation ?obs .
+    ?obs daq:computedOn ?dataset .
+    ?metric rdfs:subClassOf daq:Metric .
+    OPTIONAL { ?metric rdfs:label ?metric_name } .
+}
+GROUP BY ?metric ?dataset ?metric_name
+HAVING (count(?obs) > 1)

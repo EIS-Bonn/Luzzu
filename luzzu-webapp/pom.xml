@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>de.unibonn.iai.eis</groupId>
+    <artifactId>luzzu</artifactId>
+    <version>1.0.2</version>
+  </parent>
+  <artifactId>luzzu-webapp</artifactId>
+  
+  <dependencies>
+  	<dependency>
+  		<groupId>de.unibonn.iai.eis</groupId>
+  		<artifactId>luzzu-semantics</artifactId>
+  		<version>${luzzu.version}</version>
+  	</dependency>
+  	<dependency>
+		<groupId>commons-codec</groupId>
+		<artifactId>commons-codec</artifactId>
+		<version>1.4</version>
+	</dependency>
+	  <dependency>
+  		<groupId>de.unibonn.iai.eis</groupId>
+  		<artifactId>luzzu-operations</artifactId>
+  		<version>${luzzu.version}</version>
+  	</dependency>
+  	<dependency>
+		<groupId>com.google.guava</groupId>
+		<artifactId>guava</artifactId>
+		<version>18.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-mapper-asl</artifactId>
+		<version>1.9.13</version>
+	</dependency>
+		<dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-core-asl</artifactId>
+		<version>1.9.13</version>
+	</dependency>
+	
+  </dependencies>
+</project>

@@ -1,0 +1,21 @@
+PREFIX daq:<http://purl.org/eis/vocab/daq#>
+PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+PREFIX sdmx-dimension:<http://purl.org/linked-data/sdmx/2009/dimension#>
+
+SELECT DISTINCT ?metric ?value
+{
+  ?metric_uri a ?metric .
+  ?metric rdfs:subClassOf daq:Metric .
+  ?metric_uri daq:hasObservation ?obs .
+  ?obs daq:value ?value .
+  ?obs sdmx-dimension:timePeriod ?timePeriod .
+  
+  ?metric_uri daq:hasObservation ?newerObs .
+  ?newerObs daq:value ?newerValue .
+  ?newerObs sdmx-dimension:timePeriod ?newerTimePeriod .
+  FILTER(?timePeriod <= ?newerTimePeriod)
+}
+GROUP BY ?metric ?value
+HAVING (COUNT(?metric) = 1)

@@ -1,0 +1,18 @@
+PREFIX daq:<http://purl.org/eis/vocab/daq#>
+PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?dataset ?metric ?metric_name
+WHERE {
+	?metric_uri a ?metric .
+	?metric rdfs:subClassOf daq:Metric .
+	?has_dimension_metric rdfs:range ?metric .
+	?has_dimension_metric rdfs:domain ?dimension .
+	?has_category_dim rdfs:range ?dimension .
+	?has_category_dim rdfs:domain ?category .
+	OPTIONAL { ?metric rdfs:label ?metric_name } .
+	?metric_uri daq:hasObservation ?obs .
+	?obs daq:computedOn ?dataset .
+}
+		
