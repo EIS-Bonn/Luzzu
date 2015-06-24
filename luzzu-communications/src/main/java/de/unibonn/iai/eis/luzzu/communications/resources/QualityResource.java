@@ -12,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
@@ -48,7 +49,7 @@ public class QualityResource {
 	@POST
 	@Path("compute_quality")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String computeQuality(MultivaluedMap<String, String> formParams) {
+	public Response computeQuality(MultivaluedMap<String, String> formParams) {
 		
 		String jsonResponse = null;
 		String datasetURI = null;
@@ -132,7 +133,11 @@ public class QualityResource {
 			jsonResponse = buildJsonErrorResponse(datasetURI, errorTimeStamp, "The request caused an exception");
 		}
 		
-		return jsonResponse;
+		//return jsonResponse;
+		return Response.ok(jsonResponse,MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
+
 	}
 	
 	/**
