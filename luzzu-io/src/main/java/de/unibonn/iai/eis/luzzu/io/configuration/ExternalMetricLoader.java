@@ -97,13 +97,6 @@ public class ExternalMetricLoader {
 			m.read(metrics+"/metrics.trig");
 			
 			
-//			NodeIterator res = m.listObjectsOfProperty(LMI.javaPackageName);
-//			while (res.hasNext()){
-//				String javaMetric = res.next().toString();
-//				metricsInFile.get(jarFile).add(javaMetric);
-//				logger.info("Metric : {} ", javaMetric);
-//			}
-			
 			ResIterator res = m.listSubjectsWithProperty(RDF.type, LMI.LuzzuMetricJavaImplementation);
 			while (res.hasNext()){
 				Resource r = res.next();

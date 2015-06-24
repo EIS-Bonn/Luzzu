@@ -141,7 +141,7 @@ public class DAQHelper {
 			}
 			
 			//get value
-			Float value = qualityMD.listObjectsOfProperty(res, DAQ.value).next().asLiteral().getFloat();
+			Double value = qualityMD.listObjectsOfProperty(res, DAQ.value).next().asLiteral().getDouble();
 			
 			
 			Observation obs = new Observation(res, date, value, metricType);

@@ -8,10 +8,10 @@ public class Observation implements Comparable<Observation> {
 
 	private Resource observationURI;
 	private Date dateComputed;
-	private Float value;
+	private Double value;
 	private Resource metricType;
 
-	public Observation(Resource observationURI, Date dateComputed, Float value, Resource metricType){
+	public Observation(Resource observationURI, Date dateComputed, Double value, Resource metricType){
 		this.setObservationURI(observationURI);
 		this.setDateComputed(dateComputed);
 		this.setValue(value);
@@ -34,11 +34,11 @@ public class Observation implements Comparable<Observation> {
 		this.dateComputed = dateComputed;
 	}
 
-	public Float getValue() {
+	public Double getValue() {
 		return value;
 	}
 
-	public void setValue(Float value) {
+	public void setValue(Double value) {
 		this.value = value;
 	}
 

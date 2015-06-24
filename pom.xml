@@ -200,6 +200,12 @@ use-case driven discovery and retrieval.</description>
 			<artifactId>commons-collections4</artifactId>
 			<version>4.0</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
 
 	</dependencies>
 
