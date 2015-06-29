@@ -1,0 +1,20 @@
+{
+	"footer":
+	{
+		"lastUpdateDate":"30/03/2015",
+		"links":[
+			{
+				"name":"Home",
+				"link":"index.html"
+			},
+			{
+				"name":"Git Code",
+				"link":"http://www.github.com/eis-bonn/Luzzu"
+			},
+			{
+				"name":"Licence",
+				"link":"licence.html"
+			}
+		]
+	}
+}

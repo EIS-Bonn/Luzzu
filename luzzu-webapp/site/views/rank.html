@@ -1,0 +1,28 @@
+<div class="panel panel-default" id="_settings">
+	<div class="panel-heading"><span class="fa fa-signal"/> Exploration and Ranking</div>
+	<div class="panel-body">
+    	<div class="col-sm-4">
+			<div class="bs-callout bs-callout-info" id="well_category">
+				<h4>Filter by Category <span id="refresh_cat" class="fa fa-refresh" onclick="ranking('category',true)"/></h4>
+				<form role="form" id="_category" class="form-inline">
+				</form>
+			</div>
+			
+			<div class="bs-callout bs-callout-warning" id="well_dimension">
+				<h4>Filter by Dimension <span id="refresh_dim" class="fa fa-refresh hide" onclick="ranking('dimension',true)"/></h4>
+				<form role="form" id="_dimension" class="form-inline"> 
+				</form>
+			</div>
+			
+			<div class="bs-callout bs-callout-success" id="well_metric">
+				<h4>Filter by Metric <span id="refresh_met"  class="fa fa-refresh hide" onclick="ranking('metric',true)"/></h4>
+				<form role="form" id="_metric" class="form-inline">
+				</form>
+			</div>
+		</div>
+	
+    	<div class="col-sm-8" id="results">
+		</div>
+	
+	</div>
+</div>
