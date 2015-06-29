@@ -94,7 +94,7 @@ public class DatasetLoader {
 			Dataset _ds = RDFDataMgr.loadDataset(fileOrFolder.getPath());
 			
 			String baseURI = fileOrFolder.getParent();
-			baseURI = baseURI.replace("metadataBaseDir", "");
+			baseURI = baseURI.replace(metadataBaseDir, "");
 			
 			Iterator<String> iter = _ds.listNames();
 			while (iter.hasNext()){

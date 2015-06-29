@@ -48,7 +48,7 @@ public class Data {
 	private static Map<String, String> graphs = DatasetLoader.getInstance().getAllGraphs();
 	
 	public static String getLatestObservationForDataset(String dataset){
-		String graphName = graphs.get(dataset);
+		String graphName = graphs.get(dataset.replace("http://",""));
 		
 		Model qualityMetadata = ModelFactory.createDefaultModel();
 		qualityMetadata.add(d.getNamedModel(graphName));
