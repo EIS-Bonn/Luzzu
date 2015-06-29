@@ -5,10 +5,10 @@ PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
 
 SELECT DISTINCT ?metric
 WHERE {
-	%dimension% daq:subClassOf daq:Dimension .
-	?hasMetric daq:subPropertyOf daq:hasMetric .
+	%dimension% rdfs:subClassOf daq:Dimension .
+	?hasMetric rdfs:subPropertyOf daq:hasMetric .
 	?hasMetric rdfs:domain %dimension% .
 	?hasMetric rdfs:range ?metric .
-	?metric daq:subClassOf daq:Metric .
+	?metric rdfs:subClassOf daq:Metric .
 }
 		

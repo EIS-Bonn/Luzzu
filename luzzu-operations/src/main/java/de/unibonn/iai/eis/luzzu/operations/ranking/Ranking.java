@@ -38,41 +38,41 @@ public class Ranking {
 		
 		Map<String,String> graphs = DatasetLoader.getInstance().getAllGraphs();
 		
-		for(RankingConfiguration rc : rankingConfig){
-			for(String base : graphs.keySet()){
-				String graph = graphs.get(base);
-				currentQualityMetadata = d.getNamedModel(graph);
-				
-				double rankedValue = -1.0;
-				
+		for(String base : graphs.keySet()){
+			String graph = graphs.get(base);
+			currentQualityMetadata = d.getNamedModel(graph);
+			
+			Double rankedValue = 0.0;
+			
+			for(RankingConfiguration rc : rankingConfig){
 				if (rc.getType() == RankBy.CATEGORY){
-					rankedValue = this.categoryValue(rc.getUriResource(), rc.getWeight());
+					rankedValue += this.categoryValue(rc.getUriResource(), rc.getWeight());
 				}
 				if (rc.getType() == RankBy.DIMENSION){
-					rankedValue = this.dimensionValue(rc.getUriResource(), rc.getWeight());
+					rankedValue += this.dimensionValue(rc.getUriResource(), rc.getWeight());
 				}
 				if (rc.getType() == RankBy.METRIC){
-					rankedValue = this.metricValue(rc.getUriResource(), rc.getWeight());
+					rankedValue += this.metricValue(rc.getUriResource(), rc.getWeight());
 				}
-				
-				if (rankedValue > -1.0){
-					RankedObject ro = new RankedObject(base, rankedValue);
-					rankedObjects.add(ro);
-				} // else dataset is not assessed with the chosen filter
+			}
+			
+			if (!(rankedValue.isNaN())){
+				RankedObject ro = new RankedObject(base, rankedValue);
+				rankedObjects.add(ro);
 			}
 		}
-		
 		Collections.sort(rankedObjects);
+		Collections.reverse(rankedObjects);
 		return rankedObjects;
 	}
 	
 	private double metricValue(Resource metric, double weight){
-		double rankingValue = -1.0;
+		double rankingValue = 0.0;
 		
 		logger.info("Ranking by Metric {}, with the weight of {}",metric.getURI(), weight);
 
 		List<Observation> lst = ObservationHelper.extractObservations(currentQualityMetadata, metric);
-		if (lst != null){
+		if (lst.size() > 0){
 			Observation obs = ObservationHelper.getLatestObservation(lst);
 			rankingValue = obs.getValue() * weight;
 		}
@@ -82,7 +82,7 @@ public class Ranking {
 	
 	private double dimensionValue(Resource dimension, double weight){
 		logger.info("Ranking by Dimension {}, with the weight of {}",dimension.getURI(), weight);
-		String selectQuery = this.getSelectQuery("GetDimensionMetrics.sparql").replace("%dimension%", SPARQLHelper.toSPARQL(dimension));
+		String selectQuery = this.getSelectQuery("sparql/GetDimensionMetrics.sparql").replace("%dimension%", SPARQLHelper.toSPARQL(dimension));
 		
 		double totalNumberOfMetrics = 0.0;
 		double summation = 0.0;
@@ -98,7 +98,7 @@ public class Ranking {
 		
 		if (totalNumberOfMetrics == 0.0){
 			logger.info("No dimensions available for the {} Dimension",dimension.getURI());
-			return -1.0;
+			return 0.0;
 		} else{
 			double dimensionRanking = summation / totalNumberOfMetrics;
 			logger.info("Ranking value for {} computed: {}",dimension.getURI(),dimensionRanking);
@@ -108,13 +108,14 @@ public class Ranking {
 	
 	private double categoryValue(Resource category, double weight){
 		logger.info("Ranking by Category {}, with the weight of {}",category.getURI(), weight);
-		String selectQuery = this.getSelectQuery("GetCategoryDimensions.sparql").replace("%category%", SPARQLHelper.toSPARQL(category));
+		String selectQuery = this.getSelectQuery("sparql/GetCategoryDimensions.sparql").replace("%category%", SPARQLHelper.toSPARQL(category));
 		
 		double totalNumberOfDimensions = 0.0;
 		double summation = 0.0;
 		
 		QueryExecution exec =  QueryExecutionFactory.create(QueryFactory.create(selectQuery), InternalModelConf.getFlatModel());
 		ResultSet set = exec.execSelect();
+
 		
 		while(set.hasNext()){
 			totalNumberOfDimensions++;
@@ -124,7 +125,7 @@ public class Ranking {
 		
 		if (totalNumberOfDimensions == 0.0){
 			logger.info("No dimensions available for the {} Category",category.getURI());
-			return -1.0;
+			return 0.0;
 		} else{
 			double categoryRanking = summation / totalNumberOfDimensions;
 			logger.info("Ranking value for {} computed: {}",category.getURI(),categoryRanking);

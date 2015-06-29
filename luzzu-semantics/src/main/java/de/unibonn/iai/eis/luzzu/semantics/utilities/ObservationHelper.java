@@ -9,7 +9,9 @@ import java.util.List;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
+import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.vocabulary.RDF;
 
 import de.unibonn.iai.eis.luzzu.semantics.datatypes.Observation;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.DAQ;
@@ -19,7 +21,10 @@ public class ObservationHelper {
 	public static List<Observation> extractObservations(Model qualityMD, Resource metric){
 		List<Observation> lst = new ArrayList<Observation>(); 
 		
-		NodeIterator iter = qualityMD.listObjectsOfProperty(metric, DAQ.hasObservation);
+		ResIterator itRes = qualityMD.listResourcesWithProperty(RDF.type, metric);
+		if (!(itRes.hasNext())) return lst;
+		Resource resNode = itRes.next();
+		NodeIterator iter = qualityMD.listObjectsOfProperty(resNode, DAQ.hasObservation);
 		while(iter.hasNext()){
 			Resource res = iter.next().asResource();
 			
