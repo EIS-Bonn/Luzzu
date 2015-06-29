@@ -48,7 +48,7 @@ public class Data {
 	private static Map<String, String> graphs = DatasetLoader.getInstance().getAllGraphs();
 	
 	public static String getLatestObservationForDataset(String dataset){
-		String graphName = graphs.get(dataset.replace("http://",""));
+		String graphName = graphs.get(strippedURI(dataset));
 		
 		Model qualityMetadata = ModelFactory.createDefaultModel();
 		qualityMetadata.add(d.getNamedModel(graphName));
@@ -171,8 +171,15 @@ public class Data {
 		return m;
 	}
 
+	private static String strippedURI(String dataset){
+		String stripped = dataset.replace("http://", "");
+		if (stripped.charAt(stripped.length() - 1) == '/'){
+			stripped = stripped.substring(0,stripped.length() - 1);
+		}
+		return stripped;
+	}
 	public static String getObservationsForDataset(String dataset, List<String> chosenMetrics){
-		String graphName = graphs.get(dataset);
+		String graphName = graphs.get(strippedURI(dataset));
 		
 		Model qualityMetadata = ModelFactory.createDefaultModel();
 		qualityMetadata.add(d.getNamedModel(graphName));
@@ -210,6 +217,7 @@ public class Data {
 				mo.setUri(metric_uri.getURI());
 				
 				List<Observation> lst_obs = extractObservations(d.getNamedModel(graphName),metric);
+				Collections.sort(lst_obs);
 				for(Observation obs : lst_obs){
 					ObservationObject obso = new ObservationObject();
 					obso.setObservationDate(obs.getDateComputed());
