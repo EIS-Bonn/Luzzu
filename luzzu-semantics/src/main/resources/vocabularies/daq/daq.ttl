@@ -17,7 +17,7 @@
 # VOCABULARY
 daq:
 	a owl:Ontology, voaf:Vocabulary ;
-        dcterms:title "Dataset Quality Vocabulary (daQ)"@en ;
+        dct:title "Dataset Quality Vocabulary (daQ)"@en ;
         dc:description "The Dataset Quality Vocabulary (daQ) is a lightweight, extensible core vocabulary for attaching the result of quality benchmarking of a linked open dataset (usually an expensive process) to that dataset.  daQ is designed to be extended by custom quality metrics.  Use cases include filtering and ranking datasets by quality."@en ;
         dct:creator [ 
         		foaf:name "Jeremy Debattista"; 
@@ -29,7 +29,7 @@ daq:
         		foaf:homepage <http://langec.wordpress.com/about/> 
         	] ;
         dct:modified "2015-08-03"^^xsd:date ;
-        dcterms:language "en"^^xsd:language .
+        dct:language "en"^^xsd:language .
 
 # DATACUBE DATA STRUTURE DEFINITION
 daq:dsd a qb:DataStructureDefinition ;
