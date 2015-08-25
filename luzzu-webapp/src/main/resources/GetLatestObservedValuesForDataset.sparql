@@ -4,18 +4,19 @@ PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
 PREFIX sdmx-dimension:<http://purl.org/linked-data/sdmx/2009/dimension#>
 
-SELECT DISTINCT ?metric ?value
-{
-  ?metric_uri a ?metric .
-  ?metric rdfs:subClassOf daq:Metric .
-  ?metric_uri daq:hasObservation ?obs .
-  ?obs daq:value ?value .
-  ?obs sdmx-dimension:timePeriod ?timePeriod .
+SELECT DISTINCT ?metric ?value {
+	?obs a daq:Observation ;
+		daq:metric ?metric_instance ;
+		daq:value ?value ;
+		sdmx-dimension:timePeriod ?dateTime 
+	
+	# This filter eliminates any solution (triples) that
+	# have a date time older than the newest observation
+	FILTER NOT EXISTS {
+       	?obs2 daq:metric ?metric_instance ;
+          	  sdmx-dimension:timePeriod ?newerDateTime  .
+      	FILTER (?newerDateTime > ?dateTime) 
+	} 
   
-  ?metric_uri daq:hasObservation ?newerObs .
-  ?newerObs daq:value ?newerValue .
-  ?newerObs sdmx-dimension:timePeriod ?newerTimePeriod .
-  FILTER(?timePeriod <= ?newerTimePeriod)
-}
-GROUP BY ?metric ?value
-HAVING (COUNT(?metric) = 1)
+  	?metric_instance a ?metric .
+} 
