@@ -16,6 +16,8 @@ import com.hp.hpl.jena.sparql.core.Quad;
 
 public class Commons {
 
+	private static ModelCom mc = new ModelCom(Graph.emptyGraph);
+	
 	private Commons(){}
 	
 	public static Resource generateURI(){
@@ -41,7 +43,6 @@ public class Commons {
 	}
 	
 	public static RDFNode asRDFNode(Node n){
-		ModelCom mc = new ModelCom(Graph.emptyGraph);
 		return mc.asRDFNode(n);
 	}
 	
