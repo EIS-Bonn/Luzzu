@@ -1,5 +1,8 @@
 package de.unibonn.iai.eis.luzzu.assessment;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.core.Quad;
 
@@ -10,6 +13,12 @@ import de.unibonn.iai.eis.luzzu.datatypes.ProblemList;
  * 
  */
 public interface QualityMetric {
+	
+	/**
+	 * A special-purpose logger, aimed to write statistics about metric value calculations in a file, 
+	 * specified in the configuration of the logging subsystem (log4j)
+	 */
+	final static Logger statsLogger = LoggerFactory.getLogger("eu.diachron.qualitymetrics.metricInfoStats");
 
 	/**
 	 * This method should compute the metric.
