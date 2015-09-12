@@ -533,6 +533,13 @@ public class StreamProcessor implements IOProcessor {
 
 		public void notifyNewQuad(Object2Quad newQuad) {
 			quadsToProcess.add(newQuad);
+			if (quadsToProcess.size() > 500000)
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			logger.trace("Metric {}, element added to queue (to-process: {})", this.metricName, quadsToProcess.size());
 		}
 		

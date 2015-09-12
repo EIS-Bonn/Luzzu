@@ -19,25 +19,18 @@
 	</appender>
 
 	<root>
-		<priority value="warn" />
+		<priority value="all" />
 		<appender-ref ref="rollingFile" />
 	</root>
 
 	<logger name="eu.diachron.qualitymetrics">
 		<level value="debug" />
+		<appender-ref ref="rollingFile" />
 	</logger>
 
 	<logger name="eu.diachron.qualitymetrics.utilities.HTTPRetriever">
 		<level value="debug" />
+		<appender-ref ref="rollingFile" />
 	</logger>
 
-	<logger
-		name="eu.diachron.qualitymetrics.accessibility.availability.DereferenceabilityEstimated">
-		<level value="debug" />
-	</logger>
-
-	<logger
-		name="eu.diachron.qualitymetrics.accessibility.availability.MisreportedContentType">
-		<level value="debug" />
-	</logger>
 </log4j:configuration>

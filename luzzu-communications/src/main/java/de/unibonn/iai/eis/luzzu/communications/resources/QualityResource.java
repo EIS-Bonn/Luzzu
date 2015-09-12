@@ -23,6 +23,8 @@ import org.slf4j.LoggerFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
+import de.unibonn.iai.eis.luzzu.io.IOProcessor;
+import de.unibonn.iai.eis.luzzu.io.impl.SPARQLEndPointProcessor;
 import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessor;
 
 /**
@@ -65,9 +67,13 @@ public class QualityResource {
 			List<String> lstQualityReportReq = formParams.get("QualityReportRequired");
 			List<String> lstMetricsConfig = formParams.get("MetricsConfiguration");
 			List<String> lstBaseUri = formParams.get("BaseUri");
-			
-			logger.debug("Processing request parameters. DatasetURI: {}; QualityReportRequired: {}; MetricsConfiguration: {}; BaseUri: {}", 
+			List<String> lstIsSparql = formParams.get("IsSparql");
+
+			logger.debug("Processing request parameters. DatasetURI: {}; QualityReportRequired: {}; MetricsConfiguration: {}; BaseUri: {}; IsSPARQLEndPoint: {}", 
 					lstDatasetURI, lstQualityReportReq, lstMetricsConfig, lstBaseUri);
+			
+			System.out.printf("Processing request parameters. DatasetURI: {}; QualityReportRequired: {}; MetricsConfiguration: {}; BaseUri: {}; IsSPARQLEndPoint: {}", 
+					lstDatasetURI, lstQualityReportReq.get(0), lstMetricsConfig.get(0), lstBaseUri.get(0), lstIsSparql.get(0));
 									
 			if(lstDatasetURI == null || lstDatasetURI.size() <= 0) {
 				throw new IllegalArgumentException("Dataset URI parameter was not provided");
@@ -80,6 +86,9 @@ public class QualityResource {
 			}
 			if(lstBaseUri == null || lstBaseUri.size() <= 0) {
 				throw new IllegalArgumentException("Base URI parameter was not provided");
+			}
+			if(lstIsSparql == null || lstIsSparql.size() <= 0) {
+				throw new IllegalArgumentException("IsSparql parameter was not provided");
 			}
 			
 			// Assign parameter values to variables and set defaults
@@ -96,22 +105,33 @@ public class QualityResource {
 			if (lstBaseUri != null) {
 				baseURI = lstBaseUri.get(0);
 			}
+			
+			boolean isSPARQLEndpoint = Boolean.parseBoolean(lstIsSparql.get(0));
+			
+			IOProcessor strmProc = null;
 
-			StreamProcessor strmProc = null;
-			String[] expandedListDatasetURI = lstDatasetURI.get(0).split(",");
-			if (expandedListDatasetURI.length == 1){
+			if (isSPARQLEndpoint){
+				String[] expandedListDatasetURI = lstDatasetURI.get(0).split(",");
 				datasetURI = expandedListDatasetURI[0];
-				strmProc = new StreamProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
+				strmProc = new SPARQLEndPointProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
 			} else {
-				//if we have a void file (e.g. void.ttl) we have to make sure that it is processed first
-				List<String> datasetFiles = Arrays.asList(expandedListDatasetURI);
-				List<String> voidFiles = new ArrayList<String>();
-				for(String s : datasetFiles) if (s.startsWith("void.")) voidFiles.add(s);
-				for (String v : voidFiles) datasetFiles.remove(v);
-				datasetFiles.addAll(0, voidFiles);
-				
-				strmProc = new StreamProcessor(baseURI, datasetFiles, genQualityReport, modelConfig);
+				String[] expandedListDatasetURI = lstDatasetURI.get(0).split(",");
+				if (expandedListDatasetURI.length == 1){
+					datasetURI = expandedListDatasetURI[0];
+					strmProc = new StreamProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
+				} else {
+					//if we have a void file (e.g. void.ttl) we have to make sure that it is processed first
+					List<String> datasetFiles = Arrays.asList(expandedListDatasetURI);
+					List<String> voidFiles = new ArrayList<String>();
+					for(String s : datasetFiles) if (s.startsWith("void.")) voidFiles.add(s);
+					for (String v : voidFiles) datasetFiles.remove(v);
+					datasetFiles.addAll(0, voidFiles);
+					
+					strmProc = new StreamProcessor(baseURI, datasetFiles, genQualityReport, modelConfig);
+				}
 			}
+
+
 			strmProc.processorWorkFlow();
 			strmProc.cleanUp();
 			

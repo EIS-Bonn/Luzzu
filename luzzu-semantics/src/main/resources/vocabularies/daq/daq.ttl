@@ -13,6 +13,7 @@
 @prefix sdmx-dimension:  <http://purl.org/linked-data/sdmx/2009/dimension#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
 
 # VOCABULARY
 daq:
@@ -29,7 +30,10 @@ daq:
         		foaf:homepage <http://langec.wordpress.com/about/> 
         	] ;
         dct:modified "2015-08-03"^^xsd:date ;
-        dct:language "en"^^xsd:language .
+        dct:language "en"^^xsd:language ;
+        vann:preferredNamespaceUri "http://purl.org/eis/vocab/daq#";
+    	vann:preferredNamespacePrefix "daq";
+    	foaf:homepage <http://purl.org/eis/vocab/daq> .
 
 # DATACUBE DATA STRUTURE DEFINITION
 daq:dsd a qb:DataStructureDefinition ;

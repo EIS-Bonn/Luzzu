@@ -26,4 +26,13 @@ public interface IOProcessor {
 	void cleanUp() throws ProcessorNotInitialised;
 	
 	Model retreiveQualityReport();
+
+	/**
+	 * A workflow initiating the whole assessment process.
+	 * Such method usually executes the setUpProcess and startProcessing
+	 * methods. 
+	 * 
+	 * @throws ProcessorNotInitialised
+	 */
+	void processorWorkFlow();
 }
