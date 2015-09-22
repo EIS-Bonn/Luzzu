@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
@@ -23,7 +24,6 @@ import org.apache.jena.riot.lang.PipedQuadsStream;
 import org.apache.jena.riot.lang.PipedRDFIterator;
 import org.apache.jena.riot.lang.PipedRDFStream;
 import org.apache.jena.riot.lang.PipedTriplesStream;
-import org.eclipse.jetty.util.BlockingArrayQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +72,7 @@ public class StreamProcessor implements IOProcessor {
 	private DeclerativeMetricCompiler dmc  = DeclerativeMetricCompiler.getInstance();
 
 	final static Logger logger = LoggerFactory.getLogger(StreamProcessor.class);
-
+	
 	private List<String> datasetList;
 	private String baseURI;
 	private String datasetURI;
@@ -141,6 +141,7 @@ public class StreamProcessor implements IOProcessor {
 			try {
 				this.startProcessing();
 			} catch (ProcessorNotInitialised e) {
+				logger.warn("Processor not initialized while trying to start dataset processing. Dataset: {}", this.datasetURI);
 				this.processorWorkFlow();
 			}
 			datasetListCounter++;
@@ -218,44 +219,58 @@ public class StreamProcessor implements IOProcessor {
 		}
 	}
 
-	public void startProcessing() throws ProcessorNotInitialised{
+	public void startProcessing() throws ProcessorNotInitialised {
 				
 		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");	
 		StreamMetadataSniffer sniffer = new StreamMetadataSniffer();
 		
-		Runnable parser = new Runnable(){
+		Runnable parser = new Runnable() {
 			public void run() {
 				try{
-				RDFDataMgr.parse(rdfStream, datasetURI);
-				} catch (Exception e){
+					RDFDataMgr.parse(rdfStream, datasetURI);
+				} catch (Exception e) {
 					logger.error("Error parsing dataset {}. Error message {}", datasetURI, e.getMessage());
 				}
 			}
 		};
 		
 		executor.submit(parser);
-		
+		long totalQuadsProcessed = 0;
+				
 		try {
 			while (this.iterator.hasNext()) {
-				
+				totalQuadsProcessed++;				
 				Object2Quad stmt = new Object2Quad(this.iterator.next());
 				sniffer.sniff(stmt.getStatement());
 				
 				if (lstMetricConsumers != null){
-					for(MetricProcess mConsumer : lstMetricConsumers) {
-						mConsumer.notifyNewQuad(stmt);
+					for (MetricProcess mConsumer : lstMetricConsumers) {
+						// Notify each metric process about the new triple. Note that if the queue of triples to process of any metric process 
+						// gets full, the call to notifyNewQuad() will block until space becomes available in that queue. This will in fact, 
+						// block the triple distribution altogether (for all other metric processes too)
+						try {
+							mConsumer.notifyNewQuad(stmt);
+						} catch(InterruptedException iex) {
+							logger.warn("/!\\ Quad lost for {}!!!. Interrumpted thread while notifying quad #: {} to metric: {}. Error: {}", 
+									datasetURI, totalQuadsProcessed, mConsumer.metricName, iex.getMessage());
+						}
 					}
 				}
 			}
 		} catch(RiotException rex) {
-			logger.warn("Failed to process dataset: {}. RIOT exception: {}", datasetURI, rex.getMessage());
-			throw rex;
+			logger.warn("Failed to process dataset: {}. RIOT Exception while attempting to process quad # : {}. Error details: {}", 
+					datasetURI, totalQuadsProcessed, rex.getMessage());
+			throw new RuntimeException(rex);
+		} catch(Exception ex) {
+			logger.error("Failed to process dataset: {}. Exception while attempting to process quad # : {}. Error details: {}", 
+					datasetURI, totalQuadsProcessed, ex);
+			throw new RuntimeException(ex);
 		}
 		finally {
-			if (lstMetricConsumers != null){
+			if (lstMetricConsumers != null) {
 				for(MetricProcess mConsumer : lstMetricConsumers) {
 					mConsumer.stop();
-				}	
+				}
 			}		
 		}
 		
@@ -263,13 +278,13 @@ public class StreamProcessor implements IOProcessor {
 			cacheMgr.addToCache(graphCacheName, datasetURI, sniffer.getCachingObject());
 		}
 		
-		for(String clazz : metricInstances.keySet()){
-			if(metricInstances.get(clazz) instanceof ComplexQualityMetric){
+		for(String clazz : metricInstances.keySet()) {
+			if(metricInstances.get(clazz) instanceof ComplexQualityMetric) {
 				try {
 					List<Args> args = loader.getBeforeArgs(clazz);
 					
 					List<Object> pass = new ArrayList<Object>();
-					for(Args arg : args){
+					for(Args arg : args) {
 						pass.add(this.transformJavaArgs(Class.forName(arg.getType()), arg.getParameter()));
 					}
 
@@ -289,10 +304,8 @@ public class StreamProcessor implements IOProcessor {
 		try {
 			map.putAll(this.dmc.compile());
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -423,9 +436,11 @@ public class StreamProcessor implements IOProcessor {
 		if(fileMetadata.exists()) {
 			RDFDataMgr.read(model, metadataFilePath, this.baseURI, Lang.TRIG);
 		}
+		
 		// Note that createResource() intelligently reuses the resource if found within a read model
 		Resource res = ModelFactory.createDefaultModel().createResource(this.baseURI);
 		QualityMetadata md = new QualityMetadata(model, res);
+		
 		// Write quality metadata about the metrics assessed through this processor
 		for(String className : this.metricInstances.keySet()){
 			QualityMetric m = this.metricInstances.get(className);
@@ -492,22 +507,20 @@ public class StreamProcessor implements IOProcessor {
 	}
 
 	private final class MetricProcess {
-		volatile Queue<Object2Quad> quadsToProcess = new BlockingArrayQueue<Object2Quad>(1000000);
+		volatile BlockingQueue<Object2Quad> quadsToProcess = new ArrayBlockingQueue<Object2Quad>(500000);
 		Thread metricThread = null;
 		String metricName = null;
         
         Long stmtsProcessed = 0l;
         boolean stopSignal = false;
         
-        MetricProcess(final QualityMetric m) { 
-        	
+        MetricProcess(final QualityMetric m) {
         	this.metricName = m.getClass().getSimpleName();
-        	        	
+        	
         	this.metricThread = (new Thread() { 
         		@Override
         		public void run() {
         			logger.debug("Starting thread for metric {}", m.getClass().getName());
-        			
         			Object2Quad curQuad = null;
         			
         			while(!stopSignal || !quadsToProcess.isEmpty()) {
@@ -525,22 +538,15 @@ public class StreamProcessor implements IOProcessor {
         			}
         			logger.debug("Thread for metric {} completed, total statements processed {}", m.getClass().getName(), stmtsProcessed);
         		}
-        		
         	});
         	
         	this.metricThread.start();
         }
 
-		public void notifyNewQuad(Object2Quad newQuad) {
-			quadsToProcess.add(newQuad);
-			if (quadsToProcess.size() > 500000)
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			logger.trace("Metric {}, element added to queue (to-process: {})", this.metricName, quadsToProcess.size());
+		public void notifyNewQuad(Object2Quad newQuad) throws InterruptedException {
+			// Try to set the incooming triple into the blocking queue, so that if its full, this thread blokcs (i.e. waits) until space is available in the queue
+			quadsToProcess.put(newQuad);
+			logger.trace("Metric {}, element put into queue (to-process: {})", this.metricName, quadsToProcess.size());
 		}
 		
 		public void stop() {
@@ -552,5 +558,4 @@ public class StreamProcessor implements IOProcessor {
 		}
 
     }
-
 }
