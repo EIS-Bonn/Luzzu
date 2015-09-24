@@ -14,5 +14,5 @@ WHERE {
 	OPTIONAL { ?category_uri rdfs:label ?category_name } .
 	OPTIONAL { ?dimension_uri rdfs:label ?dimension_name } .
 	OPTIONAL { ?metric_uri rdfs:label ?metric_name } .
-}
+} 
 		

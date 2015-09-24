@@ -46,6 +46,7 @@ public class Data {
 	
 	private static Dataset d = DatasetLoader.getInstance().getInternalDataset();
 	private static Map<String, String> graphs = DatasetLoader.getInstance().getAllGraphs();
+		
 	
 	public static String getLatestObservationForDataset(String dataset){
 		String graphName = graphs.get(strippedURI(dataset));
