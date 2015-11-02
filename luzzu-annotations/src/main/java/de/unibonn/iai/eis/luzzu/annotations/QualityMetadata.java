@@ -19,6 +19,7 @@ import de.unibonn.iai.eis.luzzu.semantics.utilities.Commons;
 import de.unibonn.iai.eis.luzzu.semantics.utilities.DAQHelper;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.CUBE;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.DAQ;
+import de.unibonn.iai.eis.luzzu.semantics.vocabularies.SDMXDIMENSION;
 
 /**
  * @author Jeremy Debattista
@@ -122,7 +123,7 @@ public class QualityMetadata {
 		this.metadata.add(metricURI, DAQ.hasObservation, observationURI);
 		
 		this.metadata.add(observationURI, RDF.type, CUBE.Observation);
-		this.metadata.add(observationURI, timePeriod, Commons.generateCurrentTime());
+		this.metadata.add(observationURI, SDMXDIMENSION.timePeriod, Commons.generateCurrentTime());
 		this.metadata.add(observationURI, DAQ.metric, metricURI);
 		this.metadata.add(observationURI, DAQ.computedOn, this.computedOn);
 		this.metadata.add(observationURI, DAQ.value, Commons.generateDoubleTypeLiteral(metric.metricValue()));

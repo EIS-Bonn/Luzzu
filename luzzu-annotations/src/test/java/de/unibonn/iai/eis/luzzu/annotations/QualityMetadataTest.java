@@ -32,6 +32,7 @@ import de.unibonn.iai.eis.luzzu.assessment.QualityMetric;
 import de.unibonn.iai.eis.luzzu.semantics.utilities.DAQHelper;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.CUBE;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.DAQ;
+import de.unibonn.iai.eis.luzzu.semantics.vocabularies.SDMXDIMENSION;
 
 /**
  * @author Jeremy Debattista
@@ -201,7 +202,7 @@ public class QualityMetadataTest extends Assert {
 			RDFNode node = iter.next();
 			assertTrue(_qualityGraph.contains(node.asResource(), RDF.type, CUBE.Observation));
 			assertTrue(_qualityGraph.contains(node.asResource(), DAQ.computedOn, this.computedOn));
-			assertTrue(_qualityGraph.contains(node.asResource(), DC.date));
+			assertTrue(_qualityGraph.contains(node.asResource(), SDMXDIMENSION.timePeriod));
 			assertTrue(_qualityGraph.contains(node.asResource(), DAQ.value));
 			assertTrue(_qualityGraph.contains(node.asResource(), DAQ.metric, this.metricURI));
 			assertTrue(_qualityGraph.contains(node.asResource(), CUBE.dataSet, this.qualityGraphURI));
