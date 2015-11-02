@@ -4,7 +4,7 @@
 <urn:3eef4163-7244-43d4-a674-87759266545a> <http://purl.org/eis/vocab/daq#value> "0.5"^^<http://www.w3.org/2001/XMLSchema#double> <urn:88e34bdf-6965-4e70-b70c-e02b4f71bac4> .
 <urn:3eef4163-7244-43d4-a674-87759266545a> <http://purl.org/eis/vocab/daq#computedOn> <example:testing> <urn:88e34bdf-6965-4e70-b70c-e02b4f71bac4> .
 <urn:3eef4163-7244-43d4-a674-87759266545a> <http://purl.org/eis/vocab/daq#metric> <urn:ce8850cb-c410-42d8-ad60-6953035b7079> <urn:88e34bdf-6965-4e70-b70c-e02b4f71bac4> .
-<urn:3eef4163-7244-43d4-a674-87759266545a> <http://purl.org/dc/elements/1.1/date> "2014-08-09T10:54:47.74Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:88e34bdf-6965-4e70-b70c-e02b4f71bac4> .
+<urn:3eef4163-7244-43d4-a674-87759266545a> <http://purl.org/linked-data/sdmx/2009/dimension#timePeriod> "2014-08-09T10:54:47.74Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:88e34bdf-6965-4e70-b70c-e02b4f71bac4> .
 <urn:3eef4163-7244-43d4-a674-87759266545a> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation> <urn:88e34bdf-6965-4e70-b70c-e02b4f71bac4> .
 <urn:ce8850cb-c410-42d8-ad60-6953035b7079> <http://purl.org/eis/vocab/daq#hasObservation> <urn:3eef4163-7244-43d4-a674-87759266545a> <urn:88e34bdf-6965-4e70-b70c-e02b4f71bac4> .
 <urn:ce8850cb-c410-42d8-ad60-6953035b7079> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <example:mockedMetric> <urn:88e34bdf-6965-4e70-b70c-e02b4f71bac4> .
@@ -24,7 +24,7 @@
 <urn:688c82f9-28f1-407f-8819-c049b8011cd3> <http://purl.org/eis/vocab/daq#value> "0.5"^^<http://www.w3.org/2001/XMLSchema#double> <urn:5dfedf08-a7c6-49ee-83a5-127551c666df> .
 <urn:688c82f9-28f1-407f-8819-c049b8011cd3> <http://purl.org/eis/vocab/daq#computedOn> <example:testing> <urn:5dfedf08-a7c6-49ee-83a5-127551c666df> .
 <urn:688c82f9-28f1-407f-8819-c049b8011cd3> <http://purl.org/eis/vocab/daq#metric> <urn:71f1f791-37fa-4df1-859a-4e62d1604735> <urn:5dfedf08-a7c6-49ee-83a5-127551c666df> .
-<urn:688c82f9-28f1-407f-8819-c049b8011cd3> <http://purl.org/dc/elements/1.1/date> "2014-08-09T10:54:48.235Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:5dfedf08-a7c6-49ee-83a5-127551c666df> .
+<urn:688c82f9-28f1-407f-8819-c049b8011cd3> <http://purl.org/linked-data/sdmx/2009/dimension#timePeriod> "2014-08-09T10:54:48.235Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:5dfedf08-a7c6-49ee-83a5-127551c666df> .
 <urn:688c82f9-28f1-407f-8819-c049b8011cd3> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation> <urn:5dfedf08-a7c6-49ee-83a5-127551c666df> .
 <urn:c5547815-9e0f-4073-8c26-ecb4f58f98db> <http://purl.org/linked-data/cube#structure> <http://purl.org/eis/vocab/daq#dsd> .
 <urn:c5547815-9e0f-4073-8c26-ecb4f58f98db> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/eis/vocab/daq#QualityGraph> .
@@ -36,7 +36,7 @@
 <urn:c4472029-d1ab-4a9c-a09e-d6d117b2f46e> <http://purl.org/eis/vocab/daq#value> "0.5"^^<http://www.w3.org/2001/XMLSchema#double> <urn:c5547815-9e0f-4073-8c26-ecb4f58f98db> .
 <urn:c4472029-d1ab-4a9c-a09e-d6d117b2f46e> <http://purl.org/eis/vocab/daq#computedOn> <example:testing> <urn:c5547815-9e0f-4073-8c26-ecb4f58f98db> .
 <urn:c4472029-d1ab-4a9c-a09e-d6d117b2f46e> <http://purl.org/eis/vocab/daq#metric> <urn:0bc0ea5d-2288-4870-a666-0fa04d928641> <urn:c5547815-9e0f-4073-8c26-ecb4f58f98db> .
-<urn:c4472029-d1ab-4a9c-a09e-d6d117b2f46e> <http://purl.org/dc/elements/1.1/date> "2014-08-09T10:54:48.393Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:c5547815-9e0f-4073-8c26-ecb4f58f98db> .
+<urn:c4472029-d1ab-4a9c-a09e-d6d117b2f46e> <http://purl.org/linked-data/sdmx/2009/dimension#timePeriod> "2014-08-09T10:54:48.393Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:c5547815-9e0f-4073-8c26-ecb4f58f98db> .
 <urn:c4472029-d1ab-4a9c-a09e-d6d117b2f46e> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation> <urn:c5547815-9e0f-4073-8c26-ecb4f58f98db> .
 <urn:f0d1236b-6496-4de6-80fe-673db180c33a> <example:hasMockedDimensionProperty> <urn:cc94f9be-6fbf-45e8-bb47-1c47b8f544e0> <urn:c5547815-9e0f-4073-8c26-ecb4f58f98db> .
 <urn:f0d1236b-6496-4de6-80fe-673db180c33a> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <example:mockedCategory> <urn:c5547815-9e0f-4073-8c26-ecb4f58f98db> .
@@ -50,7 +50,7 @@
 <urn:689a0d7b-c516-4784-a843-53177da8a5ae> <http://purl.org/eis/vocab/daq#value> "0.5"^^<http://www.w3.org/2001/XMLSchema#double> <urn:ba4057a9-bf0b-4032-a6e3-aed474e5f5de> .
 <urn:689a0d7b-c516-4784-a843-53177da8a5ae> <http://purl.org/eis/vocab/daq#computedOn> <example:testing> <urn:ba4057a9-bf0b-4032-a6e3-aed474e5f5de> .
 <urn:689a0d7b-c516-4784-a843-53177da8a5ae> <http://purl.org/eis/vocab/daq#metric> <urn:9969bb1f-6fba-4948-8fe2-accd4d07ba6b> <urn:ba4057a9-bf0b-4032-a6e3-aed474e5f5de> .
-<urn:689a0d7b-c516-4784-a843-53177da8a5ae> <http://purl.org/dc/elements/1.1/date> "2014-08-09T10:54:48.539Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:ba4057a9-bf0b-4032-a6e3-aed474e5f5de> .
+<urn:689a0d7b-c516-4784-a843-53177da8a5ae> <http://purl.org/linked-data/sdmx/2009/dimension#timePeriod> "2014-08-09T10:54:48.539Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:ba4057a9-bf0b-4032-a6e3-aed474e5f5de> .
 <urn:689a0d7b-c516-4784-a843-53177da8a5ae> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation> <urn:ba4057a9-bf0b-4032-a6e3-aed474e5f5de> .
 <urn:f210bb28-0576-450b-9fea-c675861561fe> <example:hasMockedDimensionProperty> <urn:c5dc2880-b436-417d-81f9-495a5c984fde> <urn:ba4057a9-bf0b-4032-a6e3-aed474e5f5de> .
 <urn:f210bb28-0576-450b-9fea-c675861561fe> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <example:mockedCategory> <urn:ba4057a9-bf0b-4032-a6e3-aed474e5f5de> .
@@ -66,7 +66,7 @@
 <urn:c713402e-6830-4d09-8eab-c7edc5f2a5db> <http://purl.org/eis/vocab/daq#value> "0.5"^^<http://www.w3.org/2001/XMLSchema#double> <urn:15c19198-6202-4dcf-a290-7faaa8e8e8e3> .
 <urn:c713402e-6830-4d09-8eab-c7edc5f2a5db> <http://purl.org/eis/vocab/daq#computedOn> <example:testing> <urn:15c19198-6202-4dcf-a290-7faaa8e8e8e3> .
 <urn:c713402e-6830-4d09-8eab-c7edc5f2a5db> <http://purl.org/eis/vocab/daq#metric> <urn:d6fdcfd5-2248-442b-9320-8d3ad83075be> <urn:15c19198-6202-4dcf-a290-7faaa8e8e8e3> .
-<urn:c713402e-6830-4d09-8eab-c7edc5f2a5db> <http://purl.org/dc/elements/1.1/date> "2014-08-09T10:54:48.648Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:15c19198-6202-4dcf-a290-7faaa8e8e8e3> .
+<urn:c713402e-6830-4d09-8eab-c7edc5f2a5db> <http://purl.org/linked-data/sdmx/2009/dimension#timePeriod> "2014-08-09T10:54:48.648Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:15c19198-6202-4dcf-a290-7faaa8e8e8e3> .
 <urn:c713402e-6830-4d09-8eab-c7edc5f2a5db> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation> <urn:15c19198-6202-4dcf-a290-7faaa8e8e8e3> .
 <urn:bd72e9fb-e9f3-443b-b27d-e385065764f1> <http://purl.org/linked-data/cube#structure> <http://purl.org/eis/vocab/daq#dsd> .
 <urn:bd72e9fb-e9f3-443b-b27d-e385065764f1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/eis/vocab/daq#QualityGraph> .
@@ -78,7 +78,7 @@
 <urn:faf04fdf-a423-4177-8453-03d3c4075af2> <http://purl.org/eis/vocab/daq#value> "0.5"^^<http://www.w3.org/2001/XMLSchema#double> <urn:bd72e9fb-e9f3-443b-b27d-e385065764f1> .
 <urn:faf04fdf-a423-4177-8453-03d3c4075af2> <http://purl.org/eis/vocab/daq#computedOn> <example:testing> <urn:bd72e9fb-e9f3-443b-b27d-e385065764f1> .
 <urn:faf04fdf-a423-4177-8453-03d3c4075af2> <http://purl.org/eis/vocab/daq#metric> <urn:742d3767-85ff-4ba0-994c-f1d48c03778d> <urn:bd72e9fb-e9f3-443b-b27d-e385065764f1> .
-<urn:faf04fdf-a423-4177-8453-03d3c4075af2> <http://purl.org/dc/elements/1.1/date> "2014-08-09T10:54:48.736Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:bd72e9fb-e9f3-443b-b27d-e385065764f1> .
+<urn:faf04fdf-a423-4177-8453-03d3c4075af2> <http://purl.org/linked-data/sdmx/2009/dimension#timePeriod> "2014-08-09T10:54:48.736Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:bd72e9fb-e9f3-443b-b27d-e385065764f1> .
 <urn:faf04fdf-a423-4177-8453-03d3c4075af2> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation> <urn:bd72e9fb-e9f3-443b-b27d-e385065764f1> .
 <urn:9a5e22dc-7093-4aa0-87ba-5ba2e658053a> <example:hasMockedMetricProperty> <urn:742d3767-85ff-4ba0-994c-f1d48c03778d> <urn:bd72e9fb-e9f3-443b-b27d-e385065764f1> .
 <urn:9a5e22dc-7093-4aa0-87ba-5ba2e658053a> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <example:mockedDimension> <urn:bd72e9fb-e9f3-443b-b27d-e385065764f1> .
@@ -90,7 +90,7 @@
 <urn:6e75db5a-3542-4903-8934-adf3cc5d5845> <http://purl.org/eis/vocab/daq#value> "0.5"^^<http://www.w3.org/2001/XMLSchema#double> <urn:0fff2cdf-1854-4f4d-90ec-08e6797568fd> .
 <urn:6e75db5a-3542-4903-8934-adf3cc5d5845> <http://purl.org/eis/vocab/daq#computedOn> <example:testing> <urn:0fff2cdf-1854-4f4d-90ec-08e6797568fd> .
 <urn:6e75db5a-3542-4903-8934-adf3cc5d5845> <http://purl.org/eis/vocab/daq#metric> <urn:8165626e-e6ac-483c-9570-56a36f649693> <urn:0fff2cdf-1854-4f4d-90ec-08e6797568fd> .
-<urn:6e75db5a-3542-4903-8934-adf3cc5d5845> <http://purl.org/dc/elements/1.1/date> "2014-08-09T10:54:48.84Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:0fff2cdf-1854-4f4d-90ec-08e6797568fd> .
+<urn:6e75db5a-3542-4903-8934-adf3cc5d5845> <http://purl.org/linked-data/sdmx/2009/dimension#timePeriod> "2014-08-09T10:54:48.84Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:0fff2cdf-1854-4f4d-90ec-08e6797568fd> .
 <urn:6e75db5a-3542-4903-8934-adf3cc5d5845> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation> <urn:0fff2cdf-1854-4f4d-90ec-08e6797568fd> .
 <urn:fc1186f9-4995-4453-8c21-9bc53a044141> <example:hasMockedMetricProperty> <urn:8165626e-e6ac-483c-9570-56a36f649693> <urn:0fff2cdf-1854-4f4d-90ec-08e6797568fd> .
 <urn:fc1186f9-4995-4453-8c21-9bc53a044141> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <example:mockedDimension> <urn:0fff2cdf-1854-4f4d-90ec-08e6797568fd> .
@@ -102,7 +102,7 @@
 <urn:5e8ddf72-b67e-439a-b8b1-862f409ce17c> <http://purl.org/eis/vocab/daq#value> "0.5"^^<http://www.w3.org/2001/XMLSchema#double> <urn:fb2676cf-ff24-46bd-8d11-36ad6e1c9731> .
 <urn:5e8ddf72-b67e-439a-b8b1-862f409ce17c> <http://purl.org/eis/vocab/daq#computedOn> <example:testing> <urn:fb2676cf-ff24-46bd-8d11-36ad6e1c9731> .
 <urn:5e8ddf72-b67e-439a-b8b1-862f409ce17c> <http://purl.org/eis/vocab/daq#metric> <urn:8457d155-7fb2-4293-825b-fa5aa828e8fb> <urn:fb2676cf-ff24-46bd-8d11-36ad6e1c9731> .
-<urn:5e8ddf72-b67e-439a-b8b1-862f409ce17c> <http://purl.org/dc/elements/1.1/date> "2014-08-09T10:54:48.929Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:fb2676cf-ff24-46bd-8d11-36ad6e1c9731> .
+<urn:5e8ddf72-b67e-439a-b8b1-862f409ce17c> <http://purl.org/linked-data/sdmx/2009/dimension#timePeriod> "2014-08-09T10:54:48.929Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:fb2676cf-ff24-46bd-8d11-36ad6e1c9731> .
 <urn:5e8ddf72-b67e-439a-b8b1-862f409ce17c> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation> <urn:fb2676cf-ff24-46bd-8d11-36ad6e1c9731> .
 <urn:8821896d-e8f3-437d-86d5-d9ff83d470bb> <example:hasMockedDimensionProperty> <urn:5594e0d2-c0f0-4cdd-a428-d522a353faa4> <urn:fb2676cf-ff24-46bd-8d11-36ad6e1c9731> .
 <urn:8821896d-e8f3-437d-86d5-d9ff83d470bb> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <example:mockedCategory> <urn:fb2676cf-ff24-46bd-8d11-36ad6e1c9731> .
@@ -118,7 +118,7 @@
 <urn:7810c888-1d21-459b-ba8e-5b823cab731b> <http://purl.org/eis/vocab/daq#value> "0.5"^^<http://www.w3.org/2001/XMLSchema#double> <urn:0e795cad-0910-4bd6-a46e-73236b1f1687> .
 <urn:7810c888-1d21-459b-ba8e-5b823cab731b> <http://purl.org/eis/vocab/daq#computedOn> <example:testing> <urn:0e795cad-0910-4bd6-a46e-73236b1f1687> .
 <urn:7810c888-1d21-459b-ba8e-5b823cab731b> <http://purl.org/eis/vocab/daq#metric> <urn:9c45878f-f069-4cd5-b4d4-e43a8fd3ebee> <urn:0e795cad-0910-4bd6-a46e-73236b1f1687> .
-<urn:7810c888-1d21-459b-ba8e-5b823cab731b> <http://purl.org/dc/elements/1.1/date> "2014-08-09T10:54:49.007Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:0e795cad-0910-4bd6-a46e-73236b1f1687> .
+<urn:7810c888-1d21-459b-ba8e-5b823cab731b> <http://purl.org/linked-data/sdmx/2009/dimension#timePeriod> "2014-08-09T10:54:49.007Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:0e795cad-0910-4bd6-a46e-73236b1f1687> .
 <urn:7810c888-1d21-459b-ba8e-5b823cab731b> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation> <urn:0e795cad-0910-4bd6-a46e-73236b1f1687> .
 <urn:9c45878f-f069-4cd5-b4d4-e43a8fd3ebee> <http://purl.org/eis/vocab/daq#hasObservation> <urn:7810c888-1d21-459b-ba8e-5b823cab731b> <urn:0e795cad-0910-4bd6-a46e-73236b1f1687> .
 <urn:9c45878f-f069-4cd5-b4d4-e43a8fd3ebee> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <example:mockedMetric> <urn:0e795cad-0910-4bd6-a46e-73236b1f1687> .
@@ -130,7 +130,7 @@
 <urn:ddc7cd20-02b7-43d3-9459-92270ca33e10> <http://purl.org/eis/vocab/daq#value> "0.5"^^<http://www.w3.org/2001/XMLSchema#double> <urn:152aff72-69dc-4114-8829-fd4f05feee60> .
 <urn:ddc7cd20-02b7-43d3-9459-92270ca33e10> <http://purl.org/eis/vocab/daq#computedOn> <example:testing> <urn:152aff72-69dc-4114-8829-fd4f05feee60> .
 <urn:ddc7cd20-02b7-43d3-9459-92270ca33e10> <http://purl.org/eis/vocab/daq#metric> <urn:550a306a-d538-49a5-bb3b-0a3fbb2ed040> <urn:152aff72-69dc-4114-8829-fd4f05feee60> .
-<urn:ddc7cd20-02b7-43d3-9459-92270ca33e10> <http://purl.org/dc/elements/1.1/date> "2014-08-09T10:54:49.066Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:152aff72-69dc-4114-8829-fd4f05feee60> .
+<urn:ddc7cd20-02b7-43d3-9459-92270ca33e10> <http://purl.org/linked-data/sdmx/2009/dimension#timePeriod> "2014-08-09T10:54:49.066Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:152aff72-69dc-4114-8829-fd4f05feee60> .
 <urn:ddc7cd20-02b7-43d3-9459-92270ca33e10> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation> <urn:152aff72-69dc-4114-8829-fd4f05feee60> .
 <urn:b568e17e-1b17-49a7-8f3f-93f55d5c74ae> <example:hasMockedMetricProperty> <urn:550a306a-d538-49a5-bb3b-0a3fbb2ed040> <urn:152aff72-69dc-4114-8829-fd4f05feee60> .
 <urn:b568e17e-1b17-49a7-8f3f-93f55d5c74ae> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <example:mockedDimension> <urn:152aff72-69dc-4114-8829-fd4f05feee60> .
@@ -148,7 +148,7 @@
 <urn:e3faed58-489b-4209-8969-c9f7ba31e0bd> <http://purl.org/eis/vocab/daq#value> "0.5"^^<http://www.w3.org/2001/XMLSchema#double> <urn:02bddded-2469-408b-ac94-3f8623e52002> .
 <urn:e3faed58-489b-4209-8969-c9f7ba31e0bd> <http://purl.org/eis/vocab/daq#computedOn> <example:testing> <urn:02bddded-2469-408b-ac94-3f8623e52002> .
 <urn:e3faed58-489b-4209-8969-c9f7ba31e0bd> <http://purl.org/eis/vocab/daq#metric> <urn:d488e7d7-cbab-40db-b6eb-ba0837b781d4> <urn:02bddded-2469-408b-ac94-3f8623e52002> .
-<urn:e3faed58-489b-4209-8969-c9f7ba31e0bd> <http://purl.org/dc/elements/1.1/date> "2014-08-09T10:54:49.147Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:02bddded-2469-408b-ac94-3f8623e52002> .
+<urn:e3faed58-489b-4209-8969-c9f7ba31e0bd> <http://purl.org/linked-data/sdmx/2009/dimension#timePeriod> "2014-08-09T10:54:49.147Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:02bddded-2469-408b-ac94-3f8623e52002> .
 <urn:e3faed58-489b-4209-8969-c9f7ba31e0bd> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation> <urn:02bddded-2469-408b-ac94-3f8623e52002> .
 <urn:bb394c7d-efc3-4dfe-84e0-6613932b4398> <example:hasMockedDimensionProperty> <urn:0ac74ac4-99c5-4d8e-a5c2-136227fe8c69> <urn:02bddded-2469-408b-ac94-3f8623e52002> .
 <urn:bb394c7d-efc3-4dfe-84e0-6613932b4398> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <example:mockedCategory> <urn:02bddded-2469-408b-ac94-3f8623e52002> .
@@ -158,7 +158,7 @@
 <urn:d7111e84-1eaa-499f-ade5-1086d0fd2777> <http://purl.org/eis/vocab/daq#value> "0.5"^^<http://www.w3.org/2001/XMLSchema#double> <urn:64524c9d-8a5e-480d-bccf-351c965c626b> .
 <urn:d7111e84-1eaa-499f-ade5-1086d0fd2777> <http://purl.org/eis/vocab/daq#computedOn> <example:testing> <urn:64524c9d-8a5e-480d-bccf-351c965c626b> .
 <urn:d7111e84-1eaa-499f-ade5-1086d0fd2777> <http://purl.org/eis/vocab/daq#metric> <urn:facc8449-d57c-4465-9f39-b54d1ad653e0> <urn:64524c9d-8a5e-480d-bccf-351c965c626b> .
-<urn:d7111e84-1eaa-499f-ade5-1086d0fd2777> <http://purl.org/dc/elements/1.1/date> "2014-08-09T10:54:49.228Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:64524c9d-8a5e-480d-bccf-351c965c626b> .
+<urn:d7111e84-1eaa-499f-ade5-1086d0fd2777> <http://purl.org/linked-data/sdmx/2009/dimension#timePeriod> "2014-08-09T10:54:49.228Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:64524c9d-8a5e-480d-bccf-351c965c626b> .
 <urn:d7111e84-1eaa-499f-ade5-1086d0fd2777> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/linked-data/cube#Observation> <urn:64524c9d-8a5e-480d-bccf-351c965c626b> .
 <urn:13057717-5860-44bd-9153-d353e89aa255> <example:hasMockedMetricProperty> <urn:facc8449-d57c-4465-9f39-b54d1ad653e0> <urn:64524c9d-8a5e-480d-bccf-351c965c626b> .
 <urn:13057717-5860-44bd-9153-d353e89aa255> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <example:mockedDimension> <urn:64524c9d-8a5e-480d-bccf-351c965c626b> .
