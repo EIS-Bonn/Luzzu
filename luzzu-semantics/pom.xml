@@ -23,33 +23,45 @@
 							<tasks>
 								<property name="runtime_classpath" refid="maven.runtime.classpath" />
 								<echo message="Compiling Vocabularies into Classes" />
+								<echo message="daQ" />
 								<java classname="jena.schemagen" classpath="${runtime_classpath}">
 									<arg
-										line="-i src/main/resources/vocabularies/daq/daq.ttl -e ttl --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n DAQ" />
+										line="--inference -i src/main/resources/vocabularies/daq/daq.ttl -e TTL --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n DAQ" />
 								</java>
+								<echo message="void" />
 								<java classname="jena.schemagen" classpath="${runtime_classpath}">
 									<arg
 										line="--inference -i src/main/resources/vocabularies/void/void.ttl -e TTL  --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n VOID" />
 								</java>
+								<echo message="qpro" />
 								<java classname="jena.schemagen" classpath="${runtime_classpath}">
 									<arg
 										line="-i src/main/resources/vocabularies/qpro/qpro.ttl -e TTL --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n QPRO" />
 								</java>
+								<echo message="cube" />
 								<java classname="jena.schemagen" classpath="${runtime_classpath}">
 									<arg
 										line="--inference -i src/main/resources/vocabularies/cube/cube.ttl -e TTL  --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n CUBE" />
 								</java>
+								<echo message="sdmx attribute" />
 								<java classname="jena.schemagen" classpath="${runtime_classpath}">
 									<arg
 										line="-i src/main/resources/vocabularies/cube/sdmx-attribute.ttl -e TTL --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n SDMXATTRIBUTE	" />
 								</java>
+								<echo message="lmi" />
 								<java classname="jena.schemagen" classpath="${runtime_classpath}">
 									<arg
 										line="-i src/main/resources/vocabularies/lmi/lmi.ttl -e TTL --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n LMI" />
 								</java>
+								<echo message="prov" />
 								<java classname="jena.schemagen" classpath="${runtime_classpath}">
 									<arg
 										line="-i src/main/resources/vocabularies/prov/prov.ttl -e ttl --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n PROV" />
+								</java>
+								<echo message="sdmx dimension" />
+								<java classname="jena.schemagen" classpath="${runtime_classpath}">
+									<arg
+										line="-i src/main/resources/vocabularies/cube/sdmx-dimension.ttl -e TTL --inference --package de.unibonn.iai.eis.luzzu.semantics.vocabularies -o src/main/java -n SDMXDIMENSION	" />
 								</java>
 							</tasks>
 						</configuration>

@@ -3,7 +3,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl# > .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 lmi:LuzzuMetricJavaImplementation a rdfs:Class .
 
@@ -43,8 +43,6 @@ lmi:parameter a rdfs:Property ;
 	rdfs:range xsd:string ;
 	owl:minCardinality "1"^^xsd:nonNegativeInteger ;
 	owl:maxCardinality "1"^^xsd:nonNegativeInteger . 
-
-
 	
 lmi:MetricConfiguration a rdfs:Class .
 
