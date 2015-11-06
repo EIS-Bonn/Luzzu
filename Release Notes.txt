@@ -1,6 +1,9 @@
 Release Notes
 -------------
 
+[Version 1.2.1 - 06/12/2015]
+* Added vocabularies which were missed in last release
+
 [Version 1.2 - 05/12/2015]
 * Added SPARQL Endpoint processor
 * Added the method processorWorkFlow in the IOProcessor Interface
