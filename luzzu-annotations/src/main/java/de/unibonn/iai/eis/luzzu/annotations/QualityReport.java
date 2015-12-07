@@ -39,8 +39,9 @@ public class QualityReport {
 	public Model createQualityProblem(Resource metricURI, ProblemList<?> problemList){
 		Model m = ModelFactory.createDefaultModel();
 		
+		Object oneObject = problemList.getProblemList().iterator().next();
 		// Validate that there's at least a problematic triple to be reported	
-		if (problemList != null && problemList.getProblemList().size() > 0 && (problemList.getProblemList().get(0) instanceof Quad)){
+		if (problemList != null && problemList.getProblemList().size() > 0 && (oneObject instanceof Quad)){
 			for(Object obj : problemList.getProblemList()){
 				Resource problemURI = Commons.generateURI();
 				
@@ -60,7 +61,7 @@ public class QualityReport {
 					m.add(new StatementImpl(bNode, QPRO.inGraph, Commons.asRDFNode(q.getGraph())));
 				}
 			}
-		} else if (problemList != null && problemList.getProblemList().size() > 0 && problemList.getProblemList().get(0) instanceof Model){
+		} else if (problemList != null && problemList.getProblemList().size() > 0 && oneObject instanceof Model){
 			for(Object obj : problemList.getProblemList()){
 				Resource problemURI = Commons.generateURI();
 				
