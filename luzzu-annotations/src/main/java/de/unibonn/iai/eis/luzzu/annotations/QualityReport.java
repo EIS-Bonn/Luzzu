@@ -12,6 +12,7 @@ import com.hp.hpl.jena.vocabulary.RDF;
 
 import de.unibonn.iai.eis.luzzu.semantics.utilities.Commons;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.QPRO;
+import de.unibonn.iai.eis.luzzu.cache.JenaCacheObject;
 import de.unibonn.iai.eis.luzzu.datatypes.ProblemList;
 
 /**
@@ -51,7 +52,11 @@ public class QualityReport {
 				Resource bNode = Commons.generateRDFBlankNode().asResource();
 				m.add(new StatementImpl(problemURI, QPRO.problematicThing, bNode));
 				
-				Quad q = (Quad) obj;
+				Object _obj = obj;
+				if (obj instanceof JenaCacheObject){
+					_obj = ((JenaCacheObject<?>) obj).deserialise();
+				}
+				Quad q = (Quad) _obj;
 				m.add(new StatementImpl(bNode, RDF.type, RDF.Statement));
 				m.add(new StatementImpl(bNode, RDF.subject, Commons.asRDFNode(q.getSubject())));
 				m.add(new StatementImpl(bNode, RDF.predicate, Commons.asRDFNode(q.getPredicate())));
@@ -68,8 +73,11 @@ public class QualityReport {
 				m.add(new StatementImpl(problemURI, RDF.type, QPRO.QualityProblem));
 				m.add(new StatementImpl(problemURI, QPRO.isDescribedBy, metricURI));
 				
-				
-				Model qpModel = (Model) obj;
+				Object _obj = obj;
+				if (obj instanceof JenaCacheObject){
+					_obj = ((JenaCacheObject<?>) obj).deserialise();
+				}
+				Model qpModel = (Model) _obj;
 				Resource sNode = qpModel.listSubjects().next();
 				m.add(new StatementImpl(problemURI, QPRO.problematicThing, sNode));
 				m.add(qpModel);
@@ -78,7 +86,12 @@ public class QualityReport {
 			Seq problemSeq = m.createSeq();
 			int i = 1;
 			for(Object obj : problemList.getProblemList()){
-				Resource r = (Resource) obj;
+				
+				Object _obj = obj;
+				if (obj instanceof JenaCacheObject){
+					_obj = ((JenaCacheObject<?>) obj).deserialise();
+				}
+				Resource r = (Resource) _obj;
 				problemSeq.add(i , r);
 				i++;
 			}
