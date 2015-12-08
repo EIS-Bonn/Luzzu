@@ -1,11 +1,21 @@
 package de.unibonn.iai.eis.luzzu.communications.resources;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -37,6 +47,47 @@ public class QualityResource {
 	
 	final static Logger logger = LoggerFactory.getLogger(QualityResource.class);
 
+	@POST
+	@Path("preprocess")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response preprocess(MultivaluedMap<String, String> formParams)  {
+		
+		try{
+			// Extract and validate parameters
+			String datasetURI = formParams.get("Dataset").get(0);
+			String useProxy = formParams.get("UseProxy").get(0);
+			String fileName = formParams.get("Filename").get(0);
+			
+			String[] command = {"/Users/jeremy/Documents/Workspaces/Luzzu/luzzu/luzzu-communications/preprocess.sh", datasetURI, useProxy, fileName };
+			ProcessBuilder pb = new ProcessBuilder(command);
+
+			Process p = pb.start();// Runtime.getRuntime().exec(command);  //pb.start();
+			
+//			InputStream is = p.getInputStream();
+//	        InputStreamReader reader = new InputStreamReader(is);
+//	        Scanner scan = new Scanner(reader);
+//
+//
+//	        while(scan.hasNextLine()){
+//	            System.out.println(scan.nextLine());
+//	        }
+
+			
+			System.out.println("Waiting for process to finish...");
+			p.waitFor(); // wait until the process finishes
+			int exitCode = p.exitValue();
+			System.out.println("Process exit code: " + exitCode); 
+			
+			return Response.ok(exitCode,MediaType.TEXT_PLAIN).header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+				      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build(); 
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 	/**
 	 * Initiates the calculation of a specificed set of quality metrics on the dataset with the provided URI, 
 	 * returns as response, a report listing the triple instances violating quality metrics

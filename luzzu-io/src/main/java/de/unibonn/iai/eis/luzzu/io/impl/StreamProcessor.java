@@ -382,7 +382,7 @@ public class StreamProcessor implements IOProcessor {
 	 */
 	private void generateQualityReport() {
 		QualityReport r = new QualityReport();
-		List<Model> qualityProblems = new ArrayList<Model>();
+		List<String> qualityProblems = new ArrayList<String>();
 		
 		for(String className : this.metricInstances.keySet()){
 			QualityMetric m = this.metricInstances.get(className);
@@ -391,6 +391,7 @@ public class StreamProcessor implements IOProcessor {
 		
 		Resource res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getBaseURI());
 		this.qualityReport = r.createQualityReport(res, qualityProblems);
+		r.flush();
 	}
 	
 	/**

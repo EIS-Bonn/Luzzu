@@ -299,7 +299,7 @@ public class SparkStreamProcessor  implements IOProcessor, Serializable  {
 	
 	private void generateQualityReport() {
 		QualityReport r = new QualityReport();
-		List<Model> qualityProblems = new ArrayList<Model>();
+		List<String> qualityProblems = new ArrayList<String>();
 		
 		for(String className : this.metricInstances.keySet()){
 			QualityMetric m = this.metricInstances.get(className);
@@ -308,6 +308,7 @@ public class SparkStreamProcessor  implements IOProcessor, Serializable  {
 		
 		Resource res = ModelFactory.createDefaultModel().createResource(this.datasetURI);
 		this.qualityReport = r.createQualityReport(res, qualityProblems);
+		r.flush();
 	}
 	
 	private void generateQualityMetadata(){
