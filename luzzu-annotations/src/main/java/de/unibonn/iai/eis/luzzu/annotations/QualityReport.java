@@ -58,7 +58,10 @@ public class QualityReport {
 		Model m = ModelFactory.createDefaultModel();
 		String genGraph = Commons.generateURI().toString();		
 		
-		Object oneObject = problemList.getProblemList().iterator().next();
+		Object oneObject = new Object();
+		if (problemList.getProblemList().iterator().hasNext())
+			oneObject = problemList.getProblemList().iterator().next();
+		
 		// Validate that there's at least a problematic triple to be reported	
 		if (problemList != null && problemList.getProblemList().size() > 0 && (oneObject instanceof Quad)){
 			for(Object obj : problemList.getProblemList()){
