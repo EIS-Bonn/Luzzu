@@ -54,12 +54,6 @@ dqm:LuzzuProvenanceAgent
 		rdfs:subClassOf	daq:Category ;
 		rdfs:comment	"Groups dimensions related to the design of the data, which provide information about how the chosen representation of the data affect its quality" ;
 		rdfs:label	"Representational" .
-	
-	dqm:Reputation
-		a	rdfs:Class ;
-		rdfs:subClassOf	daq:Category ;
-		rdfs:comment	"Reputation dimensions related to the reputation of the data, which provide information about how the reputable the data is based on its providers and host" ;
-		rdfs:label	"Reputation" .
 		
 	#Dimension Classes
 	dqm:Availability
@@ -309,7 +303,7 @@ dqm:LuzzuProvenanceAgent
 		a	rdfs:Class ;
 		rdfs:subClassOf	daq:Metric ; 
 		daq:expectedDataType xsd:double ;
-		rdfs:comment	"Detect properties that are defined as a owl:datatype property but is used as object property and properties defined as a owl:object property and used as datatype property The metric is computed as a ratio of misused properties" ;
+		rdfs:comment	"Detect properties that are defined as a owl:datatypeProperty but is used as objectProperty and properties defined as a owl:object property and used as datatype property The metric is computed as a ratio of misused properties" ;
 		rdfs:label	"Misuse Owl datatype or object properties metric" .
 		
 	dqm:UndefinedClassesAndPropertiesMetric
@@ -1071,11 +1065,139 @@ dqm:LuzzuProvenanceAgent
 		rdfs:label "Reputation category has reputation of dataset metric" ;
 		rdfs:domain	dqm:Reputation ;
 		rdfs:range	dqm:ReputationOfDatasetMetric .
+		
+### August 2015 Additions ###
+
+	dqm:hasOntologyHijackingMetric
+		a	rdfs:Property ;
+		rdfs:subPropertyOf	daq:hasMetric ;
+		rdfs:domain	dqm:Consistency ;
+		rdfs:range	dqm:OntologyHijackingMetric .
+
+	dqm:UsageOfDeprecatedClassesOrProperties
+		a	rdfs:Class ;
+		rdfs:subClassOf	daq:Metric ; 
+		daq:expectedDataType xsd:double ;
+		rdfs:comment	"This metric checks if a dataset makes use of Deprecated Classes as resource types (defined as owl:DeprecatedClass) or Properties (defined as owl:DeprecatedProperty) in a resource property" ;
+		rdfs:label	"Usage of Deprecated Classesor Deprecated Properties" .
+		
+	dqm:hasUsageOfDeprecatedClassesOrProperties
+		a	rdfs:Property ;
+		rdfs:subPropertyOf	daq:hasMetric ;
+		rdfs:domain	dqm:Consistency ;
+		rdfs:range	dqm:UsageOfDeprecatedClassesOrProperties .
+		
+	dqm:UsageOfIncorrectDomainOrRangeDatatypesMetric
+		a	rdfs:Class ;
+		rdfs:subClassOf	daq:Metric ; 
+		daq:expectedDataType xsd:double ;
+		rdfs:comment	"This metric tests if a property's domain and range are of the same type as declared in the corresponding schema" ;
+		rdfs:label	"Misuse Owl datatype or object properties metric" .
+		
+	dqm:hasUsageOfIncorrectDomainOrRangeDatatypesMetric
+		a	rdfs:Property ;
+		rdfs:subPropertyOf	daq:hasMetric ;
+		rdfs:domain	dqm:Consistency ;
+		rdfs:range	dqm:UsageOfIncorrectDomainOrRangeDatatypesMetric .
+		
+	dqm:ValidIFPUsageMetric
+		a	rdfs:Class ;
+		rdfs:subClassOf	daq:Metric ; 
+		daq:expectedDataType xsd:double ;
+		rdfs:comment	"This metric checks if the Inverse Functional Properties (IFP) is used correctly, i.e. if we have S P O and P is set to be an owl:InverseFunctionalProperty, then S is the one and only resource connected to O. If there is a triple S1 P O, then the IFP is not used correctly and thus since S1 will be 'reasoned' to be the same as S." ;
+		rdfs:label	"Valid Usage of the owl:InverseFunctionalProperty" .
+		
+	dqm:hasValidIFPUsageMetric
+		a	rdfs:Property ;
+		rdfs:subPropertyOf	daq:hasMetric ;
+		rdfs:domain	dqm:Consistency ;
+		rdfs:range	dqm:ValidIFPUsageMetric .
+		
+	dqm:VocabularyUsageIndication
+		a	rdfs:Class ;
+		rdfs:subClassOf	daq:Metric ; 
+		daq:expectedDataType xsd:double ;
+		rdfs:comment	"This metric checks the number of valid vocabularies indicated by the voID metadata against the number of different vocabularies used." ;
+		rdfs:label	"Vocabulary Usage Indication" .
+		
+	dqm:hasVocabularyUsageIndication
+		a	rdfs:Property ;
+		rdfs:subPropertyOf	daq:hasMetric ;
+		rdfs:domain	dqm:Understandability ;
+		rdfs:range	dqm:VocabularyUsageIndication .
+		
+	dqm:PresenceOfURIRegEx
+		a	rdfs:Class ;
+		rdfs:subClassOf	daq:Metric ; 
+		daq:expectedDataType xsd:double ;
+		rdfs:comment	"This metric checks if the dataset has a regular expression defined." ;
+		rdfs:label	"Vocabulary Usage Indication" .
+		
+	dqm:hasVocabularyUsageIndication
+		a	rdfs:Property ;
+		rdfs:subPropertyOf	daq:hasMetric ;
+		rdfs:domain	dqm:Understandability ;
+		rdfs:range	dqm:PresenceOfURIRegEx .
+				
+	dqm:DigitalSignatureUsage
+		a	rdfs:Class ;
+		rdfs:subClassOf	daq:Metric ; 
+		daq:expectedDataType xsd:double ;
+		rdfs:comment	"This metric checks foaf documents have a digital signature with them." ;
+		rdfs:label	"Digital Signature Usage" .
+		
+	dqm:hasDigitalSignatureUsage
+		a	rdfs:Property ;
+		rdfs:subPropertyOf	daq:hasMetric ;
+		rdfs:domain	dqm:Security ;
+		rdfs:range	dqm:dqm:DigitalSignatureUsage .
+				
+
+#############################		
+		
+### November 2015 Addition ###
+
+	dqm:SyntacticValidity
+		a	rdfs:Class ;
+		rdfs:subClassOf	daq:Dimension ;
+		rdfs:comment	"** TODO **" ;
+		rdfs:label	"Syntactic Validity" .
+	
+	dqm:hasSyntacticValidityDimension
+		a rdfs:Property ;
+		rdfs:subPropertyOf daq:hasDimension ;
+		rdfs:domain dqm:Intrinsic ;
+		rdfs:range dqm:SyntacticValidity .	
+	
+	dqm:CompatibleDatatype
+		a	rdfs:Class ;
+		rdfs:subClassOf	daq:Metric ;
+		rdfs:comment	"** TODO **" ;
+		rdfs:label	"Compatible Datatype" .
+	
+	dqm:hasCompatibleDatatype
+		a rdfs:Property ;
+		rdfs:subPropertyOf daq:hasMetric ;
+		rdfs:domain dqm:SyntacticValidity ;
+		rdfs:range dqm:CompatibleDatatype .
+		
+	dqm:CorrectLanguageTag
+		a	rdfs:Class ;
+		rdfs:subClassOf	daq:Metric ;
+		rdfs:comment	"** TODO **" ;
+		rdfs:label	"Correct Language Tag" .
+	
+	dqm:hasCorrectLanguageTag
+		a rdfs:Property ;
+		rdfs:subPropertyOf daq:hasMetric ;
+		rdfs:domain dqm:SyntacticValidity ;
+		rdfs:range dqm:CorrectLanguageTag .
+
 			
 ##################################
-#				 #
-#	EBI SPECIFIC METRICS	 #
-#				 #
+#				 				 #
+#	EBI SPECIFIC METRICS	 	 #
+#				 				 #
 ##################################
 
 #Ontology Versioning Conciseness
@@ -1187,7 +1309,7 @@ dqm:ObsoleteConceptsInOntologyMetric
 		rdfs:subPropertyOf	daq:hasMetric ;
 		rdfs:comment "Links Reputation category with OBO foundry metric" ; 
 		rdfs:label "Reputation category has OBO foundry metric" ;
-		rdfs:domain	dqm:Reputation ;
+		rdfs:domain	dqm:Provenance ;
 		rdfs:range	dqm:OBOFoundryMetric .
 
 
@@ -1567,3 +1689,100 @@ dqm:ObsoleteConceptsInOntologyMetric
 		rdfs:subClassOf qpro:Exception ;
 		rdfs:comment "The referred resource has a replica resource with a different id." ;
 		rdfs:label "Resource Replica" .
+		
+### Deprecated Classes and Properties
+	dqm:DeprecatedClass
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The class used is deprecated in the respective schema" ;
+		rdfs:label "Deprecated Class" .
+
+	dqm:DeprecatedProperty
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The property used is deprecated in its respective schema." ;
+		rdfs:label "Deprecated Property" .
+		
+### Ontology Hijacking
+
+	dqm:OntologyHijackingException
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The referred resource hijacked an external authorative concept." ;
+		rdfs:label "Misplaced Property" .
+
+	dqm:hijackedTripleStatement
+		a rdfs:Property ;
+		rdfs:subPropertyOf qpro:extraExceptionProperty ;
+		rdfs:domain	dqm:OntologyHijackingException;
+		rdfs:range	rdf:Statement .
+
+### IncorrectDomainOrRange	
+	dqm:IncorrectRange
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The property's value has an incorrect data type" ;
+		rdfs:label "Undefined Class" .
+
+	dqm:IncorrectDomain
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The property should not be used within a resource of this type." ;
+		rdfs:label "Undefined Property" .
+		
+	dqm:UnknownType
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The resource type is unknown." ;
+		rdfs:label "Undefined Property" .
+		
+	dqm:problematicTriple
+		a rdfs:Property ;
+		rdfs:subPropertyOf qpro:extraExceptionProperty ;
+		rdfs:domain	qpro:Exception;
+		rdfs:range	rdf:Statement .
+
+### IFP metric
+	dqm:InverseFunctionalPropertyViolation
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "The referred predicate and objects are used in multiple subject resources which violates the IFP metric." ;
+		rdfs:label "Inverse Functional Property Violation" .
+		
+	dqm:violatedPredicate
+		a rdfs:Property ;
+		rdfs:subPropertyOf qpro:extraExceptionProperty ;
+		rdfs:domain	dqm:InverseFunctionalPropertyViolation;
+		rdfs:range	rdf:Resource .		
+	
+	dqm:violatedObject
+		a rdfs:Property ;
+		rdfs:subPropertyOf qpro:extraExceptionProperty ;
+		rdfs:domain	dqm:InverseFunctionalPropertyViolation;
+		rdfs:range	rdf:Resource .
+		
+	dqm:violatingSubjects
+		a rdfs:Property ;
+		rdfs:subPropertyOf qpro:extraExceptionProperty ;
+		rdfs:domain	dqm:InverseFunctionalPropertyViolation;
+		rdfs:range	rdf:Bag .		
+	
+### Understandability
+	dqm:NoHumanReadableLabel
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "Entities in this list have no Human Readable Label." ;
+		rdfs:label "No Human Readable Label" .	
+		
+	dqm:NoVocabularyIndication
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "Vocabularies in this list are not indicated by a respective voID description." ;
+		rdfs:label "No Vocabulary Indication" .	
+		
+	dqm:NoURIRegExPresence
+		a	rdfs:Class ;
+		rdfs:subClassOf qpro:Exception ;
+		rdfs:comment "No regular expression in the voID description." ;
+		rdfs:label "No Regular Expression" .	
+	
