@@ -17,6 +17,21 @@
 			<param name="ConversionPattern" value="%p %t %c - %m%n" />
 		</layout>
 	</appender>
+	
+	<appender name="statisticsAppender" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="/tmp/diachron-logs/luzzu-stats.log" />
+		<param name="MaxFileSize" value="1000MB" />
+		<param name="MaxBackupIndex" value="2" />
+		<param name="MaxBackupIndex" value="2" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%p %t %c - %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+	    	<param name="levelMin" value="INFO" />
+	    	<param name="levelMax" value="INFO" />
+	    </filter>
+	</appender>
+	
 
 	<root>
 		<priority value="all" />
@@ -31,6 +46,11 @@
 	<logger name="eu.diachron.qualitymetrics.utilities.HTTPRetriever">
 		<level value="debug" />
 		<appender-ref ref="rollingFile" />
+	</logger>
+	
+	<logger name="eu.diachron.qualitymetrics.metricInfoStats" additivity="false">
+		<level value="info" />
+		<appender-ref ref="statisticsAppender" />
 	</logger>
 
 </log4j:configuration>
