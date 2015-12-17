@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
+import de.unibonn.iai.eis.luzzu.communications.Main;
 import de.unibonn.iai.eis.luzzu.io.IOProcessor;
 import de.unibonn.iai.eis.luzzu.io.ProcessorController;
 import de.unibonn.iai.eis.luzzu.io.impl.SPARQLEndPointProcessor;
@@ -159,7 +160,7 @@ public class QualityResource {
 			logger.error("Error processing quality computation request [" + errorTimeStamp + "]", ex);
 			
 			// Build JSON response, indicating that an error occurred
-			jsonResponse = buildJsonErrorResponse(datasetURI, errorTimeStamp, "The request caused an exception");
+			jsonResponse = buildJsonErrorResponse(datasetURI, errorTimeStamp, ex.getMessage());
 		}
 		
 		//return jsonResponse;
@@ -178,6 +179,7 @@ public class QualityResource {
 	private String buildJsonResponse(String datasetURI, Model qualityReport) {
 		StringBuilder sbJsonResponse = new StringBuilder();
 		sbJsonResponse.append("{ \"Dataset\": \"" + datasetURI + "\", ");
+		sbJsonResponse.append("\"Agent\": \"" + Main.BASE_URI + "\", ");
 		sbJsonResponse.append("\"Outcome\": \"SUCCESS\"");
 
 		// If the quality report was generated, add its JSON representation to the response
@@ -205,6 +207,7 @@ public class QualityResource {
 	private String buildJsonErrorResponse(String datasetURI, String errorCode, String errorMessage) {
 		StringBuilder sbJsonResponse = new StringBuilder();
 		sbJsonResponse.append("{ \"Dataset\": \"" + datasetURI + "\", ");
+		sbJsonResponse.append("\"Agent\": \"" + Main.BASE_URI + "\", ");
 		sbJsonResponse.append("\"Outcome\": \"ERROR\", ");
 		sbJsonResponse.append("\"ErrorMessage\": \"" + errorMessage + "\", ");
 		sbJsonResponse.append("\"ErrorCode\": \"" + errorCode + "\" }");
