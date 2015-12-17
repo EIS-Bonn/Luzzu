@@ -26,11 +26,11 @@
   			<version>${luzzu.version}</version>
   		</dependency>
   		
-<!-- 		<dependency>
+	 	<dependency>
   			<groupId>de.unibonn.iai.eis</groupId>
   			<artifactId>metric-utilities</artifactId>
   			<version>1.0.0</version>
-  		</dependency> -->
+  		</dependency> 
   		
   		<!-- Dependencies required by the metric implementations but not yet available in the repos (aether can't find them) -->
 

@@ -788,6 +788,12 @@ dqm:LuzzuProvenanceAgent
 		rdfs:domain	dqm:Consistency ;
 		rdfs:range	dqm:EntitiesAsMembersOfDisjointClassesMetric .	
 		
+	dqm:hasOntologyHijackingMetric
+			a	rdfs:Property ;
+			rdfs:subPropertyOf	daq:hasMetric ;
+			rdfs:domain	dqm:Consistency ;
+			rdfs:range	dqm:OntologyHijackingMetric .
+		
 	#Conciseness Dimensions Properties
 	dqm:hasConcisenessDimension
 		a rdfs:Property ;

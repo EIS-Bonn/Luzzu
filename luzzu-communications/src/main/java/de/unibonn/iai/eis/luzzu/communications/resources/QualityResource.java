@@ -1,21 +1,11 @@
 package de.unibonn.iai.eis.luzzu.communications.resources;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -34,6 +24,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 import de.unibonn.iai.eis.luzzu.io.IOProcessor;
+import de.unibonn.iai.eis.luzzu.io.ProcessorController;
 import de.unibonn.iai.eis.luzzu.io.impl.SPARQLEndPointProcessor;
 import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessor;
 
@@ -46,47 +37,6 @@ import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessor;
 public class QualityResource {
 	
 	final static Logger logger = LoggerFactory.getLogger(QualityResource.class);
-
-	@POST
-	@Path("preprocess")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response preprocess(MultivaluedMap<String, String> formParams)  {
-		
-		try{
-			// Extract and validate parameters
-			String datasetURI = formParams.get("Dataset").get(0);
-			String useProxy = formParams.get("UseProxy").get(0);
-			String fileName = formParams.get("Filename").get(0);
-			
-			String[] command = {"/Users/jeremy/Documents/Workspaces/Luzzu/luzzu/luzzu-communications/preprocess.sh", datasetURI, useProxy, fileName };
-			ProcessBuilder pb = new ProcessBuilder(command);
-
-			Process p = pb.start();// Runtime.getRuntime().exec(command);  //pb.start();
-			
-//			InputStream is = p.getInputStream();
-//	        InputStreamReader reader = new InputStreamReader(is);
-//	        Scanner scan = new Scanner(reader);
-//
-//
-//	        while(scan.hasNextLine()){
-//	            System.out.println(scan.nextLine());
-//	        }
-
-			
-			System.out.println("Waiting for process to finish...");
-			p.waitFor(); // wait until the process finishes
-			int exitCode = p.exitValue();
-			System.out.println("Process exit code: " + exitCode); 
-			
-			return Response.ok(exitCode,MediaType.TEXT_PLAIN).header("Access-Control-Allow-Origin", "*")
-					.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
-				      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build(); 
-		} catch (Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
 	
 	/**
 	 * Initiates the calculation of a specificed set of quality metrics on the dataset with the provided URI, 
@@ -123,7 +73,7 @@ public class QualityResource {
 			logger.debug("Processing request parameters. DatasetURI: {}; QualityReportRequired: {}; MetricsConfiguration: {}; BaseUri: {}; IsSPARQLEndPoint: {}", 
 					lstDatasetURI, lstQualityReportReq, lstMetricsConfig, lstBaseUri);
 			
-			System.out.printf("Processing request parameters. DatasetURI: {}; QualityReportRequired: {}; MetricsConfiguration: {}; BaseUri: {}; IsSPARQLEndPoint: {}", 
+			System.out.printf("Processing request parameters. DatasetURI: %s; QualityReportRequired: %s; MetricsConfiguration: %s; BaseUri: %s; IsSPARQLEndPoint: %s", 
 					lstDatasetURI, lstQualityReportReq.get(0), lstMetricsConfig.get(0), lstBaseUri.get(0), lstIsSparql.get(0));
 									
 			if(lstDatasetURI == null || lstDatasetURI.size() <= 0) {
@@ -169,7 +119,15 @@ public class QualityResource {
 				String[] expandedListDatasetURI = lstDatasetURI.get(0).split(",");
 				if (expandedListDatasetURI.length == 1){
 					datasetURI = expandedListDatasetURI[0];
-					strmProc = new StreamProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
+					if ((datasetURI.startsWith("http://")) || (datasetURI.startsWith("ftp://"))){
+						//if it is an http dataset, then we cannot really identify the actual size
+						strmProc = new StreamProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
+					}else {
+						strmProc = ProcessorController.getInstance().decide(baseURI, datasetURI, genQualityReport, modelConfig);
+						logger.debug("Chosen Processor: {}", strmProc.getClass().toString());
+						System.out.println("Chosen Processor: "+strmProc.getClass().toString());
+					}
+					
 				} else {
 					//if we have a void file (e.g. void.ttl) we have to make sure that it is processed first
 					List<String> datasetFiles = Arrays.asList(expandedListDatasetURI);
