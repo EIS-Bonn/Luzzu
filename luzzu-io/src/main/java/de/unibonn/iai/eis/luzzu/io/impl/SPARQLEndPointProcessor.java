@@ -427,9 +427,17 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 	private synchronized void writeReportMetadataFile() {
 		// Build the full path of the file where quality report metadata will be written.
 		// Use current timestamp to identify the report corresponding to each individual quality assessment process
+		String fld = this.metadataBaseDir + "/" + this.baseURI.replace("http://", "");
+		fld = fld.replaceFirst("^~",System.getProperty("user.home"));
+				
+		File folder = new File(fld);
+		if (!(folder.exists())) folder.mkdirs();
+		
 		long timestamp = (new Date()).getTime();
 		String metadataFilePath = String.format("%s/%s/problem-report-%d.trig", this.metadataBaseDir, this.baseURI.replace("http://", ""), timestamp);
 		metadataFilePath = metadataFilePath.replace("//", "/");
+		metadataFilePath = metadataFilePath.replaceFirst("^~",System.getProperty("user.home"));
+
 		logger.debug("Writing quality report to file: metadataFilePath...");
 
 		// Make sure that the quality report model has been properly generated before hand
