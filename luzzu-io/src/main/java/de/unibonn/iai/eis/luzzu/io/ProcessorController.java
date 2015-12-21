@@ -1,6 +1,8 @@
 package de.unibonn.iai.eis.luzzu.io;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 import com.hp.hpl.jena.rdf.model.Model;
 
@@ -26,10 +28,29 @@ public class ProcessorController {
 		System.out.println();
 		System.out.println("free memory: "+(double)freeMemory / (1024.0*1024.0) + " MB");
 		File file =new File(datasetURI);
+			
+		long length = file.length();
 		
-		System.out.println("file size: " + (double) file.length() / (1024.0*1024.0) + " MB");
+		if (datasetURI.endsWith("gz")){
+			RandomAccessFile raf;
+			try {
+				raf = new RandomAccessFile(file, "r");
+				raf.seek(raf.length() - 4);
+				int b4 = raf.read();
+				int b3 = raf.read();
+				int b2 = raf.read();
+				int b1 = raf.read();
+				length = Math.abs((b1 << 24) | (b2 << 16) + (b3 << 8) + b4);
+				raf.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		
-		if (file.length() <= ((double) freeMemory * (1.0 / 12.0))) // if it fits in 1/12 of the free memory, then we use a memory processor
+		System.out.println("file size: " + (double) length / (1024.0*1024.0) + " MB");
+
+		
+		if (length <= ((double) freeMemory * (1.0 / 100.0))) // if it fits in 1/100 of the free memory, then we use a memory processor
 			return new MemoryProcessor(baseURI,datasetURI,genQualityReport,modelConfig);
 		else 
 			return new StreamProcessor(baseURI,datasetURI,genQualityReport,modelConfig);
