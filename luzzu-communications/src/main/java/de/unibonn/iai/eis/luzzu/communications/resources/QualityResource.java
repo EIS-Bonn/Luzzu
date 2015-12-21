@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -28,6 +29,7 @@ import de.unibonn.iai.eis.luzzu.io.IOProcessor;
 import de.unibonn.iai.eis.luzzu.io.ProcessorController;
 import de.unibonn.iai.eis.luzzu.io.impl.SPARQLEndPointProcessor;
 import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessor;
+import de.unibonn.iai.eis.luzzu.properties.EnvironmentProperties;
 
 /**
  * REST resource, providing the functionalities to assess the quality of datasets, 
@@ -38,6 +40,31 @@ import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessor;
 public class QualityResource {
 	
 	final static Logger logger = LoggerFactory.getLogger(QualityResource.class);
+	
+	private boolean isFree = true;
+	
+
+	@GET
+	@Path("status")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response status(){
+		StringBuilder sbJsonResponse = new StringBuilder();
+		sbJsonResponse.append("{ \"isFree\": \"" + isFree + "\", ");
+		sbJsonResponse.append("\"Agent\": \"" + Main.BASE_URI + "\", ");
+		if (!isFree){
+			sbJsonResponse.append("\"Serving Data Dump\": \"" + EnvironmentProperties.getInstance().getDatasetURI() + "\", ");
+			sbJsonResponse.append("\"Base URI\": \"" + EnvironmentProperties.getInstance().getBaseURI() + "\", ");
+		}
+		sbJsonResponse.append("\"Outcome\": \"SUCCESS\"");
+		sbJsonResponse.append("}");
+		
+		System.out.println(sbJsonResponse.toString());
+		
+		return Response.ok(sbJsonResponse.toString(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
+	}
+	
 	
 	/**
 	 * Initiates the calculation of a specificed set of quality metrics on the dataset with the provided URI, 
@@ -94,8 +121,6 @@ public class QualityResource {
 			}
 			
 			// Assign parameter values to variables and set defaults
-
-			
 			jsonStrMetricsConfig = lstMetricsConfig.get(0);
 			genQualityReport = Boolean.parseBoolean(lstQualityReportReq.get(0));
 
@@ -141,7 +166,7 @@ public class QualityResource {
 				}
 			}
 
-
+			isFree = false;
 			strmProc.processorWorkFlow();
 			strmProc.cleanUp();
 			
@@ -163,7 +188,10 @@ public class QualityResource {
 			jsonResponse = buildJsonErrorResponse(datasetURI, errorTimeStamp, ex.getMessage());
 		}
 		
+		isFree = true;
 		//return jsonResponse;
+		
+		System.out.println("Finished Assessing: "+ datasetURI);
 		return Response.ok(jsonResponse,MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
 				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
 			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
