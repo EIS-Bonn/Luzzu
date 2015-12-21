@@ -1,7 +1,6 @@
 package de.unibonn.iai.eis.luzzu.communications.resources;
 
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -17,7 +16,6 @@ import javax.ws.rs.core.Response;
 
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
-import org.apache.jena.riot.RDFFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -178,7 +176,7 @@ public class QualityResource {
 			}
 			
 			jsonResponse = buildJsonResponse((datasetURI == null) ? baseURI : datasetURI, modelQualityRep);
-			logger.debug("Quality computation request completed. Output: {}", jsonResponse);
+			logger.debug("Quality computation request completed. DatasetURI: {}", datasetURI);
 						
 		} catch(Exception ex) {
 			String errorTimeStamp = Long.toString((new Date()).getTime());
@@ -211,15 +209,15 @@ public class QualityResource {
 		sbJsonResponse.append("\"Outcome\": \"SUCCESS\"");
 
 		// If the quality report was generated, add its JSON representation to the response
-		if(qualityReport != null && !qualityReport.isEmpty()) {
-			// Serialize the quality report in JSON-LD format...
-			StringWriter strWriter = new StringWriter();
-			RDFDataMgr.write(strWriter, qualityReport, RDFFormat.JSONLD);
-			
-			// ... and append its JSON representation in the QualityReport field
-			sbJsonResponse.append(", \"QualityReport\": ");
-			sbJsonResponse.append(strWriter.toString());
-		}
+//		if(qualityReport != null && !qualityReport.isEmpty()) {
+//			// Serialize the quality report in JSON-LD format...
+//			StringWriter strWriter = new StringWriter();
+//			RDFDataMgr.write(strWriter, qualityReport, RDFFormat.JSONLD);
+//			
+//			// ... and append its JSON representation in the QualityReport field
+//			sbJsonResponse.append(", \"QualityReport\": ");
+//			sbJsonResponse.append(strWriter.toString());
+//		}
 		sbJsonResponse.append(" }");
 		return sbJsonResponse.toString();
 	}
