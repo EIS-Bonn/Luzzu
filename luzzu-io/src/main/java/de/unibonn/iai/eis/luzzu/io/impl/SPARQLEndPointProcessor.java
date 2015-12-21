@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.DatasetFactory;
-import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
@@ -33,6 +32,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
 import de.unibonn.iai.eis.luzzu.annotations.QualityMetadata;
 import de.unibonn.iai.eis.luzzu.annotations.QualityReport;
@@ -149,7 +149,9 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		
 		//get the number of triples in an endpoint
 		String query = "SELECT (count(?s) AS ?count) {?s ?p ?o . }";
-		QueryExecution qe = QueryExecutionFactory.sparqlService(sparqlEndPoint,query);
+		QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint,query);
+		qe.addParam("timeout","10000"); //5 sec
+
 		
 		int size = 0;
 		try{
@@ -173,7 +175,8 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 							start = false;
 						logger.info("next offset {}, size {}", nextOffset, endpointSize);
 						String query = "SELECT * { ?s ?p ?o . } ORDERBY ASC(?s) LIMIT 10000 OFFSET " + nextOffset;
-						QueryExecution qe = QueryExecutionFactory.sparqlService(sparqlEndPoint, query);
+						QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint, query);
+						qe.addParam("timeout","10000"); 
 						ResultSet rs = qe.execSelect();
 						
 						while(rs.hasNext()){
