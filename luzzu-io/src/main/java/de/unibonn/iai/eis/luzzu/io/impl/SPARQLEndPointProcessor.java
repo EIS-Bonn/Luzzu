@@ -9,11 +9,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
@@ -148,70 +152,82 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		StreamMetadataSniffer sniffer = new StreamMetadataSniffer();
 		
 		//get the number of triples in an endpoint
-		String query = "SELECT (count(?s) AS ?count) {?s ?p ?o . }";
-		QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint,query);
-		qe.addParam("timeout","10000"); //5 sec
-
-		
-		int size = 0;
+		int size = -1;
 		try{
-			size = qe.execSelect().next().get("count").asLiteral().getInt();
+			String query = "SELECT (count(?s) AS ?count) {?s ?p ?o . }";
+			final QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint,query);
+			qe.addParam("timeout","10000"); //5 sec
+	
+			
+			ExecutorService executor = Executors.newSingleThreadExecutor();
+			
+			final Future<Integer> handler = executor.submit(new Callable<Integer>() {
+			    @Override
+			    public Integer call() throws Exception {
+			    	int size = qe.execSelect().next().get("count").asLiteral().getInt();
+			    	return size;
+			    }
+			});
+			
+			try {
+				size = handler.get(10, TimeUnit.SECONDS);
+			} catch (TimeoutException e) {
+				handler.cancel(true);
+			}
 		} catch (Exception e){
 			logger.error("Error parsing SPARQL Endpoint {}. Error message {}", sparqlEndPoint, e.getMessage());
 		}
 			
 		final int endpointSize = size;
 		logger.info("number of triples {}", endpointSize);
-
 		
-		Runnable parser = new Runnable(){
-			int nextOffset = 0;
-			public void run() {
-				try{
-					boolean start = true;
-
-					do{
-						if (nextOffset >= endpointSize) 
-							start = false;
-						logger.info("next offset {}, size {}", nextOffset, endpointSize);
-						String query = "SELECT * { ?s ?p ?o . } ORDERBY ASC(?s) LIMIT 10000 OFFSET " + nextOffset;
-						QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint, query);
-						qe.addParam("timeout","10000"); 
-						ResultSet rs = qe.execSelect();
-						
-						while(rs.hasNext()){
-							sparqlIterator.add(rs.next());
-						}
-						
-						nextOffset = ((endpointSize - nextOffset) > 100000) ? nextOffset + 100000 : nextOffset + (endpointSize - nextOffset);
-					}while(start);
-					logger.info("done parsing endpoint {}", sparqlEndPoint);
-				} catch (Exception e){
-					logger.error("Error parsing SPARQL Endpoint {}. Error message {}", sparqlEndPoint, e.getMessage());
+		if (size > -1){
+			Runnable parser = new Runnable(){
+				int nextOffset = 0;
+				public void run() {
+					try{
+						boolean start = true;
+	
+						do{
+							if (nextOffset >= endpointSize) 
+								start = false;
+							logger.info("next offset {}, size {}", nextOffset, endpointSize);
+							String query = "SELECT * { ?s ?p ?o . } ORDERBY ASC(?s) LIMIT 10000 OFFSET " + nextOffset;
+							QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint, query);
+							qe.addParam("timeout","10000"); 
+							ResultSet rs = qe.execSelect();
+							
+							while(rs.hasNext()){
+								sparqlIterator.add(rs.next());
+							}
+							
+							nextOffset = ((endpointSize - nextOffset) > 100000) ? nextOffset + 100000 : nextOffset + (endpointSize - nextOffset);
+						}while(start);
+						logger.info("done parsing endpoint {}", sparqlEndPoint);
+					} catch (Exception e){
+						logger.error("Error parsing SPARQL Endpoint {}. Error message {}", sparqlEndPoint, e.getMessage());
+					}
 				}
-			}
-		};
-		
-		executor.submit(parser);
-		executor.shutdown();
-		
-		
-		
+			};
+			executor.submit(parser);
+			executor.shutdown();
+		}
+			
 		try {
-			while (!executor.isTerminated()){
-				while (!(this.sparqlIterator.isEmpty())) {
-					
-					Object2Quad stmt = new Object2Quad(this.sparqlIterator.poll());
-					sniffer.sniff(stmt.getStatement());
-					
-					if (lstMetricConsumers != null){
-						for(MetricProcess mConsumer : lstMetricConsumers) {
-							mConsumer.notifyNewQuad(stmt);
+				while (!executor.isTerminated()){
+					while (!(this.sparqlIterator.isEmpty())) {
+						
+						Object2Quad stmt = new Object2Quad(this.sparqlIterator.poll());
+						sniffer.sniff(stmt.getStatement());
+						
+						if (lstMetricConsumers != null){
+							for(MetricProcess mConsumer : lstMetricConsumers) {
+								mConsumer.notifyNewQuad(stmt);
+							}
 						}
 					}
 				}
-			}
-
+				
 		} catch(RiotException rex) {
 			logger.warn("Failed to process SPARQL endpoint: {}. Exception: {}", sparqlEndPoint, rex.getMessage());
 			throw rex;
