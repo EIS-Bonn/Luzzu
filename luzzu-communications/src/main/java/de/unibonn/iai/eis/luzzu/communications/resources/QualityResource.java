@@ -1,12 +1,10 @@
 package de.unibonn.iai.eis.luzzu.communications.resources;
 
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
 
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -27,7 +25,6 @@ import de.unibonn.iai.eis.luzzu.io.IOProcessor;
 import de.unibonn.iai.eis.luzzu.io.ProcessorController;
 import de.unibonn.iai.eis.luzzu.io.impl.SPARQLEndPointProcessor;
 import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessor;
-import de.unibonn.iai.eis.luzzu.properties.EnvironmentProperties;
 
 /**
  * REST resource, providing the functionalities to assess the quality of datasets, 
@@ -39,26 +36,34 @@ public class QualityResource {
 	
 	final static Logger logger = LoggerFactory.getLogger(QualityResource.class);
 	
-	private boolean isFree = true;
-	
-
-	@GET
+	@POST
 	@Path("status")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response status(){
-		StringBuilder sbJsonResponse = new StringBuilder();
-		sbJsonResponse.append("{ \"isFree\": \"" + isFree + "\", ");
-		sbJsonResponse.append("\"Agent\": \"" + Main.BASE_URI + "\", ");
-		if (!isFree){
-			sbJsonResponse.append("\"Serving Data Dump\": \"" + EnvironmentProperties.getInstance().getDatasetURI() + "\", ");
-			sbJsonResponse.append("\"Base URI\": \"" + EnvironmentProperties.getInstance().getBaseURI() + "\", ");
+	public Response status(MultivaluedMap<String, String> formParams){
+		String jsonResponse = "";
+		String reqID = "";
+		try{
+			List<String> lstRequestID = formParams.get("RequestID");
+			if(lstRequestID == null || lstRequestID.size() <= 0) {
+				throw new IllegalArgumentException("Request ID was not provided");
+			}
+			
+			reqID = lstRequestID.get(0);
+			jsonResponse = Main.getRequestStatus(reqID);
+			
+		} catch (Exception e){
+			String errorTimeStamp = Long.toString((new Date()).getTime());
+			StringBuilder sb = new StringBuilder();
+        	sb.append("{");
+    		sb.append("\"Agent\": \"" + Main.BASE_URI + "\", ");
+        	sb.append("\"Request ID\": \"" + reqID + "\", ");
+        	sb.append("\"TimeStamp\": \"" + errorTimeStamp + "\", ");
+    		sb.append("\"ErrorMessage\": \"" + e.getMessage() + "\"");
+    		sb.append("}");
+			jsonResponse = sb.toString();
 		}
-		sbJsonResponse.append("\"Outcome\": \"SUCCESS\"");
-		sbJsonResponse.append("}");
 		
-		System.out.println(sbJsonResponse.toString());
-		
-		return Response.ok(sbJsonResponse.toString(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+		return Response.ok(jsonResponse.toString(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
 				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
 			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
 	}
@@ -80,21 +85,22 @@ public class QualityResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response computeQuality(MultivaluedMap<String, String> formParams) {
 		
-		String jsonResponse = null;
-		String datasetURI = null;
-		String jsonStrMetricsConfig = null;
-		String baseURI = "";
-		boolean genQualityReport = false;
+		String jsonResponse = "";
+		final String datasetURI;
+		String _datasetURI = "";
+		final String jsonStrMetricsConfig;
+		final String baseURI;
+		final boolean genQualityReport;
 		
 		try {
 			logger.info("Quality computation request received for dataset: {}", formParams.get("Dataset"));
 			
 			// Extract and validate parameters
-			List<String> lstDatasetURI = formParams.get("Dataset");
-			List<String> lstQualityReportReq = formParams.get("QualityReportRequired");
-			List<String> lstMetricsConfig = formParams.get("MetricsConfiguration");
-			List<String> lstBaseUri = formParams.get("BaseUri");
-			List<String> lstIsSparql = formParams.get("IsSparql");
+			final List<String> lstDatasetURI = formParams.get("Dataset");
+			final List<String> lstQualityReportReq = formParams.get("QualityReportRequired");
+			final List<String> lstMetricsConfig = formParams.get("MetricsConfiguration");
+			final List<String> lstBaseUri = formParams.get("BaseUri");
+			final List<String> lstIsSparql = formParams.get("IsSparql");
 
 			logger.debug("Processing request parameters. DatasetURI: {}; QualityReportRequired: {}; MetricsConfiguration: {}; BaseUri: {}; IsSPARQLEndPoint: {}", 
 					lstDatasetURI, lstQualityReportReq, lstMetricsConfig, lstBaseUri);
@@ -123,73 +129,71 @@ public class QualityResource {
 			genQualityReport = Boolean.parseBoolean(lstQualityReportReq.get(0));
 
 			// Parse the metrics configuration as JSON-LD and convert it to RDF to extract its triples, note that no base URI is expected
-			Model modelConfig = ModelFactory.createDefaultModel();
-			RDFDataMgr.read(modelConfig, new StringReader(jsonStrMetricsConfig), null, Lang.JSONLD);
+			Model _modelConfig = ModelFactory.createDefaultModel();
+			RDFDataMgr.read(_modelConfig, new StringReader(jsonStrMetricsConfig), null, Lang.JSONLD);
+			final Model modelConfig = _modelConfig;
 			
 			// Obtain the base URI of the resources, which is important as it will be used to name the quality metadata models
-			if (lstBaseUri != null) {
-				baseURI = lstBaseUri.get(0);
-			}
+			baseURI = lstBaseUri.get(0);
 			
-			boolean isSPARQLEndpoint = Boolean.parseBoolean(lstIsSparql.get(0));
+			final boolean isSPARQLEndpoint = Boolean.parseBoolean(lstIsSparql.get(0));
 			
-			IOProcessor strmProc = null;
+			datasetURI = lstDatasetURI.get(0);
+			_datasetURI = lstDatasetURI.get(0);
+			
+			Callable<String> newRequest = new Callable<String>(){
+				@Override
+				public String call() throws Exception {
+					IOProcessor strmProc = null;
+					String jsonResponse;
+					try{
+						if (isSPARQLEndpoint){
+							
+							strmProc = new SPARQLEndPointProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
+						} else {
+							if ((datasetURI.startsWith("http://")) || (datasetURI.startsWith("ftp://"))){
+								strmProc = new StreamProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
+							}else {
+								strmProc = ProcessorController.getInstance().decide(baseURI, datasetURI, genQualityReport, modelConfig);
+								logger.debug("Chosen Processor: {}", strmProc.getClass().toString());
+								System.out.println("Chosen Processor: "+strmProc.getClass().toString());
+							}
+						}
 
-			if (isSPARQLEndpoint){
-				String[] expandedListDatasetURI = lstDatasetURI.get(0).split(",");
-				datasetURI = expandedListDatasetURI[0];
-				strmProc = new SPARQLEndPointProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
-			} else {
-				String[] expandedListDatasetURI = lstDatasetURI.get(0).split(",");
-				if (expandedListDatasetURI.length == 1){
-					datasetURI = expandedListDatasetURI[0];
-					if ((datasetURI.startsWith("http://")) || (datasetURI.startsWith("ftp://"))){
-						//if it is an http dataset, then we cannot really identify the actual size
-						strmProc = new StreamProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
-					}else {
-						strmProc = ProcessorController.getInstance().decide(baseURI, datasetURI, genQualityReport, modelConfig);
-						logger.debug("Chosen Processor: {}", strmProc.getClass().toString());
-						System.out.println("Chosen Processor: "+strmProc.getClass().toString());
-					}
-					
-				} else {
-					//if we have a void file (e.g. void.ttl) we have to make sure that it is processed first
-					List<String> datasetFiles = Arrays.asList(expandedListDatasetURI);
-					List<String> voidFiles = new ArrayList<String>();
-					for(String s : datasetFiles) if (s.startsWith("void.")) voidFiles.add(s);
-					for (String v : voidFiles) datasetFiles.remove(v);
-					datasetFiles.addAll(0, voidFiles);
-					
-					strmProc = new StreamProcessor(baseURI, datasetFiles, genQualityReport, modelConfig);
-				}
-			}
-
-			isFree = false;
-			strmProc.processorWorkFlow();
-			strmProc.cleanUp();
-			
-			Model modelQualityRep = null;
-			
-			// Retrieve quality report, if requested to do so
-			if(genQualityReport) {
-				modelQualityRep = strmProc.retreiveQualityReport();
-			}
-			
-			jsonResponse = buildJsonResponse((datasetURI == null) ? baseURI : datasetURI, modelQualityRep);
-			logger.debug("Quality computation request completed. DatasetURI: {}", datasetURI);
+						strmProc.processorWorkFlow();
+						strmProc.cleanUp();
 						
-		} catch(Exception ex) {
-			String errorTimeStamp = Long.toString((new Date()).getTime());
-			logger.error("Error processing quality computation request [" + errorTimeStamp + "]", ex);
+						Model modelQualityRep = null;
+						
+						// Retrieve quality report, if requested to do so
+						if(genQualityReport) {
+							modelQualityRep = strmProc.retreiveQualityReport();
+						}
+						
+						jsonResponse = buildJsonResponse((datasetURI == null) ? baseURI : datasetURI, modelQualityRep);
+						logger.debug("Quality computation request completed. DatasetURI: {}", datasetURI);
+									
+					} catch(Exception ex) {
+						String errorTimeStamp = Long.toString((new Date()).getTime());
+						logger.error("Error processing quality computation request [" + errorTimeStamp + "]", ex);
+						
+						// Build JSON response, indicating that an error occurred
+						jsonResponse = buildJsonErrorResponse(datasetURI, errorTimeStamp, ex.getMessage());
+					}
+					return jsonResponse.toString();
+				}
+				
+			};
+		
+			String requestID = Main.addRequest(newRequest, _datasetURI);
+			System.out.println("Added request: "+ requestID);
+			jsonResponse = Main.getRequestStatus(requestID);
 			
-			// Build JSON response, indicating that an error occurred
-			jsonResponse = buildJsonErrorResponse(datasetURI, errorTimeStamp, ex.getMessage());
+		} catch (Exception e){
+			String errorTimeStamp = Long.toString((new Date()).getTime());
+			jsonResponse = buildJsonErrorResponse(_datasetURI, errorTimeStamp, e.getMessage());
 		}
 		
-		isFree = true;
-		//return jsonResponse;
-		
-		System.out.println("Finished Assessing: "+ datasetURI);
 		return Response.ok(jsonResponse,MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
 				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
 			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();

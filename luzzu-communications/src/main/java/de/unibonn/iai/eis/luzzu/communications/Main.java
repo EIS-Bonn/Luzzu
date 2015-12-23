@@ -3,7 +3,17 @@ package de.unibonn.iai.eis.luzzu.communications;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.json.stream.JsonGenerator;
 
@@ -24,7 +34,14 @@ public class Main {
 	
 	public static final String BASE_URI = SCHEME+"://"+DOMAIN+":"+PORT_NUMBER+"/"+ APPLICATION + "/";
 
+	private static Map<String,Future<String>> computingResources = new ConcurrentHashMap<String, Future<String>>();
+	private static Map<String,String> computeResourceDirectory = new ConcurrentHashMap<String, String>();
+	private static Map<String,String> resourceToDatasetDirectory = new ConcurrentHashMap<String, String>();
+	private static Set<String> finishedResources = new HashSet<String>();
+	
+	private static ExecutorService executor = Executors.newFixedThreadPool(10);
 
+	
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
      * @return Grizzly HTTP server.
@@ -61,5 +78,48 @@ public class Main {
         	}
         }
     }
+    
+    public static String getRequestStatus(String uuid) throws InterruptedException, ExecutionException{
+    	if (computeResourceDirectory.get(uuid) != null){
+    		if (!finishedResources.contains(uuid)){
+        		Future<String> handler = computingResources.get(uuid);
+        		if (handler.isDone()){
+        			String result = handler.get();
+        			computeResourceDirectory.remove(uuid);
+        			computeResourceDirectory.put(uuid, result);
+        			finishedResources.add(uuid);
+        		} 
+    		}
+    		return computeResourceDirectory.get(uuid);
+    	} else {
+    		StringBuilder sb = new StringBuilder();
+        	sb.append("{");
+    		sb.append("\"Agent\": \"" + BASE_URI + "\", ");
+        	sb.append("\"RequestID\": \"" + uuid + "\", ");
+        	sb.append("\"Error\": \"Request ID not Found\"");
+        	sb.append("}");
+        	return sb.toString();
+    	}
+    }
+    
+    public static String addRequest(Callable<String> request, String datasetURI){
+    	Future<String> handler = executor.submit(request);
+    	String uuid = UUID.randomUUID().toString();
+    	computingResources.put(uuid, handler);
+    	resourceToDatasetDirectory.put(uuid, datasetURI);
+    	
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("{");
+		sb.append("\"Agent\": \"" + BASE_URI + "\", ");
+    	sb.append("\"RequestID\": \"" + uuid + "\", ");
+    	sb.append("\"Dataset\": \"" + datasetURI + "\", ");
+    	sb.append("\"Status\": \"In Progress\"");
+    	sb.append("}");
+    	
+    	computeResourceDirectory.put(uuid, sb.toString());
+    	return uuid;
+    }
+    
+    
 
 }
