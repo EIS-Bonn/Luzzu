@@ -61,6 +61,7 @@ public class QualityResource {
     		sb.append("\"ErrorMessage\": \"" + e.getMessage() + "\"");
     		sb.append("}");
 			jsonResponse = sb.toString();
+			e.printStackTrace();
 		}
 		
 		return Response.ok(jsonResponse.toString(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
@@ -179,6 +180,7 @@ public class QualityResource {
 						
 						// Build JSON response, indicating that an error occurred
 						jsonResponse = buildJsonErrorResponse(datasetURI, errorTimeStamp, ex.getMessage());
+						ex.printStackTrace();
 					}
 					return jsonResponse.toString();
 				}
