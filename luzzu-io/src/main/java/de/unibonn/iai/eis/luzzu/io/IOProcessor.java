@@ -34,5 +34,5 @@ public interface IOProcessor {
 	 * 
 	 * @throws ProcessorNotInitialised
 	 */
-	void processorWorkFlow();
+	void processorWorkFlow() throws ProcessorNotInitialised;
 }

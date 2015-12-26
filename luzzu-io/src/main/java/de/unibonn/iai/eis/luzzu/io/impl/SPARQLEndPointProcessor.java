@@ -47,6 +47,7 @@ import de.unibonn.iai.eis.luzzu.datatypes.Args;
 import de.unibonn.iai.eis.luzzu.datatypes.Object2Quad;
 import de.unibonn.iai.eis.luzzu.exceptions.AfterException;
 import de.unibonn.iai.eis.luzzu.exceptions.BeforeException;
+import de.unibonn.iai.eis.luzzu.exceptions.EndpointException;
 import de.unibonn.iai.eis.luzzu.exceptions.ExternalMetricLoaderException;
 import de.unibonn.iai.eis.luzzu.exceptions.MetadataException;
 import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
@@ -111,15 +112,17 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		PropertyManager.getInstance().addToEnvironmentVars("baseURI", baseURI);
 	}
 	
-	public void processorWorkFlow(){
+	public void processorWorkFlow() throws ProcessorNotInitialised{
 		this.setUpProcess();
 		
 		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", this.baseURI);
 		try {
 			this.startProcessing();
+		} catch (EndpointException ep){
+			throw ep;
 		} catch (ProcessorNotInitialised e) {
 			this.processorWorkFlow();
-		}
+		} 
 		
 		this.writeQualityMetadataFile();
 		// Generate quality report, if required by the invoker and write it into a file
@@ -156,7 +159,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		try{
 			String query = "SELECT (count(?s) AS ?count) {?s ?p ?o . }";
 			final QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint,query);
-			qe.addParam("timeout","10000"); //5 sec
+			qe.addParam("timeout","10000"); //10 sec
 	
 			
 			ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -173,9 +176,11 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 				size = handler.get(10, TimeUnit.SECONDS);
 			} catch (TimeoutException e) {
 				handler.cancel(true);
+				throw e;
 			}
 		} catch (Exception e){
 			logger.error("Error parsing SPARQL Endpoint {}. Error message {}", sparqlEndPoint, e.getMessage());
+			throw new EndpointException(e.getMessage());
 		}
 			
 		final int endpointSize = size;
@@ -206,13 +211,15 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 						logger.info("done parsing endpoint {}", sparqlEndPoint);
 					} catch (Exception e){
 						logger.error("Error parsing SPARQL Endpoint {}. Error message {}", sparqlEndPoint, e.getMessage());
+						throw e;
 					}
 				}
 			};
 			executor.submit(parser);
-			executor.shutdown();
 		}
 			
+		executor.shutdown();
+
 		try {
 				while (!executor.isTerminated()){
 					while (!(this.sparqlIterator.isEmpty())) {
