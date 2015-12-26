@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -35,6 +36,26 @@ import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessor;
 public class QualityResource {
 	
 	final static Logger logger = LoggerFactory.getLogger(QualityResource.class);
+	
+	
+	
+	@GET
+	@Path("getPendingRequests")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPendingRequests(){
+		return Response.ok(Main.getAllPendingRequests(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
+	}
+	
+	@GET
+	@Path("getFinishedRequests")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getFinishedRequests(){
+		return Response.ok(Main.getAllFinishedRequests(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
+	}
 	
 	@POST
 	@Path("status")

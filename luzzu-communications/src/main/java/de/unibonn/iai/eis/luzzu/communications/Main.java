@@ -120,6 +120,41 @@ public class Main {
     	return uuid;
     }
     
+    public static String getAllPendingRequests(){
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("{");
+		sb.append("\"PendingRequests\": [ ");
+
+    	for (String s : resourceToDatasetDirectory.keySet()){
+    		if (!finishedResources.contains(s)){
+    	    	sb.append("{");
+    			sb.append("\"RequestID\": \"" + s + "\", ");
+    	    	sb.append("\"Dataset\": \"" + resourceToDatasetDirectory.get(s) + "\", ");
+    	    	sb.append("}");
+    		}
+    	}
+    	sb.append("]");
+    	sb.append("}");
+    	return sb.toString();
+    }
+    
+    public static String getAllFinishedRequests(){
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("{");
+		sb.append("\"PendingRequests\": [ ");
+
+		for (String s : finishedResources){
+			sb.append("{");
+			sb.append("\"RequestID\": \"" + s + "\", ");
+	    	sb.append("\"Dataset\": \"" + resourceToDatasetDirectory.get(s) + "\", ");
+	    	sb.append("}");
+		}
+
+		sb.append("]");
+    	sb.append("}");
+    	return sb.toString();
+    }
+    
     
 
 }
