@@ -118,18 +118,25 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", this.baseURI);
 		try {
 			this.startProcessing();
+			this.writeQualityMetadataFile();
+			// Generate quality report, if required by the invoker and write it into a file
+			if (this.genQualityReport) {
+				this.generateQualityReport();
+				this.writeReportMetadataFile();
+			}
 		} catch (EndpointException ep){
 			throw ep;
 		} catch (ProcessorNotInitialised e) {
 			this.processorWorkFlow();
+			this.writeQualityMetadataFile();
+			// Generate quality report, if required by the invoker and write it into a file
+			if (this.genQualityReport) {
+				this.generateQualityReport();
+				this.writeReportMetadataFile();
+			}
 		} 
 		
-		this.writeQualityMetadataFile();
-		// Generate quality report, if required by the invoker and write it into a file
-		if (this.genQualityReport) {
-			this.generateQualityReport();
-			this.writeReportMetadataFile();
-		}
+		
 	}
 	
 	
@@ -157,9 +164,9 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		//get the number of triples in an endpoint
 		int size = -1;
 		try{
-			String query = "SELECT (count(?s) AS ?count) {?s ?p ?o . }";
+			String query = "SELECT DISTINCT (count(?s) AS ?count) {?s ?p ?o . }";
 			final QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint,query);
-			qe.addParam("timeout","10000"); //10 sec
+			//qe.addParam("timeout","10000"); //10 sec
 	
 			
 			ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -168,19 +175,20 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 			    @Override
 			    public Integer call() throws Exception {
 			    	int size = qe.execSelect().next().get("count").asLiteral().getInt();
+			    	System.out.println(size);
 			    	return size;
 			    }
 			});
 			
 			try {
-				size = handler.get(10, TimeUnit.SECONDS);
+				size = handler.get(1, TimeUnit.MINUTES);
 			} catch (TimeoutException e) {
 				handler.cancel(true);
 				throw e;
 			}
 		} catch (Exception e){
 			logger.error("Error parsing SPARQL Endpoint {}. Error message {}", sparqlEndPoint, e.getMessage());
-			throw new EndpointException(e.getMessage());
+			throw new EndpointException("Endpoint Exception for: "+ sparqlEndPoint + " " + e.getMessage());
 		}
 			
 		final int endpointSize = size;
@@ -197,9 +205,9 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 							if (nextOffset >= endpointSize) 
 								start = false;
 							logger.info("next offset {}, size {}", nextOffset, endpointSize);
-							String query = "SELECT * { ?s ?p ?o . } ORDERBY ASC(?s) LIMIT 10000 OFFSET " + nextOffset;
+							String query = "SELECT DISTINCT * { ?s ?p ?o . } ORDERBY ASC(?s) LIMIT 10000 OFFSET " + nextOffset;
 							QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint, query);
-							qe.addParam("timeout","10000"); 
+							//qe.addParam("timeout","10000"); 
 							ResultSet rs = qe.execSelect();
 							
 							while(rs.hasNext()){
