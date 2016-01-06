@@ -49,10 +49,19 @@ public class QualityResource {
 	}
 	
 	@GET
-	@Path("getFinishedRequests")
+	@Path("getSuccessfulRequests")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getFinishedRequests(){
-		return Response.ok(Main.getAllFinishedRequests(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+	public Response getSuccessfulRequests(){
+		return Response.ok(Main.getAllSuccessfulRequests(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
+	}
+
+	@GET
+	@Path("getFailedRequests")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getFailedRequests(){
+		return Response.ok(Main.getAllFailedRequests(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
 				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
 			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
 	}
@@ -77,7 +86,7 @@ public class QualityResource {
 			StringBuilder sb = new StringBuilder();
         	sb.append("{");
     		sb.append("\"Agent\": \"" + Main.BASE_URI + "\", ");
-        	sb.append("\"Request ID\": \"" + reqID + "\", ");
+        	sb.append("\"RequestID\": \"" + reqID + "\", ");
         	sb.append("\"TimeStamp\": \"" + errorTimeStamp + "\", ");
     		sb.append("\"ErrorMessage\": \"" + e.getMessage() + "\"");
     		sb.append("}");

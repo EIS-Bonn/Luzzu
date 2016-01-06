@@ -17,6 +17,8 @@ import java.util.concurrent.Future;
 
 import javax.json.stream.JsonGenerator;
 
+import org.apache.jena.atlas.json.JSON;
+import org.apache.jena.atlas.json.JsonObject;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -39,6 +41,9 @@ public class Main {
 	private static Map<String,String> resourceToDatasetDirectory = new ConcurrentHashMap<String, String>();
 	private static Set<String> finishedResources = new HashSet<String>();
 	
+	private static Set<String> successfulResources = new HashSet<String>();
+	private static Set<String> failedResources = new HashSet<String>();
+
 	private static ExecutorService executor = Executors.newFixedThreadPool(10);
 
 	
@@ -87,6 +92,15 @@ public class Main {
         			String result = handler.get();
         			computeResourceDirectory.remove(uuid);
         			computeResourceDirectory.put(uuid, result);
+        			
+        			JsonObject jobj = JSON.parse(result);
+        			String outcome = jobj.get("Outcome").getAsString().value();
+        			if (outcome.contains("SUCCESS")){
+        				successfulResources.add(uuid);
+        			} else {
+        				failedResources.add(uuid);
+        			}
+        			
         			finishedResources.add(uuid);
         		} 
     		}
@@ -129,7 +143,7 @@ public class Main {
     		if (!finishedResources.contains(s)){
     	    	sb.append("{");
     			sb.append("\"RequestID\": \"" + s + "\", ");
-    	    	sb.append("\"Dataset\": \"" + resourceToDatasetDirectory.get(s) + "\", ");
+    	    	sb.append("\"Dataset\": \"" + resourceToDatasetDirectory.get(s) + "\"");
     	    	sb.append("}");
     		}
     	}
@@ -138,15 +152,32 @@ public class Main {
     	return sb.toString();
     }
     
-    public static String getAllFinishedRequests(){
+    public static String getAllSuccessfulRequests(){
     	StringBuilder sb = new StringBuilder();
     	sb.append("{");
-		sb.append("\"PendingRequests\": [ ");
+		sb.append("\"SuccessfulRequests\": [ ");
 
-		for (String s : finishedResources){
+		for (String s : successfulResources){
 			sb.append("{");
 			sb.append("\"RequestID\": \"" + s + "\", ");
-	    	sb.append("\"Dataset\": \"" + resourceToDatasetDirectory.get(s) + "\", ");
+	    	sb.append("\"Dataset\": \"" + resourceToDatasetDirectory.get(s) + "\"");
+	    	sb.append("}");
+		}
+
+		sb.append("]");
+    	sb.append("}");
+    	return sb.toString();
+    }
+    
+    public static String getAllFailedRequests(){
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("{");
+		sb.append("\"FailedRequests\": [ ");
+
+		for (String s : failedResources){
+			sb.append("{");
+			sb.append("\"RequestID\": \"" + s + "\", ");
+	    	sb.append("\"Dataset\": \"" + resourceToDatasetDirectory.get(s) + "\"");
 	    	sb.append("}");
 		}
 
