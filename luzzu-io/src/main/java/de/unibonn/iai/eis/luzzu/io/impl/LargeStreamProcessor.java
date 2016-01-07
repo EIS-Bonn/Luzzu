@@ -296,23 +296,16 @@ public class LargeStreamProcessor implements IOProcessor {
 		final Lang lang  = RDFLanguages.filenameToLang(datasetURI);
 
 		
-		for (int i = 0; i <= cores; i++){
-		    final long currentCount = ((splitter * i) + 1);
+		for (int i = 0; i <= (totalTriples - 1); i+=splitter){
+		    final long currentCount = i+1;
 		    final long ttri = totalTriples;
-		    final int currentI = i;
 		    		
 			Runnable parser = new Runnable() {
 				public void run() {
 					try{
 						BufferedReader reader;
-						if (currentI == (cores - 1)){
-							reader = getPartialSubset(currentCount, ttri);
-							System.out.println("Created reader for: "+currentCount + " " + ttri);
-						}
-						else{
-							reader = getPartialSubset(currentCount, (currentCount + splitter));
-							System.out.println("Created reader for: "+currentCount + " " + (currentCount + splitter));
-						}
+						reader = getPartialSubset(currentCount, (currentCount < ttri) ? (currentCount + splitter) : ttri);
+						System.out.println("Created reader for: "+currentCount + " " + (currentCount + splitter));
 						
 						RDFDataMgr.parse(rdfStream, reader, lang);
 					} catch (Exception e) {
