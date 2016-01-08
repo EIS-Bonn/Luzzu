@@ -204,7 +204,7 @@ public class LargeStreamProcessor implements IOProcessor {
 				logger.error(e.getLocalizedMessage());
 			}
 			
-			this.executor = Executors.newSingleThreadExecutor();
+			this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 	}
 	
 	public void cleanUp() throws ProcessorNotInitialised{
