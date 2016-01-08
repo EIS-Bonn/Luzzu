@@ -37,6 +37,48 @@ public class QualityResource {
 	
 	final static Logger logger = LoggerFactory.getLogger(QualityResource.class);
 	
+	@POST
+	@Path("cancelRequest")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response cancelRequest(MultivaluedMap<String, String> formParams){
+		String jsonResponse = "";
+		String reqID = "";
+		try{
+			List<String> lstRequestID = formParams.get("RequestID");
+			if(lstRequestID == null || lstRequestID.size() <= 0) {
+				throw new IllegalArgumentException("Request ID was not provided");
+			}
+			
+			reqID = lstRequestID.get(0);
+			boolean success = Main.cancelRequest(reqID);
+			
+			String timeStamp = Long.toString((new Date()).getTime());
+			StringBuilder sb = new StringBuilder();
+        	sb.append("{");
+    		sb.append("\"Agent\": \"" + Main.BASE_URI + "\", ");
+        	sb.append("\"RequestID\": \"" + reqID + "\", ");
+        	sb.append("\"CancellationRequestSuccess\": \"" + success + "\", ");
+    		sb.append("\"Time\": \"" + timeStamp + "\"");
+    		sb.append("}");
+			
+    		jsonResponse = sb.toString();
+		} catch (Exception e){
+			String errorTimeStamp = Long.toString((new Date()).getTime());
+			StringBuilder sb = new StringBuilder();
+        	sb.append("{");
+    		sb.append("\"Agent\": \"" + Main.BASE_URI + "\", ");
+        	sb.append("\"RequestID\": \"" + reqID + "\", ");
+        	sb.append("\"TimeStamp\": \"" + errorTimeStamp + "\", ");
+    		sb.append("\"ErrorMessage\": \"" + e.getMessage() + "\"");
+    		sb.append("}");
+			jsonResponse = sb.toString();
+			e.printStackTrace();
+		}
+		
+		return Response.ok(jsonResponse.toString(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
+	}
 	
 	
 	@GET

@@ -186,6 +186,26 @@ public class Main {
     	return sb.toString();
     }
     
+    public static boolean cancelRequest(String requestId){
+    	if (computingResources.containsKey(requestId)){
+    		Future<String> handler = computingResources.get(requestId);
+    		handler.cancel(true);
+			failedResources.add(requestId);
+
+		   	StringBuilder sb = new StringBuilder();
+	    	sb.append("{");
+			sb.append("\"Agent\": \"" + BASE_URI + "\", ");
+	    	sb.append("\"RequestID\": \"" + requestId + "\", ");
+	    	sb.append("\"Dataset\": \"" + resourceToDatasetDirectory.get(requestId) + "\", ");
+	    	sb.append("\"Status\": \"Cancelled\"");
+	    	sb.append("}");
+    		
+			computeResourceDirectory.put(requestId, sb.toString());
+    		return true;
+    	}
+    	else
+    		return false;
+    }
     
 
 }
