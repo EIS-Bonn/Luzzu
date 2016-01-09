@@ -51,6 +51,8 @@ import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
 import de.unibonn.iai.eis.luzzu.io.IOProcessor;
 import de.unibonn.iai.eis.luzzu.io.configuration.DeclerativeMetricCompiler;
 import de.unibonn.iai.eis.luzzu.io.configuration.ExternalMetricLoader;
+import de.unibonn.iai.eis.luzzu.io.helper.IOStats;
+import de.unibonn.iai.eis.luzzu.io.helper.StreamMetadataSniffer;
 import de.unibonn.iai.eis.luzzu.properties.EnvironmentProperties;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 import de.unibonn.iai.eis.luzzu.qml.parser.ParseException;
@@ -560,6 +562,30 @@ public class StreamProcessor implements IOProcessor {
 			
 			this.stopSignal = true;
 		}
+		
+		public Long getStatementProcessed(){
+			return this.stmtsProcessed;
+		}
+		
+		public String getMetricName(){
+			return this.metricName;
+		}
 
     }
+
+	@Override
+	public synchronized List<IOStats> getIOStats() throws ProcessorNotInitialised {
+		
+		List<IOStats> lst = new ArrayList<IOStats>();
+		
+		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");	
+		
+		for (MetricProcess mp : lstMetricConsumers){
+			Long stmtProcessed = mp.getStatementProcessed();
+			String metricName = mp.getMetricName();
+			lst.add(new IOStats(metricName,stmtProcessed));
+		}
+		
+		return lst;
+	}
 }

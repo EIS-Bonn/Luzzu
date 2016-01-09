@@ -3,7 +3,6 @@ package de.unibonn.iai.eis.luzzu.communications.resources;
 import java.io.StringReader;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -21,8 +20,8 @@ import org.slf4j.LoggerFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
+import de.unibonn.iai.eis.luzzu.communications.ExtendedCallable;
 import de.unibonn.iai.eis.luzzu.communications.Main;
-import de.unibonn.iai.eis.luzzu.io.IOProcessor;
 import de.unibonn.iai.eis.luzzu.io.ProcessorController;
 import de.unibonn.iai.eis.luzzu.io.impl.SPARQLEndPointProcessor;
 import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessor;
@@ -36,6 +35,39 @@ import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessor;
 public class QualityResource {
 	
 	final static Logger logger = LoggerFactory.getLogger(QualityResource.class);
+	
+	@POST
+	@Path("getStatisticsForRequest")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getStatisticsForRequest(MultivaluedMap<String, String> formParams){
+		String jsonResponse = "";
+		String reqID = "";
+		try{
+			List<String> lstRequestID = formParams.get("RequestID");
+			if(lstRequestID == null || lstRequestID.size() <= 0) {
+				throw new IllegalArgumentException("Request ID was not provided");
+			}
+			
+			reqID = lstRequestID.get(0);
+    		jsonResponse = Main.getRequestStats(reqID);
+		} catch (Exception e){
+			String errorTimeStamp = Long.toString((new Date()).getTime());
+			StringBuilder sb = new StringBuilder();
+        	sb.append("{");
+    		sb.append("\"Agent\": \"" + Main.BASE_URI + "\", ");
+        	sb.append("\"RequestID\": \"" + reqID + "\", ");
+        	sb.append("\"TimeStamp\": \"" + errorTimeStamp + "\", ");
+    		sb.append("\"ErrorMessage\": \"" + e.getMessage() + "\"");
+    		sb.append("}");
+			jsonResponse = sb.toString();
+			e.printStackTrace();
+		}
+		
+		return Response.ok(jsonResponse.toString(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
+	}
+	
 	
 	@POST
 	@Path("cancelRequest")
@@ -214,14 +246,14 @@ public class QualityResource {
 			datasetURI = lstDatasetURI.get(0);
 			_datasetURI = lstDatasetURI.get(0);
 			
-			Callable<String> newRequest = new Callable<String>(){
+			ExtendedCallable<String> newRequest = new ExtendedCallable<String>(){
+				
+				
 				@Override
 				public String call() throws Exception {
-					IOProcessor strmProc = null;
 					String jsonResponse;
 					try{
 						if (isSPARQLEndpoint){
-							
 							strmProc = new SPARQLEndPointProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
 						} else {
 							if ((datasetURI.startsWith("http://")) || (datasetURI.startsWith("ftp://"))){
@@ -258,7 +290,7 @@ public class QualityResource {
 				}
 				
 			};
-		
+			
 			String requestID = Main.addRequest(newRequest, _datasetURI);
 			System.out.println("Added request: "+ requestID);
 			jsonResponse = Main.getRequestStatus(requestID);

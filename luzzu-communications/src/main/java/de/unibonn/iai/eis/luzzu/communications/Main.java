@@ -4,6 +4,7 @@ package de.unibonn.iai.eis.luzzu.communications;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -23,6 +24,8 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
+import de.unibonn.iai.eis.luzzu.io.helper.IOStats;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 
 public class Main {
@@ -40,6 +43,8 @@ public class Main {
 	private static Map<String,String> computeResourceDirectory = new ConcurrentHashMap<String, String>();
 	private static Map<String,String> resourceToDatasetDirectory = new ConcurrentHashMap<String, String>();
 	private static Set<String> finishedResources = new HashSet<String>();
+	
+	private static Map<String, Callable<String>> callableDirectory = new ConcurrentHashMap<String, Callable<String>>();
 	
 	private static Set<String> successfulResources = new HashSet<String>();
 	private static Set<String> failedResources = new HashSet<String>();
@@ -121,6 +126,7 @@ public class Main {
     	String uuid = UUID.randomUUID().toString();
     	computingResources.put(uuid, handler);
     	resourceToDatasetDirectory.put(uuid, datasetURI);
+    	callableDirectory.put(uuid, request);
     	
     	StringBuilder sb = new StringBuilder();
     	sb.append("{");
@@ -190,6 +196,7 @@ public class Main {
     	if (computingResources.containsKey(requestId)){
     		Future<String> handler = computingResources.get(requestId);
     		handler.cancel(true);
+    		
 			failedResources.add(requestId);
 
 		   	StringBuilder sb = new StringBuilder();
@@ -200,11 +207,50 @@ public class Main {
 	    	sb.append("\"Status\": \"Cancelled\"");
 	    	sb.append("}");
     		
+	    	finishedResources.add(requestId);
 			computeResourceDirectory.put(requestId, sb.toString());
     		return true;
     	}
     	else
     		return false;
+    }
+    
+    public static String getRequestStats(String requestId){
+		StringBuilder sb = new StringBuilder();
+
+    	if (computingResources.containsKey(requestId)){
+    		ExtendedCallable<String> callable = (ExtendedCallable<String>) callableDirectory.get(requestId);
+    		try {
+    			List<IOStats> stats = callable.getIOProcessor().getIOStats();
+
+		    	sb.append("{");
+				sb.append("\"Agent\": \"" + BASE_URI + "\", ");
+		    	sb.append("\"RequestID\": \"" + requestId + "\", ");
+		    	sb.append("\"Stats\": \"" + "[");
+		    	for (IOStats ios : stats){
+		    		sb.append("{");
+					sb.append("\"ClassName\": \"" + ios.getClassName() + "\", ");
+			    	sb.append("\"TriplesProcessed\": \"" + ios.getTriplesProcessed() + "\"");
+		    		sb.append("}");
+		    	}
+		    	sb.append("]");
+		    	sb.append("}");
+			} catch (ProcessorNotInitialised e) {
+	        	sb.append("{");
+	    		sb.append("\"Agent\": \"" + BASE_URI + "\", ");
+	        	sb.append("\"RequestID\": \"" + requestId + "\", ");
+	        	sb.append("\"Error\": \"Cannot get Statistics\"");
+	        	sb.append("}");
+	        }
+    	} else{
+        	sb.append("{");
+    		sb.append("\"Agent\": \"" + BASE_URI + "\", ");
+        	sb.append("\"RequestID\": \"" + requestId + "\", ");
+        	sb.append("\"Error\": \"Cannot get Statistics\"");
+        	sb.append("}");
+    	}
+    	return sb.toString();
+
     }
     
 

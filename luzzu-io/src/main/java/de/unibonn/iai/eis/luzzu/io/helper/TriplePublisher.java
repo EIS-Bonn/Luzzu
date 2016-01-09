@@ -1,4 +1,4 @@
-package de.unibonn.iai.eis.luzzu.io.impl;
+package de.unibonn.iai.eis.luzzu.io.helper;
 
 import java.io.IOException;
 import java.io.Serializable;

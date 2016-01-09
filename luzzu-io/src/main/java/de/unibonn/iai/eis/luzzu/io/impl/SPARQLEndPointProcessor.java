@@ -54,6 +54,8 @@ import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
 import de.unibonn.iai.eis.luzzu.io.IOProcessor;
 import de.unibonn.iai.eis.luzzu.io.configuration.DeclerativeMetricCompiler;
 import de.unibonn.iai.eis.luzzu.io.configuration.ExternalMetricLoader;
+import de.unibonn.iai.eis.luzzu.io.helper.IOStats;
+import de.unibonn.iai.eis.luzzu.io.helper.StreamMetadataSniffer;
 import de.unibonn.iai.eis.luzzu.properties.EnvironmentProperties;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 import de.unibonn.iai.eis.luzzu.qml.parser.ParseException;
@@ -125,6 +127,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 				this.writeReportMetadataFile();
 			}
 		} catch (EndpointException ep){
+			this.cleanUp();
 			throw ep;
 		} catch (ProcessorNotInitialised e) {
 			this.processorWorkFlow();
@@ -175,7 +178,6 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 			    @Override
 			    public Integer call() throws Exception {
 			    	int size = qe.execSelect().next().get("count").asLiteral().getInt();
-			    	System.out.println(size);
 			    	return size;
 			    }
 			});
@@ -206,8 +208,9 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 								start = false;
 							logger.info("next offset {}, size {}", nextOffset, endpointSize);
 							String query = "SELECT DISTINCT * { ?s ?p ?o . } ORDER BY ASC(?s) LIMIT 10000 OFFSET " + nextOffset;
+							System.out.println(query);
 							QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint, query);
-							//qe.addParam("timeout","10000"); 
+							qe.addParam("timeout","10000"); 
 							ResultSet rs = qe.execSelect();
 							
 							while(rs.hasNext()){
@@ -220,6 +223,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 					} catch (Exception e){
 						logger.error("Error parsing SPARQL Endpoint {}. Error message {}", sparqlEndPoint, e.getMessage());
 						throw e;
+						
 					}
 				}
 			};
@@ -552,7 +556,30 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 			this.stopSignal = true;
 		}
 
+		public Long getStatementProcessed(){
+			return this.stmtsProcessed;
+		}
+		
+		public String getMetricName(){
+			return this.metricName;
+		}
     }
+	
+	@Override
+	public synchronized List<IOStats> getIOStats() throws ProcessorNotInitialised {
+		
+		List<IOStats> lst = new ArrayList<IOStats>();
+		
+		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");	
+		
+		for (MetricProcess mp : lstMetricConsumers){
+			Long stmtProcessed = mp.getStatementProcessed();
+			String metricName = mp.getMetricName();
+			lst.add(new IOStats(metricName,stmtProcessed));
+		}
+		
+		return lst;
+	}
 
 
 }

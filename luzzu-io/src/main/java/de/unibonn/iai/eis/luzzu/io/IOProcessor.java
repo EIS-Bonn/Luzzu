@@ -1,8 +1,11 @@
 package de.unibonn.iai.eis.luzzu.io;
 
+import java.util.List;
+
 import com.hp.hpl.jena.rdf.model.Model;
 
 import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
+import de.unibonn.iai.eis.luzzu.io.helper.IOStats;
 
 public interface IOProcessor {
 
@@ -35,4 +38,14 @@ public interface IOProcessor {
 	 * @throws ProcessorNotInitialised
 	 */
 	void processorWorkFlow() throws ProcessorNotInitialised;
+	
+	
+	/**
+	 * Returns statistics related to the IO processor
+	 * such as the number of processed statements
+	 * 
+	 * @return
+	 * @throws ProcessorNotInitialised
+	 */
+	List<IOStats> getIOStats() throws ProcessorNotInitialised;
 }

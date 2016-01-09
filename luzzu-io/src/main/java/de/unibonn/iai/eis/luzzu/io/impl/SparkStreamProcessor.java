@@ -48,6 +48,8 @@ import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
 import de.unibonn.iai.eis.luzzu.io.IOProcessor;
 import de.unibonn.iai.eis.luzzu.io.configuration.DeclerativeMetricCompiler;
 import de.unibonn.iai.eis.luzzu.io.configuration.ExternalMetricLoader;
+import de.unibonn.iai.eis.luzzu.io.helper.IOStats;
+import de.unibonn.iai.eis.luzzu.io.helper.TriplePublisher;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 import de.unibonn.iai.eis.luzzu.qml.parser.ParseException;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.LMI;
@@ -423,7 +425,7 @@ public class SparkStreamProcessor  implements IOProcessor, Serializable  {
 		public boolean isFinished() {
 			return this.hasFinished;
 		}
-
+		
 	}
 	
 	private static Triple toTripleStmt(String stmt){
@@ -453,6 +455,12 @@ public class SparkStreamProcessor  implements IOProcessor, Serializable  {
 		}
 		
 		return t;
+	}
+
+	@Override
+	public synchronized List<IOStats> getIOStats() throws ProcessorNotInitialised {
+		//TODO
+		return null;
 	}
 
 }
