@@ -5,7 +5,7 @@ PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
 PREFIX sdmx-dimension:<http://purl.org/linked-data/sdmx/2009/dimension#>
 
 SELECT DISTINCT ?metric ?value {
-	?obs a daq:Observation ;
+	?obs a <http://purl.org/linked-data/cube#Observation> ;
 		daq:metric ?metric_instance ;
 		daq:value ?value ;
 		sdmx-dimension:timePeriod ?dateTime 
@@ -19,4 +19,4 @@ SELECT DISTINCT ?metric ?value {
 	} 
   
   	?metric_instance a ?metric .
-} 
+} ORDER BY ASC(?metric)

@@ -13,6 +13,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -126,10 +127,10 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 				this.generateQualityReport();
 				this.writeReportMetadataFile();
 			}
-		} catch (EndpointException ep){
+		} catch (EndpointException ex){
 			this.cleanUp();
-			throw ep;
-		} catch (ProcessorNotInitialised e) {
+			throw ex;
+		}  catch (ProcessorNotInitialised e) {
 			this.processorWorkFlow();
 			this.writeQualityMetadataFile();
 			// Generate quality report, if required by the invoker and write it into a file
@@ -137,9 +138,8 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 				this.generateQualityReport();
 				this.writeReportMetadataFile();
 			}
-		} 
-		
-		
+		} 		
+	
 	}
 	
 	
@@ -166,14 +166,14 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		
 		//get the number of triples in an endpoint
 		int size = -1;
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+
 		try{
 			String query = "SELECT DISTINCT (count(?s) AS ?count) {?s ?p ?o . }";
 			final QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint,query);
 			//qe.addParam("timeout","10000"); //10 sec
 	
-			
-			ExecutorService executor = Executors.newSingleThreadExecutor();
-			
+						
 			final Future<Integer> handler = executor.submit(new Callable<Integer>() {
 			    @Override
 			    public Integer call() throws Exception {
@@ -196,10 +196,11 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		final int endpointSize = size;
 		logger.info("number of triples {}", endpointSize);
 		
+		Future<?> _futureParser = null;
 		if (size > -1){
 			Runnable parser = new Runnable(){
 				int nextOffset = 0;
-				public void run() {
+				public void run(){
 					try{
 						boolean start = true;
 	
@@ -223,30 +224,34 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 					} catch (Exception e){
 						logger.error("Error parsing SPARQL Endpoint {}. Error message {}", sparqlEndPoint, e.getMessage());
 						throw e;
-						
 					}
 				}
 			};
-			executor.submit(parser);
+			_futureParser = executor.submit(parser);
 		}
 			
 		executor.shutdown();
 
 		try {
-				while (!executor.isTerminated()){
-					while (!(this.sparqlIterator.isEmpty())) {
-						
-						Object2Quad stmt = new Object2Quad(this.sparqlIterator.poll());
-						sniffer.sniff(stmt.getStatement());
-						
-						if (lstMetricConsumers != null){
-							for(MetricProcess mConsumer : lstMetricConsumers) {
-								mConsumer.notifyNewQuad(stmt);
-							}
+			while (!executor.isTerminated()){
+				while (!(this.sparqlIterator.isEmpty())) {
+					
+					Object2Quad stmt = new Object2Quad(this.sparqlIterator.poll());
+					sniffer.sniff(stmt.getStatement());
+					
+					if (lstMetricConsumers != null){
+						for(MetricProcess mConsumer : lstMetricConsumers) {
+							mConsumer.notifyNewQuad(stmt);
 						}
 					}
 				}
-				
+			}
+			
+			try{
+				_futureParser.get();
+			} catch (ExecutionException | InterruptedException e){
+				throw new EndpointException("Endpoint Exception for: "+ sparqlEndPoint + " " + e.getMessage());
+			}
 		} catch(RiotException rex) {
 			logger.warn("Failed to process SPARQL endpoint: {}. Exception: {}", sparqlEndPoint, rex.getMessage());
 			throw rex;

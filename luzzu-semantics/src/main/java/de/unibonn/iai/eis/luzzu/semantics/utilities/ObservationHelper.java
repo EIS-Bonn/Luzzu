@@ -49,7 +49,12 @@ public class ObservationHelper {
 	
 	private static Date toDateFormat(String date) throws ParseException{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
-		return sdf.parse(date);
+		try{
+			return sdf.parse(date);
+		} catch (ParseException e){
+			sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'");
+			return sdf.parse(date);
+		}
 	}
 	
 	public static Observation getLatestObservation(List<Observation> observations){
