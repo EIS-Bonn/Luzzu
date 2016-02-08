@@ -47,16 +47,16 @@ public class QualityReport {
 		dataset.begin(ReadWrite.WRITE);
 		
 		
-		// TEMPORARY
-		try {
-			String metadataBaseDir = PropertyManager.getInstance().getProperties("directories.properties").getProperty("QUALITY_METADATA_BASE_DIR");
-			FileWriter pw = new FileWriter(metadataBaseDir+"/qr.csv", true);
-			pw.write(EnvironmentProperties.getInstance().getBaseURI()+","+"TDB_DIRECTORY" + System.lineSeparator());
-			pw.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		// TEMPORARY
+//		try {
+//			String metadataBaseDir = PropertyManager.getInstance().getProperties("directories.properties").getProperty("QUALITY_METADATA_BASE_DIR");
+//			FileWriter pw = new FileWriter(metadataBaseDir+"/qr.csv", true);
+//			pw.write(EnvironmentProperties.getInstance().getBaseURI()+","+"TDB_DIRECTORY" + System.lineSeparator());
+//			pw.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		
 //		System.out.println("Dataset :" + EnvironmentProperties.getInstance().getBaseURI() + " TDB File :" + TDB_DIRECTORY);

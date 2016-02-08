@@ -129,7 +129,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 				// Generate quality report, if required by the invoker and write it into a file
 				if (this.genQualityReport) {
 					this.generateQualityReport();
-//					this.writeReportMetadataFile();
+					this.writeReportMetadataFile();
 				}
 			}
 		} catch (EndpointException ex){
@@ -142,7 +142,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 				// Generate quality report, if required by the invoker and write it into a file
 				if (this.genQualityReport) {
 					this.generateQualityReport();
-//					this.writeReportMetadataFile();
+					this.writeReportMetadataFile();
 				}
 			}
 		} 		
