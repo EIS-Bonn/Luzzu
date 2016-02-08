@@ -462,5 +462,10 @@ public class SparkStreamProcessor  implements IOProcessor, Serializable  {
 		//TODO
 		return null;
 	}
+	
+	@Override
+	public void cancelMetricAssessment() throws ProcessorNotInitialised {
+		//TODO
+	}
 
 }

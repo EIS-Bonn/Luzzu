@@ -48,4 +48,14 @@ public interface IOProcessor {
 	 * @throws ProcessorNotInitialised
 	 */
 	List<IOStats> getIOStats() throws ProcessorNotInitialised;
+	
+	/**
+	 * Cancels the metric assessment and closes all 
+	 * open threads
+	 * 
+	 * 
+	 * @return True if cancellation is successful
+	 * @throws ProcessorNotInitialised
+	 */
+	void cancelMetricAssessment() throws ProcessorNotInitialised;
 }

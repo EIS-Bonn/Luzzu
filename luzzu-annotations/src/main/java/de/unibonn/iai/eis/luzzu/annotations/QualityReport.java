@@ -42,7 +42,7 @@ public class QualityReport {
 	public QualityReport(){
 		TDB.sync(dataset);
 		dataset.begin(ReadWrite.WRITE);
-		dataset.getDefaultModel().removeAll(); // since this TDB is meant to be temporary, then we will remove all statements
+		//dataset.getDefaultModel().removeAll(); // since this TDB is meant to be temporary, then we will remove all statements
 	}
 	
 	

@@ -95,6 +95,9 @@ public class StreamProcessor implements IOProcessor {
 	
 	private boolean isInitalised = false;
 	
+	private boolean forcedCancel = false;
+
+	
 	/**
 	 * Default initializations common to all constructors (is always called upon instance creation)
 	 */
@@ -150,11 +153,13 @@ public class StreamProcessor implements IOProcessor {
 			if (datasetListCounter < datasetList.size()) this.reinitialiseProcessors();
 		}
 		
-		this.writeQualityMetadataFile();
-		// Generate quality report, if required by the invoker and write it into a file
-		if (this.genQualityReport) {
-			this.generateQualityReport();
-			this.writeReportMetadataFile();
+		if (!forcedCancel){
+			this.writeQualityMetadataFile();
+			// Generate quality report, if required by the invoker and write it into a file
+			if (this.genQualityReport) {
+				this.generateQualityReport();
+				this.writeReportMetadataFile();
+			}
 		}
 	}
 
@@ -570,6 +575,11 @@ public class StreamProcessor implements IOProcessor {
 		public String getMetricName(){
 			return this.metricName;
 		}
+		
+		public void closeAssessment(){
+			this.stopSignal = true;
+			this.quadsToProcess.clear();
+		}
 
     }
 
@@ -587,5 +597,24 @@ public class StreamProcessor implements IOProcessor {
 		}
 		
 		return lst;
+	}
+	
+	@Override
+	public void cancelMetricAssessment() throws ProcessorNotInitialised {
+		
+		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");	
+
+		forcedCancel = true;
+		
+		for (MetricProcess mp : lstMetricConsumers){
+			logger.info("Closing and clearing quads queue for {}", mp.metricName);
+			mp.closeAssessment();
+		}
+		
+		logger.info("Closing Iterators");
+		this.iterator.close();
+		this.rdfStream.finish();
+
+		executor.shutdownNow();
 	}
 }

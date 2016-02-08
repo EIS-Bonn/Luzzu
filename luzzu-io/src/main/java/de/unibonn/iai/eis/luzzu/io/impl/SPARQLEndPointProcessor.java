@@ -86,6 +86,8 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 	private ExecutorService executor;
 	private List<MetricProcess> lstMetricConsumers = new ArrayList<MetricProcess>();
 	
+	private boolean forcedCancel = false;
+	
 	private boolean isInitalised = false;
 	
 	/**
@@ -121,22 +123,27 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", this.baseURI);
 		try {
 			this.startProcessing();
-			this.writeQualityMetadataFile();
-			// Generate quality report, if required by the invoker and write it into a file
-			if (this.genQualityReport) {
-				this.generateQualityReport();
-				this.writeReportMetadataFile();
+			
+			if (!forcedCancel){
+				this.writeQualityMetadataFile();
+				// Generate quality report, if required by the invoker and write it into a file
+				if (this.genQualityReport) {
+					this.generateQualityReport();
+					this.writeReportMetadataFile();
+				}
 			}
 		} catch (EndpointException ex){
 			this.cleanUp();
 			throw ex;
 		}  catch (ProcessorNotInitialised e) {
 			this.processorWorkFlow();
-			this.writeQualityMetadataFile();
-			// Generate quality report, if required by the invoker and write it into a file
-			if (this.genQualityReport) {
-				this.generateQualityReport();
-				this.writeReportMetadataFile();
+			if (!forcedCancel){
+				this.writeQualityMetadataFile();
+				// Generate quality report, if required by the invoker and write it into a file
+				if (this.genQualityReport) {
+					this.generateQualityReport();
+					this.writeReportMetadataFile();
+				}
 			}
 		} 		
 	
@@ -166,7 +173,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		
 		//get the number of triples in an endpoint
 		int size = -1;
-		ExecutorService executor = Executors.newSingleThreadExecutor();
+		executor = Executors.newSingleThreadExecutor();
 
 		try{
 			String query = "SELECT DISTINCT (count(?s) AS ?count) {?s ?p ?o . }";
@@ -568,6 +575,11 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		public String getMetricName(){
 			return this.metricName;
 		}
+		
+		public void closeAssessment(){
+			this.stopSignal = true;
+			this.quadsToProcess.clear();
+		}
     }
 	
 	@Override
@@ -586,5 +598,20 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		return lst;
 	}
 
+	@Override
+	public void cancelMetricAssessment() throws ProcessorNotInitialised {
+		
+		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");	
 
+		forcedCancel = true;
+		
+		for (MetricProcess mp : lstMetricConsumers){
+			logger.info("Closing and clearing quads queue for {}", mp.metricName);
+			mp.closeAssessment();
+		}
+		
+		logger.info("Closing Iterators");
+		sparqlIterator.clear();
+		executor.shutdownNow();
+	}
 }

@@ -13,6 +13,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
@@ -26,6 +27,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
+
 import de.unibonn.iai.eis.luzzu.annotations.QualityMetadata;
 import de.unibonn.iai.eis.luzzu.annotations.QualityReport;
 import de.unibonn.iai.eis.luzzu.assessment.ComplexQualityMetric;
@@ -519,6 +521,11 @@ public class MemoryProcessor implements IOProcessor {
 		public String getMetricName(){
 			return this.metricName;
 		}
+		
+		public void closeAssessment(){
+			this.stopSignal = true;
+			this.quadsToProcess.clear();
+		}
     }
 	
 	@Override
@@ -535,5 +542,19 @@ public class MemoryProcessor implements IOProcessor {
 		}
 		
 		return lst;
+	}
+	
+	@Override
+	public void cancelMetricAssessment() throws ProcessorNotInitialised {
+		
+		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");	
+
+		for (MetricProcess mp : lstMetricConsumers){
+			logger.info("Closing and clearing quads queue for {}", mp.metricName);
+			mp.closeAssessment();
+		}
+		
+		logger.info("Closing Iterators");
+		this.getMemoryModel().close();
 	}
 }

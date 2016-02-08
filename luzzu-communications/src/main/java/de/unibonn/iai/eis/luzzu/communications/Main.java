@@ -192,11 +192,14 @@ public class Main {
     	return sb.toString();
     }
     
-    public static boolean cancelRequest(String requestId){
+    public static boolean cancelRequest(String requestId) throws ProcessorNotInitialised{
     	if (computingResources.containsKey(requestId)){
     		Future<String> handler = computingResources.get(requestId);
-    		handler.cancel(true);
     		
+    		ExtendedCallable<String> callable = (ExtendedCallable<String>) callableDirectory.get(requestId);
+    		callable.getIOProcessor().cancelMetricAssessment();
+    		handler.cancel(true);
+
 			failedResources.add(requestId);
 
 		   	StringBuilder sb = new StringBuilder();
