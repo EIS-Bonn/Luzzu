@@ -50,6 +50,7 @@ public class QualityReport {
 //		// TEMPORARY
 //		try {
 //			String metadataBaseDir = PropertyManager.getInstance().getProperties("directories.properties").getProperty("QUALITY_METADATA_BASE_DIR");
+//			metadataBaseDir = metadataBaseDir.replaceFirst("^~",System.getProperty("user.home"));
 //			FileWriter pw = new FileWriter(metadataBaseDir+"/qr.csv", true);
 //			pw.write(EnvironmentProperties.getInstance().getBaseURI()+","+"TDB_DIRECTORY" + System.lineSeparator());
 //			pw.close();
