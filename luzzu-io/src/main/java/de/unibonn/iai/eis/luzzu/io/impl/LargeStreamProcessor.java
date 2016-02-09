@@ -485,7 +485,7 @@ public class LargeStreamProcessor implements IOProcessor {
 		
 		Resource res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getBaseURI());
 		this.qualityReport = r.createQualityReport(res, qualityProblems);
-		r.flush();
+		//r.flush();
 	}
 	
 	/**
