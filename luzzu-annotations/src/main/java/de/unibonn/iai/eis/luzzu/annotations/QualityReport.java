@@ -1,8 +1,5 @@
 package de.unibonn.iai.eis.luzzu.annotations;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +15,6 @@ import com.hp.hpl.jena.tdb.TDB;
 import com.hp.hpl.jena.tdb.TDBFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
 
-import de.unibonn.iai.eis.luzzu.properties.EnvironmentProperties;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 import de.unibonn.iai.eis.luzzu.semantics.utilities.Commons;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.QPRO;
@@ -191,7 +187,7 @@ public class QualityReport {
 		dataset.commit();
 		dataset.close();
 		
-		File f = new File(TDB_DIRECTORY);
-		f.delete();
+//		File f = new File(TDB_DIRECTORY);
+//		f.delete();
 	}
 }
