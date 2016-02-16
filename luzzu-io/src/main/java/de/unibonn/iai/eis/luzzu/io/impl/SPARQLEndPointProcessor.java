@@ -216,7 +216,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 							if (nextOffset >= endpointSize) 
 								start = false;
 							logger.info("next offset {}, size {}", nextOffset, endpointSize);
-							String query = "SELECT DISTINCT * { ?s ?p ?o . } ORDER BY ASC(?s) LIMIT 10000 OFFSET " + nextOffset;
+							String query = "SELECT DISTINCT * { SELECT DISTINCT * { ?s ?p ?o . } ORDER BY ASC(?s) } LIMIT 10000 OFFSET " + nextOffset;
 							System.out.println(query);
 							QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint, query);
 							qe.addParam("timeout","10000"); 
