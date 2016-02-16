@@ -37,6 +37,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.sparql.SystemARQ;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
 import de.unibonn.iai.eis.luzzu.annotations.QualityMetadata;
@@ -89,6 +90,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 	private boolean forcedCancel = false;
 	
 	private boolean isInitalised = false;
+	
 	
 	/**
 	 * Default initializations common to all constructors (is always called upon instance creation)
@@ -167,7 +169,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 
 	@Override
 	public void startProcessing() throws ProcessorNotInitialised{
-		
+		//SystemARQ.UseSAX=false;
 		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");	
 		StreamMetadataSniffer sniffer = new StreamMetadataSniffer();
 		
@@ -183,7 +185,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 						
 			final Future<Integer> handler = executor.submit(new Callable<Integer>() {
 			    @Override
-			    public Integer call() throws Exception {
+			    public Integer call() throws Exception{ 
 			    	int size = qe.execSelect().next().get("count").asLiteral().getInt();
 			    	return size;
 			    }
@@ -210,7 +212,6 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 				public void run(){
 					try{
 						boolean start = true;
-	
 						do{
 							if (nextOffset >= endpointSize) 
 								start = false;
@@ -225,7 +226,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 								sparqlIterator.add(rs.next());
 							}
 							
-							nextOffset = ((endpointSize - nextOffset) > 100000) ? nextOffset + 100000 : nextOffset + (endpointSize - nextOffset);
+							nextOffset = ((endpointSize - nextOffset) > 10000) ? nextOffset + 10000 : nextOffset + (endpointSize - nextOffset);
 						}while(start);
 						logger.info("done parsing endpoint {}", sparqlEndPoint);
 					} catch (Exception e){
