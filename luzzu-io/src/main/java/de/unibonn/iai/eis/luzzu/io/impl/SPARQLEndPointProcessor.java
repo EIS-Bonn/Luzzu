@@ -20,6 +20,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.apache.jena.atlas.web.auth.HttpAuthenticator;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
@@ -216,7 +217,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 							if (nextOffset >= endpointSize) 
 								start = false;
 							logger.info("next offset {}, size {}", nextOffset, endpointSize);
-							String query = "SELECT DISTINCT * { SELECT DISTINCT * { ?s ?p ?o . } ORDER BY ASC(?s) } LIMIT 10000 OFFSET " + nextOffset;
+							String query = "SELECT * WHERE { { SELECT DISTINCT * { ?s ?p ?o . } ORDER BY ASC(?s) } } LIMIT 10000 OFFSET " + nextOffset;
 							System.out.println(query);
 							QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint, query);
 							qe.addParam("timeout","10000"); 
