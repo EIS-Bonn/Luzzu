@@ -1,5 +1,7 @@
 package de.unibonn.iai.eis.luzzu.annotations;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +17,7 @@ import com.hp.hpl.jena.tdb.TDB;
 import com.hp.hpl.jena.tdb.TDBFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
 
+import de.unibonn.iai.eis.luzzu.properties.EnvironmentProperties;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 import de.unibonn.iai.eis.luzzu.semantics.utilities.Commons;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.QPRO;
@@ -43,17 +46,17 @@ public class QualityReport {
 		dataset.begin(ReadWrite.WRITE);
 		
 		
-//		// TEMPORARY
-//		try {
-//			String metadataBaseDir = PropertyManager.getInstance().getProperties("directories.properties").getProperty("QUALITY_METADATA_BASE_DIR");
-//			metadataBaseDir = metadataBaseDir.replaceFirst("^~",System.getProperty("user.home"));
-//			FileWriter pw = new FileWriter(metadataBaseDir+"/qr.csv", true);
-//			pw.write(EnvironmentProperties.getInstance().getBaseURI()+","+"TDB_DIRECTORY" + System.lineSeparator());
-//			pw.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		// TEMPORARY
+		try {
+			String metadataBaseDir = PropertyManager.getInstance().getProperties("directories.properties").getProperty("QUALITY_METADATA_BASE_DIR");
+			metadataBaseDir = metadataBaseDir.replaceFirst("^~",System.getProperty("user.home"));
+			FileWriter pw = new FileWriter(metadataBaseDir+"/qr.csv", true);
+			pw.write(EnvironmentProperties.getInstance().getBaseURI()+","+"TDB_DIRECTORY" + System.lineSeparator());
+			pw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 //		System.out.println("Dataset :" + EnvironmentProperties.getInstance().getBaseURI() + " TDB File :" + TDB_DIRECTORY);
