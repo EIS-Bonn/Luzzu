@@ -51,7 +51,7 @@ public class QualityReport {
 			String metadataBaseDir = PropertyManager.getInstance().getProperties("directories.properties").getProperty("QUALITY_METADATA_BASE_DIR");
 			metadataBaseDir = metadataBaseDir.replaceFirst("^~",System.getProperty("user.home"));
 			FileWriter pw = new FileWriter(metadataBaseDir+"/qr.csv", true);
-			pw.write(EnvironmentProperties.getInstance().getBaseURI()+","+"TDB_DIRECTORY" + System.lineSeparator());
+			pw.write(EnvironmentProperties.getInstance().getBaseURI()+","+TDB_DIRECTORY + System.lineSeparator());
 			pw.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
