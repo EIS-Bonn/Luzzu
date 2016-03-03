@@ -694,8 +694,12 @@ public class LargeStreamProcessor implements IOProcessor {
 		}
 		
 		logger.info("Closing Iterators");
-		this.iterator.close();
-		this.rdfStream.finish();
+		try{
+			this.iterator.close();
+			this.rdfStream.finish();
+		}catch (RiotException re){
+			logger.info("RDF Stream already closed");
+		}
 
 		executor.shutdownNow();
 	}

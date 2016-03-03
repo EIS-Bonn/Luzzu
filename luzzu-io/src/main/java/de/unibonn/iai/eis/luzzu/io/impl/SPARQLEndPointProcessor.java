@@ -20,7 +20,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.apache.jena.atlas.web.auth.HttpAuthenticator;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
@@ -38,7 +37,6 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.sparql.SystemARQ;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
 import de.unibonn.iai.eis.luzzu.annotations.QualityMetadata;
@@ -216,20 +214,22 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 						do{
 							if (nextOffset >= endpointSize) 
 								start = false;
-							logger.info("next offset {}, size {}", nextOffset, endpointSize);
+							logger.debug("endpoint: {} => next offset {}, size {}", sparqlEndPoint, nextOffset, endpointSize);
 							String query = "SELECT * WHERE { { SELECT DISTINCT * { ?s ?p ?o . } ORDER BY ASC(?s) } } LIMIT 10000 OFFSET " + nextOffset;
 							System.out.println(query);
+							logger.debug("endpoint: {} => {}", sparqlEndPoint, query);
 							QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint, query);
 							qe.addParam("timeout","10000"); 
 							ResultSet rs = qe.execSelect();
-							
 							while(rs.hasNext()){
 								sparqlIterator.add(rs.next());
 							}
 							
+
+							
 							nextOffset = ((endpointSize - nextOffset) > 10000) ? nextOffset + 10000 : nextOffset + (endpointSize - nextOffset);
 						}while(start);
-						logger.info("done parsing endpoint {}", sparqlEndPoint);
+						logger.info("Done Parsing Endpoint {}", sparqlEndPoint);
 					} catch (Exception e){
 						logger.error("Error parsing SPARQL Endpoint {}. Error message {}", sparqlEndPoint, e.getMessage());
 						throw e;
@@ -259,6 +259,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 			try{
 				_futureParser.get();
 			} catch (ExecutionException | InterruptedException e){
+				e.printStackTrace();
 				throw new EndpointException("Endpoint Exception for: "+ sparqlEndPoint + " " + e.getMessage());
 			}
 		} catch(RiotException rex) {
@@ -495,14 +496,14 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		// Make sure that the quality report model has been properly generated before hand
 		if(this.retreiveQualityReport() != null) {
 			File fileMetadata = new File(metadataFilePath);
-			Dataset model = DatasetFactory.create(this.retreiveQualityReport());
+//			Dataset model = DatasetFactory.create(this.retreiveQualityReport());
 	
 			try {
 				// Make sure the file is created (the following call has no effect if the file exists)
 				fileMetadata.createNewFile();
 				// Write new quality metadata into file
 				OutputStream out = new FileOutputStream(fileMetadata, false);
-				RDFDataMgr.write(out, model, RDFFormat.TRIG);
+				RDFDataMgr.write(out, this.retreiveQualityReport(), RDFFormat.TRIG);
 				
 				logger.debug("Quality report successfully written.");
 			} catch(IOException ex) {
