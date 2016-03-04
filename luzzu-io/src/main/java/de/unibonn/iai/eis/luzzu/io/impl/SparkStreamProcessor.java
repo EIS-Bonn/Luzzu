@@ -147,7 +147,7 @@ public class SparkStreamProcessor  implements IOProcessor, Serializable  {
 		}
 	}
 	
-	private static SparkConf conf = new SparkConf().setAppName(sparkProperties.getProperty("APPLICATION_NAME"));
+	private static SparkConf conf = new SparkConf().setMaster(sparkProperties.getProperty("SPARK_SERVER")).setAppName(sparkProperties.getProperty("APPLICATION_NAME"));
 	private static JavaSparkContext sc = new JavaSparkContext(conf);	
 	
     private static Connection connection;
