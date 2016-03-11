@@ -399,6 +399,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		
 		for(String className : this.metricInstances.keySet()){
 			QualityMetric m = this.metricInstances.get(className);
+			if (m.getQualityProblems() == null) continue;
 			qualityProblems.add(r.createQualityProblem(m.getMetricURI(), m.getQualityProblems()));
 		}
 		

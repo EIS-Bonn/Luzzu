@@ -51,7 +51,7 @@ public class ProcessorController {
 		System.out.println("file size: " + (double) length / (1024.0*1024.0) + " MB");
 
 		
-		if (length <= ((double) freeMemory * (1.0 / 100.0))) // if it fits in 1/100 of the free memory, then we use a memory processor
+		if (length <= ((double) freeMemory * (1.0 / 10.0))) // if it fits in 1/100 of the free memory, then we use a memory processor
 			return new MemoryProcessor(baseURI,datasetURI,genQualityReport,modelConfig);
 		else if (length <= ((double) freeMemory * (1.0 / 2.0))) // if it fits in 1/2 of the free memory, then we use a normal stream processor
 			return new StreamProcessor(baseURI,datasetURI,genQualityReport,modelConfig);
