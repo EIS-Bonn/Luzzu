@@ -169,8 +169,10 @@ public class Main {
 			sb.append("{");
 			sb.append("\"RequestID\": \"" + s + "\", ");
 	    	sb.append("\"Dataset\": \"" + resourceToDatasetDirectory.get(s) + "\"");
-	    	sb.append("}");
+	    	sb.append("},");
 		}
+		sb.deleteCharAt(sb.lastIndexOf(","));
+
 
 		sb.append("]");
     	sb.append("}");
@@ -186,8 +188,9 @@ public class Main {
 			sb.append("{");
 			sb.append("\"RequestID\": \"" + s + "\", ");
 	    	sb.append("\"Dataset\": \"" + resourceToDatasetDirectory.get(s) + "\"");
-	    	sb.append("}");
+	    	sb.append("},");
 		}
+		sb.deleteCharAt(sb.lastIndexOf(","));
 
 		sb.append("]");
     	sb.append("}");
