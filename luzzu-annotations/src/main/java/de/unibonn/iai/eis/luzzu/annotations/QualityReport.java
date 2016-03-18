@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.hp.hpl.jena.query.Dataset;
+import com.hp.hpl.jena.query.DatasetFactory;
 import com.hp.hpl.jena.query.ReadWrite;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -39,30 +40,32 @@ import de.unibonn.iai.eis.luzzu.datatypes.ProblemList;
 public class QualityReport {
 	
 	protected String TDB_DIRECTORY = PropertyManager.getInstance().getProperties("directories.properties").getProperty("TDB_TEMP_BASE_DIR")+"tdb_"+UUID.randomUUID().toString()+"/";
-	protected Dataset dataset = TDBFactory.createDataset(TDB_DIRECTORY);
+//	protected Dataset dataset = TDBFactory.createDataset(TDB_DIRECTORY);
 	
-	public QualityReport(){
-		TDB.sync(dataset);
-		dataset.begin(ReadWrite.WRITE);
-		
-		
-		// TEMPORARY
-		try {
-			String metadataBaseDir = PropertyManager.getInstance().getProperties("directories.properties").getProperty("QUALITY_METADATA_BASE_DIR");
-			metadataBaseDir = metadataBaseDir.replaceFirst("^~",System.getProperty("user.home"));
-			FileWriter pw = new FileWriter(metadataBaseDir+"/qr.csv", true);
-			pw.write(EnvironmentProperties.getInstance().getBaseURI()+","+TDB_DIRECTORY + System.lineSeparator());
-			pw.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-//		System.out.println("Dataset :" + EnvironmentProperties.getInstance().getBaseURI() + " TDB File :" + TDB_DIRECTORY);
-		//dataset.getDefaultModel().removeAll(); // since this TDB is meant to be temporary, then we will remove all statements
-	}
+	protected Dataset dataset = DatasetFactory.createMem();
 	
+//	public QualityReport(){
+//		TDB.sync(dataset);
+//		dataset.begin(ReadWrite.WRITE);
+//		
+//		
+//		// TEMPORARY
+//		try {
+//			String metadataBaseDir = PropertyManager.getInstance().getProperties("directories.properties").getProperty("QUALITY_METADATA_BASE_DIR");
+//			metadataBaseDir = metadataBaseDir.replaceFirst("^~",System.getProperty("user.home"));
+//			FileWriter pw = new FileWriter(metadataBaseDir+"/qr.csv", true);
+//			pw.write(EnvironmentProperties.getInstance().getBaseURI()+","+TDB_DIRECTORY + System.lineSeparator());
+//			pw.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		
+////		System.out.println("Dataset :" + EnvironmentProperties.getInstance().getBaseURI() + " TDB File :" + TDB_DIRECTORY);
+//		//dataset.getDefaultModel().removeAll(); // since this TDB is meant to be temporary, then we will remove all statements
+//	}
+//	
 	
 	/**
 	 * Creates instance triples corresponding to a quality problem
