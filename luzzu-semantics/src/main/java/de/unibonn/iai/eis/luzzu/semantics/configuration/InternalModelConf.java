@@ -18,7 +18,8 @@ import com.hp.hpl.jena.query.DatasetFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.vocabulary.RDFS;
+import com.hp.hpl.jena.vocabulary.OWL;
+import com.hp.hpl.jena.vocabulary.RDF;
 
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.DAQ;
 
@@ -47,7 +48,11 @@ public class InternalModelConf {
 				logger.debug("Loading ontology : {} ", ontology.getName());
 				temp.read(ontology.getPath(), "N3");
 				try{
-					semanticModel.addNamedModel(guessNamespace(temp), temp);
+					String namespace = guessNamespace(temp);
+					if (namespace != null)
+						semanticModel.addNamedModel(namespace, temp);
+					else
+						semanticModel.getDefaultModel().add(temp);
 				} catch (Exception e) {
 					logger.debug("Could not load model " + ontology.getPath());
 				}
@@ -56,13 +61,17 @@ public class InternalModelConf {
 	}
 
 	private static String guessNamespace(Model temp) {
-		List<Resource> res = temp.listSubjectsWithProperty(RDFS.subClassOf, DAQ.Category).toList();
+		List<Resource> res = temp.listSubjectsWithProperty(RDF.type, OWL.Ontology).toList();
 		Map<String, Integer> tempMap = new HashMap<String, Integer>();
 		for (Resource r : res) {
 			String ns = r.getNameSpace();
 			tempMap.put(ns, (tempMap.containsKey(ns)) ? (tempMap.get(ns) + 1) : 1);
 		}
-		return (String) sortByValue(tempMap).keySet().toArray()[0];
+		
+		if (tempMap.size() > 0)
+			return (String) sortByValue(tempMap).keySet().toArray()[0];
+		else
+			return null;
 	}
 
 	public static Model getDAQModel() {
@@ -74,9 +83,12 @@ public class InternalModelConf {
 		Model m = ModelFactory.createDefaultModel();
 		
 		Iterator<String> iter = semanticModel.listNames();
+		semanticModel.listNames();
+		
 		while (iter.hasNext()){
 			m.add(semanticModel.getNamedModel(iter.next()));
 		}
+		m.add(semanticModel.getDefaultModel());
 		return m;
 	}
 
