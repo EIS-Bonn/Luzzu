@@ -190,8 +190,8 @@ public class QualityReport {
 	}
 	
 	public void flush(){
-		dataset.commit();
-		dataset.close();
+//		dataset.commit();
+//		dataset.close();
 		
 //		File f = new File(TDB_DIRECTORY);
 //		f.delete();
