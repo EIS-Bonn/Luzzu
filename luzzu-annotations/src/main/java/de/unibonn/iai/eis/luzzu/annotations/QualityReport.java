@@ -1,12 +1,10 @@
 package de.unibonn.iai.eis.luzzu.annotations;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
 import com.hp.hpl.jena.query.Dataset;
-import com.hp.hpl.jena.query.DatasetFactory;
 import com.hp.hpl.jena.query.ReadWrite;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -18,7 +16,6 @@ import com.hp.hpl.jena.tdb.TDB;
 import com.hp.hpl.jena.tdb.TDBFactory;
 import com.hp.hpl.jena.vocabulary.RDF;
 
-import de.unibonn.iai.eis.luzzu.properties.EnvironmentProperties;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 import de.unibonn.iai.eis.luzzu.semantics.utilities.Commons;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.QPRO;
@@ -40,31 +37,19 @@ import de.unibonn.iai.eis.luzzu.datatypes.ProblemList;
 public class QualityReport {
 	
 	protected String TDB_DIRECTORY = PropertyManager.getInstance().getProperties("directories.properties").getProperty("TDB_TEMP_BASE_DIR")+"tdb_"+UUID.randomUUID().toString()+"/";
-//	protected Dataset dataset = TDBFactory.createDataset(TDB_DIRECTORY);
+	protected Dataset dataset = TDBFactory.createDataset(TDB_DIRECTORY);
 	
-	protected Dataset dataset = DatasetFactory.createMem();
+//	protected Dataset dataset = DatasetFactory.createMem();
 	
-//	public QualityReport(){
-//		TDB.sync(dataset);
-//		dataset.begin(ReadWrite.WRITE);
-//		
-//		
-//		// TEMPORARY
-//		try {
-//			String metadataBaseDir = PropertyManager.getInstance().getProperties("directories.properties").getProperty("QUALITY_METADATA_BASE_DIR");
-//			metadataBaseDir = metadataBaseDir.replaceFirst("^~",System.getProperty("user.home"));
-//			FileWriter pw = new FileWriter(metadataBaseDir+"/qr.csv", true);
-//			pw.write(EnvironmentProperties.getInstance().getBaseURI()+","+TDB_DIRECTORY + System.lineSeparator());
-//			pw.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		
-////		System.out.println("Dataset :" + EnvironmentProperties.getInstance().getBaseURI() + " TDB File :" + TDB_DIRECTORY);
-//		//dataset.getDefaultModel().removeAll(); // since this TDB is meant to be temporary, then we will remove all statements
-//	}
+	public QualityReport(){
+		TDB.sync(dataset);
+		dataset.begin(ReadWrite.WRITE);
+		
+		
+		
+//		System.out.println("Dataset :" + EnvironmentProperties.getInstance().getBaseURI() + " TDB File :" + TDB_DIRECTORY);
+		//dataset.getDefaultModel().removeAll(); // since this TDB is meant to be temporary, then we will remove all statements
+	}
 //	
 	
 	/**
@@ -167,8 +152,8 @@ public class QualityReport {
 			Model prModel = getProblemReportFromTBD(prModelURI);
 			for(Resource r : getProblemURI(prModel)){
 				m.add(new StatementImpl(reportURI, QPRO.hasProblem, r));
-				m.add(prModel);
 			}
+			m.add(prModel);
 			dataset.removeNamedModel(prModelURI);
 		}
 		return m;
@@ -190,10 +175,10 @@ public class QualityReport {
 	}
 	
 	public void flush(){
-//		dataset.commit();
-//		dataset.close();
+		dataset.commit();
+		dataset.close();
 		
-//		File f = new File(TDB_DIRECTORY);
-//		f.delete();
+		File f = new File(TDB_DIRECTORY);
+		f.delete();
 	}
 }
