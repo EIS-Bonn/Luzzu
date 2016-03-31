@@ -49,7 +49,7 @@ public class Main {
 	private static Set<String> successfulResources = new HashSet<String>();
 	private static Set<String> failedResources = new HashSet<String>();
 
-	private static ExecutorService executor = Executors.newFixedThreadPool(10);
+	private static ExecutorService executor = Executors.newFixedThreadPool(3);
 
 	
     /**
