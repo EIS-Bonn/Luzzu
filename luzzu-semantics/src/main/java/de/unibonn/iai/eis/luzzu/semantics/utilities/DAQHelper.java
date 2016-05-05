@@ -144,7 +144,13 @@ public class DAQHelper {
 			Double value = qualityMD.listObjectsOfProperty(res, DAQ.value).next().asLiteral().getDouble();
 			
 			
-			Observation obs = new Observation(res, date, value, metricType);
+			//get computedOn
+			Resource computedOn = qualityMD.listObjectsOfProperty(res,DAQ.computedOn).next().asResource();
+			
+			//data cube
+			Resource cubeDS = qualityMD.listObjectsOfProperty(res, CUBE.dataSet).next().asResource();
+			
+			Observation obs = new Observation(res, date, value, null,computedOn, cubeDS);
 			
 			if (!(map.containsKey(metricType.toString()))){
 				map.put(metricType.toString(), new ArrayList<Observation>());

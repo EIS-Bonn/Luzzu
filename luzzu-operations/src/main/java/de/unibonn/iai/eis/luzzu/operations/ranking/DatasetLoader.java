@@ -90,7 +90,7 @@ public class DatasetLoader {
 	
 	private void loadFile(File fileOrFolder){
 		if (fileOrFolder.isHidden()) return ;
-		if (fileOrFolder.getPath().endsWith(".trig")){
+		if (fileOrFolder.getPath().contains("quality-meta-data.trig")){
 			Dataset _ds = RDFDataMgr.loadDataset(fileOrFolder.getPath());
 			
 			String baseURI = fileOrFolder.getParent();

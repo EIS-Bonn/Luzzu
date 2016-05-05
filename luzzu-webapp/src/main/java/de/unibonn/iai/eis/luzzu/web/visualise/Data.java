@@ -35,6 +35,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import de.unibonn.iai.eis.luzzu.operations.ranking.DatasetLoader;
 import de.unibonn.iai.eis.luzzu.semantics.configuration.InternalModelConf;
 import de.unibonn.iai.eis.luzzu.semantics.datatypes.Observation;
+import de.unibonn.iai.eis.luzzu.semantics.vocabularies.CUBE;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.DAQ;
 import de.unibonn.iai.eis.luzzu.web.visualise.datatypes.DatasetObject;
 import de.unibonn.iai.eis.luzzu.web.visualise.datatypes.MetricObject;
@@ -263,7 +264,13 @@ public class Data {
 			//get value
 			Double value = qualityMD.listObjectsOfProperty(res, DAQ.value).next().asLiteral().getDouble();
 			
-			Observation obs = new Observation(res, date, value, null);
+			//get computedOn
+			Resource computedOn = qualityMD.listObjectsOfProperty(res,DAQ.computedOn).next().asResource();
+			
+			//data cube
+			Resource cubeDS = qualityMD.listObjectsOfProperty(res, CUBE.dataSet).next().asResource();
+			
+			Observation obs = new Observation(res, date, value, null,computedOn, cubeDS);
 			lst.add(obs);
 		}
 		

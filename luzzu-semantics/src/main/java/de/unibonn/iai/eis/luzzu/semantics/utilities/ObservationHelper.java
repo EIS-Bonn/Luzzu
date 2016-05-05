@@ -14,6 +14,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 import de.unibonn.iai.eis.luzzu.semantics.datatypes.Observation;
+import de.unibonn.iai.eis.luzzu.semantics.vocabularies.CUBE;
 import de.unibonn.iai.eis.luzzu.semantics.vocabularies.DAQ;
 
 public class ObservationHelper {
@@ -40,7 +41,13 @@ public class ObservationHelper {
 			//get value
 			Double value = qualityMD.listObjectsOfProperty(res, DAQ.value).next().asLiteral().getDouble();
 			
-			Observation obs = new Observation(res, date, value, null);
+			//get computedOn
+			Resource computedOn = qualityMD.listObjectsOfProperty(res,DAQ.computedOn).next().asResource();
+			
+			//data cube
+			Resource cubeDS = qualityMD.listObjectsOfProperty(res, CUBE.dataSet).next().asResource();
+			
+			Observation obs = new Observation(res, date, value, null,computedOn, cubeDS);
 			lst.add(obs);
 		}
 		
