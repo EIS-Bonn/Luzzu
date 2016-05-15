@@ -242,6 +242,13 @@ public class Main {
 						sb.append("\"Done Parsing\": \"" + ios.isDoneParsing() + "\"");
 					else
 						sb.append("\"TriplesProcessed\": \"" + ios.getTriplesProcessed() + "\"");
+					
+					if (!ios.getQmdStatus().equals("")){
+						sb.append("\"QualityMD-Status\": \"" + ios.getQmdStatus() + "\"");
+					}
+					if (!ios.getQrStatus().equals("")){
+						sb.append("\"QualityReport-Status\": \"" + ios.getQrStatus() + "\"");
+					}
 		    		sb.append("}");
 		    	}
 		    	sb.append("]");
