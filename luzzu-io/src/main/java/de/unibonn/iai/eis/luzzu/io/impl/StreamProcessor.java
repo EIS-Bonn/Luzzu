@@ -94,9 +94,15 @@ public class StreamProcessor implements IOProcessor {
 	private List<MetricProcess> lstMetricConsumers = new ArrayList<MetricProcess>();
 	
 	private boolean isInitalised = false;
-	
 	private boolean forcedCancel = false;
-
+	
+	
+	// Stats Vars
+	private boolean isGeneratingQMD = false;
+	private boolean endedGeneratingQMD = false;
+	
+	private boolean isGeneratingQR = false;
+	private boolean endedGeneratingQR = false;
 	
 	/**
 	 * Default initializations common to all constructors (is always called upon instance creation)
@@ -431,6 +437,7 @@ public class StreamProcessor implements IOProcessor {
 	 * TODO: Consider other concurrency cases such as: several instances of the JVM and different class loaders
 	 */
 	private synchronized void writeQualityMetadataFile() {
+		this.isGeneratingQMD = true;
 		// Build the full path of the file where quality metadata will be written
 		String fld = this.metadataBaseDir + "/" + this.baseURI.replace("http://", "");
 		fld = fld.replaceFirst("^~",System.getProperty("user.home"));
@@ -470,6 +477,8 @@ public class StreamProcessor implements IOProcessor {
 		} catch(MetadataException | IOException ex) {
 			logger.error("Quality meta-data could not be written to file: " + metadataFilePath, ex);
 		}
+		this.isGeneratingQMD = false;
+		this.endedGeneratingQMD = true;
 	}
 	
 	/**
@@ -478,6 +487,7 @@ public class StreamProcessor implements IOProcessor {
 	 * TODO: Consider other concurrency cases such as: several instances of the JVM and different class loaders
 	 */
 	private synchronized void writeReportMetadataFile() {
+		this.isGeneratingQR = true;
 		// Build the full path of the file where quality report metadata will be written.
 		// Use current timestamp to identify the report corresponding to each individual quality assessment process
 		String fld = this.metadataBaseDir + "/" + this.baseURI.replace("http://", "");
@@ -512,6 +522,8 @@ public class StreamProcessor implements IOProcessor {
 		} else {
 			logger.warn("Attempted to write quality report, but no report model has been generated");
 		}
+		this.isGeneratingQR = false;
+		this.endedGeneratingQR = true;
 	}
 
 	public Model retreiveQualityReport(){
@@ -581,6 +593,10 @@ public class StreamProcessor implements IOProcessor {
 			this.stopSignal = true;
 			this.quadsToProcess.clear();
 		}
+		
+		public boolean isDoneParsing(){
+			return quadsToProcess.isEmpty();
+		}
 
     }
 
@@ -594,7 +610,21 @@ public class StreamProcessor implements IOProcessor {
 		for (MetricProcess mp : lstMetricConsumers){
 			Long stmtProcessed = mp.getStatementProcessed();
 			String metricName = mp.getMetricName();
-			lst.add(new IOStats(metricName,stmtProcessed));
+			boolean doneParsing = mp.isDoneParsing();
+			
+			IOStats ios = new IOStats(metricName,stmtProcessed, doneParsing);
+			
+			if ((this.isGeneratingQMD) && (!this.endedGeneratingQMD))
+				ios.setQmdStatus("Generating Quality Metadata");
+			if ((!this.isGeneratingQMD) && (this.endedGeneratingQMD))
+				ios.setQmdStatus("Finished Generating Quality Metadata");
+			
+			if ((this.isGeneratingQR) && (!this.endedGeneratingQR))
+				ios.setQmdStatus("Generating Quality Problem Report");
+			if ((!this.isGeneratingQR) && (this.endedGeneratingQR))
+				ios.setQmdStatus("Finished Generating Quality Problem Report");
+			
+			lst.add(ios);
 		}
 		
 		return lst;

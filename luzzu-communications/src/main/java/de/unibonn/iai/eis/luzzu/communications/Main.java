@@ -238,7 +238,10 @@ public class Main {
 		    	for (IOStats ios : stats){
 		    		sb.append("{");
 					sb.append("\"ClassName\": \"" + ios.getClassName() + "\", ");
-			    	sb.append("\"TriplesProcessed\": \"" + ios.getTriplesProcessed() + "\"");
+					if (ios.isDoneParsing())
+						sb.append("\"Done Parsing\": \"" + ios.isDoneParsing() + "\"");
+					else
+						sb.append("\"TriplesProcessed\": \"" + ios.getTriplesProcessed() + "\"");
 		    		sb.append("}");
 		    	}
 		    	sb.append("]");
