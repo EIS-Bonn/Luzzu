@@ -43,6 +43,7 @@ import de.unibonn.iai.eis.luzzu.assessment.QualityMetric;
 import de.unibonn.iai.eis.luzzu.cache.CacheManager;
 import de.unibonn.iai.eis.luzzu.datatypes.Args;
 import de.unibonn.iai.eis.luzzu.datatypes.Object2Quad;
+import de.unibonn.iai.eis.luzzu.datatypes.ProblemList;
 import de.unibonn.iai.eis.luzzu.exceptions.AfterException;
 import de.unibonn.iai.eis.luzzu.exceptions.BeforeException;
 import de.unibonn.iai.eis.luzzu.exceptions.ExternalMetricLoaderException;
@@ -397,18 +398,22 @@ public class StreamProcessor implements IOProcessor {
 	 * Sets the result into the qualityReport attribute
 	 */
 	private void generateQualityReport() {
+		this.isGeneratingQR = true;
 		QualityReport r = new QualityReport();
 		List<String> qualityProblems = new ArrayList<String>();
 		
 		for(String className : this.metricInstances.keySet()){
 			QualityMetric m = this.metricInstances.get(className);
-			if (m.getQualityProblems() == null) continue;
-			qualityProblems.add(r.createQualityProblem(m.getMetricURI(), m.getQualityProblems()));
+			ProblemList<?> qProbs = m.getQualityProblems();
+			if (qProbs == null) continue;
+			qualityProblems.add(r.createQualityProblem(m.getMetricURI(), qProbs));
 		}
 		
 		Resource res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getBaseURI());
 		this.qualityReport = r.createQualityReport(res, qualityProblems);
 		r.flush();
+		this.isGeneratingQR = false;
+		this.endedGeneratingQR = true;
 	}
 	
 	/**
@@ -487,7 +492,6 @@ public class StreamProcessor implements IOProcessor {
 	 * TODO: Consider other concurrency cases such as: several instances of the JVM and different class loaders
 	 */
 	private synchronized void writeReportMetadataFile() {
-		this.isGeneratingQR = true;
 		// Build the full path of the file where quality report metadata will be written.
 		// Use current timestamp to identify the report corresponding to each individual quality assessment process
 		String fld = this.metadataBaseDir + "/" + this.baseURI.replace("http://", "");
@@ -522,8 +526,6 @@ public class StreamProcessor implements IOProcessor {
 		} else {
 			logger.warn("Attempted to write quality report, but no report model has been generated");
 		}
-		this.isGeneratingQR = false;
-		this.endedGeneratingQR = true;
 	}
 
 	public Model retreiveQualityReport(){

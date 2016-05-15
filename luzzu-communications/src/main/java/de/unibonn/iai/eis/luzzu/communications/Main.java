@@ -49,7 +49,7 @@ public class Main {
 	private static Set<String> successfulResources = new HashSet<String>();
 	private static Set<String> failedResources = new HashSet<String>();
 
-	private static ExecutorService executor = Executors.newFixedThreadPool(3);
+	private static ExecutorService executor = Executors.newFixedThreadPool(12);
 
 	
     /**
@@ -238,19 +238,19 @@ public class Main {
 		    	for (IOStats ios : stats){
 		    		sb.append("{");
 					sb.append("\"ClassName\": \"" + ios.getClassName() + "\", ");
-					if (ios.isDoneParsing())
-						sb.append("\"Done Parsing\": \"" + ios.isDoneParsing() + "\"");
-					else
-						sb.append("\"TriplesProcessed\": \"" + ios.getTriplesProcessed() + "\"");
+					sb.append("\"TriplesProcessed\": \"" + ios.getTriplesProcessed() + "\"");
 					
 					if (!ios.getQmdStatus().equals("")){
-						sb.append("\"QualityMD-Status\": \"" + ios.getQmdStatus() + "\"");
+						sb.append(",\"Status\": \"" + ios.getQmdStatus() + "\"");
 					}
-					if (!ios.getQrStatus().equals("")){
-						sb.append("\"QualityReport-Status\": \"" + ios.getQrStatus() + "\"");
+					else if (!ios.getQrStatus().equals("")){
+						sb.append(",\"Status\": \"" + ios.getQrStatus() + "\"");
+					} else {
+						sb.append(",\"Status\": \"" + "Assessing Triples" + "\"");
 					}
-		    		sb.append("}");
+		    		sb.append("},");
 		    	}
+		    	if (stats.size() > 0) sb.deleteCharAt(sb.length() - 1);
 		    	sb.append("]");
 		    	sb.append("}");
 			} catch (ProcessorNotInitialised e) {
