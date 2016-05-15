@@ -95,7 +95,13 @@ class Cache {
 	 */
 	protected void cleanup(){
 		this.db.getEngine().clearCache();
+		this.clear();
+	}
+	
+	protected void clear(){
 		this.cache.clear();
+		this.db.commit();
+		this.db.compact();
 	}
 	
 	/**

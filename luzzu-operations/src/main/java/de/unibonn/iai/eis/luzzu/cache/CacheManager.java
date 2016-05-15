@@ -100,6 +100,6 @@ public class CacheManager{
 	}
 	
 	public void clearCache(String cacheName){
-		registeredCache.get(cacheName).cleanup();
+		registeredCache.get(cacheName).clear();
 	}
 }
