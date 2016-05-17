@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -24,7 +25,6 @@ import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 import org.apache.jena.riot.RiotException;
-import org.eclipse.jetty.util.BlockingArrayQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -328,6 +328,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 			QualityMetric metric = null;
 			try {
 				metric = clazz.newInstance();
+				metric.setDatasetURI(this.baseURI);
 			} catch (InstantiationException e) {
 				logger.error("Cannot load metric for {}", className);
 				throw new ExternalMetricLoaderException("Cannot create class instance for " + className + ". Exception caused by an Instantiation Exception : " + e.getLocalizedMessage());
@@ -520,7 +521,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 	}
 
 	private final class MetricProcess {
-		volatile Queue<Object2Quad> quadsToProcess = new BlockingArrayQueue<Object2Quad>(1000000);
+		volatile Queue<Object2Quad> quadsToProcess = new ArrayBlockingQueue<Object2Quad>(1000000);
 		Thread metricThread = null;
 		String metricName = null;
         
@@ -584,6 +585,10 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 			this.stopSignal = true;
 			this.quadsToProcess.clear();
 		}
+		
+		public boolean isDoneParsing(){
+			return quadsToProcess.isEmpty();
+		}
     }
 	
 	@Override
@@ -596,7 +601,8 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		for (MetricProcess mp : lstMetricConsumers){
 			Long stmtProcessed = mp.getStatementProcessed();
 			String metricName = mp.getMetricName();
-			lst.add(new IOStats(metricName,stmtProcessed));
+			boolean doneParsing = mp.isDoneParsing();
+			lst.add(new IOStats(metricName,stmtProcessed, doneParsing));
 		}
 		
 		return lst;

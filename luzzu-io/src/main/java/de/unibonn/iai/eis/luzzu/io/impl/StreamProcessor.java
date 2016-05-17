@@ -329,6 +329,7 @@ public class StreamProcessor implements IOProcessor {
 			QualityMetric metric = null;
 			try {
 				metric = clazz.newInstance();
+				metric.setDatasetURI(this.datasetURI);
 			} catch (InstantiationException e) {
 				logger.error("Cannot load metric for {}", className);
 				throw new ExternalMetricLoaderException("Cannot create class instance for " + className + ". Exception caused by an Instantiation Exception : " + e.getLocalizedMessage());
