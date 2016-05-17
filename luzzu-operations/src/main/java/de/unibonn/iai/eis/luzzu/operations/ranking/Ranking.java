@@ -110,7 +110,7 @@ public class Ranking {
 		while(set.hasNext()){
 			totalNumberOfMetrics++;
 			Resource res = set.next().get("metric").asResource();
-			if (res.getURI().equals("http://www.diachron-fp7.eu/dqm#ReuseExistingVocabularyMetric")) continue;
+			if (res.getURI().equals("http://purl.org/eis/vocab/dqm#ReuseExistingVocabularyMetric")) continue;
 
 			// choose metric value type (e.g if double use the default)
 			RDFNode expectedType = InternalModelConf.getFlatModel().listObjectsOfProperty(res, DAQ.expectedDataType).next();
