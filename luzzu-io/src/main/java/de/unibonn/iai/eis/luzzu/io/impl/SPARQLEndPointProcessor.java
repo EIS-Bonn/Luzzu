@@ -177,7 +177,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		executor = Executors.newSingleThreadExecutor();
 
 		try{
-			String query = "SELECT DISTINCT (count(?s) AS ?count) {?s ?p ?o . }";
+			String query = "SELECT DISTINCT (count(?s) AS ?count) { { ?s ?p ?o . } UNION { GRAPH ?g { ?s ?p ?o .} } }";
 			final QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint,query);
 			//qe.addParam("timeout","10000"); //10 sec
 	
@@ -215,7 +215,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 							if (nextOffset >= endpointSize) 
 								start = false;
 							logger.debug("endpoint: {} => next offset {}, size {}", sparqlEndPoint, nextOffset, endpointSize);
-							String query = "SELECT * WHERE { { SELECT DISTINCT * { ?s ?p ?o . } ORDER BY ASC(?s) } } LIMIT 10000 OFFSET " + nextOffset;
+							String query = "SELECT * WHERE { { SELECT DISTINCT * { { ?s ?p ?o . } UNION { GRAPH ?g { ?s ?p ?o .} } } ORDER BY ASC(?s) } } LIMIT 10000 OFFSET " + nextOffset;
 							System.out.println(query);
 							logger.debug("endpoint: {} => {}", sparqlEndPoint, query);
 							QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint, query);
