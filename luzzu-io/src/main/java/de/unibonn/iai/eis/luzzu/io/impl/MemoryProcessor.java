@@ -267,7 +267,8 @@ public class MemoryProcessor implements IOProcessor {
 			Class<? extends QualityMetric> clazz = map.get(className);
 			QualityMetric metric = null;
 			try {
-				metric = clazz.newInstance();
+				metric = clazz.newInstance();				
+				metric.setDatasetURI(this.baseURI);
 			} catch (InstantiationException e) {
 				logger.error("Cannot load metric for {}", className);
 				throw new ExternalMetricLoaderException("Cannot create class instance for " + className + ". Exception caused by an Instantiation Exception : " + e.getLocalizedMessage());
