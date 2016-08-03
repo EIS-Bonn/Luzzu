@@ -20,6 +20,7 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 import org.apache.jena.riot.RDFLanguages;
 import org.apache.jena.riot.RiotException;
+import org.apache.jena.riot.lang.CollectorStreamTriples;
 import org.apache.jena.riot.lang.PipedQuadsStream;
 import org.apache.jena.riot.lang.PipedRDFIterator;
 import org.apache.jena.riot.lang.PipedRDFStream;
@@ -403,14 +404,16 @@ public class StreamProcessor implements IOProcessor {
 		QualityReport r = new QualityReport();
 		List<String> qualityProblems = new ArrayList<String>();
 		
+		String datasetURI = "";
 		for(String className : this.metricInstances.keySet()){
 			QualityMetric m = this.metricInstances.get(className);
 			ProblemList<?> qProbs = m.getQualityProblems();
 			if (qProbs == null) continue;
 			qualityProblems.add(r.createQualityProblem(m.getMetricURI(), qProbs));
+			datasetURI = m.getDatasetURI();
 		}
 		
-		Resource res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getBaseURI());
+		Resource res = ModelFactory.createDefaultModel().createResource(datasetURI);
 		this.qualityReport = r.createQualityReport(res, qualityProblems);
 		r.flush();
 		this.isGeneratingQR = false;

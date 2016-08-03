@@ -341,13 +341,15 @@ public class MemoryProcessor implements IOProcessor {
 		QualityReport r = new QualityReport();
 		List<String> qualityProblems = new ArrayList<String>();
 		
+		String datasetURI = "";
 		for(String className : this.metricInstances.keySet()){
 			QualityMetric m = this.metricInstances.get(className);
 			if (m.getQualityProblems() == null) continue;
 			qualityProblems.add(r.createQualityProblem(m.getMetricURI(), m.getQualityProblems()));
+			datasetURI = m.getDatasetURI();
 		}
 		
-		Resource res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getBaseURI());
+		Resource res = ModelFactory.createDefaultModel().createResource(datasetURI);
 		this.qualityReport = r.createQualityReport(res, qualityProblems);
 		r.flush();
 	}

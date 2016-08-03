@@ -1,5 +1,6 @@
 package de.unibonn.iai.eis.luzzu.io.impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,6 +12,9 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFLanguages;
@@ -60,10 +64,9 @@ public class SparkStreamProcessor  implements IOProcessor, Serializable  {
 	private static final long serialVersionUID = 2448767269028661064L;
 	transient private static final Properties sparkProperties = PropertyManager.getInstance().getProperties("spark.properties");
 
-
 	transient private ConcurrentMap<String, QualityMetric> metricInstances = new ConcurrentHashMap<String, QualityMetric>();
-	transient private ExternalMetricLoader loader = ExternalMetricLoader.getInstance();
-	transient private DeclerativeMetricCompiler dmc  = DeclerativeMetricCompiler.getInstance();
+	transient private ExternalMetricLoader loader = null;//ExternalMetricLoader.getInstance();
+	transient private DeclerativeMetricCompiler dmc  = null;//DeclerativeMetricCompiler.getInstance();
 
 	transient final static Logger logger = LoggerFactory.getLogger(StreamProcessor.class);
 
@@ -83,8 +86,26 @@ public class SparkStreamProcessor  implements IOProcessor, Serializable  {
 			
 	public SparkStreamProcessor(String datasetURI, boolean genQualityReport, Model configuration){
 		this.datasetURI = datasetURI;
+//		
+//		Configuration conf = new Configuration();
+//		conf.set("fs.default.name", "hdfs://192.168.99.100:9000");
+//		FileSystem fs = null;
+		File f = new File(datasetURI);;
+//		try {
+//			fs = FileSystem.get(conf);
+//			f = new File(datasetURI); //f.getCanonicalPath()
+//			Path localPath = new Path(f.toURI());
+//			Path hdfsPath = new Path("/data/"+f.getName());
+//			fs.copyFromLocalFile(localPath, hdfsPath);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+
+
 		
-		this.datasetRDD = sc.textFile(datasetURI);
+		this.datasetRDD = sc.textFile("hdfs://192.168.99.100:9000/data/"+f.getName());
 		this.genQualityReport = genQualityReport;
 		this.metricConfiguration = configuration;
 		
@@ -112,11 +133,11 @@ public class SparkStreamProcessor  implements IOProcessor, Serializable  {
 		
 		this.isInitalised = true;
 		
-		try {
-			this.loadMetrics();
-		} catch (ExternalMetricLoaderException e) {
-			logger.error(e.getLocalizedMessage());
-		}
+//		try {
+//			this.loadMetrics();
+//		} catch (ExternalMetricLoaderException e) {
+//			logger.error(e.getLocalizedMessage());
+//		}
 		
 		this.executor = Executors.newSingleThreadExecutor();
 	}
@@ -147,8 +168,8 @@ public class SparkStreamProcessor  implements IOProcessor, Serializable  {
 		}
 	}
 	
-	private static SparkConf conf = new SparkConf().setMaster(sparkProperties.getProperty("SPARK_SERVER")).setAppName(sparkProperties.getProperty("APPLICATION_NAME"));
-	private static JavaSparkContext sc = new JavaSparkContext(conf);	
+	//private static SparkConf conf = new SparkConf().setMaster(sparkProperties.getProperty("SPARK_SERVER")).setAppName(sparkProperties.getProperty("APPLICATION_NAME"));
+	private static JavaSparkContext sc = new JavaSparkContext("spark://192.168.99.100:7077", "Luzzu");	
 	
     private static Connection connection;
     static {
@@ -303,12 +324,14 @@ public class SparkStreamProcessor  implements IOProcessor, Serializable  {
 		QualityReport r = new QualityReport();
 		List<String> qualityProblems = new ArrayList<String>();
 		
+		String datasetURI = "";
 		for(String className : this.metricInstances.keySet()){
 			QualityMetric m = this.metricInstances.get(className);
 			qualityProblems.add(r.createQualityProblem(m.getMetricURI(), m.getQualityProblems()));
+			datasetURI = m.getDatasetURI();
 		}
 		
-		Resource res = ModelFactory.createDefaultModel().createResource(this.datasetURI);
+		Resource res = ModelFactory.createDefaultModel().createResource(datasetURI);
 		this.qualityReport = r.createQualityReport(res, qualityProblems);
 		r.flush();
 	}
