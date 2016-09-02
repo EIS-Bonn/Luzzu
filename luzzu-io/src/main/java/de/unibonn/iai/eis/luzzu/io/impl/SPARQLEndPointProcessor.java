@@ -177,14 +177,13 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		executor = Executors.newSingleThreadExecutor();
 
 		try{
-			String query = "SELECT DISTINCT (count(?s) AS ?count) { { ?s ?p ?o . } UNION { GRAPH ?g { ?s ?p ?o .} } }";
-			final QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint,query);
 			//qe.addParam("timeout","10000"); //10 sec
-	
-						
 			final Future<Integer> handler = executor.submit(new Callable<Integer>() {
 			    @Override
 			    public Integer call() throws Exception{ 
+					String query = "SELECT DISTINCT (count(?s) AS ?count) { { ?s ?p ?o . } UNION { GRAPH ?g { ?s ?p ?o .} } }";
+					QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint,query);
+
 			    	int size = qe.execSelect().next().get("count").asLiteral().getInt();
 			    	return size;
 			    }
