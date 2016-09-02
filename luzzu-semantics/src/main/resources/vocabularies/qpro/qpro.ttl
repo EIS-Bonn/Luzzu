@@ -53,7 +53,7 @@ qpro:inGraph a rdf:Property;
 	rdfs:label "in graph".
 	
 qpro:exceptionDescription
-		a	rdfs:Property;
+		a	rdf:Property;
 		rdfs:comment "Describes a particular exception raised by the Resource or Triple in question, causing a quality problem" ;
 		rdfs:label "Exception Description" ;
 		rdfs:domain rdfs:Resource ;
@@ -61,6 +61,6 @@ qpro:exceptionDescription
 		rdfs:range xsd:Literal . 
 		
 qpro:extraExceptionProperty
-		a	rdfs:Property ;
+		a	rdf:Property ;
 		rdfs:comment "Enables the description of extra exception properties. This is an abstract property." ;
 		rdfs:label "Extra Exception Property (Abstract)" .
