@@ -32,8 +32,10 @@ import de.unibonn.iai.eis.luzzu.semantics.vocabularies.DAQ;
 public class Ranking {
 
 	final static Logger logger = LoggerFactory.getLogger(Ranking.class);
+	
+	private static DatasetLoader dsLoader = DatasetLoader.getInstance();
 
-	private static Dataset d = DatasetLoader.getInstance().getInternalDataset();
+	private static Dataset d = dsLoader.getInternalDataset();
 	private static HashMap<String, String> baseToURI = new HashMap<String,String>();
 	
 	
@@ -46,11 +48,19 @@ public class Ranking {
 
 	private int isNaNMetrics = 0;
 	private int isNaNDimension = 0;
+	
+	private Map<String,String> graphs = dsLoader.getAllGraphs();
 
 	public List<RankedObject> rank(List<RankingConfiguration> rankingConfig){
+		return rank(rankingConfig,false);
+	}
+	
+	public List<RankedObject> rank(List<RankingConfiguration> rankingConfig, boolean forceReloadCheck){
 		List<RankedObject> rankedObjects = new ArrayList<RankedObject>();
 		
-		Map<String,String> graphs = DatasetLoader.getInstance().getAllGraphs();
+		if (forceReloadCheck){
+			graphs = dsLoader.getAllGraphs();
+		}
 		
 		for(String base : graphs.keySet()){
 			String graph = graphs.get(base);
@@ -95,7 +105,7 @@ public class Ranking {
 			currentComputedOn = obs.getComputedOn().getURI();
 			currentGraphURI = obs.getGraphURI().getURI();
 		} else {
-			String graph = DatasetLoader.getInstance().getAllGraphs().get(currentComputedOn);
+			String graph = dsLoader.getAllGraphs().get(currentComputedOn);
 			currentGraphURI = graph;
 			currentComputedOn = (getComputedOn() != null) ? getComputedOn() : currentComputedOn;
 		}
@@ -225,7 +235,7 @@ public class Ranking {
 	
 	public String getComputedOn(){
 		String selectQuery = "SELECT ?cOn { graph <"+currentGraphURI+"> { ?s <"+DAQ.computedOn.getURI()+"> ?cOn } }";
-		QueryExecution exec =  QueryExecutionFactory.create(QueryFactory.create(selectQuery), DatasetLoader.getInstance().getInternalDataset());
+		QueryExecution exec =  QueryExecutionFactory.create(QueryFactory.create(selectQuery), dsLoader.getInternalDataset());
 		
 		ResultSet set = exec.execSelect();
 		while(set.hasNext()){
@@ -259,7 +269,7 @@ public class Ranking {
 	public List<RankedObject> rankIntegerBasedMetric(Resource metric){
 		List<RankedObject> rankedObjects = new ArrayList<RankedObject>();
 		
-		Map<String,String> graphs = DatasetLoader.getInstance().getAllGraphs();
+		Map<String,String> graphs = dsLoader.getAllGraphs();
 		
 		for(String base : graphs.keySet()){
 			String graph = graphs.get(base);

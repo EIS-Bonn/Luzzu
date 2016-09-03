@@ -60,7 +60,7 @@ public class DatasetLoader {
 	
 	private boolean requiresReload(){
 		if (this.checksum().equals(checksum)) return false;
-		return false;
+		return true;
 	}
 	
 	public Dataset getInternalDataset(){
