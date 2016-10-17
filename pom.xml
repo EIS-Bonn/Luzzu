@@ -87,10 +87,11 @@ use-case driven discovery and retrieval.</description>
 		<module>luzzu-communications</module>
 		<module>luzzu-io</module>
 		<module>luzzu-operations</module>
-		<!-- <module>luzzu-evaluation</module> -->
-		<module>luzzu-qml</module>
+<!-- 		<module>luzzu-evaluation</module> -->
+ 		<module>luzzu-qml</module>
 		<!-- <module>luzzu-plugins</module> -->
 		<module>luzzu-webapp</module>
+		<module>luzzu-lodevaluation</module>
 	</modules>
 
 	<dependencies>

@@ -10,7 +10,7 @@
 	</appender>
 
 	<appender name="rollingFile" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="/Users/jeremy/Desktop/270a-crawling/luzzucomms.log" />
+		<param name="file" value="/tmp/luzzu-logs/luzzu.debug.log" />
 		<param name="MaxFileSize" value="500MB" />
 		<param name="MaxBackupIndex" value="2" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -19,7 +19,7 @@
 	</appender>
 	
 	<appender name="statisticsAppender" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="/tmp/diachron-logs/luzzu-stats.log" />
+		<param name="file" value="/tmp/luzzu-logs/luzzu-stats.log" />
 		<param name="MaxFileSize" value="1000MB" />
 		<param name="MaxBackupIndex" value="2" />
 		<param name="MaxBackupIndex" value="2" />
@@ -35,19 +35,9 @@
 
 	<root>
 		<priority value="all" />
-		<appender-ref ref="rollingFile" />
+		<appender-ref ref="console" />
 	</root>
 
-	<logger name="eu.diachron.qualitymetrics">
-		<level value="debug" />
-		<appender-ref ref="rollingFile" />
-	</logger>
-
-	<logger name="eu.diachron.qualitymetrics.utilities.HTTPRetriever">
-		<level value="debug" />
-		<appender-ref ref="rollingFile" />
-	</logger>
-	
 	<logger name="eu.diachron.qualitymetrics.metricInfoStats" additivity="false">
 		<level value="info" />
 		<appender-ref ref="statisticsAppender" />
