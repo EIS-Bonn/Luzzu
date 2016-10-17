@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.apache.jena.riot.RDFDataMgr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,6 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.DatasetFactory;
-
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 
 public class DatasetLoader {
@@ -29,7 +27,9 @@ public class DatasetLoader {
 	private Dataset d = DatasetFactory.createMem();
 	
 	private Map<String,String> dsToQG = new HashMap<String,String>();
-	
+	private Map<String,String> qualityGraphToDS = new HashMap<String,String>();
+
+
 	private String checksum = "";
 
 	protected DatasetLoader(){
@@ -60,7 +60,7 @@ public class DatasetLoader {
 	
 	private boolean requiresReload(){
 		if (this.checksum().equals(checksum)) return false;
-		return false;
+		return true;
 	}
 	
 	public Dataset getInternalDataset(){
@@ -90,7 +90,7 @@ public class DatasetLoader {
 	
 	private void loadFile(File fileOrFolder){
 		if (fileOrFolder.isHidden()) return ;
-		if (fileOrFolder.getPath().endsWith(".trig")){
+		if (fileOrFolder.getPath().contains("quality-meta-data.trig")){
 			Dataset _ds = RDFDataMgr.loadDataset(fileOrFolder.getPath());
 			
 			String baseURI = fileOrFolder.getParent();
@@ -101,6 +101,7 @@ public class DatasetLoader {
 				String name = iter.next();
 				d.addNamedModel(name, _ds.getNamedModel(name));
 				dsToQG.put(baseURI, name);
+				qualityGraphToDS.put(name, baseURI);
 			}
 			
 			d.getDefaultModel().add(_ds.getDefaultModel());
@@ -148,5 +149,9 @@ public class DatasetLoader {
 		}
 		
 		return s;
+	}
+	
+	public String getDatasetLocationForQualityGraph(String qualityGraphURI){
+		return (this.qualityGraphToDS.containsKey(qualityGraphURI)) ? this.qualityGraphToDS.get(qualityGraphURI) : null;
 	}
 }

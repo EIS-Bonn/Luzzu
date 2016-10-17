@@ -17,3 +17,5 @@ hs_err_pid*
 *.prefs
 *.classpath
 /script.rb
+/luzzu-plugins/
+/luzzu-lodevaluation/

@@ -53,7 +53,7 @@ public class RankResource {
 			}
 			
 			Ranking ranking = new Ranking();
-			List<RankedObject> rank = ranking.rank(conf);
+			List<RankedObject> rank = ranking.rank(conf, true);
 			
 			String json = "{ \"ranking\" : [";
 			for(RankedObject ro : rank){

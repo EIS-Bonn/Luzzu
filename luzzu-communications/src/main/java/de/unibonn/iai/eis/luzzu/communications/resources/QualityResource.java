@@ -1,22 +1,10 @@
 package de.unibonn.iai.eis.luzzu.communications.resources;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.StringReader;
-import java.io.StringWriter;
-import java.lang.ProcessBuilder.Redirect;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -26,14 +14,15 @@ import javax.ws.rs.core.Response;
 
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
-import org.apache.jena.riot.RDFFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
-import de.unibonn.iai.eis.luzzu.io.IOProcessor;
+import de.unibonn.iai.eis.luzzu.communications.ExtendedCallable;
+import de.unibonn.iai.eis.luzzu.communications.Main;
+import de.unibonn.iai.eis.luzzu.io.ProcessorController;
 import de.unibonn.iai.eis.luzzu.io.impl.SPARQLEndPointProcessor;
 import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessor;
 
@@ -46,45 +35,142 @@ import de.unibonn.iai.eis.luzzu.io.impl.StreamProcessor;
 public class QualityResource {
 	
 	final static Logger logger = LoggerFactory.getLogger(QualityResource.class);
-
+	
 	@POST
-	@Path("preprocess")
+	@Path("getStatisticsForRequest")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response preprocess(MultivaluedMap<String, String> formParams)  {
-		
+	public Response getStatisticsForRequest(MultivaluedMap<String, String> formParams){
+		String jsonResponse = "";
+		String reqID = "";
 		try{
-			// Extract and validate parameters
-			String datasetURI = formParams.get("Dataset").get(0);
-			String useProxy = formParams.get("UseProxy").get(0);
-			String fileName = formParams.get("Filename").get(0);
+			List<String> lstRequestID = formParams.get("RequestID");
+			if(lstRequestID == null || lstRequestID.size() <= 0) {
+				throw new IllegalArgumentException("Request ID was not provided");
+			}
 			
-			String[] command = {"/Users/jeremy/Documents/Workspaces/Luzzu/luzzu/luzzu-communications/preprocess.sh", datasetURI, useProxy, fileName };
-			ProcessBuilder pb = new ProcessBuilder(command);
-
-			Process p = pb.start();// Runtime.getRuntime().exec(command);  //pb.start();
-			
-//			InputStream is = p.getInputStream();
-//	        InputStreamReader reader = new InputStreamReader(is);
-//	        Scanner scan = new Scanner(reader);
-//
-//
-//	        while(scan.hasNextLine()){
-//	            System.out.println(scan.nextLine());
-//	        }
-
-			
-			System.out.println("Waiting for process to finish...");
-			p.waitFor(); // wait until the process finishes
-			int exitCode = p.exitValue();
-			System.out.println("Process exit code: " + exitCode); 
-			
-			return Response.ok(exitCode,MediaType.TEXT_PLAIN).header("Access-Control-Allow-Origin", "*")
-					.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
-				      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build(); 
+			reqID = lstRequestID.get(0);
+    		jsonResponse = Main.getRequestStats(reqID);
 		} catch (Exception e){
+			String errorTimeStamp = Long.toString((new Date()).getTime());
+			StringBuilder sb = new StringBuilder();
+        	sb.append("{");
+    		sb.append("\"Agent\": \"" + Main.BASE_URI + "\", ");
+        	sb.append("\"RequestID\": \"" + reqID + "\", ");
+        	sb.append("\"TimeStamp\": \"" + errorTimeStamp + "\", ");
+    		sb.append("\"ErrorMessage\": \"" + e.getMessage() + "\"");
+    		sb.append("}");
+			jsonResponse = sb.toString();
 			e.printStackTrace();
 		}
-		return null;
+		
+		return Response.ok(jsonResponse.toString(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
+	}
+	
+	
+	@POST
+	@Path("cancelRequest")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response cancelRequest(MultivaluedMap<String, String> formParams){
+		String jsonResponse = "";
+		String reqID = "";
+		try{
+			List<String> lstRequestID = formParams.get("RequestID");
+			if(lstRequestID == null || lstRequestID.size() <= 0) {
+				throw new IllegalArgumentException("Request ID was not provided");
+			}
+			
+			reqID = lstRequestID.get(0);
+			boolean success = Main.cancelRequest(reqID);
+			
+			String timeStamp = Long.toString((new Date()).getTime());
+			StringBuilder sb = new StringBuilder();
+        	sb.append("{");
+    		sb.append("\"Agent\": \"" + Main.BASE_URI + "\", ");
+        	sb.append("\"RequestID\": \"" + reqID + "\", ");
+        	sb.append("\"CancellationRequestSuccess\": \"" + success + "\", ");
+    		sb.append("\"Time\": \"" + timeStamp + "\"");
+    		sb.append("}");
+			
+    		jsonResponse = sb.toString();
+		} catch (Exception e){
+			String errorTimeStamp = Long.toString((new Date()).getTime());
+			StringBuilder sb = new StringBuilder();
+        	sb.append("{");
+    		sb.append("\"Agent\": \"" + Main.BASE_URI + "\", ");
+        	sb.append("\"RequestID\": \"" + reqID + "\", ");
+        	sb.append("\"TimeStamp\": \"" + errorTimeStamp + "\", ");
+    		sb.append("\"ErrorMessage\": \"" + e.getMessage() + "\"");
+    		sb.append("}");
+			jsonResponse = sb.toString();
+			e.printStackTrace();
+		}
+		
+		return Response.ok(jsonResponse.toString(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
+	}
+	
+	
+	@GET
+	@Path("getPendingRequests")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPendingRequests(){
+		return Response.ok(Main.getAllPendingRequests(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
+	}
+	
+	@GET
+	@Path("getSuccessfulRequests")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getSuccessfulRequests(){
+		return Response.ok(Main.getAllSuccessfulRequests(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
+	}
+
+	@GET
+	@Path("getFailedRequests")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getFailedRequests(){
+		return Response.ok(Main.getAllFailedRequests(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
+	}
+	
+	@POST
+	@Path("status")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response status(MultivaluedMap<String, String> formParams){
+		String jsonResponse = "";
+		String reqID = "";
+		try{
+			List<String> lstRequestID = formParams.get("RequestID");
+			if(lstRequestID == null || lstRequestID.size() <= 0) {
+				throw new IllegalArgumentException("Request ID was not provided");
+			}
+			
+			reqID = lstRequestID.get(0);
+			jsonResponse = Main.getRequestStatus(reqID);
+			
+		} catch (Exception e){
+			String errorTimeStamp = Long.toString((new Date()).getTime());
+			StringBuilder sb = new StringBuilder();
+        	sb.append("{");
+    		sb.append("\"Agent\": \"" + Main.BASE_URI + "\", ");
+        	sb.append("\"RequestID\": \"" + reqID + "\", ");
+        	sb.append("\"TimeStamp\": \"" + errorTimeStamp + "\", ");
+    		sb.append("\"ErrorMessage\": \"" + e.getMessage() + "\"");
+    		sb.append("}");
+			jsonResponse = sb.toString();
+			e.printStackTrace();
+		}
+		
+		return Response.ok(jsonResponse.toString(),MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
 	}
 	
 	
@@ -104,26 +190,27 @@ public class QualityResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response computeQuality(MultivaluedMap<String, String> formParams) {
 		
-		String jsonResponse = null;
-		String datasetURI = null;
-		String jsonStrMetricsConfig = null;
-		String baseURI = "";
-		boolean genQualityReport = false;
+		String jsonResponse = "";
+		final String datasetURI;
+		String _datasetURI = "";
+		final String jsonStrMetricsConfig;
+		final String baseURI;
+		final boolean genQualityReport;
 		
 		try {
 			logger.info("Quality computation request received for dataset: {}", formParams.get("Dataset"));
 			
 			// Extract and validate parameters
-			List<String> lstDatasetURI = formParams.get("Dataset");
-			List<String> lstQualityReportReq = formParams.get("QualityReportRequired");
-			List<String> lstMetricsConfig = formParams.get("MetricsConfiguration");
-			List<String> lstBaseUri = formParams.get("BaseUri");
-			List<String> lstIsSparql = formParams.get("IsSparql");
+			final List<String> lstDatasetURI = formParams.get("Dataset");
+			final List<String> lstQualityReportReq = formParams.get("QualityReportRequired");
+			final List<String> lstMetricsConfig = formParams.get("MetricsConfiguration");
+			final List<String> lstBaseUri = formParams.get("BaseUri");
+			final List<String> lstIsSparql = formParams.get("IsSparql");
 
 			logger.debug("Processing request parameters. DatasetURI: {}; QualityReportRequired: {}; MetricsConfiguration: {}; BaseUri: {}; IsSPARQLEndPoint: {}", 
 					lstDatasetURI, lstQualityReportReq, lstMetricsConfig, lstBaseUri);
 			
-			System.out.printf("Processing request parameters. DatasetURI: {}; QualityReportRequired: {}; MetricsConfiguration: {}; BaseUri: {}; IsSPARQLEndPoint: {}", 
+			System.out.printf("Processing request parameters. DatasetURI: %s; QualityReportRequired: %s; MetricsConfiguration: %s; BaseUri: %s; IsSPARQLEndPoint: %s", 
 					lstDatasetURI, lstQualityReportReq.get(0), lstMetricsConfig.get(0), lstBaseUri.get(0), lstIsSparql.get(0));
 									
 			if(lstDatasetURI == null || lstDatasetURI.size() <= 0) {
@@ -143,68 +230,76 @@ public class QualityResource {
 			}
 			
 			// Assign parameter values to variables and set defaults
-
-			
 			jsonStrMetricsConfig = lstMetricsConfig.get(0);
 			genQualityReport = Boolean.parseBoolean(lstQualityReportReq.get(0));
 
 			// Parse the metrics configuration as JSON-LD and convert it to RDF to extract its triples, note that no base URI is expected
-			Model modelConfig = ModelFactory.createDefaultModel();
-			RDFDataMgr.read(modelConfig, new StringReader(jsonStrMetricsConfig), null, Lang.JSONLD);
+			Model _modelConfig = ModelFactory.createDefaultModel();
+			RDFDataMgr.read(_modelConfig, new StringReader(jsonStrMetricsConfig), null, Lang.JSONLD);
+			final Model modelConfig = _modelConfig;
 			
 			// Obtain the base URI of the resources, which is important as it will be used to name the quality metadata models
-			if (lstBaseUri != null) {
-				baseURI = lstBaseUri.get(0);
-			}
+			baseURI = lstBaseUri.get(0);
 			
-			boolean isSPARQLEndpoint = Boolean.parseBoolean(lstIsSparql.get(0));
+			final boolean isSPARQLEndpoint = Boolean.parseBoolean(lstIsSparql.get(0));
 			
-			IOProcessor strmProc = null;
+			datasetURI = lstDatasetURI.get(0);
+			_datasetURI = lstDatasetURI.get(0);
+			
+			ExtendedCallable<String> newRequest = new ExtendedCallable<String>(){
+				
+				
+				@Override
+				public String call() throws Exception {
+					String jsonResponse;
+					try{
+						if (isSPARQLEndpoint){
+							strmProc = new SPARQLEndPointProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
+						} else {
+							if ((datasetURI.startsWith("http://")) || (datasetURI.startsWith("ftp://"))){
+								strmProc = new StreamProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
+							}else {
+								strmProc = ProcessorController.getInstance().decide(baseURI, datasetURI, genQualityReport, modelConfig);
+								logger.debug("Chosen Processor: {}", strmProc.getClass().toString());
+								System.out.println("Chosen Processor: "+strmProc.getClass().toString());
+							}
+						}
 
-			if (isSPARQLEndpoint){
-				String[] expandedListDatasetURI = lstDatasetURI.get(0).split(",");
-				datasetURI = expandedListDatasetURI[0];
-				strmProc = new SPARQLEndPointProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
-			} else {
-				String[] expandedListDatasetURI = lstDatasetURI.get(0).split(",");
-				if (expandedListDatasetURI.length == 1){
-					datasetURI = expandedListDatasetURI[0];
-					strmProc = new StreamProcessor(baseURI, datasetURI, genQualityReport, modelConfig);
-				} else {
-					//if we have a void file (e.g. void.ttl) we have to make sure that it is processed first
-					List<String> datasetFiles = Arrays.asList(expandedListDatasetURI);
-					List<String> voidFiles = new ArrayList<String>();
-					for(String s : datasetFiles) if (s.startsWith("void.")) voidFiles.add(s);
-					for (String v : voidFiles) datasetFiles.remove(v);
-					datasetFiles.addAll(0, voidFiles);
-					
-					strmProc = new StreamProcessor(baseURI, datasetFiles, genQualityReport, modelConfig);
-				}
-			}
-
-
-			strmProc.processorWorkFlow();
-			strmProc.cleanUp();
-			
-			Model modelQualityRep = null;
-			
-			// Retrieve quality report, if requested to do so
-			if(genQualityReport) {
-				modelQualityRep = strmProc.retreiveQualityReport();
-			}
-			
-			jsonResponse = buildJsonResponse((datasetURI == null) ? baseURI : datasetURI, modelQualityRep);
-			logger.debug("Quality computation request completed. Output: {}", jsonResponse);
+						strmProc.processorWorkFlow();
+						strmProc.cleanUp();
 						
-		} catch(Exception ex) {
-			String errorTimeStamp = Long.toString((new Date()).getTime());
-			logger.error("Error processing quality computation request [" + errorTimeStamp + "]", ex);
+						Model modelQualityRep = null;
+						
+						// Retrieve quality report, if requested to do so
+						if(genQualityReport) {
+							modelQualityRep = strmProc.retreiveQualityReport();
+						}
+						
+						jsonResponse = buildJsonResponse((datasetURI == null) ? baseURI : datasetURI, modelQualityRep);
+						logger.debug("Quality computation request completed. DatasetURI: {}", datasetURI);
+									
+					} catch(Exception ex) {
+						String errorTimeStamp = Long.toString((new Date()).getTime());
+						logger.error("Error processing quality computation request [" + errorTimeStamp + "]", ex);
+						
+						// Build JSON response, indicating that an error occurred
+						jsonResponse = buildJsonErrorResponse(datasetURI, errorTimeStamp, ex.getMessage());
+						ex.printStackTrace();
+					}
+					return jsonResponse.toString();
+				}
+				
+			};
 			
-			// Build JSON response, indicating that an error occurred
-			jsonResponse = buildJsonErrorResponse(datasetURI, errorTimeStamp, "The request caused an exception");
+			String requestID = Main.addRequest(newRequest, _datasetURI);
+			System.out.println("Added request: "+ requestID);
+			jsonResponse = Main.getRequestStatus(requestID);
+			
+		} catch (Exception e){
+			String errorTimeStamp = Long.toString((new Date()).getTime());
+			jsonResponse = buildJsonErrorResponse(_datasetURI, errorTimeStamp, e.getMessage());
 		}
 		
-		//return jsonResponse;
 		return Response.ok(jsonResponse,MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
 				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
 			      .header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
@@ -220,18 +315,19 @@ public class QualityResource {
 	private String buildJsonResponse(String datasetURI, Model qualityReport) {
 		StringBuilder sbJsonResponse = new StringBuilder();
 		sbJsonResponse.append("{ \"Dataset\": \"" + datasetURI + "\", ");
+		sbJsonResponse.append("\"Agent\": \"" + Main.BASE_URI + "\", ");
 		sbJsonResponse.append("\"Outcome\": \"SUCCESS\"");
 
 		// If the quality report was generated, add its JSON representation to the response
-		if(qualityReport != null && !qualityReport.isEmpty()) {
-			// Serialize the quality report in JSON-LD format...
-			StringWriter strWriter = new StringWriter();
-			RDFDataMgr.write(strWriter, qualityReport, RDFFormat.JSONLD);
-			
-			// ... and append its JSON representation in the QualityReport field
-			sbJsonResponse.append(", \"QualityReport\": ");
-			sbJsonResponse.append(strWriter.toString());
-		}
+//		if(qualityReport != null && !qualityReport.isEmpty()) {
+//			// Serialize the quality report in JSON-LD format...
+//			StringWriter strWriter = new StringWriter();
+//			RDFDataMgr.write(strWriter, qualityReport, RDFFormat.JSONLD);
+//			
+//			// ... and append its JSON representation in the QualityReport field
+//			sbJsonResponse.append(", \"QualityReport\": ");
+//			sbJsonResponse.append(strWriter.toString());
+//		}
 		sbJsonResponse.append(" }");
 		return sbJsonResponse.toString();
 	}
@@ -247,6 +343,7 @@ public class QualityResource {
 	private String buildJsonErrorResponse(String datasetURI, String errorCode, String errorMessage) {
 		StringBuilder sbJsonResponse = new StringBuilder();
 		sbJsonResponse.append("{ \"Dataset\": \"" + datasetURI + "\", ");
+		sbJsonResponse.append("\"Agent\": \"" + Main.BASE_URI + "\", ");
 		sbJsonResponse.append("\"Outcome\": \"ERROR\", ");
 		sbJsonResponse.append("\"ErrorMessage\": \"" + errorMessage + "\", ");
 		sbJsonResponse.append("\"ErrorCode\": \"" + errorCode + "\" }");

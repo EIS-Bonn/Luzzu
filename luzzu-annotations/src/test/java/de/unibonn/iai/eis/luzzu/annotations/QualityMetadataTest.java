@@ -200,7 +200,7 @@ public class QualityMetadataTest extends Assert {
 		NodeIterator iter = _qualityGraph.listObjectsOfProperty(this.metricURI, DAQ.hasObservation);
 		while (iter.hasNext()){
 			RDFNode node = iter.next();
-			assertTrue(_qualityGraph.contains(node.asResource(), RDF.type, CUBE.Observation));
+			assertTrue(_qualityGraph.contains(node.asResource(), RDF.type, DAQ.Observation));
 			assertTrue(_qualityGraph.contains(node.asResource(), DAQ.computedOn, this.computedOn));
 			assertTrue(_qualityGraph.contains(node.asResource(), SDMXDIMENSION.timePeriod));
 			assertTrue(_qualityGraph.contains(node.asResource(), DAQ.value));

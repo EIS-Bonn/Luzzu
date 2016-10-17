@@ -9,23 +9,27 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 import org.apache.jena.riot.RiotException;
-import org.eclipse.jetty.util.BlockingArrayQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.DatasetFactory;
-import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
@@ -33,6 +37,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.NodeIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
 import de.unibonn.iai.eis.luzzu.annotations.QualityMetadata;
 import de.unibonn.iai.eis.luzzu.annotations.QualityReport;
@@ -43,12 +48,15 @@ import de.unibonn.iai.eis.luzzu.datatypes.Args;
 import de.unibonn.iai.eis.luzzu.datatypes.Object2Quad;
 import de.unibonn.iai.eis.luzzu.exceptions.AfterException;
 import de.unibonn.iai.eis.luzzu.exceptions.BeforeException;
+import de.unibonn.iai.eis.luzzu.exceptions.EndpointException;
 import de.unibonn.iai.eis.luzzu.exceptions.ExternalMetricLoaderException;
 import de.unibonn.iai.eis.luzzu.exceptions.MetadataException;
 import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
 import de.unibonn.iai.eis.luzzu.io.IOProcessor;
 import de.unibonn.iai.eis.luzzu.io.configuration.DeclerativeMetricCompiler;
 import de.unibonn.iai.eis.luzzu.io.configuration.ExternalMetricLoader;
+import de.unibonn.iai.eis.luzzu.io.helper.IOStats;
+import de.unibonn.iai.eis.luzzu.io.helper.StreamMetadataSniffer;
 import de.unibonn.iai.eis.luzzu.properties.EnvironmentProperties;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 import de.unibonn.iai.eis.luzzu.qml.parser.ParseException;
@@ -78,7 +86,10 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 	private ExecutorService executor;
 	private List<MetricProcess> lstMetricConsumers = new ArrayList<MetricProcess>();
 	
+	private boolean forcedCancel = false;
+	
 	private boolean isInitalised = false;
+	
 	
 	/**
 	 * Default initializations common to all constructors (is always called upon instance creation)
@@ -107,22 +118,36 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		PropertyManager.getInstance().addToEnvironmentVars("baseURI", baseURI);
 	}
 	
-	public void processorWorkFlow(){
+	public void processorWorkFlow() throws ProcessorNotInitialised{
 		this.setUpProcess();
 		
 		PropertyManager.getInstance().addToEnvironmentVars("datasetURI", this.baseURI);
 		try {
 			this.startProcessing();
-		} catch (ProcessorNotInitialised e) {
+			
+			if (!forcedCancel){
+				this.writeQualityMetadataFile();
+				// Generate quality report, if required by the invoker and write it into a file
+				if (this.genQualityReport) {
+					this.generateQualityReport();
+					this.writeReportMetadataFile();
+				}
+			}
+		} catch (EndpointException ex){
+			this.cleanUp();
+			throw ex;
+		}  catch (ProcessorNotInitialised e) {
 			this.processorWorkFlow();
-		}
-		
-		this.writeQualityMetadataFile();
-		// Generate quality report, if required by the invoker and write it into a file
-		if (this.genQualityReport) {
-			this.generateQualityReport();
-			this.writeReportMetadataFile();
-		}
+			if (!forcedCancel){
+				this.writeQualityMetadataFile();
+				// Generate quality report, if required by the invoker and write it into a file
+				if (this.genQualityReport) {
+					this.generateQualityReport();
+					this.writeReportMetadataFile();
+				}
+			}
+		} 		
+	
 	}
 	
 	
@@ -143,57 +168,78 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 
 	@Override
 	public void startProcessing() throws ProcessorNotInitialised{
-		
+		//SystemARQ.UseSAX=false;
 		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");	
 		StreamMetadataSniffer sniffer = new StreamMetadataSniffer();
 		
 		//get the number of triples in an endpoint
-		String query = "SELECT (count(?s) AS ?count) {?s ?p ?o . }";
-		QueryExecution qe = QueryExecutionFactory.sparqlService(sparqlEndPoint,query);
-		
-		int size = 0;
+		int size = -1;
+		executor = Executors.newSingleThreadExecutor();
+
 		try{
-			size = qe.execSelect().next().get("count").asLiteral().getInt();
+			//qe.addParam("timeout","10000"); //10 sec
+			final Future<Integer> handler = executor.submit(new Callable<Integer>() {
+			    @Override
+			    public Integer call() throws Exception{ 
+					String query = "SELECT DISTINCT (count(?s) AS ?count) { { ?s ?p ?o . } UNION { GRAPH ?g { ?s ?p ?o .} } }";
+					QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint,query);
+
+			    	int size = qe.execSelect().next().get("count").asLiteral().getInt();
+			    	return size;
+			    }
+			});
+			
+			try {
+				size = handler.get(1, TimeUnit.MINUTES);
+			} catch (TimeoutException e) {
+				handler.cancel(true);
+				throw e;
+			}
 		} catch (Exception e){
 			logger.error("Error parsing SPARQL Endpoint {}. Error message {}", sparqlEndPoint, e.getMessage());
+			throw new EndpointException("Endpoint Exception for: "+ sparqlEndPoint + " " + e.getMessage());
 		}
 			
 		final int endpointSize = size;
 		logger.info("number of triples {}", endpointSize);
-
 		
-		Runnable parser = new Runnable(){
-			int nextOffset = 0;
-			public void run() {
-				try{
-					boolean start = true;
+		Future<?> _futureParser = null;
+		if (size > -1){
+			Runnable parser = new Runnable(){
+				int nextOffset = 0;
+				public void run(){
+					try{
+						boolean start = true;
+						do{
+							if (nextOffset >= endpointSize) 
+								start = false;
+							logger.debug("endpoint: {} => next offset {}, size {}", sparqlEndPoint, nextOffset, endpointSize);
+							String query = "SELECT * WHERE { { SELECT DISTINCT * { { ?s ?p ?o . } UNION { GRAPH ?g { ?s ?p ?o .} } } ORDER BY ASC(?s) } } LIMIT 10000 OFFSET " + nextOffset;
+							System.out.println(query);
+							logger.debug("endpoint: {} => {}", sparqlEndPoint, query);
+							QueryEngineHTTP qe = (QueryEngineHTTP) QueryExecutionFactory.sparqlService(sparqlEndPoint, query);
+							qe.addParam("timeout","10000"); 
+							ResultSet rs = qe.execSelect();
+							while(rs.hasNext()){
+								sparqlIterator.add(rs.next());
+							}
+							
 
-					do{
-						if (nextOffset >= endpointSize) 
-							start = false;
-						logger.info("next offset {}, size {}", nextOffset, endpointSize);
-						String query = "SELECT * { ?s ?p ?o . } ORDERBY ASC(?s) LIMIT 10000 OFFSET " + nextOffset;
-						QueryExecution qe = QueryExecutionFactory.sparqlService(sparqlEndPoint, query);
-						ResultSet rs = qe.execSelect();
-						
-						while(rs.hasNext()){
-							sparqlIterator.add(rs.next());
-						}
-						
-						nextOffset = ((endpointSize - nextOffset) > 100000) ? nextOffset + 100000 : nextOffset + (endpointSize - nextOffset);
-					}while(start);
-					logger.info("done parsing endpoint {}", sparqlEndPoint);
-				} catch (Exception e){
-					logger.error("Error parsing SPARQL Endpoint {}. Error message {}", sparqlEndPoint, e.getMessage());
+							
+							nextOffset = ((endpointSize - nextOffset) > 10000) ? nextOffset + 10000 : nextOffset + (endpointSize - nextOffset);
+						}while(start);
+						logger.info("Done Parsing Endpoint {}", sparqlEndPoint);
+					} catch (Exception e){
+						logger.error("Error parsing SPARQL Endpoint {}. Error message {}", sparqlEndPoint, e.getMessage());
+						throw e;
+					}
 				}
-			}
-		};
-		
-		executor.submit(parser);
+			};
+			_futureParser = executor.submit(parser);
+		}
+			
 		executor.shutdown();
-		
-		
-		
+
 		try {
 			while (!executor.isTerminated()){
 				while (!(this.sparqlIterator.isEmpty())) {
@@ -208,7 +254,13 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 					}
 				}
 			}
-
+			
+			try{
+				_futureParser.get();
+			} catch (ExecutionException | InterruptedException e){
+				e.printStackTrace();
+				throw new EndpointException("Endpoint Exception for: "+ sparqlEndPoint + " " + e.getMessage());
+			}
 		} catch(RiotException rex) {
 			logger.warn("Failed to process SPARQL endpoint: {}. Exception: {}", sparqlEndPoint, rex.getMessage());
 			throw rex;
@@ -275,6 +327,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 			QualityMetric metric = null;
 			try {
 				metric = clazz.newInstance();
+				metric.setDatasetURI(this.baseURI);
 			} catch (InstantiationException e) {
 				logger.error("Cannot load metric for {}", className);
 				throw new ExternalMetricLoaderException("Cannot create class instance for " + className + ". Exception caused by an Instantiation Exception : " + e.getLocalizedMessage());
@@ -344,12 +397,15 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 		QualityReport r = new QualityReport();
 		List<String> qualityProblems = new ArrayList<String>();
 		
+		String datasetURI = "";
 		for(String className : this.metricInstances.keySet()){
 			QualityMetric m = this.metricInstances.get(className);
+			if (m.getQualityProblems() == null) continue;
 			qualityProblems.add(r.createQualityProblem(m.getMetricURI(), m.getQualityProblems()));
+			datasetURI = m.getDatasetURI();
 		}
 		
-		Resource res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getBaseURI());
+		Resource res = ModelFactory.createDefaultModel().createResource(datasetURI);
 		this.qualityReport = r.createQualityReport(res, qualityProblems);
 		r.flush();
 	}
@@ -427,22 +483,30 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 	private synchronized void writeReportMetadataFile() {
 		// Build the full path of the file where quality report metadata will be written.
 		// Use current timestamp to identify the report corresponding to each individual quality assessment process
+		String fld = this.metadataBaseDir + "/" + this.baseURI.replace("http://", "");
+		fld = fld.replaceFirst("^~",System.getProperty("user.home"));
+				
+		File folder = new File(fld);
+		if (!(folder.exists())) folder.mkdirs();
+		
 		long timestamp = (new Date()).getTime();
 		String metadataFilePath = String.format("%s/%s/problem-report-%d.trig", this.metadataBaseDir, this.baseURI.replace("http://", ""), timestamp);
 		metadataFilePath = metadataFilePath.replace("//", "/");
+		metadataFilePath = metadataFilePath.replaceFirst("^~",System.getProperty("user.home"));
+
 		logger.debug("Writing quality report to file: metadataFilePath...");
 
 		// Make sure that the quality report model has been properly generated before hand
 		if(this.retreiveQualityReport() != null) {
 			File fileMetadata = new File(metadataFilePath);
-			Dataset model = DatasetFactory.create(this.retreiveQualityReport());
+//			Dataset model = DatasetFactory.create(this.retreiveQualityReport());
 	
 			try {
 				// Make sure the file is created (the following call has no effect if the file exists)
 				fileMetadata.createNewFile();
 				// Write new quality metadata into file
 				OutputStream out = new FileOutputStream(fileMetadata, false);
-				RDFDataMgr.write(out, model, RDFFormat.TRIG);
+				RDFDataMgr.write(out, this.retreiveQualityReport(), RDFFormat.TRIG);
 				
 				logger.debug("Quality report successfully written.");
 			} catch(IOException ex) {
@@ -458,7 +522,7 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 	}
 
 	private final class MetricProcess {
-		volatile Queue<Object2Quad> quadsToProcess = new BlockingArrayQueue<Object2Quad>(1000000);
+		volatile Queue<Object2Quad> quadsToProcess = new ArrayBlockingQueue<Object2Quad>(1000000);
 		Thread metricThread = null;
 		String metricName = null;
         
@@ -510,7 +574,55 @@ public class SPARQLEndPointProcessor implements IOProcessor {
 			this.stopSignal = true;
 		}
 
+		public Long getStatementProcessed(){
+			return this.stmtsProcessed;
+		}
+		
+		public String getMetricName(){
+			return this.metricName;
+		}
+		
+		public void closeAssessment(){
+			this.stopSignal = true;
+			this.quadsToProcess.clear();
+		}
+		
+		public boolean isDoneParsing(){
+			return quadsToProcess.isEmpty();
+		}
     }
+	
+	@Override
+	public synchronized List<IOStats> getIOStats() throws ProcessorNotInitialised {
+		
+		List<IOStats> lst = new ArrayList<IOStats>();
+		
+		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");	
+		
+		for (MetricProcess mp : lstMetricConsumers){
+			Long stmtProcessed = mp.getStatementProcessed();
+			String metricName = mp.getMetricName();
+			boolean doneParsing = mp.isDoneParsing();
+			lst.add(new IOStats(metricName,stmtProcessed, doneParsing));
+		}
+		
+		return lst;
+	}
 
+	@Override
+	public void cancelMetricAssessment() throws ProcessorNotInitialised {
+		
+		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");	
 
+		forcedCancel = true;
+		
+		for (MetricProcess mp : lstMetricConsumers){
+			logger.info("Closing and clearing quads queue for {}", mp.metricName);
+			mp.closeAssessment();
+		}
+		
+		logger.info("Closing Iterators");
+		sparqlIterator.clear();
+		executor.shutdownNow();
+	}
 }

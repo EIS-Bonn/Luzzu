@@ -29,7 +29,7 @@ daq:
         		rdfs:seeAlso <http://purl.org/net/clange>; 
         		foaf:homepage <http://langec.wordpress.com/about/> 
         	] ;
-        dct:modified "2015-08-03"^^xsd:date ;
+        dct:modified "2016-05-31"^^xsd:date ;
         dct:language "en"^^xsd:language ;
         vann:preferredNamespaceUri "http://purl.org/eis/vocab/daq#";
     	vann:preferredNamespacePrefix "daq";
@@ -161,7 +161,7 @@ daq:requires
 	rdfs:range	rdfs:Resource .
 		
 daq:isEstimate
-	a	rdf:Property, owl:ObjectProperty ;
+	a	rdf:Property, owl:DatatypeProperty ;
 	rdfs:label	"is estimate"@en ;
 	rdfs:comment	"This property flags true if an assessed observation of a metric gives an estimate result instead of a more accurate one."@en ;
 	rdfs:domain	daq:Observation ;

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.unibonn.iai.eis</groupId>
 	<artifactId>luzzu</artifactId>
-	<version>1.0.2</version>
+	<version>2.0.0</version>
 	<name>Luzzu</name>
 
 
@@ -75,7 +75,7 @@ use-case driven discovery and retrieval.</description>
 		<jerseymedia.version>2.11</jerseymedia.version>
 		<powermock.version>1.5.5</powermock.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<luzzu.version>1.0.2</luzzu.version>
+		<luzzu.version>2.0.0</luzzu.version>
 	</properties>
 
 	<packaging>pom</packaging>
@@ -87,10 +87,11 @@ use-case driven discovery and retrieval.</description>
 		<module>luzzu-communications</module>
 		<module>luzzu-io</module>
 		<module>luzzu-operations</module>
-		<!-- <module>luzzu-evaluation</module> -->
-		<module>luzzu-qml</module>
-		<!-- <module>luzzu-plugins</module> -->
+<!-- 	<module>luzzu-evaluation</module> -->
+ 		<module>luzzu-qml</module>
+<!-- 	<module>luzzu-plugins</module> -->
 		<module>luzzu-webapp</module>
+<!--  	<module>luzzu-lodevaluation</module> -->		
 	</modules>
 
 	<dependencies>

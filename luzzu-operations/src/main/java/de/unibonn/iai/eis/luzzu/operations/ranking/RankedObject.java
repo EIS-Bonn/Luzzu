@@ -6,10 +6,12 @@ public class RankedObject implements Comparable<RankedObject>{
 
 	private String dataset;
 	private double rankedValue;
+	private String graphUri;
 	
-	public RankedObject(String dataset, double rankedValue){
+	public RankedObject(String dataset, double rankedValue, String graphURI){
 		this.setDataset(dataset);
 		this.setRankedValue(rankedValue);
+		this.setGraphUri(graphURI);
 	}
 	
 	public String getDataset() {
@@ -31,5 +33,26 @@ public class RankedObject implements Comparable<RankedObject>{
 		if (this.rankedValue > o.getRankedValue()) return 1;
 		else return 0;
 	}
+	
+	@Override
+	public boolean equals(Object other){
+		if (other instanceof RankedObject){
+			RankedObject _other = (RankedObject) other;
+			return this.dataset.equals(_other.dataset);
+		} else return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		return this.dataset.hashCode();
+	}
 
+	public String getGraphUri() {
+		return graphUri;
+	}
+
+	public void setGraphUri(String graphUri) {
+		this.graphUri = graphUri;
+	}
+	
 }

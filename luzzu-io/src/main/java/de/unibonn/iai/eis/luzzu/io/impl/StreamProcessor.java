@@ -20,6 +20,7 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 import org.apache.jena.riot.RDFLanguages;
 import org.apache.jena.riot.RiotException;
+//import org.apache.jena.riot.lang.CollectorStreamTriples;
 import org.apache.jena.riot.lang.PipedQuadsStream;
 import org.apache.jena.riot.lang.PipedRDFIterator;
 import org.apache.jena.riot.lang.PipedRDFStream;
@@ -43,6 +44,7 @@ import de.unibonn.iai.eis.luzzu.assessment.QualityMetric;
 import de.unibonn.iai.eis.luzzu.cache.CacheManager;
 import de.unibonn.iai.eis.luzzu.datatypes.Args;
 import de.unibonn.iai.eis.luzzu.datatypes.Object2Quad;
+import de.unibonn.iai.eis.luzzu.datatypes.ProblemList;
 import de.unibonn.iai.eis.luzzu.exceptions.AfterException;
 import de.unibonn.iai.eis.luzzu.exceptions.BeforeException;
 import de.unibonn.iai.eis.luzzu.exceptions.ExternalMetricLoaderException;
@@ -51,6 +53,8 @@ import de.unibonn.iai.eis.luzzu.exceptions.ProcessorNotInitialised;
 import de.unibonn.iai.eis.luzzu.io.IOProcessor;
 import de.unibonn.iai.eis.luzzu.io.configuration.DeclerativeMetricCompiler;
 import de.unibonn.iai.eis.luzzu.io.configuration.ExternalMetricLoader;
+import de.unibonn.iai.eis.luzzu.io.helper.IOStats;
+import de.unibonn.iai.eis.luzzu.io.helper.StreamMetadataSniffer;
 import de.unibonn.iai.eis.luzzu.properties.EnvironmentProperties;
 import de.unibonn.iai.eis.luzzu.properties.PropertyManager;
 import de.unibonn.iai.eis.luzzu.qml.parser.ParseException;
@@ -92,6 +96,15 @@ public class StreamProcessor implements IOProcessor {
 	private List<MetricProcess> lstMetricConsumers = new ArrayList<MetricProcess>();
 	
 	private boolean isInitalised = false;
+	private boolean forcedCancel = false;
+	
+	
+	// Stats Vars
+	private boolean isGeneratingQMD = false;
+	private boolean endedGeneratingQMD = false;
+	
+	private boolean isGeneratingQR = false;
+	private boolean endedGeneratingQR = false;
 	
 	/**
 	 * Default initializations common to all constructors (is always called upon instance creation)
@@ -148,11 +161,13 @@ public class StreamProcessor implements IOProcessor {
 			if (datasetListCounter < datasetList.size()) this.reinitialiseProcessors();
 		}
 		
-		this.writeQualityMetadataFile();
-		// Generate quality report, if required by the invoker and write it into a file
-		if (this.genQualityReport) {
-			this.generateQualityReport();
-			this.writeReportMetadataFile();
+		if (!forcedCancel){
+			this.writeQualityMetadataFile();
+			// Generate quality report, if required by the invoker and write it into a file
+			if (this.genQualityReport) {
+				this.generateQualityReport();
+				this.writeReportMetadataFile();
+			}
 		}
 	}
 
@@ -315,10 +330,14 @@ public class StreamProcessor implements IOProcessor {
 			QualityMetric metric = null;
 			try {
 				metric = clazz.newInstance();
+				metric.setDatasetURI(this.baseURI);
 			} catch (InstantiationException e) {
 				logger.error("Cannot load metric for {}", className);
 				throw new ExternalMetricLoaderException("Cannot create class instance for " + className + ". Exception caused by an Instantiation Exception : " + e.getLocalizedMessage());
 			} catch (IllegalAccessException e) {
+				logger.error("Cannot load metric for {}", className);
+				throw new ExternalMetricLoaderException("Cannot create class instance " + className + ". Exception caused by an Illegal Access Exception : " + e.getLocalizedMessage());
+			} catch (NullPointerException e){
 				logger.error("Cannot load metric for {}", className);
 				throw new ExternalMetricLoaderException("Cannot create class instance " + className + ". Exception caused by an Illegal Access Exception : " + e.getLocalizedMessage());
 			}
@@ -381,17 +400,24 @@ public class StreamProcessor implements IOProcessor {
 	 * Sets the result into the qualityReport attribute
 	 */
 	private void generateQualityReport() {
+		this.isGeneratingQR = true;
 		QualityReport r = new QualityReport();
 		List<String> qualityProblems = new ArrayList<String>();
 		
+		String datasetURI = "";
 		for(String className : this.metricInstances.keySet()){
 			QualityMetric m = this.metricInstances.get(className);
-			qualityProblems.add(r.createQualityProblem(m.getMetricURI(), m.getQualityProblems()));
+			ProblemList<?> qProbs = m.getQualityProblems();
+			if (qProbs == null) continue;
+			qualityProblems.add(r.createQualityProblem(m.getMetricURI(), qProbs));
+			datasetURI = m.getDatasetURI();
 		}
 		
-		Resource res = ModelFactory.createDefaultModel().createResource(EnvironmentProperties.getInstance().getBaseURI());
+		Resource res = ModelFactory.createDefaultModel().createResource(datasetURI);
 		this.qualityReport = r.createQualityReport(res, qualityProblems);
 		r.flush();
+		this.isGeneratingQR = false;
+		this.endedGeneratingQR = true;
 	}
 	
 	/**
@@ -420,6 +446,7 @@ public class StreamProcessor implements IOProcessor {
 	 * TODO: Consider other concurrency cases such as: several instances of the JVM and different class loaders
 	 */
 	private synchronized void writeQualityMetadataFile() {
+		this.isGeneratingQMD = true;
 		// Build the full path of the file where quality metadata will be written
 		String fld = this.metadataBaseDir + "/" + this.baseURI.replace("http://", "");
 		fld = fld.replaceFirst("^~",System.getProperty("user.home"));
@@ -459,6 +486,8 @@ public class StreamProcessor implements IOProcessor {
 		} catch(MetadataException | IOException ex) {
 			logger.error("Quality meta-data could not be written to file: " + metadataFilePath, ex);
 		}
+		this.isGeneratingQMD = false;
+		this.endedGeneratingQMD = true;
 	}
 	
 	/**
@@ -557,6 +586,76 @@ public class StreamProcessor implements IOProcessor {
 			
 			this.stopSignal = true;
 		}
+		
+		public Long getStatementProcessed(){
+			return this.stmtsProcessed;
+		}
+		
+		public String getMetricName(){
+			return this.metricName;
+		}
+		
+		public void closeAssessment(){
+			this.stopSignal = true;
+			this.quadsToProcess.clear();
+		}
+		
+		public boolean isDoneParsing(){
+			return quadsToProcess.isEmpty();
+		}
 
     }
+
+	@Override
+	public synchronized List<IOStats> getIOStats() throws ProcessorNotInitialised {
+		
+		List<IOStats> lst = new ArrayList<IOStats>();
+		
+		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");	
+		
+		for (MetricProcess mp : lstMetricConsumers){
+			Long stmtProcessed = mp.getStatementProcessed();
+			String metricName = mp.getMetricName();
+			boolean doneParsing = mp.isDoneParsing();
+			
+			IOStats ios = new IOStats(metricName,stmtProcessed, doneParsing);
+			
+			if ((this.isGeneratingQMD) && (!this.endedGeneratingQMD))
+				ios.setQmdStatus("Generating Quality Metadata");
+			if ((!this.isGeneratingQMD) && (this.endedGeneratingQMD))
+				ios.setQmdStatus("Finished Generating Quality Metadata");
+			
+			if ((this.isGeneratingQR) && (!this.endedGeneratingQR))
+				ios.setQmdStatus("Generating Quality Problem Report");
+			if ((!this.isGeneratingQR) && (this.endedGeneratingQR))
+				ios.setQmdStatus("Finished Generating Quality Problem Report");
+			
+			lst.add(ios);
+		}
+		
+		return lst;
+	}
+	
+	@Override
+	public void cancelMetricAssessment() throws ProcessorNotInitialised {
+		
+		if(this.isInitalised == false) throw new ProcessorNotInitialised("Streaming will not start as processor has not been initalised");	
+
+		forcedCancel = true;
+		
+		for (MetricProcess mp : lstMetricConsumers){
+			logger.info("Closing and clearing quads queue for {}", mp.metricName);
+			mp.closeAssessment();
+		}
+		
+		logger.info("Closing Iterators");
+		try{
+			this.iterator.close();
+			this.rdfStream.finish();
+		}catch (RiotException re){
+			logger.info("RDF Stream already closed");
+		}
+
+		executor.shutdownNow();
+	}
 }

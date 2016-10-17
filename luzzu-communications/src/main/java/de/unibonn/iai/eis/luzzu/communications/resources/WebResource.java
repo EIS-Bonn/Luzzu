@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 
 import de.unibonn.iai.eis.luzzu.web.assessment.MetricConfiguration;
+import de.unibonn.iai.eis.luzzu.web.export.CSVExporter;
 import de.unibonn.iai.eis.luzzu.web.ranking.Facets;
 import de.unibonn.iai.eis.luzzu.web.visualise.Data;
 import de.unibonn.iai.eis.luzzu.web.visualise.Wizard;
@@ -138,6 +139,16 @@ public class WebResource {
 		String json = Data.getObservationsForDataset(dataset, metrics);
 		System.out.println(json);
 		return Response.ok(json,MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
+				.header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
+	}
+	
+	@GET
+	@Path("get/export/csv")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response exportAllToCSV(){	
+		
+		return Response.ok(CSVExporter.exportAllDatasets().toString(),MediaType.TEXT_PLAIN).header("Access-Control-Allow-Origin", "*")
 				.header("Access-Control-Allow-Methods", "POST, GET, PUT, UPDATE, OPTIONS")
 				.header("Access-Control-Allow-Headers", "x-requested-with, x-requested-by").build();
 	}

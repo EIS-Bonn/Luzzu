@@ -57,4 +57,8 @@ public class MetricObject {
 	public void setLstObservations(List<ObservationObject> lstObservations) {
 		this.lstObservations = lstObservations;
 	}
+	
+	public int hashCode(){
+		return this.uri.hashCode();
+	}
 }

@@ -14,14 +14,19 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.impl.ModelCom;
 import com.hp.hpl.jena.sparql.core.Quad;
 
+
 public class Commons {
 
 	private static ModelCom mc = new ModelCom(Graph.emptyGraph);
 	
 	private Commons(){}
 	
+	
+	
 	public static Resource generateURI(){
-		String uri = "urn:"+UUID.randomUUID().toString();
+		String uri = "https://w3id.org/lodquator/resource/"; //TODO: fix this to do this URI in the PropertyManager
+			
+		uri += UUID.randomUUID().toString();
 		Resource r = ModelFactory.createDefaultModel().createResource(uri);
 		return r;
 	}

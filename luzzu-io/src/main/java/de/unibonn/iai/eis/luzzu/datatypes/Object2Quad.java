@@ -6,10 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.sparql.core.Quad;
-
-import de.unibonn.iai.eis.luzzu.semantics.utilities.Commons;
 
 public class Object2Quad {
 

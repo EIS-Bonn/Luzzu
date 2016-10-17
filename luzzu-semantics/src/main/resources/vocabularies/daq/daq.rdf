@@ -9,69 +9,82 @@
    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
    xmlns:vann="http://purl.org/vocab/vann/"
 >
-  <rdf:Description rdf:nodeID="ub23bL101C3">
-    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="http://purl.org/eis/vocab/daq#expectedDataType"/>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#Metric">
+    <rdfs:subClassOf rdf:nodeID="ub36bL101C3"/>
+    <rdfs:label xml:lang="en">Metric</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:comment xml:lang="en">The smallest unit of measuring a quality dimension is a metric. A metric belongs to exactly one dimension. Each metric has one or more observations (	exttt{daq:hasObservation}), which records data quality assessment value following a computation. Metrics are provided as subclasses of this abstract class, which is not intended for direct usage.</rdfs:comment>
+    <rdfs:subClassOf rdf:nodeID="ub36bL97C3"/>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#hasObservation">
-    <rdfs:comment xml:lang="en">Computed metrics can have 1 or more quality observations, where each computed resource has one observation.</rdfs:comment>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#">
+    <foaf:homepage rdf:resource="http://purl.org/eis/vocab/daq"/>
+    <vann:preferredNamespaceUri>http://purl.org/eis/vocab/daq#</vann:preferredNamespaceUri>
+    <vann:preferredNamespacePrefix>daq</vann:preferredNamespacePrefix>
+    <rdf:type rdf:resource="http://purl.org/vocommons/voaf#Vocabulary"/>
+    <dct:title xml:lang="en">Dataset Quality Vocabulary (daQ)</dct:title>
+    <dct:creator rdf:nodeID="ub36bL22C21"/>
+    <dct:language rdf:datatype="http://www.w3.org/2001/XMLSchema#language">en</dct:language>
+    <dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2016-05-31</dct:modified>
+    <dc:description xml:lang="en">The Dataset Quality Vocabulary (daQ) is a lightweight, extensible core vocabulary for attaching the result of quality benchmarking of a linked open dataset (usually an expensive process) to that dataset.  daQ is designed to be extended by custom quality metrics.  Use cases include filtering and ranking datasets by quality.</dc:description>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <dct:creator rdf:nodeID="ub36bL26C13"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#metric">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">metric</rdfs:label>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <owl:inverseOf rdf:resource="http://purl.org/eis/vocab/daq#hasObservation"/>
+    <rdfs:range rdf:resource="http://purl.org/eis/vocab/daq#Metric"/>
+    <rdf:type rdf:resource="http://purl.org/linked-data/cube#DimensionProperty"/>
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Observation"/>
+    <rdfs:comment xml:lang="en">Represents the metric being observed.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub36bL41C15">
+    <qb:dimension rdf:resource="http://purl.org/eis/vocab/daq#computedOn"/>
+    <qb:order rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</qb:order>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#hasDimension">
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Category"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:comment xml:lang="en">The category concept classifies dimensions related to the measurement of quality for a specific criteria. This is an abstract property and should not be used directly. Specific sub-properties should be inherited for different dimensions.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://purl.org/eis/vocab/daq#Dimension"/>
+    <rdfs:label xml:lang="en">hasDimension</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub36bL42C15">
+    <qb:dimension rdf:resource="http://purl.org/linked-data/sdmx/2009/dimension#timePeriod"/>
+    <qb:order rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</qb:order>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub36bL76C3">
+    <owl:onProperty rdf:resource="http://purl.org/eis/vocab/daq#isEstimate"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#expectedDataType">
+    <rdfs:comment xml:lang="en">Each metric should have an expect data type for it's observed value (e.g. xsd:boolean, xsd:double etc...)</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anySimpleType"/>
+    <rdfs:label xml:lang="en">expected data type</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
     <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Metric"/>
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <owl:inverseOf rdf:resource="http://purl.org/eis/vocab/daq#metric"/>
-    <rdfs:label xml:lang="en">has observation</rdfs:label>
-    <rdfs:range rdf:resource="http://purl.org/eis/vocab/daq#Observation"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub23bL60C3">
-    <owl:onProperty rdf:resource="http://purl.org/eis/vocab/daq#metric"/>
-    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub23bL72C3">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
-    <owl:onProperty rdf:resource="http://purl.org/eis/vocab/daq#computedOn"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub23bL22C21">
-    <foaf:name>Jeremy Debattista</foaf:name>
-    <foaf:homepage rdf:resource="http://www.jeremydebattista.info"/>
-    <foaf:mbox rdf:resource="mailto:debattis@cs.uni-bonn.de"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#QualityGraph">
-    <rdfs:label xml:lang="en">Quality Graph Statistics</rdfs:label>
-    <rdfs:subClassOf rdf:resource="http://purl.org/linked-data/cube#DataSet"/>
     <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:subClassOf rdf:resource="http://www.w3.org/2004/03/trix/rdfg-1/Graph"/>
-    <rdfs:subClassOf rdf:nodeID="ub23bL50C3"/>
     <rdfs:comment xml:lang="en">Defines a quality graph which will contain all metadata about quality metrics on the dataset.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#Observation">
-    <rdfs:subClassOf rdf:nodeID="ub23bL68C3"/>
-    <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
-    <rdfs:subClassOf rdf:nodeID="ub23bL72C3"/>
-    <rdfs:subClassOf rdf:nodeID="ub23bL76C3"/>
-    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
-    <rdfs:subClassOf rdf:resource="http://purl.org/linked-data/cube#Observation"/>
-    <rdfs:subClassOf rdf:nodeID="ub23bL60C3"/>
+    <rdfs:label xml:lang="en">Quality Graph Statistics</rdfs:label>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:comment xml:lang="en">A quality observation represents the statistical and provenance information of the attached metric's assessment activity.</rdfs:comment>
-    <rdfs:subClassOf rdf:nodeID="ub23bL64C3"/>
-    <rdfs:label xml:lang="en">Quality Observation</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://purl.org/linked-data/cube#DataSet"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2004/03/trix/rdfg-1/Graph"/>
+    <rdfs:subClassOf rdf:nodeID="ub36bL50C3"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://purl.org/linked-data/sdmx/2009/dimension#timePeriod">
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#isEstimate">
     <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Observation"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
-    <rdf:type rdf:resource="http://purl.org/linked-data/cube#DimensionProperty"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#value">
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdf:type rdf:resource="http://purl.org/linked-data/cube#MeasureProperty"/>
-    <rdfs:comment xml:lang="en">Each metric will have a value computed. In order to deal with the different return type of the metric computation, this property links a metric with a value object (e.g. boolean, double, Literal).</rdfs:comment>
-    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Observation"/>
+    <rdfs:label xml:lang="en">is estimate</rdfs:label>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">value</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:comment xml:lang="en">This property flags true if an assessed observation of a metric gives an estimate result instead of a more accurate one.</rdfs:comment>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#Category">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
@@ -79,22 +92,68 @@
     <rdfs:comment xml:lang="en">The highest level of quality metric is a category. A category groups a number of dimensions relevant to each other which aims at measuring the quality of a dataset from different aspects. Categories are provided as subclasses of this abstract class, which is not intended for direct usage.</rdfs:comment>
     <rdfs:label xml:lang="en">Category</rdfs:label>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="ub23bL41C15">
-    <qb:dimension rdf:resource="http://purl.org/eis/vocab/daq#computedOn"/>
-    <qb:order rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</qb:order>
+  <rdf:Description rdf:nodeID="ub36bL22C21">
+    <foaf:name>Jeremy Debattista</foaf:name>
+    <foaf:homepage rdf:resource="http://www.jeremydebattista.info"/>
+    <foaf:mbox rdf:resource="mailto:debattis@cs.uni-bonn.de"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="ub23bL64C3">
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#value">
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Observation"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">value</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://purl.org/linked-data/cube#MeasureProperty"/>
+    <rdfs:comment xml:lang="en">Each metric will have a value computed. In order to deal with the different return type of the metric computation, this property links a metric with a value object (e.g. boolean, double, Literal).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub36bL60C3">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
+    <owl:onProperty rdf:resource="http://purl.org/eis/vocab/daq#metric"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#Dimension">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:comment xml:lang="en">Each dimension is part of a larger group called category (See daq:Category). Each dimension has a number of metrics which are associated to it. A dimension is linked with a category using the daq:hasDimension property. Dimensions are provided as subclasses of this abstract class, which is not intended for direct usage.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:label xml:lang="en">Dimension</rdfs:label>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#dsd">
+    <qb:component rdf:nodeID="ub36bL40C15"/>
+    <rdf:type rdf:resource="http://purl.org/linked-data/cube#DataStructureDefinition"/>
+    <qb:component rdf:nodeID="ub36bL44C15"/>
+    <qb:component rdf:nodeID="ub36bL41C15"/>
+    <qb:component rdf:nodeID="ub36bL42C15"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub36bL26C13">
+    <foaf:name>Christoph Lange</foaf:name>
+    <foaf:homepage rdf:resource="http://langec.wordpress.com/about/"/>
+    <rdfs:seeAlso rdf:resource="http://purl.org/net/clange"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub36bL64C3">
     <owl:onProperty rdf:resource="http://purl.org/eis/vocab/daq#value"/>
     <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#isEstimate">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
-    <rdfs:label xml:lang="en">is estimate</rdfs:label>
-    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Observation"/>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#hasObservation">
+    <rdfs:label xml:lang="en">has observation</rdfs:label>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:comment xml:lang="en">This property flags true if an assessed observation of a metric gives an estimate result instead of a more accurate one.</rdfs:comment>
+    <owl:inverseOf rdf:resource="http://purl.org/eis/vocab/daq#metric"/>
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Metric"/>
+    <rdfs:range rdf:resource="http://purl.org/eis/vocab/daq#Observation"/>
+    <rdfs:comment xml:lang="en">Computed metrics can have 1 or more quality observations, where each computed resource has one observation.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#requires">
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Metric"/>
+    <rdfs:label xml:lang="en">requires</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:comment xml:lang="en">A metric might require a number of external resources (e.g. a gold standard) in order to be able to measure the quality. In order to cater for the most generic requirement, this property links a metric to the required resource (e.g. a URI to the gold standard dataset used).</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub36bL72C3">
+    <owl:onProperty rdf:resource="http://purl.org/eis/vocab/daq#computedOn"/>
+    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#computedBy">
     <rdfs:label xml:lang="en">computed by</rdfs:label>
@@ -102,125 +161,66 @@
     <rdfs:comment xml:lang="en">**Deprecated Property**. The computedBy property defines the Agent that computed a metric on a dataset.</rdfs:comment>
     <rdfs:domain rdf:resource="http://purl.org/linked-data/cube#Observation"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="ub23bL76C3">
-    <owl:onProperty rdf:resource="http://purl.org/eis/vocab/daq#isEstimate"/>
-    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#computedOn">
-    <rdfs:comment xml:lang="en">Quality metrics can be (in principle) calculated on various forms of data (such as datasets, graphs, set of triples etc...). This vocabulary allow the owner/user of such RDF data to calculate metrics on multiple (and different) resources.</rdfs:comment>
-    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Observation"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:label xml:lang="en">computed on</rdfs:label>
-    <rdf:type rdf:resource="http://purl.org/linked-data/cube#DimensionProperty"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub23bL50C3">
-    <owl:onProperty rdf:resource="http://purl.org/linked-data/cube#structure"/>
+  <rdf:Description rdf:nodeID="ub36bL50C3">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
     <owl:hasValue rdf:resource="http://purl.org/eis/vocab/daq#dsd"/>
+    <owl:onProperty rdf:resource="http://purl.org/linked-data/cube#structure"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="ub23bL68C3">
-    <owl:onProperty rdf:resource="http://purl.org/linked-data/sdmx/2009/dimension#timePeriod"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#Dimension">
-    <rdfs:label xml:lang="en">Dimension</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:comment xml:lang="en">Each dimension is part of a larger group called category (See daq:Category). Each dimension has a number of metrics which are associated to it. A dimension is linked with a category using the daq:hasDimension property. Dimensions are provided as subclasses of this abstract class, which is not intended for direct usage.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#Metric">
-    <rdfs:comment xml:lang="en">The smallest unit of measuring a quality dimension is a metric. A metric belongs to exactly one dimension. Each metric has one or more observations (	exttt{daq:hasObservation}), which records data quality assessment value following a computation. Metrics are provided as subclasses of this abstract class, which is not intended for direct usage.</rdfs:comment>
-    <rdfs:subClassOf rdf:nodeID="ub23bL101C3"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
-    <rdfs:label xml:lang="en">Metric</rdfs:label>
-    <rdfs:subClassOf rdf:nodeID="ub23bL97C3"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#hasDimension">
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:range rdf:resource="http://purl.org/eis/vocab/daq#Dimension"/>
-    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Category"/>
-    <rdfs:comment xml:lang="en">The category concept classifies dimensions related to the measurement of quality for a specific criteria. This is an abstract property and should not be used directly. Specific sub-properties should be inherited for different dimensions.</rdfs:comment>
-    <rdfs:label xml:lang="en">hasDimension</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub23bL44C15">
-    <qb:measure rdf:resource="http://purl.org/eis/vocab/daq#value"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="ub23bL97C3">
-    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
-    <owl:onProperty rdf:resource="http://purl.org/eis/vocab/daq#hasObservation"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#metric">
-    <rdf:type rdf:resource="http://purl.org/linked-data/cube#DimensionProperty"/>
-    <rdfs:label xml:lang="en">metric</rdfs:label>
-    <rdfs:comment xml:lang="en">Represents the metric being observed.</rdfs:comment>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#computedOn">
     <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Observation"/>
-    <owl:inverseOf rdf:resource="http://purl.org/eis/vocab/daq#hasObservation"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://purl.org/linked-data/cube#DimensionProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:range rdf:resource="http://purl.org/eis/vocab/daq#Metric"/>
+    <rdfs:comment xml:lang="en">Quality metrics can be (in principle) calculated on various forms of data (such as datasets, graphs, set of triples etc...). This vocabulary allow the owner/user of such RDF data to calculate metrics on multiple (and different) resources.</rdfs:comment>
+    <rdfs:label xml:lang="en">computed on</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="ub23bL40C15">
-    <qb:dimension rdf:resource="http://purl.org/eis/vocab/daq#metric"/>
-    <qb:order rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</qb:order>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#">
-    <rdf:type rdf:resource="http://purl.org/vocommons/voaf#Vocabulary"/>
-    <dct:title xml:lang="en">Dataset Quality Vocabulary (daQ)</dct:title>
-    <foaf:homepage rdf:resource="http://purl.org/eis/vocab/daq"/>
-    <vann:preferredNamespaceUri>http://purl.org/eis/vocab/daq#</vann:preferredNamespaceUri>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
-    <dct:language rdf:datatype="http://www.w3.org/2001/XMLSchema#language">en</dct:language>
-    <dct:creator rdf:nodeID="ub23bL22C21"/>
-    <dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2015-08-03</dct:modified>
-    <vann:preferredNamespacePrefix>daq</vann:preferredNamespacePrefix>
-    <dct:creator rdf:nodeID="ub23bL26C13"/>
-    <dc:description xml:lang="en">The Dataset Quality Vocabulary (daQ) is a lightweight, extensible core vocabulary for attaching the result of quality benchmarking of a linked open dataset (usually an expensive process) to that dataset.  daQ is designed to be extended by custom quality metrics.  Use cases include filtering and ranking datasets by quality.</dc:description>
+  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#Observation">
+    <rdfs:comment xml:lang="en">A quality observation represents the statistical and provenance information of the attached metric's assessment activity.</rdfs:comment>
+    <rdfs:label xml:lang="en">Quality Observation</rdfs:label>
+    <rdfs:subClassOf rdf:nodeID="ub36bL60C3"/>
+    <rdfs:subClassOf rdf:nodeID="ub36bL72C3"/>
+    <rdfs:subClassOf rdf:resource="http://purl.org/linked-data/cube#Observation"/>
+    <rdfs:subClassOf rdf:nodeID="ub36bL64C3"/>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    <rdfs:subClassOf rdf:nodeID="ub36bL76C3"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+    <rdfs:subClassOf rdf:nodeID="ub36bL68C3"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#hasMetric">
-    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Dimension"/>
-    <rdfs:label xml:lang="en">hasMetric</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
     <rdfs:comment xml:lang="en">A dimension is an abstract concept which groups an number of more concrete metrics to measure quality of a dataset. This is an abstract property and should not be used directly. Specific sub-properties should be inherited for different metrics.</rdfs:comment>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">hasMetric</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Dimension"/>
     <rdfs:range rdf:resource="http://purl.org/eis/vocab/daq#Metric"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#dsd">
-    <qb:component rdf:nodeID="ub23bL42C15"/>
-    <rdf:type rdf:resource="http://purl.org/linked-data/cube#DataStructureDefinition"/>
-    <qb:component rdf:nodeID="ub23bL44C15"/>
-    <qb:component rdf:nodeID="ub23bL40C15"/>
-    <qb:component rdf:nodeID="ub23bL41C15"/>
+  <rdf:Description rdf:about="http://purl.org/linked-data/sdmx/2009/dimension#timePeriod">
+    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Observation"/>
+    <rdf:type rdf:resource="http://purl.org/linked-data/cube#DimensionProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="ub23bL42C15">
-    <qb:order rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</qb:order>
-    <qb:dimension rdf:resource="http://purl.org/linked-data/sdmx/2009/dimension#timePeriod"/>
+  <rdf:Description rdf:nodeID="ub36bL97C3">
+    <owl:onProperty rdf:resource="http://purl.org/eis/vocab/daq#hasObservation"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minCardinality>
   </rdf:Description>
-  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#requires">
-    <rdfs:label xml:lang="en">requires</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:comment xml:lang="en">A metric might require a number of external resources (e.g. a gold standard) in order to be able to measure the quality. In order to cater for the most generic requirement, this property links a metric to the required resource (e.g. a URI to the gold standard dataset used).</rdfs:comment>
-    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Metric"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  <rdf:Description rdf:nodeID="ub36bL101C3">
+    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:onProperty rdf:resource="http://purl.org/eis/vocab/daq#expectedDataType"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://purl.org/eis/vocab/daq#expectedDataType">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label xml:lang="en">expected data type</rdfs:label>
-    <rdfs:comment xml:lang="en">Each metric should have an expect data type for it's observed value (e.g. xsd:boolean, xsd:double etc...)</rdfs:comment>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anySimpleType"/>
-    <rdfs:domain rdf:resource="http://purl.org/eis/vocab/daq#Metric"/>
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  <rdf:Description rdf:nodeID="ub36bL68C3">
+    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+    <owl:onProperty rdf:resource="http://purl.org/linked-data/sdmx/2009/dimension#timePeriod"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
   </rdf:Description>
-  <rdf:Description rdf:nodeID="ub23bL26C13">
-    <foaf:name>Christoph Lange</foaf:name>
-    <foaf:homepage rdf:resource="http://langec.wordpress.com/about/"/>
-    <rdfs:seeAlso rdf:resource="http://purl.org/net/clange"/>
+  <rdf:Description rdf:nodeID="ub36bL44C15">
+    <qb:measure rdf:resource="http://purl.org/eis/vocab/daq#value"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="ub36bL40C15">
+    <qb:order rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</qb:order>
+    <qb:dimension rdf:resource="http://purl.org/eis/vocab/daq#metric"/>
   </rdf:Description>
 </rdf:RDF>

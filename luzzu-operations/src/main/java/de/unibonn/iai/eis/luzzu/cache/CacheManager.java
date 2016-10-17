@@ -98,4 +98,8 @@ public class CacheManager{
 		}
 		registeredCache.clear();
 	}
+	
+	public void clearCache(String cacheName){
+		registeredCache.get(cacheName).clear();
+	}
 }

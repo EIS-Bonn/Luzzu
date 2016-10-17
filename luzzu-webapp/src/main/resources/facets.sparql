@@ -14,5 +14,5 @@ WHERE {
 	OPTIONAL { ?category rdfs:label ?category_name } .
 	OPTIONAL { ?dimension rdfs:label ?dimension_name } .
 	OPTIONAL { ?metric rdfs:label ?metric_name } .
-}
+} ORDER BY ASC(?metric)
 		

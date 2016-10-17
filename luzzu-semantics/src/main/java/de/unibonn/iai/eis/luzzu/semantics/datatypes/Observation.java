@@ -10,12 +10,16 @@ public class Observation implements Comparable<Observation> {
 	private Date dateComputed;
 	private Double value;
 	private Resource metricType;
+	private Resource computedOn;
+	private Resource graphURI;
 
-	public Observation(Resource observationURI, Date dateComputed, Double value, Resource metricType){
+	public Observation(Resource observationURI, Date dateComputed, Double value, Resource metricType, Resource computedOn, Resource graphURI){
 		this.setObservationURI(observationURI);
 		this.setDateComputed(dateComputed);
 		this.setValue(value);
 		this.setMetricType(metricType);
+		this.setComputedOn(computedOn);
+		this.setGraphURI(graphURI);
 	}
 
 	public Resource getObservationURI() {
@@ -54,5 +58,33 @@ public class Observation implements Comparable<Observation> {
 
 	public void setMetricType(Resource metricType) {
 		this.metricType = metricType;
+	}
+
+	/**
+	 * @return the computedOn
+	 */
+	public Resource getComputedOn() {
+		return computedOn;
+	}
+
+	/**
+	 * @param computedOn the computedOn to set
+	 */
+	public void setComputedOn(Resource computedOn) {
+		this.computedOn = computedOn;
+	}
+
+	/**
+	 * @return the graphURI
+	 */
+	public Resource getGraphURI() {
+		return graphURI;
+	}
+
+	/**
+	 * @param graphURI the graphURI to set
+	 */
+	public void setGraphURI(Resource graphURI) {
+		this.graphURI = graphURI;
 	}
 }

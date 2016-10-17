@@ -19,4 +19,4 @@ SELECT DISTINCT ?metric ?value {
 	} 
   
   	?metric_instance a ?metric .
-} 
+} ORDER BY ASC(?metric)

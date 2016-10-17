@@ -7,7 +7,6 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.ResIterator;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.core.DatasetImpl;
-import com.hp.hpl.jena.vocabulary.DC;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 import de.unibonn.iai.eis.luzzu.assessment.QualityMetric;
@@ -40,7 +39,6 @@ public class QualityMetadata {
 	private TemporaryGraphMetadataCacheObject _temp = null;
 	private Resource computedOn;
 	
-    private static final Property timePeriod = ModelFactory.createDefaultModel().createProperty( "http://purl.org/linked-data/sdmx/2009/dimension#timePeriod" );
 
 	
 	/**
@@ -122,7 +120,7 @@ public class QualityMetadata {
 		Resource observationURI = Commons.generateURI();
 		this.metadata.add(metricURI, DAQ.hasObservation, observationURI);
 		
-		this.metadata.add(observationURI, RDF.type, CUBE.Observation);
+		this.metadata.add(observationURI, RDF.type, DAQ.Observation);
 		this.metadata.add(observationURI, SDMXDIMENSION.timePeriod, Commons.generateCurrentTime());
 		this.metadata.add(observationURI, DAQ.metric, metricURI);
 		this.metadata.add(observationURI, DAQ.computedOn, this.computedOn);

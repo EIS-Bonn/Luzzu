@@ -1,4 +1,4 @@
-package de.unibonn.iai.eis.luzzu.io.impl;
+package de.unibonn.iai.eis.luzzu.io.helper;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -20,7 +20,7 @@ import de.unibonn.iai.eis.luzzu.semantics.vocabularies.DAQ;
  * The output of this builder will be cached for future
  * use.
  */
-class StreamMetadataSniffer {
+public class StreamMetadataSniffer {
 	
 	private TemporaryGraphMetadataCacheObject _temp = null;
 	private ConcurrentMap<String, Model> temporaryResources = new ConcurrentHashMap<String, Model>();
@@ -49,7 +49,7 @@ class StreamMetadataSniffer {
 	 * @param quad
 	 */
 	public int counter = 0;
-	protected void sniff(Quad quad){
+	public void sniff(Quad quad){
 		counter++;
 		if (quad.getGraph() != null){
 			if (this._temp != null && this._temp.getGraphURI() != null){
@@ -82,7 +82,7 @@ class StreamMetadataSniffer {
 	/**
 	 * @return Returns the Object to be Cached
 	 */
-	protected TemporaryGraphMetadataCacheObject getCachingObject(){
+	public TemporaryGraphMetadataCacheObject getCachingObject(){
 		if (_temp == null) return null;
 		if (this.temporaryResources.containsKey(_temp.getGraphURI().toString())){
 			_temp.addModelToMetadata(this.temporaryResources.get(_temp.getGraphURI()));

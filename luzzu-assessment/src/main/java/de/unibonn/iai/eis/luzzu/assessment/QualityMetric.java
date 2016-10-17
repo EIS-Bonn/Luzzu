@@ -57,4 +57,7 @@ public interface QualityMetric {
 	 */
 	Resource getAgentURI();
 	
+	void setDatasetURI(String datasetURI);
+	
+	String getDatasetURI();
 }

@@ -32,11 +32,11 @@ class Cache {
 	protected Cache(String name, int maxItems){
 		this.name = name;
 		
-		File tempFolder = new File("tmp/caches/");
+		File tempFolder = new File("/tmp/caches/");
 		if (!tempFolder.exists()) tempFolder.mkdirs();
 		
 		
-		File tempFile = new File("tmp/caches/luzzu_"+name);
+		File tempFile = new File("/tmp/caches/luzzu_"+name);
 		if (!tempFile.exists()){
 			try {
 				tempFile.createNewFile();
@@ -95,7 +95,13 @@ class Cache {
 	 */
 	protected void cleanup(){
 		this.db.getEngine().clearCache();
+		this.clear();
+	}
+	
+	protected void clear(){
 		this.cache.clear();
+		this.db.commit();
+		this.db.compact();
 	}
 	
 	/**

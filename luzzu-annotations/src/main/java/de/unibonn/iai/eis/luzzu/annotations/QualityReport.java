@@ -39,12 +39,18 @@ public class QualityReport {
 	protected String TDB_DIRECTORY = PropertyManager.getInstance().getProperties("directories.properties").getProperty("TDB_TEMP_BASE_DIR")+"tdb_"+UUID.randomUUID().toString()+"/";
 	protected Dataset dataset = TDBFactory.createDataset(TDB_DIRECTORY);
 	
+//	protected Dataset dataset = DatasetFactory.createMem();
+	
 	public QualityReport(){
 		TDB.sync(dataset);
 		dataset.begin(ReadWrite.WRITE);
-		dataset.getDefaultModel().removeAll(); // since this TDB is meant to be temporary, then we will remove all statements
+		
+		
+		
+//		System.out.println("Dataset :" + EnvironmentProperties.getInstance().getBaseURI() + " TDB File :" + TDB_DIRECTORY);
+		//dataset.getDefaultModel().removeAll(); // since this TDB is meant to be temporary, then we will remove all statements
 	}
-	
+//	
 	
 	/**
 	 * Creates instance triples corresponding to a quality problem
@@ -146,8 +152,8 @@ public class QualityReport {
 			Model prModel = getProblemReportFromTBD(prModelURI);
 			for(Resource r : getProblemURI(prModel)){
 				m.add(new StatementImpl(reportURI, QPRO.hasProblem, r));
-				m.add(prModel);
 			}
+			m.add(prModel);
 			dataset.removeNamedModel(prModelURI);
 		}
 		return m;
