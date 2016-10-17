@@ -20,7 +20,7 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 import org.apache.jena.riot.RDFLanguages;
 import org.apache.jena.riot.RiotException;
-import org.apache.jena.riot.lang.CollectorStreamTriples;
+//import org.apache.jena.riot.lang.CollectorStreamTriples;
 import org.apache.jena.riot.lang.PipedQuadsStream;
 import org.apache.jena.riot.lang.PipedRDFIterator;
 import org.apache.jena.riot.lang.PipedRDFStream;

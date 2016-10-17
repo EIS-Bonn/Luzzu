@@ -12,13 +12,9 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFLanguages;
-import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.slf4j.Logger;
@@ -238,6 +234,7 @@ public class SparkStreamProcessor  implements IOProcessor, Serializable  {
 	}
 
 
+	@SuppressWarnings("unused")
 	private void loadMetrics() throws ExternalMetricLoaderException {
 		NodeIterator iter = metricConfiguration.listObjectsOfProperty(LMI.metric);
 		Map<String, Class<? extends QualityMetric>> map = loader.getQualityMetricClasses();

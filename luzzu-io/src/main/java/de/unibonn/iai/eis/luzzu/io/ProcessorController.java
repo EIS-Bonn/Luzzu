@@ -56,7 +56,7 @@ public class ProcessorController {
 		else if (length <= ((double) freeMemory * (1.0 / 2.0))) // if it fits in 1/2 of the free memory, then we use a normal stream processor
 			return new StreamProcessor(baseURI,datasetURI,genQualityReport,modelConfig);
 		else
-			return new StreamProcessor(baseURI,datasetURI,genQualityReport,modelConfig); //e.g for dbpedia etc
+			return new LargeStreamProcessor(baseURI,datasetURI,genQualityReport,modelConfig); //e.g for dbpedia etc
 	}
 
 }

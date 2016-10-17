@@ -2,7 +2,6 @@ package de.unibonn.iai.eis.luzzu.io.configuration;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -212,25 +211,17 @@ public class DeclerativeMetricCompiler {
 	    
 	    return t;
 	}
-	
+
+
 	private Set<URI> loadMetrics() throws IOException, ParseException{
 		Set<URI> files = new HashSet<URI>(); 
 		File externalsFolder = new File("externals/");
 		
-<<<<<<< HEAD
-		for(File metrics : listOfFiles){
-			if (metrics.isHidden()) continue;
-			if (!metrics.isDirectory()) continue;
-			
-			for(File declFile : metrics.listFiles(lqmFilter))
-				files.add(declFile.toURI());
-=======
 		Collection<File> fileList = 
 				FileUtils.listFiles(externalsFolder, lqmFilter, TrueFileFilter.TRUE);
 		
 		for(File file : fileList) {
 			files.add(file.toURI());
->>>>>>> origin/lqml
 		}
 		
 		return files;
