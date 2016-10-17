@@ -15,6 +15,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +31,9 @@ import javax.tools.SimpleJavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,8 +71,17 @@ public class DeclerativeMetricCompiler {
 		return instance;
 	}
 	
-	
-	private static FileFilter lqmFilter = new FileFilter() {
+	private static IOFileFilter lqmFilter = new IOFileFilter() {
+		
+		@Override
+		public boolean accept(File arg0, String arg1) {
+			if(arg1.endsWith(".lqm")) {
+				return true;
+			}
+			return false;
+		}
+		
+		@Override
 		public boolean accept(File file) {
 			if (file.getName().endsWith(".lqm")) {
 				return true;
@@ -76,7 +89,6 @@ public class DeclerativeMetricCompiler {
 			return false;
 		}
 	};
-	
 	@SuppressWarnings({ "unchecked", "resource" })
 	public Map<String, Class<? extends QualityMetric>> compile() throws IOException, ParseException {
 		Map<String, Class<? extends QualityMetric>> clazzes = new HashMap<String, Class<? extends QualityMetric>>();
@@ -154,7 +166,7 @@ public class DeclerativeMetricCompiler {
 		
 		String nextLine = null;
 		BufferedReader reader = null;
-		
+		this.javaClass.setLength(0);
 		try {
 			reader = new BufferedReader(
 					new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("declerative_pattern.txt"), 
@@ -204,15 +216,23 @@ public class DeclerativeMetricCompiler {
 	private Set<URI> loadMetrics() throws IOException, ParseException{
 		Set<URI> files = new HashSet<URI>(); 
 		File externalsFolder = new File("externals/");
-		File[] listOfFiles = externalsFolder.listFiles();
 		
+<<<<<<< HEAD
 		for(File metrics : listOfFiles){
 			if (metrics.isHidden()) continue;
 			if (!metrics.isDirectory()) continue;
 			
 			for(File declFile : metrics.listFiles(lqmFilter))
 				files.add(declFile.toURI());
+=======
+		Collection<File> fileList = 
+				FileUtils.listFiles(externalsFolder, lqmFilter, TrueFileFilter.TRUE);
+		
+		for(File file : fileList) {
+			files.add(file.toURI());
+>>>>>>> origin/lqml
 		}
+		
 		return files;
 	}
 	
@@ -253,5 +273,13 @@ public class DeclerativeMetricCompiler {
         {
             return contents;
         }
+    }
+    public static class Tester
+    {
+    	public static void main(String []args) throws IOException, ParseException
+    	{
+    		DeclerativeMetricCompiler metC = DeclerativeMetricCompiler.getInstance();
+    		metC.compile();
+    	}
     }
 }

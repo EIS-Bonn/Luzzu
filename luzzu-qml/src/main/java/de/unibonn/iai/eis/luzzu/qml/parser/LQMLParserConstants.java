@@ -23,67 +23,69 @@ public interface LQMLParserConstants {
   /** RegularExpression Id. */
   int METRICURI = 11;
   /** RegularExpression Id. */
-  int AUTHOR = 12;
+  int FINALLY = 12;
   /** RegularExpression Id. */
-  int PACKAGE = 13;
+  int AUTHOR = 13;
   /** RegularExpression Id. */
-  int TYPEOF = 14;
+  int PACKAGE = 14;
   /** RegularExpression Id. */
-  int COUNT = 15;
+  int TYPEOF = 15;
   /** RegularExpression Id. */
-  int MAP = 16;
+  int COUNT = 16;
   /** RegularExpression Id. */
-  int CHAR = 17;
+  int MAP = 17;
   /** RegularExpression Id. */
-  int NUMBER = 18;
+  int CHAR = 18;
   /** RegularExpression Id. */
-  int STRICT_STR = 19;
+  int NUMBER = 19;
   /** RegularExpression Id. */
-  int STR = 20;
+  int STRICT_STR = 20;
   /** RegularExpression Id. */
-  int QUOTED_STR = 21;
+  int STR = 21;
   /** RegularExpression Id. */
-  int LBRACE = 22;
+  int QUOTED_STR = 22;
   /** RegularExpression Id. */
-  int RBRACE = 23;
+  int LBRACE = 23;
   /** RegularExpression Id. */
-  int LPAREN = 24;
+  int RBRACE = 24;
   /** RegularExpression Id. */
-  int RPAREN = 25;
+  int LPAREN = 25;
   /** RegularExpression Id. */
-  int COLON = 26;
+  int RPAREN = 26;
   /** RegularExpression Id. */
-  int SEMI_COLON = 27;
+  int COLON = 27;
   /** RegularExpression Id. */
-  int PERIOD = 28;
+  int SEMI_COLON = 28;
   /** RegularExpression Id. */
-  int QUOTES = 29;
+  int PERIOD = 29;
   /** RegularExpression Id. */
-  int BOOLEAN_OPERATOR = 30;
+  int QUOTES = 30;
   /** RegularExpression Id. */
-  int EQ = 31;
+  int BOOLEAN_OPERATOR = 31;
   /** RegularExpression Id. */
-  int NEQ = 32;
+  int EQ = 32;
   /** RegularExpression Id. */
-  int LT = 33;
+  int NEQ = 33;
   /** RegularExpression Id. */
-  int GT = 34;
+  int LT = 34;
   /** RegularExpression Id. */
-  int LTE = 35;
+  int GT = 35;
   /** RegularExpression Id. */
-  int GTE = 36;
+  int LTE = 36;
   /** RegularExpression Id. */
-  int LOGICAL_OPERATOR = 37;
+  int GTE = 37;
   /** RegularExpression Id. */
-  int HEADER_INDICATOR = 38;
+  int LOGICAL_OPERATOR = 38;
   /** RegularExpression Id. */
-  int SUBJECT_VAR = 39;
+  int HEADER_INDICATOR = 39;
   /** RegularExpression Id. */
-  int PREDICATE_VAR = 40;
+  int SUBJECT_VAR = 40;
   /** RegularExpression Id. */
-  int OBJECT_VAR = 41;
+  int PREDICATE_VAR = 41;
   /** RegularExpression Id. */
-  int IRIref = 42;
+  int OBJECT_VAR = 42;
+  /** RegularExpression Id. */
+  int IRIref = 43;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -102,6 +104,7 @@ public interface LQMLParserConstants {
     "\"match\"",
     "\"action\"",
     "\"metric\"",
+    "\"finally\"",
     "\"author\"",
     "\"package\"",
     "\"typeof\"",
