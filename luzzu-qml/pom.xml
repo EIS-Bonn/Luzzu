@@ -3,7 +3,7 @@
   <parent>
     <groupId>de.unibonn.iai.eis</groupId>
     <artifactId>luzzu</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
   </parent>
   <artifactId>luzzu-qml</artifactId>
   <name>Luzzu Quality Metric Language</name>
