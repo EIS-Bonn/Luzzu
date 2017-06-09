@@ -18,6 +18,7 @@ cd $PATH_INSTALLATION/Luzzu
 echo "Building Luzzu"
 mvn clean install -Dmaven.test.skip=true;
 
+cd $PATH_INSTALLATION
 echo "Pulling Quality Metrics"
 git clone https://github.com/diachron/quality.git
 
