@@ -54,19 +54,18 @@ cp $PATH_INSTALLATION/quality/quality-vocabulary/src/main/resources/vocabularies
 cp $PATH_INSTALLATION/quality/quality-vocabulary/src/main/resources/vocabularies/dqm/dqm-prob.ttl $PATH_INSTALLATION/Luzzu/luzzu-communications/externals/vocabs/
 cp $PATH_INSTALLATION/quality/quality-vocabulary/src/main/resources/vocabularies/dqm/ebiqm.ttl $PATH_INSTALLATION/Luzzu/luzzu-communications/externals/vocabs/
 
+if [ $INSTALL_EXAMPLES ]; then
+	echo "Setting up Example Metrics in Luzzu"
+	mkdir $PATH_INSTALLATION/Luzzu/luzzu-communications/externals/metrics/ebi
+	cp $PATH_INSTALLATION/quality/ebi/target/*-dependencies.jar $PATH_INSTALLATION/Luzzu/luzzu-communications/externals/metrics/ebi/
+	cp $PATH_INSTALLATION/quality/ebi/metrics.trig $PATH_INSTALLATION/Luzzu/luzzu-communications/externals/metrics/ebi/
+	echo "Examples can be found: PATH_INSTALLATION/quality/examples/"	
+fi
 
 if [ $SET_WEBAPP ]; then
 	echo "Copying Luzzu Web App to $WEBAPP_LOCATION"
 	cp -r $PATH_INSTALLATION/Luzzu/luzzu-webapp/site/* $WEBAPP_LOCATION
 	echo "ServerName localhost" << /etc/apache2/apache2.conf
-fi
-
-if [ $INSTALL_EXAMPLES ]; then
-	echo "Setting up Example Metrics in Luzzu"
-	mkdir $PATH_INSTALLATION/Luzzu/luzzu-communications/externals/metrics/ebi
-	cp $PATH_INSTALLATION/quality/lod-qualitymetrics/ebi/target/*-dependencies.jar $PATH_INSTALLATION/Luzzu/luzzu-communications/externals/metrics/ebi/
-	cp $PATH_INSTALLATION/quality/lod-qualitymetrics/ebi/metrics.trig $PATH_INSTALLATION/Luzzu/luzzu-communications/externals/metrics/ebi/
-	echo "Examples can be found: PATH_INSTALLATION/quality/examples/"	
 fi
 
 cd $PATH_INSTALLATION
