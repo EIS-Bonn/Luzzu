@@ -3,7 +3,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.unibonn.iai.eis</groupId>
 	<artifactId>luzzu</artifactId>
-	<version>2.0.0</version>
 	<name>Luzzu</name>
 
 
@@ -299,6 +298,13 @@ use-case driven discovery and retrieval.</description>
 		                <argLine>-XX:-UseSplitVerifier</argLine>
 		            </configuration>
 		        </plugin>
+		        <plugin>
+			      <groupId>org.apache.maven.plugins</groupId>
+			      <artifactId>maven-javadoc-plugin</artifactId>
+			      <configuration>
+			        <additionalparam>-Xdoclint:none</additionalparam>
+			      </configuration>
+			    </plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -315,4 +321,5 @@ use-case driven discovery and retrieval.</description>
 		</repository>
 	</distributionManagement>
 
+	<version>2.0.1</version>
 </project>
