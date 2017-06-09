@@ -14,7 +14,7 @@ git clone https://github.com/EIS-Bonn/Luzzu.git
 # install luzzu
 cd $PATH_INSTALLATION/Luzzu/luzzu-communications/src/main/resources/
 rm -rf log4j.xml
-wget https://www.dropbox.com/s/buwkl6qn94dmd0r/log4j.xml
+http://eis-bonn.github.io/Luzzu/setup/log4j.xml
 cd $PATH_INSTALLATION/Luzzu
 echo "Building Luzzu"
 mvn clean install -Dmaven.test.skip=true;
@@ -32,7 +32,7 @@ if [ $INSTALL_DEFAULT_METRICS ]; then
 	# install quality metrics
 	cd $PATH_INSTALLATION/quality
 	rm -rf pom.xml
-	wget https://www.dropbox.com/s/dr4kgaqswghx8qn/pom.xml
+	wget http://eis-bonn.github.io/Luzzu/setup/pom.xml
 	echo "Building Quality Metrics"
 	mvn clean install -Dmaven.test.skip=true -Dfile.encoding=UTF-8
 
