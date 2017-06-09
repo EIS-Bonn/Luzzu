@@ -19,12 +19,16 @@ public interface ComplexQualityMetric extends QualityMetric {
 	 * 
 	 * If pre-processing is required, it should be done
 	 * here rather than in the constructor.
+	 * 
+	 * @param a set of arguments
 	 */
 	 void before(Object... args) throws BeforeException;
 	
 	/**
 	 * Implement this method if the quality metric
 	 * requires any post-processing
+	 * 
+	 * @param a set of arguments
 	 */
 	void after(Object... args) throws AfterException;
 }
