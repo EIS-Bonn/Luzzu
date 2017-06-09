@@ -14,7 +14,7 @@ git clone https://github.com/EIS-Bonn/Luzzu.git
 # install luzzu
 cd $PATH_INSTALLATION/Luzzu/luzzu-communications/src/main/resources/
 rm -rf log4j.xml
-http://eis-bonn.github.io/Luzzu/setup/log4j.xml
+wget http://eis-bonn.github.io/Luzzu/setup/log4j.xml
 cd $PATH_INSTALLATION/Luzzu
 echo "Building Luzzu"
 mvn clean install -Dmaven.test.skip=true;
