@@ -16,6 +16,10 @@
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%p %t %c - %m%n" />
 		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+	    		<param name="levelMin" value="INFO" />
+	    		<param name="levelMax" value="INFO" />
+	    	</filter>
 	</appender>
 	
 	<appender name="statisticsAppender" class="org.apache.log4j.RollingFileAppender">
