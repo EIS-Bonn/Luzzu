@@ -25,7 +25,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-		
+
 	<style>
 	table, th, td {
 	   border: 1px solid black;
@@ -82,7 +82,7 @@
     <!-- Page Content -->
     <div class="container">
 		<h1 class="page-header">How To</h1>
-		
+
 		<ol class="breadcrumb">
 		  <li id="preliminaryLi" class="active"><a href="#" class="active howToLink" id="preliminary" style="pointer-events: none; cursor: default; color:gray;">Preliminary Requirements</a></li>
 		  <li id="downloadLi"><a href="#" class="howToLink" id="download">Downloading</a></li>
@@ -101,7 +101,7 @@
 					<li><a href="http://maven.apache.org">Apache Maven</a></li>
 				</ul>
 			</div>
-			
+
 			<div id="downloadDiv" style="display:none">
 				<h4>Downloading the Framework</h4>
 				There are two options that one could use to download Luzzu, either by downloading the source or executable, or by cloning the GIT Repository.<br /><br />
@@ -117,7 +117,7 @@
 	  					</div>
 					</div>
 				</div>
-				
+
 				 <div class="col-lg-6">
 					 <div class="panel panel-success">
 						<div class="panel-heading">
@@ -129,9 +129,9 @@
 	  					</div>
 					</div>
 				</div>
-				
+
 			</div>
-			
+
 			<div id="buildDiv" style="display:none">
 				<h4>Building the Framework</h4>
 				<p>This is only required if you cloned the repository or downloaded the source. Building the Luzzu framework is an easy job with Maven. Maven will handle all required dependencies and ensures a successful build. The framework will be compiled into a single JAR file. An inbuilt <a href="https://jersey.java.net/">Jersey</a> RESTFul web service will also be downloaded by maven, thus the framework does not require tools such as Apache or Tomcat to be installed. The following steps are required to build and compile Luzzu on your system:
@@ -148,11 +148,11 @@ The <code>clean</code> directive ensures that the <code>target</code> folder has
 luzzu-communications $ mvn exec:java -X
 </code></pre></p>
 			</div>
-			
+
 			<div id="servicesDiv" style="display:none">
 				<h4>Web Service Invocation</h4>
 				<p>The Luzzu web service can be invoked (by default) by the URI <code>http://localhost:8080/luzzu/compute_quality</code>. The <code>compute_quality</code> module accepts as input an instance of a DIACHRON dataset (an HTTP URI or FILE URI), a list of metrics required to be assessed and if a quality problem report is required. Port number and domain can be changed via the webservices.properties file. Changing the properties file would require a new build.</p>
-	
+
 <table>
   <tr>
     <th>Post</th>
@@ -168,12 +168,12 @@ luzzu-communications $ mvn exec:java -X
   </tr>
   <tr>
 	<td>
-<pre><code>"Dataset": "http://exampleuri.com/rdfdump", 
-"QualityReportRequired": true, 
+<pre><code>"Dataset": "http://exampleuri.com/rdfdump",
+"QualityReportRequired": true,
 "MetricsConfiguration" : [{
- "@id": "_:f4212571792b1", 
+ "@id": "_:f4212571792b1",
  "@type": [ "http://www.diachron-fp7.eu/qualityFramework#metricConfiguration" ],
-	"http://www.diachron-fp7.eu/diachron#metric": [ 
+	"http://www.diachron-fp7.eu/diachron#metric": [
 	{ "@value": "eu.diachron.qualitymetrics.intrinsic.accuracy.DefinedOntologyAuthor" },
 	{ "@value": "eu.diachron.qualitymetrics.accessibility.availability.RDFAccessibility" },
 	{ "@value": "eu.diachron.qualitymetrics.representational.understandability.HumanReadableLabelling" },
@@ -189,40 +189,40 @@ luzzu-communications $ mvn exec:java -X
   <tr>
     <td>
 <pre><code>“Dataset”: “http://exampleuri.com/rdfdump”,
-“QualityReport” : { 
+“QualityReport” : {
   "@graph": [{
 	"@id": "uri:problem2",
-	"@type": "http://www.diachron-fp7.eu/vocab/quality#qualityProblem", 
+	"@type": "http://www.diachron-fp7.eu/vocab/quality#qualityProblem",
 	"http://www.diachron-fp7.eu/vocab/quality#describedBy": { "@id": "uri:metric15" },
 	"http://www.diachron-fp7.eu/vocab/quality#problematicThing": { "@id": "uri:b" } },
 	{"@id": "uri: problem1",
-	"@type": "http://www.diachron-fp7.eu/vocab/quality#qualityProblem", 
+	"@type": "http://www.diachron-fp7.eu/vocab/quality#qualityProblem",
 	"http://www.diachron-fp7.eu/vocab/quality#describedBy": {"@id": "uri:metric1" },
 	"http://www.diachron-fp7.eu/vocab/quality#problematicThing": { "@id": "uri:a"} },
 	{"@id": "uri:qualRep",
-	"@type": "http://www.diachron-fp7.eu/vocab/quality#qualityReport", 
+	"@type": "http://www.diachron-fp7.eu/vocab/quality#qualityReport",
 	"http://www.diachron-fp7.eu/vocab/quality#computedOn": {"@id": "http://aksw.org" },
-	"http://www.diachron-fp7.eu/vocab/quality#hasProblem": [ 
+	"http://www.diachron-fp7.eu/vocab/quality#hasProblem": [
 	 { "@id": "uri:problem1" },
-	 { "@id": "uri:problem2"} ]}, 
+	 { "@id": "uri:problem2"} ]},
 	{ "@id": "uri:a",
 	"@type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq" },
 	{
-	 "@id": "uri:b", 
+	 "@id": "uri:b",
 	 "http://www.diachron-fp7.eu/resource/hasObject": {"@id": "http://www.example.org/objectTriple" },
-	 "http://www.diachron-fp7.eu/resource/predicate": {"@id": "http://www.example.org/predicateTriple"}, 
+	 "http://www.diachron-fp7.eu/resource/predicate": {"@id": "http://www.example.org/predicateTriple"},
 	 "http://www.diachron-fp7.eu/resource/subject": {"@id": "http://www.example.org/subjectTriple" }
-	} ] }</code></pre>    	
+	} ] }</code></pre>
     </td>
     <td><b>Output Message Format and Example</b></td>
   </tr>
 </table>
 			</div>
-			
-			
+
+
 		<div id="customDiv" style="display:none">
 			<h4>Creating Custom Metrics</h4>
-			<p>	
+			<p>
 	      <div class="panel panel-primary" style="width:100%; cursor: pointer; cursor: hand;">
 	  		<div class="panel-heading customMetric" id="lqml">Luzzu Quality Metric Language
 									<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="float:right; padding-top:3px; padding-right:10px"></span>
@@ -231,18 +231,18 @@ luzzu-communications $ mvn exec:java -X
 	  			<p>The Luzzu framework enables knowledge engineers without Java expertise to create quality metrics in a declarative manner. This is attributable to the fact that LQML caters for varying linked data quality metrics, which can be as basic as matching a particular triple pattern. An LQML rule is made up of METRIC, LABEL, DESCRIPTION, MATCH, and ACTION.
 
 Click here for LQML Documentation.
-					
+
 <pre><code><strong>def</strong>{SubClassCounter}:
-	 <strong>metric</strong>{&lt;http://www.example.org/ebi/qm#SubClassCountingMetric&gt;}; 
+	 <strong>metric</strong>{&lt;http://www.example.org/ebi/qm#SubClassCountingMetric&gt;};
 	 <strong>label</strong>{"SubClassCountingMetric"};
-	 <strong>description</strong>{"Provides a measure for counting the number of resources that are defined as sub-classes"}; 
+	 <strong>description</strong>{"Provides a measure for counting the number of resources that are defined as sub-classes"};
 	 <strong>match</strong>{(?p == rdfs:subClassOf)};
 	 <strong>action</strong>{count}.
 </code></pre>
 				</p>
 	  		</div>
 		  </div>
-		
+
       	<div class="panel panel-success" style="width:100%; cursor: pointer; cursor: hand;">
   			<div class="panel-heading customMetric" id="java">Extending Java Classes
 									<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="float:right; padding-top:3px; padding-right:10px"></span>
@@ -285,12 +285,12 @@ Click here for LQML Documentation.
 				The <code>metrics.trig</code> file should contain a list of all custom implemented metrics available in the packaged jar. The java metrics should be described using the Luzzu Metric Implementation ontology (see <code>luzzu-semantics</code> library/dependency).
 				A typical metric.trig configuration file can be viewed <a href="config.trig">here</a>.</p>
 		</div>
-			
+
 		<div id="templateDiv" style="display:none">
 			<h4>Title</h4>
 			<p>body</p>
 		</div>
-						
+
         </div>
         <!-- /.row -->
 
@@ -300,7 +300,7 @@ Click here for LQML Documentation.
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Maintained by: Enterprise Information Systems - University of Bonn <img src="images/logo-eis.png" width="80px" style="margin-left:15px; "/></p>
+                    <p></p>
                 </div>
             </div>
         </footer>
@@ -315,32 +315,32 @@ Click here for LQML Documentation.
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-	
+
 	<!-- custom script -->
 	<script type="text/javascript" charset="utf-8">
 	$(document).ready(function() {
 		$('.howToLink').click(function(){
-			// do something		
+			// do something
 		    $('#preliminary').removeClass('active');
 			$('#download').removeClass('active');
 			$('#build').removeClass('active');
 			$('#custom').removeClass('active');
 			$('#services').removeClass('active');
-			
+
 		    $('#preliminary').removeAttr('style');
 			$('#download').removeAttr('style');
 			$('#build').removeAttr('style');
 			$('#custom').removeAttr('style');
 			$('#services').removeAttr('style');
-	    
+
 			var item_id = $(this).attr('id');
-					
+
 		    $('#preliminaryDiv').css('display','none');
 			$('#downloadDiv').css('display','none');
 			$('#buildDiv').css('display','none');
 			$('#customDiv').css('display','none');
 			$('#servicesDiv').css('display','none');
-		
+
 			$('#'+item_id+'Div').css('display','inline-block');
 			$('#'+item_id).css('pointer-events','none');
 			$('#'+item_id).css('cursor','default');
@@ -348,17 +348,17 @@ Click here for LQML Documentation.
 		});
 	});
 	</script>
-	
+
 	<script type="text/javascript" charset="utf-8">
 	$(document).ready(function() {
 		$('.customMetric').click(function(){
-			// do something		
-	    
+			// do something
+
 			var item_id = $(this).attr('id');
-					
+
 		    $('#lqmlBody').css('display','none');
 			$('#javaBody').css('display','none');
-		
+
 			$('#'+item_id+'Body').css('display','inline-block');
 
 		});
