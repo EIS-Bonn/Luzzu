@@ -60,7 +60,7 @@ if [ $INSTALL_EXAMPLES ]; then
 	wget https://www.dropbox.com/s/lqe4xr1h55nxkas/ebi.zip
 	unzip ebi.zip
 	mkdir $PATH_INSTALLATION/Luzzu/luzzu-communications/externals/metrics/ebi
-	cp ebi/metrics/representational/* $PATH_INSTALLATION/Luzzu/luzzu-communications/externals/metrics/ebi/
+	cp ebi/metrics/ebi/* $PATH_INSTALLATION/Luzzu/luzzu-communications/externals/metrics/ebi/
 	cp ebi/vocabs/* $PATH_INSTALLATION/Luzzu/luzzu-communications/externals/vocabs/
 	mkdir $PATH_INSTALLATION/examples
 	cp ebi/examples/* $PATH_INSTALLATION/examples
