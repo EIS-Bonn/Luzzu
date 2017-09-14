@@ -1,10 +1,11 @@
 #!/bin/bash
-PATH_INSTALLATION='/home' # the path where Luzzu and the Quality Metric repository should be installed
+PATH_INSTALLATION='/Luzzu' # the path where Luzzu and the Quality Metric repository should be installed
 SET_WEBAPP=true # true if you want to access the web application from localhost; else false
 WEBAPP_LOCATION='/srv/www/html' # localhost application location
 INSTALL_EXAMPLES=true # true if you want to install the example metrics in luzzu
 
 # Pull Luzzu and Quality Metrics from repository
+mkdir /Luzzu
 echo "Installing Luzzu in $PATH_INSTALLATION"
 cd $PATH_INSTALLATION
 echo "Pulling Luzzu"
