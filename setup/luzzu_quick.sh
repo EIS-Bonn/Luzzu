@@ -8,7 +8,7 @@ INSTALL_EXAMPLES=true # true if you want to install the example metrics in luzzu
 echo "Installing Luzzu in $PATH_INSTALLATION"
 cd $PATH_INSTALLATION
 echo "Pulling Luzzu"
-git clone https://github.com/EIS-Bonn/Luzzu.git
+git clone https://github.com/EIS-Bonn/Luzzu.git -b Luzzu3
 
 # install luzzu
 cd $PATH_INSTALLATION/Luzzu/luzzu-communications/src/main/resources/
