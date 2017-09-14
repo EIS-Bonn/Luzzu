@@ -72,7 +72,7 @@ rm -rf $PATH_INSTALLATION/tmp
 if [ $SET_WEBAPP ]; then
 	echo "Copying Luzzu Web App to $WEBAPP_LOCATION"
 	cp -r $PATH_INSTALLATION/Luzzu/luzzu-webapp/site/* $WEBAPP_LOCATION
-	echo "ServerName localhost" << /etc/apache2/apache2.conf
+	echo "ServerName localhost" >> /etc/apache2/apache2.conf
 fi
 
 cd $PATH_INSTALLATION
