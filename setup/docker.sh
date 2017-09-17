@@ -23,10 +23,10 @@ cd $PATH_INSTALLATION
 echo "Downloading Quality Metrics"
 mkdir $PATH_INSTALLATION/tmp
 cd $PATH_INSTALLATION/tmp
-wget https://github.com/EIS-Bonn/Luzzu/raw/gh-pages/downloads/accessibility.zip
-wget https://github.com/EIS-Bonn/Luzzu/raw/gh-pages/downloads/contextual.zip
-wget https://github.com/EIS-Bonn/Luzzu/raw/gh-pages/downloads/intrinsic.zip
-wget https://github.com/EIS-Bonn/Luzzu/raw/gh-pages/downloads/representational.zip
+wget https://www.dropbox.com/s/baxzd53n82e7k2u/accessibility.zip
+wget https://www.dropbox.com/s/tezx9ibor8xdryq/contextual.zip
+wget https://www.dropbox.com/s/s2x1ci8pbmenp9w/intrinsic.zip
+wget https://www.dropbox.com/s/bce6pd3v5nrl463/representational.zip
 
 
 echo "Setting up Representational Metrics"
