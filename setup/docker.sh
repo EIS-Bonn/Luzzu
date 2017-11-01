@@ -23,10 +23,10 @@ cd $PATH_INSTALLATION
 echo "Downloading Quality Metrics"
 mkdir $PATH_INSTALLATION/tmp
 cd $PATH_INSTALLATION/tmp
-wget https://www.dropbox.com/s/baxzd53n82e7k2u/accessibility.zip
-wget https://www.dropbox.com/s/tezx9ibor8xdryq/contextual.zip
-wget https://www.dropbox.com/s/s2x1ci8pbmenp9w/intrinsic.zip
-wget https://www.dropbox.com/s/bce6pd3v5nrl463/representational.zip
+wget http://s001.adaptcentre.ie/LDQM/accessibility.zip
+wget http://s001.adaptcentre.ie/LDQM/contextual.zip
+wget http://s001.adaptcentre.ie/LDQM/intrinsic.zip
+wget http://s001.adaptcentre.ie/LDQM/representational.zip
 
 
 echo "Setting up Representational Metrics"
