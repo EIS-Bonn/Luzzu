@@ -1,3 +1,5 @@
+**This git repo is an archive for Luzzu. For the more recent and updated version of Luzzu go to (https://github.com/Luzzu/Framework)**
+
 Luzzu - A Quality Assessment Framework for Linked Open Datasets
 ===============================================================
 
